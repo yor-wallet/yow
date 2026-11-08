@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+/storage/private/
+next-env.d.ts
+*.tsbuildinfo
+android/app/build/
