@@ -1,1 +1,118 @@
-{}
+{
+  "metaTitle": "Vérification d'identité",
+  "title": "Vérification d'identité",
+  "subtitle": "Vérifiez votre identité pour débloquer DOOM FLEX.",
+  "status": {
+    "UNVERIFIED": "Non vérifié",
+    "PENDING": "En cours d'examen",
+    "DOCUMENTS_REQUESTED": "Documents demandés",
+    "VERIFIED": "Vérifié",
+    "REJECTED": "Non approuvé"
+  },
+  "statusCard": {
+    "UNVERIFIED": {
+      "title": "Votre identité n'est pas encore vérifiée",
+      "text": "Cela prend quelques minutes : confirmez vos informations, photographiez les deux faces de votre carte d'identité et prenez un selfie."
+    },
+    "PENDING": {
+      "title": "Vos documents sont en cours d'examen",
+      "text": "Notre équipe examine votre dossier. Vous recevrez une notification avec la décision."
+    },
+    "DOCUMENTS_REQUESTED": {
+      "title": "Documents supplémentaires demandés",
+      "text": "Téléversez les documents listés ci-dessous pour terminer votre vérification."
+    },
+    "VERIFIED": {
+      "title": "Votre identité est vérifiée",
+      "text": "Vous pouvez maintenant demander un paiement échelonné DOOM FLEX."
+    },
+    "REJECTED": {
+      "title": "Votre vérification n'a pas été approuvée",
+      "text": "Lisez le motif ci-dessous, puis envoyez de nouveaux documents."
+    }
+  },
+  "submittedOn": "Envoyé le {date}",
+  "reviewedOn": "Examiné le {date}",
+  "reviewerNote": "Message de notre équipe",
+  "rejectionReason": "Motif",
+  "requested": "Documents à téléverser",
+  "received": "Documents reçus",
+  "start": "Commencer la vérification",
+  "restart": "Envoyer de nouveaux documents",
+  "uploadRequested": "Téléverser les documents demandés",
+  "flexCta": "Découvrir DOOM FLEX",
+  "steps": {
+    "details": "Vos informations",
+    "documents": "Documents",
+    "review": "Vérification et envoi"
+  },
+  "details": {
+    "title": "Confirmez vos informations",
+    "text": "Elles doivent correspondre à votre pièce d'identité.",
+    "fullName": "Nom complet",
+    "fullNameHint": "Exactement comme sur votre carte d'identité.",
+    "email": "E-mail",
+    "phone": "Numéro de mobile",
+    "phoneMissing": "Ajoutez un numéro de mobile à votre profil avant de continuer.",
+    "address": "Adresse",
+    "addressMissing": "Ajoutez une adresse avant de continuer.",
+    "addAddress": "Ajouter une adresse",
+    "editProfile": "Modifier le profil"
+  },
+  "docs": {
+    "title": "Photographiez vos documents",
+    "text": "Utilisez une bonne lumière, évitez les reflets et vérifiez que chaque coin est visible.",
+    "ID_FRONT": "Carte d'identité — recto",
+    "ID_BACK": "Carte d'identité — verso",
+    "SELFIE": "Selfie",
+    "hint": {
+      "ID_FRONT": "Le côté avec votre photo et votre nom.",
+      "ID_BACK": "L'autre côté de la même carte.",
+      "SELFIE": "Votre visage, bien visible, sans lunettes de soleil."
+    },
+    "take": "Prendre une photo",
+    "choose": "Choisir un fichier",
+    "retake": "Reprendre",
+    "remove": "Supprimer",
+    "processing": "Optimisation de l'image…",
+    "ready": "Prêt",
+    "formats": "JPEG, PNG ou WebP · 8 Mo maximum",
+    "previewAlt": "Aperçu : {doc}",
+    "count": "{done} document(s) prêt(s) sur {total}"
+  },
+  "review": {
+    "title": "Vérifiez et envoyez",
+    "text": "Assurez-vous que chaque photo est nette et lisible.",
+    "consent": "Je confirme que ces documents m'appartiennent et sont authentiques, et j'accepte leur traitement pour la vérification d'identité, comme décrit dans la politique de confidentialité.",
+    "privacyLink": "Lire la politique de confidentialité",
+    "submit": "Envoyer pour examen",
+    "submitting": "Chiffrement et envoi…",
+    "encryption": "Chiffrés (AES-256-GCM) avant stockage. Seuls les examinateurs autorisés peuvent les ouvrir, et chaque accès est enregistré."
+  },
+  "back": "Retour",
+  "next": "Continuer",
+  "submitted": "Documents envoyés pour examen",
+  "privacy": {
+    "title": "Comment nous protégeons vos documents",
+    "encrypted": "Chiffrés au repos avec AES-256-GCM, dans un stockage privé.",
+    "access": "Ouverts uniquement par des examinateurs autorisés ; chaque accès est enregistré.",
+    "minimal": "Conservés uniquement le temps nécessaire, puis supprimés.",
+    "law": "Traités conformément à la loi omanaise sur la protection des données personnelles (décret royal 6/2022)."
+  },
+  "errors": {
+    "empty": "Ce fichier est vide.",
+    "too_large": "Ce fichier dépasse 8 Mo.",
+    "heic_unsupported": "Les photos HEIC ne sont pas prises en charge. Réglez votre appareil photo sur « Le plus compatible » (JPEG) ou choisissez une autre photo.",
+    "unsupported_type": "Format non pris en charge. Utilisez JPEG, PNG ou WebP.",
+    "image_unreadable": "Cette image n'a pas pu être lue. Essayez une autre photo.",
+    "missing_document": "Un document obligatoire est manquant.",
+    "already_verified": "Votre identité est déjà vérifiée.",
+    "already_pending": "Vos documents sont déjà en cours d'examen.",
+    "phone_required": "Ajoutez d'abord un numéro de mobile à votre profil.",
+    "address_required": "Ajoutez d'abord une adresse.",
+    "consent_required": "Veuillez confirmer la déclaration pour continuer.",
+    "name_too_short": "Saisissez votre nom complet.",
+    "rate_limited": "Trop de tentatives. Veuillez réessayer plus tard.",
+    "generic": "Vos documents n'ont pas pu être envoyés. Veuillez réessayer."
+  }
+}

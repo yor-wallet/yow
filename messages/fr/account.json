@@ -2,6 +2,7 @@
   "metaTitle": "Mon compte",
   "title": "Mon compte",
   "greeting": "Bonjour, {name}",
+  "memberSince": "Membre depuis le {date}",
   "profile": {
     "title": "Profil",
     "email": "E-mail",
@@ -17,7 +18,23 @@
       "DOCUMENTS_REQUESTED": "Documents demandés",
       "VERIFIED": "Vérifié",
       "REJECTED": "Refusé"
+    },
+    "cta": {
+      "UNVERIFIED": "Vérifier mon identité",
+      "PENDING": "Voir le statut",
+      "DOCUMENTS_REQUESTED": "Téléverser les documents",
+      "VERIFIED": "Voir les détails",
+      "REJECTED": "Envoyer à nouveau"
     }
+  },
+  "overview": {
+    "wallet": "Solde du portefeuille",
+    "walletInactive": "Pas encore activé",
+    "orders": "Commandes",
+    "activeOrders": "{count, plural, =0 {Aucune livraison en cours} one {# livraison en cours} other {# livraisons en cours}}",
+    "notifications": "Notifications non lues",
+    "sections": "Votre espace",
+    "staff": "Outils de l'équipe"
   },
   "links": {
     "orders": "Mes commandes",
@@ -25,7 +42,353 @@
     "wallet": "Portefeuille DOOM",
     "walletText": "Solde, recharges et reçus.",
     "admin": "Centre d'administration",
-    "adminText": "Gérez la boutique selon votre rôle."
+    "adminText": "Gérez la boutique selon votre rôle.",
+    "addresses": "Adresses",
+    "addressesText": "Adresses de livraison dans les 11 gouvernorats.",
+    "verification": "Vérification d'identité",
+    "verificationText": "Requise pour les paiements échelonnés DOOM FLEX.",
+    "flex": "DOOM FLEX",
+    "flexText": "Payez en 3, 6 ou 12 mois à 0 % d'intérêt.",
+    "favorites": "Favoris",
+    "favoritesText": "Les produits que vous avez enregistrés.",
+    "notifications": "Notifications",
+    "notificationsText": "Commandes, paiements et mises à jour du compte.",
+    "support": "Support",
+    "supportText": "Vos demandes et vos échanges avec notre équipe.",
+    "profile": "Profil et préférences",
+    "profileText": "Nom, mobile, langue et thème.",
+    "security": "Sécurité",
+    "securityText": "Mot de passe, sessions actives et suppression du compte.",
+    "help": "Centre d'aide",
+    "helpText": "Livraison, paiements, FLEX, retours et garantie.",
+    "courier": "Espace livreur",
+    "courierText": "Vos livraisons et remises affectées."
   },
-  "logout": "Se déconnecter"
+  "logout": "Se déconnecter",
+  "addresses": {
+    "metaTitle": "Mes adresses",
+    "title": "Mes adresses",
+    "subtitle": "Enregistrez les lieux où vous recevez vos commandes.",
+    "add": "Ajouter une adresse",
+    "newTitle": "Nouvelle adresse",
+    "editTitle": "Modifier l'adresse",
+    "default": "Par défaut",
+    "makeDefault": "Définir par défaut",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer cette adresse ?",
+    "deleteText": "Les commandes déjà passées conservent l'adresse à laquelle elles ont été livrées.",
+    "deleteConfirm": "Supprimer l'adresse",
+    "deleted": "Adresse supprimée",
+    "defaultSet": "Adresse par défaut mise à jour",
+    "actionFailed": "L'action n'a pas pu être menée à bien. Veuillez réessayer.",
+    "emptyTitle": "Aucune adresse pour le moment",
+    "emptyText": "Ajoutez une adresse de livraison pour payer plus vite.",
+    "gps": "Position GPS enregistrée",
+    "limit": "Vous pouvez enregistrer jusqu'à {max} adresses.",
+    "form": {
+      "label": "Libellé (facultatif)",
+      "labelPlaceholder": "Domicile, bureau…",
+      "recipientName": "Nom complet du destinataire",
+      "phone": "Numéro de mobile",
+      "phoneHint": "8 chiffres, par exemple 9123 4567",
+      "governorate": "Gouvernorat",
+      "governoratePlaceholder": "Choisir un gouvernorat",
+      "wilaya": "Wilaya",
+      "wilayaPlaceholder": "Choisir une wilaya",
+      "wilayaFirst": "Choisissez d'abord un gouvernorat.",
+      "area": "Zone / quartier",
+      "building": "Numéro de l'immeuble ou de la maison",
+      "street": "Rue ou voie (facultatif)",
+      "instructions": "Instructions de livraison (facultatif)",
+      "instructionsPlaceholder": "Point de repère, couleur du portail, meilleur moment pour appeler…",
+      "isDefault": "Utiliser comme adresse par défaut",
+      "location": {
+        "title": "Position GPS (facultatif)",
+        "hint": "Aide le livreur à vous trouver. Votre position n'est lue que lorsque vous touchez le bouton.",
+        "use": "Utiliser ma position actuelle",
+        "locating": "Localisation…",
+        "update": "Mettre à jour la position",
+        "remove": "Retirer",
+        "coords": "Lat {lat}, Long {lng}",
+        "accuracy": "Précision ±{meters} m",
+        "viewMap": "Voir sur OpenStreetMap",
+        "denied": "L'accès à la position est bloqué. Autorisez-le dans les réglages de votre navigateur ou renseignez l'adresse manuellement.",
+        "unavailable": "Votre position n'est pas disponible sur cet appareil pour le moment.",
+        "timeout": "La localisation a pris trop de temps. Réessayez près d'une fenêtre ou en extérieur.",
+        "outside": "Cette position est en dehors du Sultanat d'Oman.",
+        "error": "Nous n'avons pas pu obtenir votre position. Veuillez réessayer."
+      },
+      "save": "Enregistrer l'adresse",
+      "saving": "Enregistrement…",
+      "cancel": "Annuler",
+      "saved": "Adresse enregistrée",
+      "draftRestored": "Nous avons restauré les informations que vous aviez commencé à saisir."
+    },
+    "errors": {
+      "wilaya_mismatch": "Cette wilaya n'appartient pas au gouvernorat sélectionné.",
+      "limit_reached": "Vous avez atteint le nombre maximal d'adresses enregistrées.",
+      "not_found": "Cette adresse n'existe plus.",
+      "unauthenticated": "Votre session a expiré. Veuillez vous reconnecter.",
+      "location_invalid": "Cette position n'est pas valide.",
+      "generic": "L'adresse n'a pas pu être enregistrée. Veuillez réessayer."
+    }
+  },
+  "notifications": {
+    "metaTitle": "Notifications",
+    "title": "Notifications",
+    "subtitle": "Des nouvelles de vos commandes, de vos paiements et de votre compte.",
+    "filterLabel": "Afficher",
+    "all": "Toutes",
+    "unread": "Non lues",
+    "markAllRead": "Tout marquer comme lu",
+    "markedAllRead": "Toutes les notifications sont marquées comme lues",
+    "markRead": "Marquer comme lu",
+    "new": "Nouveau",
+    "emptyTitle": "Aucune notification",
+    "emptyText": "Nous vous informerons ici dès qu'il se passe quelque chose sur vos commandes ou votre compte.",
+    "emptyUnreadTitle": "Vous êtes à jour",
+    "emptyUnreadText": "Aucune notification non lue.",
+    "loadMore": "Afficher les notifications plus anciennes",
+    "handoverCode": "Code de remise",
+    "handoverHint": "Ne le donnez au livreur que lorsque vous avez votre colis.",
+    "open": "Ouvrir"
+  },
+  "support": {
+    "metaTitle": "Support",
+    "title": "Support",
+    "subtitle": "Une question sur une commande, un paiement ou votre compte ? Écrivez-nous.",
+    "new": "Nouvelle demande",
+    "newTitle": "Nouvelle demande de support",
+    "newSubtitle": "Décrivez votre demande ; notre équipe répond dans cette conversation.",
+    "listTitle": "Vos demandes",
+    "emptyTitle": "Aucune demande pour le moment",
+    "emptyText": "Démarrez une conversation avec notre équipe — vous pouvez la lier à une commande.",
+    "subject": "Objet",
+    "subjectHint": "Un court résumé, par exemple « Protège-écran endommagé ».",
+    "message": "Message",
+    "messageHint": "Donnez le plus de détails possible (au moins 10 caractères).",
+    "order": "Commande concernée (facultatif)",
+    "orderNone": "Aucune commande en particulier",
+    "send": "Envoyer la demande",
+    "sent": "Demande envoyée",
+    "reply": "Envoyer la réponse",
+    "replyLabel": "Votre réponse",
+    "replyPlaceholder": "Écrivez votre message…",
+    "replySent": "Réponse envoyée",
+    "closedNotice": "Cette demande est clôturée. Ouvrez une nouvelle demande si vous avez besoin d'aide.",
+    "resolvedNotice": "Cette demande a été marquée comme résolue. Y répondre la rouvrira.",
+    "you": "Vous",
+    "team": "Support DOOM",
+    "messages": "{count, plural, one {# message} other {# messages}}",
+    "lastReplyStaff": "Le support a répondu",
+    "awaiting": "En attente du support",
+    "linkedOrder": "Commande {number}",
+    "openedOn": "Ouverte le {date}",
+    "helpLink": "Parcourir le centre d'aide",
+    "status": {
+      "OPEN": "Ouverte",
+      "IN_PROGRESS": "En cours",
+      "WAITING_CUSTOMER": "En attente de votre réponse",
+      "RESOLVED": "Résolue",
+      "CLOSED": "Clôturée"
+    },
+    "errors": {
+      "subject_too_short": "L'objet doit comporter au moins 4 caractères.",
+      "message_too_short": "Veuillez en écrire un peu plus (au moins 10 caractères).",
+      "too_long": "Ce texte est trop long.",
+      "not_found": "Cette demande n'existe pas.",
+      "order_not_found": "Cette commande est introuvable dans votre compte.",
+      "closed": "Cette demande est clôturée.",
+      "rate_limited": "Vous avez envoyé beaucoup de messages. Veuillez patienter un instant puis réessayer.",
+      "generic": "Votre message n'a pas pu être envoyé. Veuillez réessayer."
+    }
+  },
+  "profilePage": {
+    "metaTitle": "Profil et préférences",
+    "title": "Profil et préférences",
+    "detailsTitle": "Informations personnelles",
+    "detailsText": "Utilisées pour vos commandes, vos livraisons et vos reçus.",
+    "fullName": "Nom complet",
+    "email": "E-mail",
+    "emailHint": "Pour modifier votre adresse e-mail, contactez le support.",
+    "phone": "Numéro de mobile",
+    "save": "Enregistrer les modifications",
+    "saved": "Profil mis à jour",
+    "languageTitle": "Langue",
+    "languageText": "Utilisée pour le site, les notifications et les reçus.",
+    "languageSaved": "Langue mise à jour",
+    "themeTitle": "Thème",
+    "themeText": "Enregistré sur cet appareil.",
+    "themeDark": "Sombre",
+    "themeLight": "Clair",
+    "errors": {
+      "phone_taken": "Ce numéro est déjà associé à un autre compte.",
+      "generic": "Vos modifications n'ont pas pu être enregistrées. Veuillez réessayer."
+    }
+  },
+  "security": {
+    "metaTitle": "Sécurité",
+    "title": "Sécurité",
+    "passwordTitle": "Changer le mot de passe",
+    "passwordText": "Vos autres sessions sont déconnectées après le changement.",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordHint": "Au moins 10 caractères, avec des lettres et des chiffres.",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "changePassword": "Mettre à jour le mot de passe",
+    "passwordChanged": "Mot de passe mis à jour. Les autres sessions ont été déconnectées.",
+    "show": "Afficher le mot de passe",
+    "hide": "Masquer le mot de passe",
+    "sessionsTitle": "Sessions actives",
+    "sessionsText": "Les appareils sur lesquels vous êtes connecté. Révoquez ceux que vous ne reconnaissez pas.",
+    "thisDevice": "Cet appareil",
+    "lastActive": "Dernière activité {date}",
+    "signedIn": "Connecté {date}",
+    "unknownDevice": "Appareil inconnu",
+    "browserOn": "{browser} sur {os}",
+    "ip": "IP {ip}",
+    "revoke": "Déconnecter",
+    "revoked": "Session déconnectée",
+    "revokeOthers": "Déconnecter toutes les autres sessions",
+    "revokedOthers": "{count, plural, =0 {Aucune autre session} one {# session déconnectée} other {# sessions déconnectées}}",
+    "noOtherSessions": "Aucune autre session active.",
+    "deletionTitle": "Supprimer mon compte",
+    "deletionText": "Nous supprimons vos données personnelles, à l'exception des documents que la loi nous impose de conserver (factures, justificatifs de paiement et de livraison) pendant la durée légale.",
+    "deletionButton": "Demander la suppression du compte",
+    "deletionConfirmTitle": "Demander la suppression de votre compte ?",
+    "deletionConfirmText": "Une demande est envoyée à notre équipe, qui confirmera par message avant de supprimer quoi que ce soit. Les commandes en attente et le solde du portefeuille doivent d'abord être réglés.",
+    "deletionConfirm": "Envoyer la demande",
+    "deletionRequested": "Demande de suppression envoyée",
+    "deletionPending": "Votre demande de suppression {number} est en cours de traitement.",
+    "deletionView": "Suivre la demande",
+    "errors": {
+      "wrong_password": "Le mot de passe actuel est incorrect.",
+      "password_same": "Choisissez un mot de passe différent de l'actuel.",
+      "rate_limited": "Trop de tentatives. Veuillez patienter quelques minutes.",
+      "generic": "L'action n'a pas pu être menée à bien. Veuillez réessayer."
+    }
+  },
+  "help": {
+    "metaTitle": "Centre d'aide",
+    "title": "Centre d'aide",
+    "subtitle": "Des réponses aux questions les plus fréquentes.",
+    "categoriesLabel": "Thèmes",
+    "contactTitle": "Besoin d'aide supplémentaire ?",
+    "contactText": "Notre équipe répond à vos demandes dans votre compte, avec les détails de votre commande sous les yeux.",
+    "contactCta": "Contacter le support",
+    "deliveryCta": "À propos de DOOM EXPRESS",
+    "categories": {
+      "delivery": "Livraison",
+      "payments": "Paiements",
+      "flex": "DOOM FLEX",
+      "returns": "Retours",
+      "warranty": "Garantie",
+      "account": "Compte et sécurité"
+    },
+    "faq": {
+      "delivery": {
+        "q1": "Combien de temps prend la livraison ?",
+        "a1": "La livraison standard vise 24 heures et DOOM EXPRESS 6 heures, selon la configuration de votre zone. L'estimation exacte est affichée au paiement avant de payer ; une option non configurée pour votre secteur est affichée comme indisponible.",
+        "q2": "Comment les frais de livraison sont-ils calculés ?",
+        "a2": "À partir des tarifs configurés pour votre zone (gouvernorat ou wilaya), du poids et du volume du colis et du type de livraison. Les frais sont toujours affichés avant le paiement — jamais ajoutés après.",
+        "q3": "Qu'est-ce que le code de remise ?",
+        "a3": "Lorsque votre commande part en livraison, un code à 6 chiffres apparaît sur la page de la commande et dans vos notifications. Ne le donnez au livreur qu'une fois le colis en main : il confirme la livraison.",
+        "q4": "Puis-je modifier mon adresse de livraison ?",
+        "a4": "Avant que la commande soit confiée à un livreur, contactez le support depuis la page de la commande. Une fois en cours de livraison, l'adresse ne peut plus être modifiée."
+      },
+      "payments": {
+        "q1": "Quels moyens de paiement sont acceptés ?",
+        "a1": "Portefeuille DOOM, cartes bancaires, Ooredoo, Omantel, cryptoactifs et cartes cadeaux. Les moyens pas encore activés sont affichés comme indisponibles au paiement et ne peuvent pas être sélectionnés.",
+        "q2": "Quand mon paiement est-il confirmé ?",
+        "a2": "Uniquement après confirmation par le prestataire de paiement ou, pour les cartes cadeaux, une fois que notre équipe financière a vérifié la valeur réellement reçue. Jusque-là, votre commande affiche un paiement en attente.",
+        "q3": "Comment fonctionnent les remboursements ?",
+        "a3": "Les remboursements approuvés sont crédités sur votre portefeuille DOOM, ou sur le moyen de paiement d'origine lorsque le prestataire le permet. Vous pouvez suivre le statut sur la page de la commande."
+      },
+      "flex": {
+        "q1": "Qu'est-ce que DOOM FLEX ?",
+        "a1": "Payez en 3, 6 ou 12 mensualités à 0 % d'intérêt et sans frais : le total est égal au prix comptant.",
+        "q2": "Qui peut utiliser DOOM FLEX ?",
+        "a2": "Les clients dont l'identité est vérifiée. Chaque demande est examinée avant approbation.",
+        "q3": "Comment vérifier mon identité ?",
+        "a3": "Dans Compte → Vérification d'identité : confirmez vos informations, photographiez le recto et le verso de votre carte d'identité et prenez un selfie. Les fichiers sont chiffrés et seuls les examinateurs autorisés peuvent les ouvrir."
+      },
+      "returns": {
+        "q1": "Comment demander un retour ?",
+        "a1": "Ouvrez une demande de support depuis la page de la commande, expliquez le motif et ajoutez des photos si l'article est endommagé.",
+        "q2": "Quand un retour est-il accepté ?",
+        "a2": "Les articles retournés sont contrôlés (état et complétude). Les conditions sont décrites dans notre politique de retour."
+      },
+      "warranty": {
+        "q1": "Quelle garantie ont les produits ?",
+        "a1": "La durée de garantie est indiquée sur la fiche de chaque produit et sur votre reçu lorsque le fabricant ou le vendeur en fournit une.",
+        "q2": "Comment faire jouer la garantie ?",
+        "a2": "Contactez le support avec votre numéro de commande et une description du défaut ; nous vous guidons dans la procédure du fabricant."
+      },
+      "account": {
+        "q1": "Comment sécuriser mon compte ?",
+        "a1": "Utilisez un mot de passe fort et unique, vérifiez vos sessions actives dans Compte → Sécurité et déconnectez tout appareil que vous ne reconnaissez pas.",
+        "q2": "Comment supprimer mon compte ?",
+        "a2": "Demandez-le dans Compte → Sécurité. Les documents que la loi nous impose de conserver (factures, justificatifs de paiement) sont gardés pendant la durée légale ; le reste de vos données personnelles est supprimé."
+      }
+    }
+  },
+  "notificationTemplates": {
+    "deliveryConfirmed": {
+      "title": "Commande {number} confirmée",
+      "body": "Paiement confirmé — nous préparons votre commande pour la livraison."
+    },
+    "deliveryShipped": {
+      "title": "Commande {number} confiée à un livreur",
+      "body": "Votre colis a été confié à un livreur DOOM EXPRESS."
+    },
+    "deliveryOutForDelivery": {
+      "title": "Commande {number} en cours de livraison",
+      "body": "Votre code de remise est sur la page de la commande. Ne le donnez au livreur que lorsque vous avez votre colis."
+    },
+    "deliveryOtpRenewed": {
+      "title": "Nouveau code de remise pour la commande {number}",
+      "body": "L'ancien code ne fonctionne plus. Ouvrez la page de la commande pour voir le nouveau."
+    },
+    "deliveryDelivered": {
+      "title": "Commande {number} livrée",
+      "body": "Remise à {name}. Merci d'avoir acheté chez DOOM."
+    },
+    "deliveryFailed": {
+      "title": "Problème de livraison pour la commande {number}",
+      "body": "La tentative de livraison a échoué. Notre équipe vous contactera pour en organiser une nouvelle."
+    },
+    "kycSubmitted": {
+      "title": "Vérification envoyée",
+      "body": "Vos documents sont chiffrés et en attente d'examen. Nous vous informerons de la décision."
+    },
+    "kycVerified": {
+      "title": "Identité vérifiée",
+      "body": "Votre compte est vérifié. DOOM FLEX est désormais disponible pour vous."
+    },
+    "kycRejected": {
+      "title": "Vérification non approuvée",
+      "body": "Ouvrez votre page de vérification pour voir le motif et renvoyer des documents."
+    },
+    "kycDocumentsRequested": {
+      "title": "Documents demandés",
+      "body": "Notre équipe a besoin de documents supplémentaires pour terminer votre vérification."
+    },
+    "supportCreated": {
+      "title": "Demande {number} reçue",
+      "body": "Notre équipe de support répondra dans cette conversation."
+    },
+    "supportReply": {
+      "title": "Nouvelle réponse sur la demande {number}",
+      "body": "Ouvrez la conversation pour lire la réponse."
+    },
+    "passwordChanged": {
+      "title": "Mot de passe modifié",
+      "body": "Votre mot de passe a été modifié et vos autres sessions ont été déconnectées. Si ce n'était pas vous, contactez immédiatement le support."
+    },
+    "deletionRequested": {
+      "title": "Suppression du compte demandée",
+      "body": "La demande {number} est ouverte. Notre équipe confirmera ce qui peut être supprimé et ce que la loi nous oblige à conserver."
+    }
+  }
 }

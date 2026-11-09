@@ -1,1 +1,24 @@
-{}
+{
+  "notifications": {
+    "topupConfirmed": {
+      "title": "Recharge confirmée",
+      "body": "{amount} ont été ajoutés à votre portefeuille DOOM."
+    },
+    "installmentPaid": {
+      "title": "Mensualité réglée",
+      "body": "Votre mensualité de {amount} a été réglée."
+    },
+    "orderPaid": {
+      "title": "Paiement confirmé",
+      "body": "Votre paiement de {amount} a été confirmé."
+    },
+    "giftCardVerified": {
+      "title": "Carte cadeau vérifiée",
+      "body": "{amount} ont été crédités sur votre portefeuille DOOM."
+    },
+    "giftCardRejected": {
+      "title": "Carte cadeau non acceptée",
+      "body": "Nous n'avons pas pu vérifier la valeur de votre carte cadeau. Ouvrez votre portefeuille pour plus de détails."
+    }
+  }
+}

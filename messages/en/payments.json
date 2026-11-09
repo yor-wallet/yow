@@ -1,1 +1,24 @@
-{}
+{
+  "notifications": {
+    "topupConfirmed": {
+      "title": "Top-up confirmed",
+      "body": "{amount} was added to your DOOM Wallet."
+    },
+    "installmentPaid": {
+      "title": "Instalment paid",
+      "body": "Your instalment of {amount} was paid."
+    },
+    "orderPaid": {
+      "title": "Payment confirmed",
+      "body": "Your payment of {amount} was confirmed."
+    },
+    "giftCardVerified": {
+      "title": "Gift card verified",
+      "body": "{amount} was credited to your DOOM Wallet."
+    },
+    "giftCardRejected": {
+      "title": "Gift card not accepted",
+      "body": "We could not verify the value of your gift card. Open your wallet for details."
+    }
+  }
+}

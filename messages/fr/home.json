@@ -1,4 +1,5 @@
 {
+  "metaTitle": "Électronique premium à Oman",
   "hero": {
     "eyebrow": "Électronique premium · Sultanat d'Oman",
     "title": "La technologie que vous voulez, livrée partout à Oman.",
@@ -13,5 +14,135 @@
   "catalogue": {
     "emptyTitle": "Les produits arrivent",
     "emptyText": "Notre équipe ajoute les produits avec des prix et des stocks vérifiés. Parcourez les catégories en attendant."
+  },
+  "carousel": {
+    "label": "À la une chez DOOM",
+    "slide": "{current} sur {total}",
+    "goTo": "Afficher la diapositive {index} : {title}",
+    "previous": "Diapositive précédente",
+    "next": "Diapositive suivante",
+    "pause": "Mettre le diaporama en pause",
+    "play": "Lancer le diaporama",
+    "buyNow": "Acheter maintenant",
+    "from": "À partir de",
+    "colours": "Couleurs disponibles",
+    "specs": "Points forts"
+  },
+  "sections": {
+    "seeAll": "Voir tout",
+    "deals": {
+      "eyebrow": "Aujourd'hui",
+      "title": "Offres du jour",
+      "subtitle": "Des promotions en cours et des produits choisis par notre équipe.",
+      "emptyTitle": "Aucune offre en cours pour le moment",
+      "emptyText": "Les offres apparaissent ici dès qu'une promotion est en cours. Rien n'est affiché tant que ce n'est pas réel."
+    },
+    "smartphones": {
+      "eyebrow": "Meilleures ventes",
+      "title": "Smartphones populaires",
+      "subtitle": "Les téléphones que nos clients consultent le plus.",
+      "emptyTitle": "Les smartphones sont en cours d'ajout",
+      "emptyText": "Chaque téléphone apparaît avec son prix vérifié et son stock réel."
+    },
+    "apple": {
+      "eyebrow": "Apple",
+      "title": "L'univers Apple",
+      "subtitle": "iPhone, MacBook, AirPods et accessoires.",
+      "emptyTitle": "Les produits Apple arrivent",
+      "emptyText": "Ils apparaîtront ici avec des prix et des stocks vérifiés."
+    },
+    "samsung": {
+      "eyebrow": "Samsung",
+      "title": "Samsung Galaxy",
+      "subtitle": "Smartphones, tablettes et écouteurs Galaxy Buds.",
+      "emptyTitle": "Les produits Galaxy arrivent",
+      "emptyText": "Ils apparaîtront ici avec des prix et des stocks vérifiés."
+    },
+    "honor": {
+      "eyebrow": "HONOR",
+      "title": "HONOR",
+      "subtitle": "Design, appareils photo et autonomie.",
+      "emptyTitle": "Les produits HONOR arrivent",
+      "emptyText": "Ils apparaîtront ici avec des prix et des stocks vérifiés."
+    },
+    "computers": {
+      "eyebrow": "Travail · Études · Jeux",
+      "title": "Ordinateurs",
+      "subtitle": "Portables, MacBook, ordinateurs de bureau et écrans.",
+      "emptyTitle": "Les ordinateurs sont en cours d'ajout",
+      "emptyText": "Fiches techniques complètes, prix vérifiés et stocks réels — bientôt."
+    },
+    "audio": {
+      "eyebrow": "Son et indispensables",
+      "title": "Audio et accessoires",
+      "subtitle": "Écouteurs, casques, enceintes, chargeurs et plus encore.",
+      "emptyTitle": "L'audio et les accessoires sont en cours d'ajout",
+      "emptyText": "Ils apparaîtront ici avec des prix et des stocks vérifiés."
+    },
+    "recommended": {
+      "eyebrow": "Sélectionné pour vous",
+      "title": "Recommandés",
+      "subtitle": "Produits mis en avant et dernières nouveautés.",
+      "emptyTitle": "Les recommandations arrivent bientôt",
+      "emptyText": "Dès que des produits sont en ligne, notre sélection apparaît ici."
+    }
+  },
+  "promoCard": {
+    "percent": "-{value} %",
+    "fixed": "-{amount}",
+    "code": "Code {code}",
+    "auto": "Appliquée automatiquement",
+    "endsOn": "Jusqu'au {date}",
+    "minSpend": "Dès {amount}",
+    "view": "Voir la promotion"
+  },
+  "flex": {
+    "eyebrow": "DOOM FLEX",
+    "title": "Payez en 3, 6 ou 12 mois.",
+    "lead": "0 % d'intérêt. Aucun frais. Le total est toujours égal au prix comptant.",
+    "points": {
+      "transparent": "Un échéancier transparent avant de vous engager",
+      "noFees": "Aucun intérêt, aucun frais caché",
+      "wallet": "Réglez chaque mensualité depuis votre portefeuille DOOM"
+    },
+    "example": "Exemple",
+    "exampleCaption": "Illustration pour un achat de 360 OMR — ce n'est pas une offre.",
+    "months": "{count} mois",
+    "perMonth": "{amount} / mois",
+    "conditions": "Sous réserve de la vérification d'identité (KYC) et de l'approbation de chaque demande.",
+    "cta": "Découvrir DOOM FLEX"
+  },
+  "express": {
+    "eyebrow": "DOOM EXPRESS",
+    "title": "Livré en quelques heures, pas en quelques jours.",
+    "lead": "Livraison express visée sous 6 heures dans les zones éligibles, livraison standard visée sous 24 heures.",
+    "standard": "Standard",
+    "standardTime": "≈ 24 h",
+    "expressLabel": "Express",
+    "expressTime": "≈ 6 h",
+    "tracking": "Suivi en direct et code de remise",
+    "note": "La disponibilité, les délais et les frais dépendent de votre zone et sont confirmés au paiement.",
+    "cta": "Zones et délais de livraison"
+  },
+  "reviews": {
+    "eyebrow": "Achats vérifiés uniquement",
+    "title": "Des avis authentiques",
+    "subtitle": "Chaque avis provient d'un client ayant reçu le produit. Aucun avis n'est jamais inventé.",
+    "emptyTitle": "Aucun avis publié pour le moment",
+    "emptyText": "Les avis apparaissent une fois que les clients ont reçu leur commande et que notre équipe les a vérifiés.",
+    "verified": "Achat vérifié",
+    "about": "À propos de {product}",
+    "rating": "Noté {rating} sur 5"
+  },
+  "support": {
+    "eyebrow": "Nous sommes là",
+    "title": "Un support qui répond",
+    "subtitle": "Une question sur un produit, une commande ou un paiement ? Notre équipe répond en arabe, en anglais et en français.",
+    "ticket": "Contacter le support",
+    "ticketText": "Ouvrez une demande et suivez les réponses depuis votre compte.",
+    "orders": "Suivre une commande",
+    "ordersText": "Chaque étape, de la confirmation à la remise.",
+    "delivery": "Livraison et retours",
+    "deliveryText": "Zones, délais, frais et notre politique de retour."
   }
 }
