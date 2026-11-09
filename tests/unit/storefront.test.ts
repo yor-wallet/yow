@@ -22,20 +22,20 @@ type Fixture = { userId: string; catSlug: string; products: Record<string, { id:
 let fx: Fixture;
 let anonHash: string;
 
-async function product(key: string, o: { sub: string; brand: string; name: ReturnType<typeof L>; price: number | null; stock: number; capacity?: string; color?: string; status?: 'ACTIVE' | 'DRAFT' }) {
+async function product(key: string, o: { sub: string; brand: string; name: ReturnType<typeof L>; price: number | null; stock: number; capacity?: string; color?: string; status?: 'ACTIVE' | 'DRAFT' }, token = RUN) {
   const category = await prisma.category.findFirstOrThrow({ where: { slug: o.sub } });
   const brand = await prisma.brand.findFirstOrThrow({ where: { slug: o.brand } });
-  const slug = `${RUN}-${key}`;
+  const slug = `${token}-${key}`;
   const p = await prisma.product.create({
     data: {
       slug,
-      sku: `${RUN}-${key}`.toUpperCase(),
+      sku: `${token}-${key}`.toUpperCase(),
       categoryId: category.id,
       brandId: brand.id,
       name: o.name,
       status: o.status ?? 'ACTIVE',
       publishedAt: new Date(),
-      variants: { create: [{ sku: `${RUN}-${key}-V`.toUpperCase(), priceBaisa: o.price, stock: o.stock, capacity: o.capacity, color: o.color, isDefault: true }] },
+      variants: { create: [{ sku: `${token}-${key}-V`.toUpperCase(), priceBaisa: o.price, stock: o.stock, capacity: o.capacity, color: o.color, isDefault: true }] },
     },
     include: { variants: true },
   });
@@ -115,6 +115,41 @@ describe('category / search listings', () => {
     expect(next.list.nextCursor).toBeNull();
     const desc = await scoped({ sort: 'price_desc' });
     expect(desc.list.items[0]!.priceBaisa).toBe(300_000);
+  });
+
+  it('orders prices NUMERICALLY (regression: 50.000 must not sort after 200.000) and paginates across digit counts', async () => {
+    // Its own search token, so these products never leak into the other tests' expectations.
+    const T = `rg${Math.random().toString(36).slice(2, 8)}`;
+    const prices = [50_000, 100_000, 200_000, 300_000, null];
+    for (const [i, price] of prices.entries()) {
+      fx.products[`rg${i}`] = await product(`p${i}`, { sub: 'smartphones-apple', brand: 'apple', name: L(`${T} Item ${i}`), price, stock: 3 }, T);
+    }
+    const inScope = (filters = {}, extra: Partial<Parameters<typeof loadListing>[0]> = {}) =>
+      loadListing({ locale: 'en', scope: { kind: 'search', query: parseSearchQuery(T) }, filters: { ...DEFAULT_FILTERS, ...filters }, limit: 24, ...extra });
+    expect((await inScope({ sort: 'price_desc' })).list.items.map((i) => i.priceBaisa)).toEqual([300_000, 200_000, 100_000, 50_000, null]);
+    expect((await inScope({ sort: 'price_asc' })).list.items.map((i) => i.priceBaisa)).toEqual([50_000, 100_000, 200_000, 300_000, null]);
+    // Keyset pagination must continue exactly where the previous page stopped.
+    const seen: (number | null)[] = [];
+    let cursor: string | null = null;
+    for (let page = 0; page < 5; page++) {
+      const r: Awaited<ReturnType<typeof inScope>> = await inScope({ sort: 'price_asc' }, { limit: 2, cursor });
+      seen.push(...r.list.items.map((i) => i.priceBaisa));
+      cursor = r.list.nextCursor;
+      if (!cursor) break;
+    }
+    expect(seen).toEqual([50_000, 100_000, 200_000, 300_000, null]);
+  });
+
+  it('puts featured, in-stock products first for relevance (regression: key digit counts differ)', async () => {
+    await prisma.product.update({ where: { id: fx.products.pricey!.id }, data: { isFeatured: true, isRecommended: true } });
+    // Category scope without a search term: the relevance key is then 8 (in stock) / 14 (+ featured, recommended) × 10^13 + date.
+    const category = await getCategoryBySlug('smartphones', 'en');
+    const r = await loadListing({ locale: 'en', scope: { kind: 'category', category: category! }, filters: { ...DEFAULT_FILTERS, sort: 'relevance' }, limit: 240 });
+    const mine = r.list.items.filter((i) => i.name.startsWith(RUN)).map((i) => i.name.replace(`${RUN} `, ''));
+    // Featured + recommended + in stock (Beta) → in stock (Alpha) → not purchasable (Gamma sold out, Unpriced).
+    expect(mine.slice(0, 2)).toEqual(['Beta Phone', 'Alpha Phone']);
+    expect(mine.slice(2).sort()).toEqual(['Gamma Phone', 'Unpriced Phone']);
+    await prisma.product.update({ where: { id: fx.products.pricey!.id }, data: { isFeatured: false, isRecommended: false } });
   });
 
   it('exposes facets built from real data only', async () => {

@@ -1,1 +1,95 @@
-{}
+{
+  "metaTitle": "Checkout",
+  "title": "Checkout",
+  "subtitle": "Confirm where and how you want to receive and pay for your order.",
+  "empty": {
+    "title": "Nothing to check out",
+    "text": "Your cart is empty. Add products before checking out.",
+    "cta": "Continue shopping"
+  },
+  "blocked": {
+    "title": "Your cart needs your attention",
+    "text": "Some items are no longer available as requested. Review your cart before paying.",
+    "cta": "Back to cart"
+  },
+  "steps": {
+    "address": "Delivery address",
+    "delivery": "Delivery",
+    "promo": "Promo code",
+    "payment": "Payment method",
+    "notes": "Notes"
+  },
+  "address": {
+    "empty": "You have no saved address yet. Add the address where you want to receive your order.",
+    "add": "Add an address",
+    "addAnother": "Add another address",
+    "newTitle": "New delivery address",
+    "default": "Default",
+    "phone": "Mobile {phone}",
+    "area": "{area}, {wilaya}, {governorate}",
+    "choose": "Delivery address"
+  },
+  "delivery": {
+    "needAddress": "Choose an address to see the delivery options and their fees.",
+    "label": "Delivery type",
+    "STANDARD": "Standard delivery",
+    "EXPRESS": "DOOM EXPRESS",
+    "eta": "Target {hours, plural, one {# hour} other {# hours}}",
+    "free": "Free",
+    "unavailable": "Unavailable",
+    "expressIneligible": "One of your items cannot be delivered express."
+  },
+  "promo": {
+    "label": "Have a promo code?",
+    "placeholder": "Enter your code",
+    "apply": "Apply",
+    "remove": "Remove code",
+    "applied": "Promotion applied — you save {amount}.",
+    "automatic": "An automatic promotion is applied — you save {amount}.",
+    "invalid": "This code is not valid for your cart.",
+    "not_better": "A better promotion is already applied, so this code was not used."
+  },
+  "payment": {
+    "text": "Only the methods available to you can be selected. A payment is confirmed only when it is really received.",
+    "unavailable": "Unavailable",
+    "none": "No payment method is available right now. Please try again later or contact support.",
+    "minimum": "Minimum {amount}"
+  },
+  "notes": {
+    "label": "Order notes (optional)",
+    "placeholder": "Anything our team or the courier should know"
+  },
+  "summary": {
+    "title": "Order summary",
+    "subtotal": "Subtotal",
+    "discount": "Promotion",
+    "delivery": "Delivery",
+    "deliveryPending": "Choose a delivery option",
+    "total": "Total",
+    "totalPending": "Total shown once delivery is chosen",
+    "qty": "Qty {qty}",
+    "editCart": "Edit cart"
+  },
+  "place": "Place order",
+  "placeAndPay": "Place order · {amount}",
+  "placing": "Placing your order…",
+  "reserved": "Your items are reserved for {minutes} minutes while you pay.",
+  "incomplete": "Choose an address, a delivery option and a payment method to continue.",
+  "errors": {
+    "cart_empty": "Your cart is empty.",
+    "cart_changed": "Your cart changed. Please review it before paying.",
+    "out_of_stock": "An item has just run out of stock. Review your cart.",
+    "address_not_found": "Choose a delivery address.",
+    "delivery_unavailable": "This delivery option is not available for your address.",
+    "price_changed": "The total changed since you reviewed it. Please check the new total and try again.",
+    "promo_invalid": "This promotion code is no longer valid.",
+    "payment_unavailable": "This payment method is not available.",
+    "idempotency_conflict": "This order could not be processed. Please try again.",
+    "not_found": "We could not find this order.",
+    "not_cancellable": "This order can no longer be cancelled.",
+    "unauthenticated": "Your session has expired. Please sign in again.",
+    "rate_limited": "Too many attempts. Please wait a moment and try again.",
+    "invalid": "Some of the information is invalid. Please check and try again.",
+    "generic": "We could not place your order. Please try again."
+  }
+}

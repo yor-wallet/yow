@@ -75,9 +75,11 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <div className="pb-10">
-      <h1 className="sr-only">{t('hero.title')}</h1>
+      <h1 id="home-hero-title" className="sr-only">
+        {t('hero.title')}
+      </h1>
 
-      <section className="page-container pt-4 lg:pt-8" aria-label={t('carousel.label')}>
+      <section className="page-container pt-4 lg:pt-8" aria-labelledby="home-hero-title">
         {slides.length > 0 ? <HeroCarousel slides={slides} /> : <StaticHero />}
       </section>
 

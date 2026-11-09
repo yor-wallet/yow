@@ -7,6 +7,7 @@ import { getSession } from '@/lib/auth';
 import { favoriteIdsFor } from '@/lib/catalog/favorites';
 import { categoryPath, productPath } from '@/lib/catalog/paths';
 import { getProductDetail, getProductReviews, type ProductDetail } from '@/lib/catalog/queries';
+import { BackButton } from '@/components/layout/BackButton';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
@@ -94,6 +95,9 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div className="pb-14">
       <PageHeader title={product.name} fallbackHref={categoryPath(product.category.slug)} mobileOnly mobileHeading="div" />
+      <div className="page-container hidden pt-6 lg:block">
+        <BackButton fallbackHref={categoryPath(product.category.slug)} variant="text" className="-ms-3" />
+      </div>
       <Breadcrumb items={crumbs} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
 

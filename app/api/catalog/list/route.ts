@@ -38,6 +38,12 @@ export const GET = apiHandler(async (req) => {
     scope = { kind: 'category', category };
   }
 
+  // `countOnly=1`: just the number of matches (live "Show N results" in the mobile filter sheet).
+  if (url.searchParams.get('countOnly') === '1') {
+    const { list } = await loadListing({ locale, scope, filters, limit: 1, withFacets: false });
+    return json({ ok: true, total: list.total });
+  }
+
   const { list } = await loadListing({ locale, scope, filters, cursor: url.searchParams.get('cursor'), limit: PAGE_SIZE, withFacets: false });
   const session = await getSession();
   const favorites = [...(await favoriteIdsFor(session?.user.id, list.items.map((p) => p.id)))];

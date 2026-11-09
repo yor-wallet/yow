@@ -38,7 +38,7 @@ export function CatalogPage({
       <CatalogSidebar facets={facets} filters={filters} q={q} subcategories={subcategories} />
       <div className="min-w-0">
         {intro}
-        <CatalogToolbar facets={facets} filters={filters} total={list.total} q={q} subcategories={subcategories} />
+        <CatalogToolbar facets={facets} filters={filters} total={list.total} q={q} subcategories={subcategories} scope={scope} />
         <p className="mt-4 text-sm text-muted" aria-live="polite" data-testid="result-count">
           {t('results', { count: list.total })}
         </p>

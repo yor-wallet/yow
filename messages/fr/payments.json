@@ -20,5 +20,77 @@
       "title": "Carte cadeau non acceptée",
       "body": "Nous n'avons pas pu vérifier la valeur de votre carte cadeau. Ouvrez votre portefeuille pour plus de détails."
     }
+  },
+  "methods": {
+    "WALLET": {
+      "label": "Portefeuille DOOM",
+      "description": "Payez instantanément avec le solde de votre portefeuille."
+    },
+    "CARD": {
+      "label": "Carte bancaire",
+      "description": "Visa ou Mastercard via notre passerelle de paiement sécurisée."
+    },
+    "OOREDOO": {
+      "label": "Ooredoo",
+      "description": "Le montant est ajouté à votre facture mobile Ooredoo."
+    },
+    "OMANTEL": {
+      "label": "Omantel",
+      "description": "Le montant est ajouté à votre facture mobile Omantel."
+    },
+    "CRYPTO": {
+      "label": "Cryptoactifs",
+      "description": "BTC, ETH, USDT ou USDC via un prestataire agréé."
+    },
+    "FLEX": {
+      "label": "DOOM FLEX",
+      "description": "Payez en 3, 6 ou 12 mois à 0 % d'intérêt."
+    },
+    "GIFT_CARD": {
+      "label": "Carte cadeau",
+      "description": "Vérifiée par notre équipe financière, puis créditée sur votre portefeuille."
+    }
+  },
+  "reasons": {
+    "not_configured": "Pas encore disponible.",
+    "carrier_agreement_required": "Disponible dès que notre accord avec l'opérateur sera en place.",
+    "licensed_processor_required": "Disponible dès que notre prestataire agréé sera connecté.",
+    "login_required": "Connectez-vous pour utiliser ce moyen de paiement.",
+    "insufficient_balance": "Le solde de votre portefeuille est insuffisant pour cette commande.",
+    "wallet_frozen": "Votre portefeuille est temporairement gelé. Contactez le support.",
+    "gift_card_via_wallet": "Ajoutez d'abord la carte cadeau à votre portefeuille, puis payez avec votre solde.",
+    "flex_apply_from_product": "Démarrez une demande FLEX depuis la fiche produit.",
+    "amount_below_minimum": "Le montant est inférieur au minimum de ce moyen de paiement.",
+    "amount_above_maximum": "Le montant dépasse le maximum de ce moyen de paiement."
+  },
+  "errors": {
+    "invalid_input": "Certaines informations sont invalides.",
+    "invalid_amount": "Ce montant n'est pas valide.",
+    "amount_below_minimum": "Le montant est inférieur au minimum de ce moyen de paiement.",
+    "amount_above_maximum": "Le montant dépasse le maximum de ce moyen de paiement.",
+    "method_unavailable": "Ce moyen de paiement n'est pas disponible pour le moment.",
+    "idempotency_key_reused": "Cette demande a déjà été utilisée pour un autre paiement.",
+    "idempotency_conflict": "Ce paiement est déjà en cours de traitement.",
+    "insufficient_balance": "Le solde de votre portefeuille est insuffisant pour ce paiement.",
+    "wallet_frozen": "Votre portefeuille est temporairement gelé. Contactez le support.",
+    "not_found": "Nous n'avons pas trouvé ce paiement ou cette commande.",
+    "forbidden": "Vous n'êtes pas autorisé à effectuer cette action.",
+    "order_not_payable": "Cette commande ne peut plus être payée (elle a peut-être expiré ou été annulée).",
+    "order_already_paid": "Cette commande est déjà payée.",
+    "provider_unavailable": "Le prestataire de paiement n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
+    "provider_error": "Le prestataire de paiement a signalé un problème. Veuillez réessayer.",
+    "generic": "Le paiement n'a pas pu être démarré. Veuillez réessayer."
+  },
+  "pay": {
+    "title": "Payer cette commande",
+    "text": "Choisissez comment payer. Vos articles restent réservés jusqu'à {time}.",
+    "expired": "La réservation de cette commande a expiré. Passez une nouvelle commande pour acheter ces articles.",
+    "button": "Payer {amount}",
+    "paying": "Démarrage de votre paiement…",
+    "redirecting": "Redirection vers la page de paiement sécurisée…",
+    "pending": "Votre paiement est en cours de vérification. Nous le confirmerons dès sa réception.",
+    "succeeded": "Paiement confirmé. Merci !",
+    "retry": "Réessayer",
+    "minimum": "Minimum {amount}"
   }
 }

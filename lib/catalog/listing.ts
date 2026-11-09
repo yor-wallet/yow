@@ -150,6 +150,8 @@ export async function listProducts(opts: ListOptions): Promise<ListResult> {
     : Prisma.empty;
   const order = dir === 'DESC' ? Prisma.sql`ORDER BY sort_a DESC, id DESC` : Prisma.sql`ORDER BY sort_a ASC, id ASC`;
 
+  // NB: the text form of the sort key is exposed as `sort_txt`. Aliasing it `sort_a` made `ORDER BY sort_a` sort the
+  // TEXT ('50000' > '200000'), which broke price ordering and relevance for keys with different digit counts.
   const base = Prisma.sql`WITH ${V_CTE}, base AS (
       SELECT p.id, ${expr} AS sort_a
       FROM "Product" p
@@ -159,13 +161,13 @@ export async function listProducts(opts: ListOptions): Promise<ListResult> {
     )`;
 
   const [rows, totalRows] = await Promise.all([
-    prisma.$queryRaw<{ id: string; sort_a: string }[]>`${base} SELECT id, sort_a::text AS sort_a FROM base ${cursorCond} ${order} LIMIT ${limit + 1}`,
+    prisma.$queryRaw<{ id: string; sort_txt: string }[]>`${base} SELECT id, sort_a::text AS sort_txt FROM base ${cursorCond} ${order} LIMIT ${limit + 1}`,
     opts.withTotal === false ? Promise.resolve(null) : prisma.$queryRaw<{ n: bigint }[]>`${base} SELECT count(*)::bigint AS n FROM base`,
   ]);
 
   const page = rows.slice(0, limit);
   const last = page[page.length - 1];
-  const nextCursor = rows.length > limit && last ? encodeCursor({ a: last.sort_a, id: last.id }) : null;
+  const nextCursor = rows.length > limit && last ? encodeCursor({ a: last.sort_txt, id: last.id }) : null;
   const promotions = opts.promotions ?? (await loadLivePromotions());
   const items = await hydrateCards(
     page.map((r) => r.id),

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useOptimistic, useState, useTransition } from 'react';
 import { SlidersHorizontal, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { Button } from '@/components/ui/Button';
@@ -59,17 +59,59 @@ function useApply(filters: Filters, q?: string | null) {
  * Mobile/tablet filter button, sort select and active filter chips. The state lives in the URL
  * (SPEC: filters in search params). On < lg the filters open in a history-backed bottom sheet
  * (Back closes it); on lg+ the same filters are shown by <CatalogSidebar />.
+ *
+ * Inside the sheet the choices are a DRAFT, applied when "Show N results" is pressed: the sheet's
+ * history entry is popped first and only then is the URL replaced. (Replacing the URL while the
+ * sheet's entry is on top of the history lost the filter when the sheet was closed right after.)
  */
-export function CatalogToolbar({ facets, filters, total, q, subcategories = [] }: CatalogProps & { total: number }) {
+export function CatalogToolbar({ facets, filters, total, q, subcategories = [], scope }: CatalogProps & { total: number; scope: string }) {
   const t = useTranslations('catalog');
+  const locale = useLocale();
   const sheet = useHistoryModal('catalog-filters');
   const { apply, clear, pending, shown } = useApply(filters, q);
   const count = activeFilterCount(shown);
+  const [draft, setDraft] = useState<Filters>(filters);
+  const [draftTotal, setDraftTotal] = useState(total);
+
+  const openSheet = () => {
+    setDraft(filters);
+    setDraftTotal(total);
+    sheet.open();
+  };
+  const draftCount = activeFilterCount(draft);
+  // Compare the serialised query strings (JSON.stringify(URLSearchParams) is always "{}").
+  const dirty = serializeCatalogParams(draft, { q: q ?? null }).toString() !== serializeCatalogParams(filters, { q: q ?? null }).toString();
+
+  // Live number of matches for the draft (debounced, cancelled when the draft changes again).
+  useEffect(() => {
+    if (!sheet.isOpen) return;
+    if (!dirty) {
+      setDraftTotal(total);
+      return;
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const sp = serializeCatalogParams({ ...draft, n: DEFAULT_FILTERS.n }, { q: q ?? null });
+        sp.set('scope', scope);
+        sp.set('locale', locale);
+        sp.set('countOnly', '1');
+        const res = await fetch(`/api/catalog/list?${sp.toString()}`, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
+        if (res.ok) setDraftTotal(((await res.json()) as { total: number }).total);
+      } catch {
+        /* keep the previous number: the apply button still works */
+      }
+    }, 250);
+    return () => {
+      clearTimeout(timer);
+      ctrl.abort();
+    };
+  }, [draft, dirty, locale, q, scope, sheet.isOpen, total]);
 
   return (
     <div data-testid="catalog-toolbar" aria-busy={pending || undefined}>
       <div className="flex flex-wrap items-end gap-3">
-        <Button type="button" variant="outline" size="sm" className="lg:hidden" onClick={sheet.open} leadingIcon={<SlidersHorizontal size={18} aria-hidden="true" />} data-testid="open-filters">
+        <Button type="button" variant="outline" size="sm" className="lg:hidden" onClick={openSheet} leadingIcon={<SlidersHorizontal size={18} aria-hidden="true" />} data-testid="open-filters">
           {count > 0 ? t('filters.openCount', { count }) : t('filters.open')}
         </Button>
         <Select
@@ -91,15 +133,15 @@ export function CatalogToolbar({ facets, filters, total, q, subcategories = [] }
 
       <BottomSheet {...sheet.props} title={t('filters.title')}>
         <div className="flex flex-col gap-5 pb-2">
-          <FilterPanel facets={facets} filters={shown} subcategories={subcategories} apply={apply} idPrefix="m" />
+          <FilterPanel facets={facets} filters={draft} subcategories={subcategories} apply={(next) => setDraft((d) => ({ ...d, ...next }))} idPrefix="m" />
           <div className="sticky bottom-0 -mx-1 flex gap-3 bg-bg px-1 pb-1 pt-3">
-            {count > 0 ? (
-              <Button type="button" variant="outline" onClick={clear} className="flex-1">
+            {draftCount > 0 ? (
+              <Button type="button" variant="outline" onClick={() => setDraft({ ...DEFAULT_FILTERS, sort: draft.sort })} className="flex-1" data-testid="clear-draft">
                 {t('filters.clear')}
               </Button>
             ) : null}
-            <Button type="button" onClick={sheet.close} className="flex-[2]" data-testid="show-results">
-              {t('filters.showResults', { count: total })}
+            <Button type="button" onClick={() => sheet.closeThen(() => apply({ ...draft }))} className="flex-[2]" data-testid="show-results">
+              {t('filters.showResults', { count: draftTotal })}
             </Button>
           </div>
         </div>

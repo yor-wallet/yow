@@ -18,6 +18,8 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 export default defineConfig({
   testDir: 'tests/e2e',
+  // Test-only storefront products (created after the server is up, removed at the end).
+  globalSetup: './tests/e2e/global-setup.ts',
   fullyParallel: true,
   workers: process.env.CI ? 2 : 4,
   retries: process.env.CI ? 1 : 0,

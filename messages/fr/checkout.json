@@ -1,1 +1,95 @@
-{}
+{
+  "metaTitle": "Paiement",
+  "title": "Paiement",
+  "subtitle": "Confirmez où et comment vous souhaitez recevoir et régler votre commande.",
+  "empty": {
+    "title": "Rien à commander",
+    "text": "Votre panier est vide. Ajoutez des produits avant de passer commande.",
+    "cta": "Continuer mes achats"
+  },
+  "blocked": {
+    "title": "Votre panier demande votre attention",
+    "text": "Certains articles ne sont plus disponibles comme demandé. Vérifiez votre panier avant de payer.",
+    "cta": "Retour au panier"
+  },
+  "steps": {
+    "address": "Adresse de livraison",
+    "delivery": "Livraison",
+    "promo": "Code promo",
+    "payment": "Moyen de paiement",
+    "notes": "Remarques"
+  },
+  "address": {
+    "empty": "Vous n'avez pas encore d'adresse enregistrée. Ajoutez l'adresse où vous souhaitez recevoir votre commande.",
+    "add": "Ajouter une adresse",
+    "addAnother": "Ajouter une autre adresse",
+    "newTitle": "Nouvelle adresse de livraison",
+    "default": "Par défaut",
+    "phone": "Mobile {phone}",
+    "area": "{area}, {wilaya}, {governorate}",
+    "choose": "Adresse de livraison"
+  },
+  "delivery": {
+    "needAddress": "Choisissez une adresse pour voir les options de livraison et leurs frais.",
+    "label": "Type de livraison",
+    "STANDARD": "Livraison standard",
+    "EXPRESS": "DOOM EXPRESS",
+    "eta": "Objectif : {hours, plural, one {# heure} other {# heures}}",
+    "free": "Gratuite",
+    "unavailable": "Indisponible",
+    "expressIneligible": "L'un de vos articles ne peut pas être livré en express."
+  },
+  "promo": {
+    "label": "Vous avez un code promo ?",
+    "placeholder": "Saisissez votre code",
+    "apply": "Appliquer",
+    "remove": "Retirer le code",
+    "applied": "Promotion appliquée — vous économisez {amount}.",
+    "automatic": "Une promotion automatique est appliquée — vous économisez {amount}.",
+    "invalid": "Ce code n'est pas valable pour votre panier.",
+    "not_better": "Une meilleure promotion est déjà appliquée, ce code n'a donc pas été utilisé."
+  },
+  "payment": {
+    "text": "Seuls les moyens de paiement disponibles pour vous peuvent être sélectionnés. Un paiement n'est confirmé qu'une fois réellement reçu.",
+    "unavailable": "Indisponible",
+    "none": "Aucun moyen de paiement n'est disponible pour le moment. Veuillez réessayer plus tard ou contacter le support.",
+    "minimum": "Minimum {amount}"
+  },
+  "notes": {
+    "label": "Remarques sur la commande (facultatif)",
+    "placeholder": "Tout ce que notre équipe ou le livreur doit savoir"
+  },
+  "summary": {
+    "title": "Récapitulatif de la commande",
+    "subtotal": "Sous-total",
+    "discount": "Promotion",
+    "delivery": "Livraison",
+    "deliveryPending": "Choisissez une option de livraison",
+    "total": "Total",
+    "totalPending": "Total affiché une fois la livraison choisie",
+    "qty": "Qté {qty}",
+    "editCart": "Modifier le panier"
+  },
+  "place": "Passer la commande",
+  "placeAndPay": "Passer la commande · {amount}",
+  "placing": "Création de votre commande…",
+  "reserved": "Vos articles sont réservés pendant {minutes} minutes le temps du paiement.",
+  "incomplete": "Choisissez une adresse, une option de livraison et un moyen de paiement pour continuer.",
+  "errors": {
+    "cart_empty": "Votre panier est vide.",
+    "cart_changed": "Votre panier a changé. Veuillez le vérifier avant de payer.",
+    "out_of_stock": "Un article vient d'être épuisé. Vérifiez votre panier.",
+    "address_not_found": "Choisissez une adresse de livraison.",
+    "delivery_unavailable": "Cette option de livraison n'est pas disponible pour votre adresse.",
+    "price_changed": "Le total a changé depuis votre vérification. Veuillez contrôler le nouveau total et réessayer.",
+    "promo_invalid": "Ce code promo n'est plus valable.",
+    "payment_unavailable": "Ce moyen de paiement n'est pas disponible.",
+    "idempotency_conflict": "Cette commande n'a pas pu être traitée. Veuillez réessayer.",
+    "not_found": "Nous n'avons pas trouvé cette commande.",
+    "not_cancellable": "Cette commande ne peut plus être annulée.",
+    "unauthenticated": "Votre session a expiré. Veuillez vous reconnecter.",
+    "rate_limited": "Trop de tentatives. Veuillez patienter un instant puis réessayer.",
+    "invalid": "Certaines informations sont invalides. Veuillez vérifier et réessayer.",
+    "generic": "Nous n'avons pas pu créer votre commande. Veuillez réessayer."
+  }
+}

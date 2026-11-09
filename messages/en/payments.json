@@ -20,5 +20,77 @@
       "title": "Gift card not accepted",
       "body": "We could not verify the value of your gift card. Open your wallet for details."
     }
+  },
+  "methods": {
+    "WALLET": {
+      "label": "DOOM Wallet",
+      "description": "Pay instantly from your wallet balance."
+    },
+    "CARD": {
+      "label": "Bank card",
+      "description": "Visa or Mastercard through our secure payment gateway."
+    },
+    "OOREDOO": {
+      "label": "Ooredoo",
+      "description": "Charge the amount to your Ooredoo mobile bill."
+    },
+    "OMANTEL": {
+      "label": "Omantel",
+      "description": "Charge the amount to your Omantel mobile bill."
+    },
+    "CRYPTO": {
+      "label": "Crypto-assets",
+      "description": "BTC, ETH, USDT or USDC through a licensed provider."
+    },
+    "FLEX": {
+      "label": "DOOM FLEX",
+      "description": "Pay in 3, 6 or 12 months at 0% interest."
+    },
+    "GIFT_CARD": {
+      "label": "Gift card",
+      "description": "Verified by our finance team, then credited to your wallet."
+    }
+  },
+  "reasons": {
+    "not_configured": "Not available yet.",
+    "carrier_agreement_required": "Available once our carrier agreement is in place.",
+    "licensed_processor_required": "Available once our licensed provider is connected.",
+    "login_required": "Sign in to use this method.",
+    "insufficient_balance": "Your wallet balance is too low for this order.",
+    "wallet_frozen": "Your wallet is temporarily frozen. Contact support.",
+    "gift_card_via_wallet": "Add the gift card to your wallet first, then pay from your balance.",
+    "flex_apply_from_product": "Start a FLEX application from the product page.",
+    "amount_below_minimum": "The amount is below the minimum for this method.",
+    "amount_above_maximum": "The amount is above the maximum for this method."
+  },
+  "errors": {
+    "invalid_input": "Some of the information is invalid.",
+    "invalid_amount": "This amount is not valid.",
+    "amount_below_minimum": "The amount is below the minimum for this method.",
+    "amount_above_maximum": "The amount is above the maximum for this method.",
+    "method_unavailable": "This payment method is not available right now.",
+    "idempotency_key_reused": "This request was already used for a different payment.",
+    "idempotency_conflict": "This payment is already being processed.",
+    "insufficient_balance": "Your wallet balance is too low for this payment.",
+    "wallet_frozen": "Your wallet is temporarily frozen. Contact support.",
+    "not_found": "We could not find this payment or order.",
+    "forbidden": "You are not allowed to do this.",
+    "order_not_payable": "This order can no longer be paid (it may have expired or been cancelled).",
+    "order_already_paid": "This order is already paid.",
+    "provider_unavailable": "The payment provider is not available right now. Please try again later.",
+    "provider_error": "The payment provider reported a problem. Please try again.",
+    "generic": "The payment could not be started. Please try again."
+  },
+  "pay": {
+    "title": "Pay for this order",
+    "text": "Choose how you want to pay. Your items stay reserved until {time}.",
+    "expired": "The reservation of this order has expired. Place a new order to buy these items.",
+    "button": "Pay {amount}",
+    "paying": "Starting your payment…",
+    "redirecting": "Redirecting you to the secure payment page…",
+    "pending": "Your payment is being verified. We will confirm it as soon as it is received.",
+    "succeeded": "Payment confirmed. Thank you!",
+    "retry": "Try again",
+    "minimum": "Minimum {amount}"
   }
 }
