@@ -21,8 +21,11 @@ export const SETTINGS = {
   'pricing.competitivenessBps': { kind: 'bps', group: 'pricing', default: 200, min: 0, max: 5000 } as Def<'bps', number>,
   'pricing.roundingBaisa': { kind: 'baisa', group: 'pricing', default: 50, min: 1, max: 10_000 } as Def<'baisa', number>,
   'pricing.deviationAlertBps': { kind: 'bps', group: 'pricing', default: 1500, min: 100, max: 10_000 } as Def<'bps', number>,
-  'delivery.expressCutoff': { kind: 'time', group: 'delivery', default: null } as Def<'time', string | null>,
-  'kyc.retentionDays': { kind: 'int', group: 'compliance', default: null, min: 30, max: 3650 } as Def<'int', number | null>,
+  // Shared with lib/delivery/settings.ts (logistics module reads these keys).
+  'delivery.expressCutoffHour': { kind: 'int', group: 'delivery', default: null, min: 0, max: 23 } as Def<'int', number | null>,
+  'delivery.includedWeightGrams': { kind: 'int', group: 'delivery', default: null, min: 0, max: 1_000_000 } as Def<'int', number | null>,
+  // Shared with lib/kyc (document retention / crypto-shredding).
+  'kyc.retentionDays': { kind: 'int', group: 'compliance', default: null, min: 1, max: 3650 } as Def<'int', number | null>,
   'support.slaHours': { kind: 'int', group: 'operations', default: 24, min: 1, max: 720 } as Def<'int', number>,
   'payments.stuckPendingMinutes': { kind: 'int', group: 'operations', default: 30, min: 5, max: 10_080 } as Def<'int', number>,
   'contact.phone': { kind: 'phone', group: 'contact', default: null } as Def<'phone', string | null>,

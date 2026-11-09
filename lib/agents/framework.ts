@@ -5,6 +5,8 @@ import { prisma as defaultClient } from '@/lib/db';
 import { sha256Hex } from '@/lib/crypto';
 import { getSettings, type SettingsMap } from '@/lib/admin/settings';
 import { createReadFacade, type AgentScope, type ReadFacade } from './facade';
+
+export type { AgentScope, ReadFacade } from './facade';
 import type { ActionType } from './action-types';
 
 /**
@@ -60,7 +62,7 @@ export type AgentContext<S extends AgentScope> = {
   /** Record a numeric/text metric in the run summary. */
   metric: (name: string, value: number | string | boolean | null) => void;
   /** Orchestrator only (supervision): run other agents and get their results. */
-  runAgents?: (opts?: { onlyDue?: boolean }) => Promise<AgentRunResult[]>;
+  runAgents?: () => Promise<AgentRunResult[]>;
 };
 
 export type AgentSchedule = { everyMinutes: number };

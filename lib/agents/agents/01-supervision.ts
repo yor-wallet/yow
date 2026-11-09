@@ -14,7 +14,7 @@ export default defineAgent({
   schedule: { everyMinutes: AGENT_INTERVALS.supervision },
   orchestrates: true,
   async run(ctx) {
-    const results = ctx.runAgents ? await ctx.runAgents({ onlyDue: true }) : [];
+    const results = ctx.runAgents ? await ctx.runAgents() : [];
     const failedNow = results.filter((r) => r.status === 'FAILED');
     ctx.metric('agentsRun', results.length);
     ctx.metric('agentsFailed', failedNow.length);
