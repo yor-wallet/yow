@@ -14,6 +14,7 @@ import { ensureWallet, getBalance, makeReference, postTransaction, systemAccount
 
 type Task =
   | { task: 'createUser'; fullName: string; email: string; phone: string; password: string }
+  | { task: 'createStaff'; fullName: string; email: string; phone: string; password: string; role: 'SUPPORT' | 'LOGISTICS' | 'FINANCE' | 'CATALOG' | 'ADMIN' }
   | { task: 'fundWallet'; userId: string; amountBaisa: number }
   | { task: 'walletBalance'; userId: string }
   | { task: 'placeUnpaidOrder'; userId: string; variantSku: string; qty: number };
@@ -23,6 +24,13 @@ async function run(t: Task): Promise<unknown> {
     case 'createUser': {
       const res = await createUser({ fullName: t.fullName, email: t.email, phone: t.phone, password: t.password, confirmPassword: t.password, acceptTerms: true, locale: 'en' });
       if (!res.ok) throw new Error(`createUser failed: ${res.error}`);
+      return { id: res.user.id };
+    }
+    case 'createStaff': {
+      // A staff member is an ordinary account whose role was raised — in the TEST database only.
+      const res = await createUser({ fullName: t.fullName, email: t.email, phone: t.phone, password: t.password, confirmPassword: t.password, acceptTerms: true, locale: 'en' });
+      if (!res.ok) throw new Error(`createUser failed: ${res.error}`);
+      await prisma.user.update({ where: { id: res.user.id }, data: { role: t.role } });
       return { id: res.user.id };
     }
     case 'fundWallet': {

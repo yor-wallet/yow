@@ -31,6 +31,25 @@ export async function createCustomer(c: { fullName: string; email: string; phone
   return { ...c, id };
 }
 
+export type StaffRole = 'SUPPORT' | 'LOGISTICS' | 'FINANCE' | 'CATALOG' | 'ADMIN';
+
+/** A staff account (role raised in the TEST database) for the admin screens. */
+export async function createStaff(c: { fullName: string; email: string; phone: string; password: string }, role: StaffRole): Promise<Customer & { role: StaffRole }> {
+  const { id } = task<{ id: string }>({ task: 'createStaff', role, ...c });
+  return { ...c, id, role };
+}
+
+/** A DRAFT product with no variant, private to one test (for the admin form tests). Removed by the teardown (`e2e-sf-` slug). */
+export async function createDraftProduct(testInfo: TestInfo): Promise<{ id: string; slug: string; sku: string; name: string }> {
+  const uid = `${testInfo.project.name}-${testInfo.workerIndex}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const category = await db.category.findFirstOrThrow({ where: { slug: 'power-banks' } });
+  const name = `E2E Draft Item ${uid}`;
+  const slug = `e2e-sf-draft-${uid}`;
+  const sku = `E2E-SF-DRAFT-${uid}`.toUpperCase();
+  const p = await db.product.create({ data: { slug, sku, categoryId: category.id, name: { en: name, ar: name, fr: name }, status: 'DRAFT' } });
+  return { id: p.id, slug, sku, name };
+}
+
 /** Credits the customer's wallet through a real, balanced ledger transaction. */
 export async function fundWallet(userId: string, amountBaisa: number) {
   task({ task: 'fundWallet', userId, amountBaisa });

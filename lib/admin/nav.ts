@@ -94,3 +94,16 @@ export function activeNavItem(pathname: string): AdminNavItem | null {
   }
   return best;
 }
+
+/**
+ * Sections that already have pages. The rest of `ADMIN_NAV` is declared (the plan is visible in one place) but
+ * stays hidden from the menu until its screens exist, so nobody is sent to a dead link.
+ */
+export const BUILT_NAV_KEYS: ReadonlySet<string> = new Set(['overview', 'products', 'orders']);
+
+/** `navForRole` limited to the sections that are built. */
+export function builtNavForRole(role: Role | null | undefined): AdminNavGroup[] {
+  return navForRole(role)
+    .map((g) => ({ ...g, items: g.items.filter((i) => BUILT_NAV_KEYS.has(i.key)) }))
+    .filter((g) => g.items.length > 0);
+}

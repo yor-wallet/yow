@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { PrismaClient } from '@prisma/client';
 
 /**
@@ -50,6 +52,8 @@ async function removeFixtures(db: PrismaClient) {
   const products = await db.product.findMany({ where: { slug: { startsWith: E2E_SLUG_PREFIX } }, select: { id: true } });
   const ids = products.map((p) => p.id);
   if (ids.length === 0) return;
+  // Images uploaded through the admin screens live in the local storage folder (gitignored); drop them with the rows.
+  for (const id of ids) await fs.rm(path.resolve(process.cwd(), 'public', 'uploads', 'products', id), { recursive: true, force: true });
   // Carts created by the tests reference the variants.
   await db.cartItem.deleteMany({ where: { variant: { productId: { in: ids } } } });
   await db.product.deleteMany({ where: { id: { in: ids } } });

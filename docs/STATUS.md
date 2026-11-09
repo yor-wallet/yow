@@ -8,9 +8,9 @@
 | Contrôle | Résultat |
 |---|---|
 | `npm run typecheck` | propre |
-| `npm test` (Vitest, base PostgreSQL de test) | tous verts : parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…) |
+| `npm test` (Vitest, base PostgreSQL de test) | 162 tests verts : parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
 | `npm run build` | réussi |
-| `npm run test:e2e` | vitrine, panier, commande, commandes : exécutés sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
+| `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 89 tests verts sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
 
 ## Modules
 
@@ -42,11 +42,12 @@ Modèles de données et prévisions de paiement (3/6/12 mois, dernière échéan
 
 ### Administration et agents — 🟡
 - ✅ Cadre de mutations (RBAC + validation + transaction + audit), paramètres, moteur de prix, médias, 15 agents à périmètre limité, exécution par cron.
-- ⛔ Aucune page `/admin` : création de produits, prix/stock, campagnes, promotions, commandes, finance, support, logistique, validation des propositions des agents.
-  Conséquence : **aucun produit ne peut encore être créé depuis l'interface** (la vitrine affiche donc des états vides tant que la base est vide).
+- ✅ Centre d'administration `/admin` (accès réservé au personnel : visiteur → connexion, client → 404, chaque page se protège elle-même avec `requireAdmin`) : coque (barre latérale / feuille mobile, arabe RTL), **vue d'ensemble** (chiffres réels : chiffre d'affaires encaissé 30 jours net des remboursements partiels, commandes, impayés, produits, stock faible / rupture), **produits** (liste filtrable dans l'URL, création, édition, caractéristiques, variantes avec prix et stock réels, images optimisées, publication / brouillon / archivage — un produit ne se publie qu'avec au moins une variante active), **commandes** (liste, recherche, détail en lecture : client, articles, totaux, paiements, remboursements, historique).
+- ⛔ Pas encore d'écrans pour : catégories, marques, promotions, campagnes, actions sur les commandes (préparation, expédition, remboursement), finance, clients, KYC, support, logistique, réglages du site, agents IA et propositions, journal d'audit. Ces entrées restent masquées du menu tant qu'elles n'existent pas.
 
 ## Points d'attention connus
 - Dépendances : `npm audit` signale 6 avis (zod < 4.6.6, postcss via Next, `@prisma/config`). Les corrections demandent des montées de version majeures (zod 4, Prisma 7, Next 16) : à planifier et à tester, pas à forcer.
 - Le composant `Logo` demande `quality=90` à `next/image` : à déclarer dans `images.qualities` avant Next 16.
 - Passerelles à contrat (carte, Ooredoo, Omantel, cryptomonnaie, partenaire FLEX) : adaptateurs réels, inactifs sans configuration.
-- Le code des routes liées par l'en-tête et le pied de page mais non écrites répond encore par la page 404 localisée (`/wallet`, `/flex`, `/account/*`, `/admin`).
+- Le code des routes liées par l'en-tête et le pied de page mais non écrites répond encore par la page 404 localisée (`/wallet`, `/flex`, `/account/*`).
+- Les images envoyées par l'administration passent par une action serveur (limite 12 Mo dans `next.config.ts`) ; sur un hébergement qui plafonne le corps des requêtes plus bas (ex. 4,5 Mo), prévoir un envoi direct vers le stockage.
