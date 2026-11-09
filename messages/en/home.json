@@ -1,4 +1,5 @@
 {
+  "metaTitle": "Premium electronics in Oman",
   "hero": {
     "eyebrow": "Premium electronics · Sultanate of Oman",
     "title": "The technology you want, delivered across Oman.",
@@ -13,5 +14,135 @@
   "catalogue": {
     "emptyTitle": "Products are on their way",
     "emptyText": "Our team is adding products with verified prices and stock. Browse the categories in the meantime."
+  },
+  "carousel": {
+    "label": "Featured at DOOM",
+    "slide": "{current} of {total}",
+    "goTo": "Show slide {index}: {title}",
+    "previous": "Previous slide",
+    "next": "Next slide",
+    "pause": "Pause the slideshow",
+    "play": "Play the slideshow",
+    "buyNow": "Buy now",
+    "from": "From",
+    "colours": "Available colours",
+    "specs": "Highlights"
+  },
+  "sections": {
+    "seeAll": "See all",
+    "deals": {
+      "eyebrow": "Today",
+      "title": "Deals of the day",
+      "subtitle": "Live promotions and products selected by our team.",
+      "emptyTitle": "No deal running right now",
+      "emptyText": "Deals appear here as soon as a promotion is live. Nothing is shown until it is real."
+    },
+    "smartphones": {
+      "eyebrow": "Best sellers",
+      "title": "Popular smartphones",
+      "subtitle": "The phones our customers look at the most.",
+      "emptyTitle": "Smartphones are being added",
+      "emptyText": "Each phone appears with its verified price and real stock."
+    },
+    "apple": {
+      "eyebrow": "Apple",
+      "title": "The Apple world",
+      "subtitle": "iPhone, MacBook, AirPods and accessories.",
+      "emptyTitle": "Apple products are on their way",
+      "emptyText": "They will appear here with verified prices and stock."
+    },
+    "samsung": {
+      "eyebrow": "Samsung",
+      "title": "Samsung Galaxy",
+      "subtitle": "Galaxy smartphones, tablets and Buds.",
+      "emptyTitle": "Galaxy products are on their way",
+      "emptyText": "They will appear here with verified prices and stock."
+    },
+    "honor": {
+      "eyebrow": "HONOR",
+      "title": "HONOR",
+      "subtitle": "Design, cameras and battery life.",
+      "emptyTitle": "HONOR products are on their way",
+      "emptyText": "They will appear here with verified prices and stock."
+    },
+    "computers": {
+      "eyebrow": "Work · Study · Gaming",
+      "title": "Computers",
+      "subtitle": "Laptops, MacBook, desktops and monitors.",
+      "emptyTitle": "Computers are being added",
+      "emptyText": "Complete specifications, verified prices and real stock — coming soon."
+    },
+    "audio": {
+      "eyebrow": "Sound & essentials",
+      "title": "Audio & accessories",
+      "subtitle": "Earbuds, headphones, speakers, chargers and more.",
+      "emptyTitle": "Audio and accessories are being added",
+      "emptyText": "They will appear here with verified prices and stock."
+    },
+    "recommended": {
+      "eyebrow": "Selected for you",
+      "title": "Recommended",
+      "subtitle": "Featured products and the latest arrivals.",
+      "emptyTitle": "Recommendations coming soon",
+      "emptyText": "As soon as products are online, our selection appears here."
+    }
+  },
+  "promoCard": {
+    "percent": "-{value}%",
+    "fixed": "-{amount}",
+    "code": "Code {code}",
+    "auto": "Applied automatically",
+    "endsOn": "Until {date}",
+    "minSpend": "From {amount}",
+    "view": "View promotion"
+  },
+  "flex": {
+    "eyebrow": "DOOM FLEX",
+    "title": "Pay in 3, 6 or 12 months.",
+    "lead": "0% interest. No fees. The total always equals the cash price.",
+    "points": {
+      "transparent": "A transparent schedule before you commit",
+      "noFees": "No interest, no hidden fees",
+      "wallet": "Pay each instalment from your DOOM Wallet"
+    },
+    "example": "Example",
+    "exampleCaption": "Illustration for a 360 OMR purchase — not an offer.",
+    "months": "{count} months",
+    "perMonth": "{amount} / month",
+    "conditions": "Subject to identity verification (KYC) and approval of each application.",
+    "cta": "Discover DOOM FLEX"
+  },
+  "express": {
+    "eyebrow": "DOOM EXPRESS",
+    "title": "Delivered in hours, not days.",
+    "lead": "Express delivery targeted within 6 hours in eligible zones, standard delivery targeted within 24 hours.",
+    "standard": "Standard",
+    "standardTime": "≈ 24 h",
+    "expressLabel": "Express",
+    "expressTime": "≈ 6 h",
+    "tracking": "Live tracking and handover code",
+    "note": "Availability, times and fees depend on your area and are confirmed at checkout.",
+    "cta": "Delivery zones & times"
+  },
+  "reviews": {
+    "eyebrow": "Verified purchases only",
+    "title": "Authentic reviews",
+    "subtitle": "Every review comes from a customer who received the product. No review is ever invented.",
+    "emptyTitle": "No review published yet",
+    "emptyText": "Reviews appear once customers have received their orders and our team has checked them.",
+    "verified": "Verified purchase",
+    "about": "About {product}",
+    "rating": "Rated {rating} out of 5"
+  },
+  "support": {
+    "eyebrow": "We are here",
+    "title": "Support that answers",
+    "subtitle": "A question about a product, an order or a payment? Our team replies in Arabic, English and French.",
+    "ticket": "Contact support",
+    "ticketText": "Open a request and follow the answers in your account.",
+    "orders": "Track an order",
+    "ordersText": "Every step, from confirmation to handover.",
+    "delivery": "Delivery & returns",
+    "deliveryText": "Zones, times, fees and our returns policy."
   }
 }

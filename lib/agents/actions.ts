@@ -11,7 +11,7 @@ import arAgents from '@/messages/ar/agents.json';
 import enAgents from '@/messages/en/agents.json';
 import frAgents from '@/messages/fr/agents.json';
 import { ACTION_PERMISSIONS, type ActionType } from './action-types';
-import { releaseExpiredReservationsForAgents } from './ports';
+import { releaseExpiredReservations } from '@/lib/orders';
 
 /**
  * Whitelisted action handlers executed by `applyProposal` AFTER human approval, inside
@@ -19,7 +19,13 @@ import { releaseExpiredReservationsForAgents } from './ports';
  * Agents never call these.
  */
 
-type HandlerCtx = { tx: Prisma.TransactionClient; actor: Actor; audit: (e: AuditInput) => Promise<void> };
+type HandlerCtx = {
+  tx: Prisma.TransactionClient;
+  actor: Actor;
+  audit: (e: AuditInput) => Promise<void>;
+  /** Result of the EXTERNAL effect (see EXTERNAL_ACTIONS), already executed before the transaction. */
+  external?: Record<string, unknown>;
+};
 type AnyHandler = { schema: z.ZodTypeAny; apply: (params: unknown, ctx: HandlerCtx) => Promise<Record<string, unknown>> };
 
 /** Typed at definition, erased in the table (params are validated by `schema` before `apply`). */
@@ -115,11 +121,22 @@ export const ACTION_HANDLERS: { [K in ActionType]: AnyHandler } = {
     return { ticketId: p.ticketId, priority: p.priority };
   }),
 
-  'reservations.releaseExpired': handler(z.object({}).passthrough(), async (_p, { tx, audit }) => {
-    const released = await releaseExpiredReservationsForAgents(tx);
-    await audit({ action: 'reservations.release_expired', entity: 'StockReservation', after: { released } });
-    return { released };
+  'reservations.releaseExpired': handler(z.object({}).passthrough(), async (_p, { audit, external }) => {
+    await audit({ action: 'reservations.release_expired', entity: 'StockReservation', after: external ?? {} });
+    return external ?? {};
   }),
+};
+
+/**
+ * Actions whose effect is owned by another module and runs in its OWN transactions
+ * (storefront `releaseExpiredReservations`). They are idempotent: executed first, then the
+ * proposal is marked APPLIED and audited with their result.
+ */
+export const EXTERNAL_ACTIONS: Partial<Record<ActionType, (params: Record<string, unknown>) => Promise<Record<string, unknown>>>> = {
+  'reservations.releaseExpired': async () => {
+    const r = await releaseExpiredReservations(new Date());
+    return { orders: r.orders, reservations: r.reservations };
+  },
 };
 
 export function actionPermission(type: ActionType) {

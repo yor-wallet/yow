@@ -1,11 +1,13 @@
 import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
+import { prisma } from '@/lib/db';
 import { can } from '@/lib/rbac';
 import { idSchema } from '@/lib/validation';
-import { AdminError, ForbiddenError, NotFoundError } from '@/lib/admin/actor';
-import { defineMutation } from '@/lib/admin/mutation';
+import { AdminError, assertCan, ForbiddenError, NotFoundError, ValidationError, type Actor } from '@/lib/admin/actor';
+import { defineMutation, type Mutation } from '@/lib/admin/mutation';
+import { fieldErrorsOf } from '@/lib/validation';
 import { ACTION_PERMISSIONS, isActionType, type ActionType } from './action-types';
-import { executeAction } from './actions';
+import { executeAction, EXTERNAL_ACTIONS } from './actions';
 
 /**
  * Human decisions on agent proposals. Every transition is audited.
@@ -56,10 +58,12 @@ export const decideProposal = defineMutation({
   },
 });
 
-export const applyProposal = defineMutation({
+const applyInput = z.object({ id: idSchema, note: noteSchema });
+
+const applyProposalTx = defineMutation({
   name: 'agent.proposal.apply',
   permission: 'agents:decide',
-  schema: z.object({ id: idSchema, note: noteSchema }),
+  schema: applyInput.extend({ external: z.record(z.unknown()).optional() }),
   async run({ tx, actor, input, audit }) {
     const p = await tx.agentProposal.findUnique({ where: { id: input.id } });
     if (!p) throw new NotFoundError('AgentProposal');
@@ -80,7 +84,7 @@ export const applyProposal = defineMutation({
       },
     });
     if (claimed.count !== 1) throw new AdminError('proposal_not_open');
-    const result = await executeAction(action.type, action.params, { tx, actor, audit });
+    const result = await executeAction(action.type, action.params, { tx, actor, audit, external: input.external });
     await audit({
       action: 'agent.proposal.apply',
       entity: 'AgentProposal',
@@ -91,3 +95,27 @@ export const applyProposal = defineMutation({
     return { id: p.id, action: action.type, result };
   },
 });
+
+/**
+ * Apply an approved (or open) proposal's action. For EXTERNAL actions (owned by another
+ * module, idempotent) the effect runs first, then the proposal is claimed + audited.
+ */
+export const applyProposal: Mutation<z.input<typeof applyInput>, Awaited<ReturnType<typeof applyProposalTx>>> = Object.assign(
+  async (actor: Actor | null | undefined, raw: unknown) => {
+    assertCan(actor, 'agents:decide');
+    const parsed = applyInput.safeParse(raw);
+    if (!parsed.success) throw new ValidationError(fieldErrorsOf(parsed.error));
+    const p = await prisma.agentProposal.findUnique({ where: { id: parsed.data.id }, select: { status: true, details: true } });
+    if (!p) throw new NotFoundError('AgentProposal');
+    const action = proposalAction(p.details);
+    const external = action ? EXTERNAL_ACTIONS[action.type] : undefined;
+    if (action && external) {
+      if (p.status !== 'OPEN' && p.status !== 'APPROVED') throw new AdminError('proposal_not_open');
+      if (!can(actor.role, ACTION_PERMISSIONS[action.type])) throw new ForbiddenError(ACTION_PERMISSIONS[action.type]);
+      const result = await external(action.params);
+      return applyProposalTx(actor, { ...parsed.data, external: result });
+    }
+    return applyProposalTx(actor, parsed.data);
+  },
+  { mutationName: 'agent.proposal.apply', permission: ['agents:decide'] as const },
+);

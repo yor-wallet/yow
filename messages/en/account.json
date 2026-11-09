@@ -2,6 +2,7 @@
   "metaTitle": "My account",
   "title": "My account",
   "greeting": "Hello, {name}",
+  "memberSince": "Member since {date}",
   "profile": {
     "title": "Profile",
     "email": "Email",
@@ -17,7 +18,23 @@
       "DOCUMENTS_REQUESTED": "Documents requested",
       "VERIFIED": "Verified",
       "REJECTED": "Rejected"
+    },
+    "cta": {
+      "UNVERIFIED": "Verify my identity",
+      "PENDING": "View status",
+      "DOCUMENTS_REQUESTED": "Upload documents",
+      "VERIFIED": "View details",
+      "REJECTED": "Submit again"
     }
+  },
+  "overview": {
+    "wallet": "Wallet balance",
+    "walletInactive": "Not activated yet",
+    "orders": "Orders",
+    "activeOrders": "{count, plural, =0 {No delivery in progress} one {# delivery in progress} other {# deliveries in progress}}",
+    "notifications": "Unread notifications",
+    "sections": "Your space",
+    "staff": "Staff tools"
   },
   "links": {
     "orders": "My orders",
@@ -25,7 +42,353 @@
     "wallet": "DOOM Wallet",
     "walletText": "Balance, top-ups and receipts.",
     "admin": "Admin centre",
-    "adminText": "Manage the store according to your role."
+    "adminText": "Manage the store according to your role.",
+    "addresses": "Addresses",
+    "addressesText": "Delivery addresses across the 11 governorates.",
+    "verification": "Identity verification",
+    "verificationText": "Required for DOOM FLEX instalments.",
+    "flex": "DOOM FLEX",
+    "flexText": "Pay in 3, 6 or 12 months at 0% interest.",
+    "favorites": "Favourites",
+    "favoritesText": "The products you saved.",
+    "notifications": "Notifications",
+    "notificationsText": "Orders, payments and account updates.",
+    "support": "Support",
+    "supportText": "Your requests and conversations with our team.",
+    "profile": "Profile & preferences",
+    "profileText": "Name, mobile, language and theme.",
+    "security": "Security",
+    "securityText": "Password, active sessions and account deletion.",
+    "help": "Help centre",
+    "helpText": "Delivery, payments, FLEX, returns and warranty.",
+    "courier": "Courier workspace",
+    "courierText": "Your assigned deliveries and handovers."
   },
-  "logout": "Sign out"
+  "logout": "Sign out",
+  "addresses": {
+    "metaTitle": "My addresses",
+    "title": "My addresses",
+    "subtitle": "Save the places where you receive your orders.",
+    "add": "Add an address",
+    "newTitle": "New address",
+    "editTitle": "Edit address",
+    "default": "Default",
+    "makeDefault": "Set as default",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete this address?",
+    "deleteText": "Orders already placed keep the address they were delivered to.",
+    "deleteConfirm": "Delete address",
+    "deleted": "Address deleted",
+    "defaultSet": "Default address updated",
+    "actionFailed": "The action could not be completed. Please try again.",
+    "emptyTitle": "No address yet",
+    "emptyText": "Add a delivery address to check out faster.",
+    "gps": "GPS location saved",
+    "limit": "You can save up to {max} addresses.",
+    "form": {
+      "label": "Label (optional)",
+      "labelPlaceholder": "Home, office…",
+      "recipientName": "Recipient's full name",
+      "phone": "Mobile number",
+      "phoneHint": "8 digits, e.g. 9123 4567",
+      "governorate": "Governorate",
+      "governoratePlaceholder": "Choose a governorate",
+      "wilaya": "Wilaya",
+      "wilayaPlaceholder": "Choose a wilaya",
+      "wilayaFirst": "Choose a governorate first.",
+      "area": "Area / neighbourhood",
+      "building": "Building or house number",
+      "street": "Street or way (optional)",
+      "instructions": "Delivery instructions (optional)",
+      "instructionsPlaceholder": "Landmark, gate colour, best time to call…",
+      "isDefault": "Use as my default address",
+      "location": {
+        "title": "GPS location (optional)",
+        "hint": "Helps the courier find you. Your position is read only when you tap the button.",
+        "use": "Use my current location",
+        "locating": "Locating…",
+        "update": "Update location",
+        "remove": "Remove",
+        "coords": "Lat {lat}, Lng {lng}",
+        "accuracy": "Accuracy ±{meters} m",
+        "viewMap": "View on OpenStreetMap",
+        "denied": "Location access is blocked. Allow it in your browser settings, or fill in the address manually.",
+        "unavailable": "Your location is not available on this device right now.",
+        "timeout": "Locating took too long. Try again near a window or outdoors.",
+        "outside": "This position is outside the Sultanate of Oman.",
+        "error": "We could not get your location. Please try again."
+      },
+      "save": "Save address",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "saved": "Address saved",
+      "draftRestored": "We restored the details you had started to enter."
+    },
+    "errors": {
+      "wilaya_mismatch": "This wilaya does not belong to the selected governorate.",
+      "limit_reached": "You have reached the maximum number of saved addresses.",
+      "not_found": "This address no longer exists.",
+      "unauthenticated": "Your session has expired. Please sign in again.",
+      "location_invalid": "This location is invalid.",
+      "generic": "The address could not be saved. Please try again."
+    }
+  },
+  "notifications": {
+    "metaTitle": "Notifications",
+    "title": "Notifications",
+    "subtitle": "Updates about your orders, payments and account.",
+    "filterLabel": "Show",
+    "all": "All",
+    "unread": "Unread",
+    "markAllRead": "Mark all as read",
+    "markedAllRead": "All notifications marked as read",
+    "markRead": "Mark as read",
+    "new": "New",
+    "emptyTitle": "No notifications",
+    "emptyText": "We will let you know here when something happens on your orders or account.",
+    "emptyUnreadTitle": "You're all caught up",
+    "emptyUnreadText": "No unread notifications.",
+    "loadMore": "Show older notifications",
+    "handoverCode": "Handover code",
+    "handoverHint": "Give it to the courier only when you have your parcel.",
+    "open": "Open"
+  },
+  "support": {
+    "metaTitle": "Support",
+    "title": "Support",
+    "subtitle": "Questions about an order, a payment or your account? Write to us.",
+    "new": "New request",
+    "newTitle": "New support request",
+    "newSubtitle": "Describe your request; our team replies in this conversation.",
+    "listTitle": "Your requests",
+    "emptyTitle": "No request yet",
+    "emptyText": "Start a conversation with our team — you can link it to an order.",
+    "subject": "Subject",
+    "subjectHint": "A short summary, e.g. \"Damaged screen protector\".",
+    "message": "Message",
+    "messageHint": "Give as many details as possible (at least 10 characters).",
+    "order": "Related order (optional)",
+    "orderNone": "No specific order",
+    "send": "Send request",
+    "sent": "Request sent",
+    "reply": "Send reply",
+    "replyLabel": "Your reply",
+    "replyPlaceholder": "Write your message…",
+    "replySent": "Reply sent",
+    "closedNotice": "This request is closed. Open a new request if you need more help.",
+    "resolvedNotice": "This request was marked as resolved. Replying will reopen it.",
+    "you": "You",
+    "team": "DOOM support",
+    "messages": "{count, plural, one {# message} other {# messages}}",
+    "lastReplyStaff": "Support replied",
+    "awaiting": "Awaiting support",
+    "linkedOrder": "Order {number}",
+    "openedOn": "Opened {date}",
+    "helpLink": "Browse the help centre",
+    "status": {
+      "OPEN": "Open",
+      "IN_PROGRESS": "In progress",
+      "WAITING_CUSTOMER": "Awaiting your reply",
+      "RESOLVED": "Resolved",
+      "CLOSED": "Closed"
+    },
+    "errors": {
+      "subject_too_short": "The subject must be at least 4 characters.",
+      "message_too_short": "Please write a little more (at least 10 characters).",
+      "too_long": "This text is too long.",
+      "not_found": "This request does not exist.",
+      "order_not_found": "This order was not found in your account.",
+      "closed": "This request is closed.",
+      "rate_limited": "You have sent many messages. Please wait a moment and try again.",
+      "generic": "Your message could not be sent. Please try again."
+    }
+  },
+  "profilePage": {
+    "metaTitle": "Profile & preferences",
+    "title": "Profile & preferences",
+    "detailsTitle": "Personal details",
+    "detailsText": "Used for your orders, deliveries and receipts.",
+    "fullName": "Full name",
+    "email": "Email",
+    "emailHint": "To change your email address, contact support.",
+    "phone": "Mobile number",
+    "save": "Save changes",
+    "saved": "Profile updated",
+    "languageTitle": "Language",
+    "languageText": "Used for the site, notifications and receipts.",
+    "languageSaved": "Language updated",
+    "themeTitle": "Theme",
+    "themeText": "Saved on this device.",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "errors": {
+      "phone_taken": "This number is already linked to another account.",
+      "generic": "Your changes could not be saved. Please try again."
+    }
+  },
+  "security": {
+    "metaTitle": "Security",
+    "title": "Security",
+    "passwordTitle": "Change password",
+    "passwordText": "Your other sessions are signed out after a change.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "newPasswordHint": "At least 10 characters, with letters and numbers.",
+    "confirmPassword": "Confirm the new password",
+    "changePassword": "Update password",
+    "passwordChanged": "Password updated. Other sessions were signed out.",
+    "show": "Show password",
+    "hide": "Hide password",
+    "sessionsTitle": "Active sessions",
+    "sessionsText": "Devices where you are signed in. Revoke any you don't recognise.",
+    "thisDevice": "This device",
+    "lastActive": "Last active {date}",
+    "signedIn": "Signed in {date}",
+    "unknownDevice": "Unknown device",
+    "browserOn": "{browser} on {os}",
+    "ip": "IP {ip}",
+    "revoke": "Sign out",
+    "revoked": "Session signed out",
+    "revokeOthers": "Sign out all other sessions",
+    "revokedOthers": "{count, plural, =0 {No other session} one {# session signed out} other {# sessions signed out}}",
+    "noOtherSessions": "No other active session.",
+    "deletionTitle": "Delete my account",
+    "deletionText": "We delete your personal data, except the records we must keep by law (invoices, payment and delivery records) for the legal retention period.",
+    "deletionButton": "Request account deletion",
+    "deletionConfirmTitle": "Request the deletion of your account?",
+    "deletionConfirmText": "A request is sent to our team, who will confirm by message before deleting anything. Pending orders and wallet balance must be settled first.",
+    "deletionConfirm": "Send the request",
+    "deletionRequested": "Deletion request sent",
+    "deletionPending": "Your deletion request {number} is being processed.",
+    "deletionView": "Follow the request",
+    "errors": {
+      "wrong_password": "The current password is incorrect.",
+      "password_same": "Choose a password different from the current one.",
+      "rate_limited": "Too many attempts. Please wait a few minutes.",
+      "generic": "The action could not be completed. Please try again."
+    }
+  },
+  "help": {
+    "metaTitle": "Help centre",
+    "title": "Help centre",
+    "subtitle": "Answers to the most common questions.",
+    "categoriesLabel": "Topics",
+    "contactTitle": "Still need help?",
+    "contactText": "Our team answers your requests in your account, with your order details at hand.",
+    "contactCta": "Contact support",
+    "deliveryCta": "About DOOM EXPRESS",
+    "categories": {
+      "delivery": "Delivery",
+      "payments": "Payments",
+      "flex": "DOOM FLEX",
+      "returns": "Returns",
+      "warranty": "Warranty",
+      "account": "Account & security"
+    },
+    "faq": {
+      "delivery": {
+        "q1": "How long does delivery take?",
+        "a1": "Standard delivery targets 24 hours and DOOM EXPRESS targets 6 hours, depending on how your zone is configured. The exact estimate is shown at checkout before you pay; an option that is not configured for your area is shown as unavailable.",
+        "q2": "How is the delivery fee calculated?",
+        "a2": "From the rates configured for your zone (governorate or wilaya), the weight and volume of the parcel and the delivery type. The fee is always displayed before payment — never added afterwards.",
+        "q3": "What is the handover code?",
+        "a3": "When your order is out for delivery, a 6-digit code appears on the order page and in your notifications. Give it to the courier only once you have the parcel in hand: it confirms the delivery.",
+        "q4": "Can I change my delivery address?",
+        "a4": "Before the order is handed to a courier, contact support from the order page. Once it is out for delivery, the address can no longer be changed."
+      },
+      "payments": {
+        "q1": "Which payment methods are accepted?",
+        "a1": "DOOM Wallet, bank cards, Ooredoo, Omantel, crypto-assets and gift cards. Methods that are not activated yet are shown as unavailable at checkout and cannot be selected.",
+        "q2": "When is my payment confirmed?",
+        "a2": "Only after confirmation by the payment provider or, for gift cards, after our finance team has verified the value actually received. Until then your order shows a pending payment.",
+        "q3": "How do refunds work?",
+        "a3": "Approved refunds are credited to your DOOM Wallet, or to the original payment method when the provider supports it. You can follow the status on the order page."
+      },
+      "flex": {
+        "q1": "What is DOOM FLEX?",
+        "a1": "Pay in 3, 6 or 12 monthly instalments with 0% interest and no fees: the total equals the cash price.",
+        "q2": "Who can use DOOM FLEX?",
+        "a2": "Customers whose identity is verified. Each application is reviewed before approval.",
+        "q3": "How do I verify my identity?",
+        "a3": "In Account → Identity verification: confirm your details, photograph the front and back of your ID card and take a selfie. Files are encrypted and only authorised reviewers can open them."
+      },
+      "returns": {
+        "q1": "How do I request a return?",
+        "a1": "Open a support request from the order page, explain the reason and add photos if the item is damaged.",
+        "q2": "When is a return accepted?",
+        "a2": "Returned items are inspected for condition and completeness. The conditions are described in our returns policy."
+      },
+      "warranty": {
+        "q1": "What warranty do products have?",
+        "a1": "The warranty period is shown on each product page and on your receipt when the manufacturer or seller provides one.",
+        "q2": "How do I make a warranty claim?",
+        "a2": "Contact support with your order number and a description of the fault; we guide you through the manufacturer's procedure."
+      },
+      "account": {
+        "q1": "How do I keep my account secure?",
+        "a1": "Use a strong, unique password, review your active sessions in Account → Security and sign out of any device you don't recognise.",
+        "q2": "How do I delete my account?",
+        "a2": "Request it in Account → Security. Records we must keep by law (invoices, payment records) are retained for the legal period; the rest of your personal data is deleted."
+      }
+    }
+  },
+  "notificationTemplates": {
+    "deliveryConfirmed": {
+      "title": "Order {number} confirmed",
+      "body": "Payment confirmed — we are preparing your order for delivery."
+    },
+    "deliveryShipped": {
+      "title": "Order {number} handed to a courier",
+      "body": "Your parcel has been assigned to a DOOM EXPRESS courier."
+    },
+    "deliveryOutForDelivery": {
+      "title": "Order {number} is out for delivery",
+      "body": "Your handover code is on the order page. Give it to the courier only when you have your parcel."
+    },
+    "deliveryOtpRenewed": {
+      "title": "New handover code for order {number}",
+      "body": "The previous code no longer works. Open the order page to see the new one."
+    },
+    "deliveryDelivered": {
+      "title": "Order {number} delivered",
+      "body": "Handed over to {name}. Thank you for shopping with DOOM."
+    },
+    "deliveryFailed": {
+      "title": "Delivery issue for order {number}",
+      "body": "The delivery attempt did not succeed. Our team will contact you to arrange a new one."
+    },
+    "kycSubmitted": {
+      "title": "Verification submitted",
+      "body": "Your documents are encrypted and waiting for review. We will notify you of the decision."
+    },
+    "kycVerified": {
+      "title": "Identity verified",
+      "body": "Your account is verified. DOOM FLEX is now available to you."
+    },
+    "kycRejected": {
+      "title": "Verification not approved",
+      "body": "Open your verification page to see the reason and submit again."
+    },
+    "kycDocumentsRequested": {
+      "title": "Documents requested",
+      "body": "Our team needs additional documents to complete your verification."
+    },
+    "supportCreated": {
+      "title": "Request {number} received",
+      "body": "Our support team will reply in this conversation."
+    },
+    "supportReply": {
+      "title": "New reply on request {number}",
+      "body": "Open the conversation to read the reply."
+    },
+    "passwordChanged": {
+      "title": "Password changed",
+      "body": "Your password was changed and your other sessions were signed out. If this wasn't you, contact support immediately."
+    },
+    "deletionRequested": {
+      "title": "Account deletion requested",
+      "body": "Request {number} is open. Our team will confirm what can be deleted and what must be kept by law."
+    }
+  }
 }

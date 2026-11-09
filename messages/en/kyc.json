@@ -1,1 +1,118 @@
-{}
+{
+  "metaTitle": "Identity verification",
+  "title": "Identity verification",
+  "subtitle": "Verify your identity to unlock DOOM FLEX.",
+  "status": {
+    "UNVERIFIED": "Not verified",
+    "PENDING": "Under review",
+    "DOCUMENTS_REQUESTED": "Documents requested",
+    "VERIFIED": "Verified",
+    "REJECTED": "Not approved"
+  },
+  "statusCard": {
+    "UNVERIFIED": {
+      "title": "Your identity is not verified yet",
+      "text": "It takes a few minutes: confirm your details, photograph both sides of your ID card and take a selfie."
+    },
+    "PENDING": {
+      "title": "Your documents are under review",
+      "text": "Our team is reviewing your submission. You will receive a notification with the decision."
+    },
+    "DOCUMENTS_REQUESTED": {
+      "title": "Additional documents requested",
+      "text": "Upload the documents listed below to complete your verification."
+    },
+    "VERIFIED": {
+      "title": "Your identity is verified",
+      "text": "You can now apply for DOOM FLEX instalment plans."
+    },
+    "REJECTED": {
+      "title": "Your verification was not approved",
+      "text": "Read the reason below, then submit new documents."
+    }
+  },
+  "submittedOn": "Submitted on {date}",
+  "reviewedOn": "Reviewed on {date}",
+  "reviewerNote": "Message from our team",
+  "rejectionReason": "Reason",
+  "requested": "Documents to upload",
+  "received": "Documents received",
+  "start": "Start verification",
+  "restart": "Submit new documents",
+  "uploadRequested": "Upload the requested documents",
+  "flexCta": "Discover DOOM FLEX",
+  "steps": {
+    "details": "Your details",
+    "documents": "Documents",
+    "review": "Review & submit"
+  },
+  "details": {
+    "title": "Confirm your details",
+    "text": "They must match your identity document.",
+    "fullName": "Full name",
+    "fullNameHint": "Exactly as written on your ID card.",
+    "email": "Email",
+    "phone": "Mobile number",
+    "phoneMissing": "Add a mobile number to your profile before continuing.",
+    "address": "Address",
+    "addressMissing": "Add an address before continuing.",
+    "addAddress": "Add an address",
+    "editProfile": "Edit profile"
+  },
+  "docs": {
+    "title": "Photograph your documents",
+    "text": "Use good light, avoid reflections and make sure every corner is visible.",
+    "ID_FRONT": "ID card — front",
+    "ID_BACK": "ID card — back",
+    "SELFIE": "Selfie",
+    "hint": {
+      "ID_FRONT": "The side with your photo and name.",
+      "ID_BACK": "The other side of the same card.",
+      "SELFIE": "Your face, clearly visible, without sunglasses."
+    },
+    "take": "Take a photo",
+    "choose": "Choose a file",
+    "retake": "Retake",
+    "remove": "Remove",
+    "processing": "Optimising the image…",
+    "ready": "Ready",
+    "formats": "JPEG, PNG or WebP · max 8 MB",
+    "previewAlt": "Preview: {doc}",
+    "count": "{done} of {total} documents ready"
+  },
+  "review": {
+    "title": "Review and submit",
+    "text": "Check that each photo is sharp and readable.",
+    "consent": "I confirm these documents are mine and authentic, and I agree to their processing for identity verification as described in the privacy policy.",
+    "privacyLink": "Read the privacy policy",
+    "submit": "Submit for review",
+    "submitting": "Encrypting and sending…",
+    "encryption": "Encrypted (AES-256-GCM) before storage. Only authorised reviewers can open them, and every access is logged."
+  },
+  "back": "Back",
+  "next": "Continue",
+  "submitted": "Documents submitted for review",
+  "privacy": {
+    "title": "How we protect your documents",
+    "encrypted": "Encrypted at rest with AES-256-GCM, in private storage.",
+    "access": "Opened only by authorised reviewers; every access is logged.",
+    "minimal": "Kept only as long as necessary, then deleted.",
+    "law": "Processed under Oman's Personal Data Protection Law (Royal Decree 6/2022)."
+  },
+  "errors": {
+    "empty": "This file is empty.",
+    "too_large": "This file is larger than 8 MB.",
+    "heic_unsupported": "HEIC photos are not supported. Set your camera to \"Most compatible\" (JPEG) or choose another photo.",
+    "unsupported_type": "Unsupported format. Use JPEG, PNG or WebP.",
+    "image_unreadable": "This image could not be read. Try another photo.",
+    "missing_document": "A required document is missing.",
+    "already_verified": "Your identity is already verified.",
+    "already_pending": "Your documents are already under review.",
+    "phone_required": "Add a mobile number to your profile first.",
+    "address_required": "Add an address first.",
+    "consent_required": "Please confirm the statement to continue.",
+    "name_too_short": "Enter your full name.",
+    "rate_limited": "Too many attempts. Please try again later.",
+    "generic": "Your documents could not be sent. Please try again."
+  }
+}

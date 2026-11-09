@@ -33,6 +33,11 @@ export type PlaceOrderInput = {
   notes?: string | null;
   /** Total the customer saw on the review step; a different server total aborts with `price_changed`. */
   expectedTotalBaisa?: number | null;
+  /**
+   * Explicit lines (e.g. DOOM FLEX "buy this product"): when present, ONLY these lines are
+   * priced and reserved and the cart is left untouched. Otherwise the user's cart is ordered.
+   */
+  items?: { variantId: string; qty: number }[] | null;
 };
 
 export type PlacedOrder = {
@@ -42,6 +47,16 @@ export type PlacedOrder = {
   reservationExpiresAt: string;
   replayed: boolean;
 };
+
+/** Merge duplicate variants, drop invalid quantities (validated again by pricing / reservation). */
+function normalizeItems(items: { variantId: string; qty: number }[]): { id: null; variantId: string; qty: number }[] {
+  const byVariant = new Map<string, number>();
+  for (const it of items.slice(0, 50)) {
+    if (typeof it.variantId !== 'string' || !it.variantId || !Number.isInteger(it.qty) || it.qty < 1) continue;
+    byVariant.set(it.variantId, (byVariant.get(it.variantId) ?? 0) + it.qty);
+  }
+  return [...byVariant].map(([variantId, qty]) => ({ id: null, variantId, qty }));
+}
 
 class DuplicateKeyError extends Error {
   constructor() {
@@ -85,11 +100,17 @@ async function placeInTx(tx: Prisma.TransactionClient, input: PlaceOrderInput): 
   const dup = await tx.order.findUnique({ where: { idempotencyKey: input.idempotencyKey }, select: { id: true } });
   if (dup) throw new DuplicateKeyError();
 
-  const items = await cartItems({ userId: input.userId }, tx);
+  const explicit = input.items ?? null;
+  const items = explicit ? normalizeItems(explicit) : await cartItems({ userId: input.userId }, tx);
   if (items.length === 0) throw new OrderError('cart_empty');
   const lines = await priceItems(items, input.locale, tx);
   const quote = await quoteLines(lines, { userId: input.userId, locale: input.locale, addressId: input.addressId, deliveryType: input.deliveryType, promoCode: input.promoCode }, tx);
 
+  if (explicit && (lines.length !== items.length || !quote.ready)) {
+    throw new OrderError('out_of_stock', {
+      lines: items.map((i) => ({ variantId: i.variantId, state: lines.find((l) => l.variantId === i.variantId)?.state ?? 'unavailable' })),
+    });
+  }
   if (!quote.ready) {
     throw new OrderError('cart_changed', { lines: lines.filter((l) => l.state !== 'ok').map((l) => ({ variantId: l.variantId, state: l.state })) });
   }
@@ -164,7 +185,9 @@ async function placeInTx(tx: Prisma.TransactionClient, input: PlaceOrderInput): 
   await tx.stockMovement.createMany({
     data: lines.map((l) => ({ variantId: l.variantId, type: 'RESERVATION' as const, qty: 0, reason: `reserve ${l.allowedQty} for ${number}`, orderId: order.id, actorId: input.userId })),
   });
-  await tx.cartItem.deleteMany({ where: { cart: { userId: input.userId }, variantId: { in: lines.map((l) => l.variantId) } } });
+  if (!explicit) {
+    await tx.cartItem.deleteMany({ where: { cart: { userId: input.userId }, variantId: { in: lines.map((l) => l.variantId) } } });
+  }
   await logAudit(
     {
       actorId: input.userId,
