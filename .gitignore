@@ -13,3 +13,5 @@ test-results/
 next-env.d.ts
 *.tsbuildinfo
 android/app/build/
+/public/uploads/
+/storage/

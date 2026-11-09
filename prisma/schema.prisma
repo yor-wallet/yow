@@ -1,0 +1,1333 @@
+// DOOM | دوم — database schema (PostgreSQL, Supabase-compatible)
+//
+// Conventions (see docs/ARCHITECTURE.md):
+//   * Money is ALWAYS an Int in baisa (1 OMR = 1000 baisa). Every money column ends with `Baisa`.
+//   * Translatable content is Json shaped `{ "ar": string, "en": string, "fr": string }`
+//     (type `LocalizedText` in lib/localized.ts). Read it with `localize(value, locale)`.
+//   * Prices/stock are NEVER seeded. Nullable price = "price unavailable".
+//   * Actor columns (`actorId`, `createdById`) on append-only logs are plain ids (no FK):
+//     users are never hard-deleted, and logs must survive any user change.
+//   * Extra DB-level safety (CHECK constraints, ledger zero-sum trigger) lives in the
+//     init migration SQL — Prisma ignores them when diffing, they are preserved.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────── Enums ─────────────────────────────
+
+enum Role {
+  CUSTOMER
+  SUPPORT
+  LOGISTICS
+  FINANCE
+  CATALOG
+  ADMIN
+  SUPERADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum KycStatus {
+  UNVERIFIED
+  PENDING
+  DOCUMENTS_REQUESTED
+  VERIFIED
+  REJECTED
+}
+
+enum AppLocale {
+  ar
+  en
+  fr
+}
+
+enum KycDocumentType {
+  ID_FRONT
+  ID_BACK
+  SELFIE
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum PromotionType {
+  PERCENT // value = basis points (100 = 1%)
+  FIXED // value = baisa
+}
+
+enum ReservationStatus {
+  ACTIVE
+  CONSUMED
+  RELEASED
+  EXPIRED
+}
+
+enum StockMovementType {
+  RECEIPT
+  ADJUSTMENT
+  SALE
+  RETURN
+  RESERVATION
+  RELEASE
+  DAMAGE
+}
+
+enum ReviewStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  PACKED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum DeliveryType {
+  STANDARD
+  EXPRESS
+}
+
+enum PaymentProvider {
+  WALLET
+  CARD
+  OOREDOO
+  OMANTEL
+  CRYPTO
+  GIFT_CARD
+  FLEX
+}
+
+enum PaymentPurpose {
+  TOPUP
+  ORDER
+  INSTALLMENT
+}
+
+enum PaymentStatus {
+  CREATED
+  PENDING
+  REQUIRES_ACTION
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  EXPIRED
+}
+
+enum WalletStatus {
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+enum LedgerAccountType {
+  CUSTOMER_WALLET
+  PLATFORM_CASH
+  PLATFORM_REVENUE
+  DELIVERY_REVENUE
+  PAYMENT_CLEARING
+  GIFT_CARD_CLEARING
+  REFUNDS
+  FLEX_RECEIVABLE
+  DISCOUNTS
+  ADJUSTMENTS
+}
+
+enum LedgerTransactionType {
+  TOPUP
+  ORDER_PAYMENT
+  REFUND
+  GIFT_CARD_CREDIT
+  FLEX_DISBURSEMENT
+  INSTALLMENT_PAYMENT
+  ADJUSTMENT
+  REVERSAL
+}
+
+enum GiftCardStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  VERIFIED
+  REJECTED
+}
+
+enum RefundStatus {
+  REQUESTED
+  APPROVED
+  PROCESSING
+  COMPLETED
+  REJECTED
+  FAILED
+}
+
+enum RefundMethod {
+  WALLET
+  ORIGINAL_METHOD
+}
+
+enum FlexStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  ACCEPTED
+  ACTIVE
+  COMPLETED
+  DEFAULTED
+  CANCELLED
+}
+
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum ShipmentStatus {
+  CONFIRMED
+  PREPARING
+  PACKED
+  COURIER_ASSIGNED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  FAILED
+}
+
+enum IncidentType {
+  DELAY
+  DAMAGE
+  ADDRESS_ISSUE
+  CUSTOMER_UNREACHABLE
+  OTP_FAILURE
+  LOST
+  OTHER
+}
+
+enum IncidentStatus {
+  OPEN
+  RESOLVED
+}
+
+enum CampaignMediaType {
+  IMAGE
+  VIDEO
+  LOTTIE
+  SCENE_3D
+}
+
+enum SceneKind {
+  PHONE
+  LAPTOP
+  EARBUDS
+  NONE
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum AgentRunStatus {
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+enum ProposalSeverity {
+  INFO
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ProposalStatus {
+  OPEN
+  APPROVED
+  REJECTED
+  APPLIED
+}
+
+enum IdempotencyStatus {
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+// ───────────────────────────── Identity ─────────────────────────────
+
+model User {
+  id              String     @id @default(cuid())
+  email           String     @unique
+  emailVerifiedAt DateTime?
+  phone           String?    @unique // E.164 "+968XXXXXXXX"
+  phoneVerifiedAt DateTime?
+  passwordHash    String
+  fullName        String
+  role            Role       @default(CUSTOMER)
+  status          UserStatus @default(ACTIVE)
+  kycStatus       KycStatus  @default(UNVERIFIED)
+  locale          AppLocale  @default(ar)
+  lastLoginAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  sessions               Session[]
+  addresses              Address[]
+  kycSubmissions         KycSubmission[]          @relation("KycOwner")
+  kycReviews             KycSubmission[]          @relation("KycReviewer")
+  kycAccessLogs          KycAccessLog[]
+  cart                   Cart?
+  favorites              Favorite[]
+  compareItems           CompareItem[]
+  reviews                Review[]                 @relation("ReviewAuthor")
+  moderatedReviews       Review[]                 @relation("ReviewModerator")
+  orders                 Order[]
+  paymentIntents         PaymentIntent[]
+  wallet                 Wallet?
+  ledgerAccounts         LedgerAccount[]
+  giftCardSubmissions    GiftCardSubmission[]     @relation("GiftCardOwner")
+  giftCardReviews        GiftCardSubmission[]     @relation("GiftCardReviewer")
+  refunds                Refund[]                 @relation("RefundCustomer")
+  approvedRefunds        Refund[]                 @relation("RefundApprover")
+  flexApplications       FlexApplication[]        @relation("FlexApplicant")
+  flexDecisions          FlexApplication[]        @relation("FlexDecider")
+  courier                Courier?
+  notifications          Notification[]
+  supportTickets         SupportTicket[]          @relation("TicketCustomer")
+  assignedTickets        SupportTicket[]          @relation("TicketAssignee")
+  supportMessages        SupportMessage[]
+  auditLogs              AuditLog[]
+  priceObservations      MarketPriceObservation[]
+  agentProposalDecisions AgentProposal[]
+
+  @@index([role])
+  @@index([kycStatus])
+}
+
+model Session {
+  id         String    @id @default(cuid())
+  userId     String
+  tokenHash  String    @unique // sha256(hex) of the random 32-byte cookie token
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  lastSeenAt DateTime  @default(now())
+  revokedAt  DateTime?
+  ip         String?
+  userAgent  String?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model LoginAttempt {
+  id         String   @id @default(cuid())
+  identifier String // lower-cased email
+  ip         String?
+  success    Boolean
+  createdAt  DateTime @default(now())
+
+  @@index([identifier, createdAt])
+  @@index([ip, createdAt])
+}
+
+/// Fixed-window rate limit buckets (lib/rate-limit.ts).
+model RateLimit {
+  key     String   @id
+  count   Int      @default(0)
+  resetAt DateTime
+}
+
+// ───────────────────────────── Geography & addresses ─────────────────────────────
+
+model Governorate {
+  id            String         @id @default(cuid())
+  code          String         @unique // ISO 3166-2:OM suffix, e.g. "MA"
+  name          Json // LocalizedText
+  sort          Int            @default(0)
+  wilayas       Wilaya[]
+  addresses     Address[]
+  deliveryZones DeliveryZone[]
+}
+
+model Wilaya {
+  id            String      @id @default(cuid())
+  governorateId String
+  slug          String      @unique
+  name          Json // LocalizedText
+  sort          Int         @default(0)
+  governorate   Governorate @relation(fields: [governorateId], references: [id], onDelete: Cascade)
+  addresses     Address[]
+
+  @@index([governorateId])
+}
+
+model Address {
+  id            String      @id @default(cuid())
+  userId        String
+  label         String?
+  recipientName String
+  phone         String // E.164 +968
+  governorateId String
+  wilayaId      String
+  area          String
+  street        String?
+  building      String
+  lat           Float?
+  lng           Float?
+  instructions  String?
+  isDefault     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  governorate   Governorate @relation(fields: [governorateId], references: [id])
+  wilaya        Wilaya      @relation(fields: [wilayaId], references: [id])
+
+  @@index([userId])
+}
+
+// ───────────────────────────── KYC ─────────────────────────────
+
+model KycSubmission {
+  id                String            @id @default(cuid())
+  userId            String
+  status            KycStatus         @default(PENDING)
+  fullName          String
+  idNumberLast4     String? // data minimisation: full ID number only encrypted
+  idNumberEncrypted String? // lib/crypto encryptString
+  dateOfBirth       DateTime?         @db.Date
+  requestedDocs     KycDocumentType[]
+  reviewNote        String?
+  rejectionReason   String?
+  submittedAt       DateTime          @default(now())
+  reviewedAt        DateTime?
+  reviewedById      String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  user              User              @relation("KycOwner", fields: [userId], references: [id], onDelete: Cascade)
+  reviewedBy        User?             @relation("KycReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  documents         KycDocument[]
+  accessLogs        KycAccessLog[]
+  flexApplications  FlexApplication[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model KycDocument {
+  id           String          @id @default(cuid())
+  submissionId String
+  type         KycDocumentType
+  storageKey   String // private bucket key (ciphertext)
+  iv           String // base64
+  authTag      String // base64
+  mime         String
+  sizeBytes    Int
+  sha256       String // of the plaintext
+  createdAt    DateTime        @default(now())
+  deletedAt    DateTime?
+  submission   KycSubmission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  accessLogs   KycAccessLog[]
+
+  @@index([submissionId])
+}
+
+model KycAccessLog {
+  id           String         @id @default(cuid())
+  submissionId String?
+  documentId   String?
+  actorId      String
+  action       String // VIEW | DOWNLOAD | DECIDE | DELETE ...
+  ip           String?
+  userAgent    String?
+  createdAt    DateTime       @default(now())
+  submission   KycSubmission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  document     KycDocument?   @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  actor        User           @relation(fields: [actorId], references: [id])
+
+  @@index([submissionId])
+  @@index([actorId, createdAt])
+}
+
+// ───────────────────────────── Catalogue ─────────────────────────────
+
+model Category {
+  id          String     @id @default(cuid())
+  parentId    String?
+  slug        String     @unique
+  name        Json // LocalizedText
+  description Json? // LocalizedText
+  icon        String? // lucide icon key, e.g. "smartphone"
+  imageKey    String? // public storage key
+  sort        Int        @default(0)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+
+  @@index([parentId, sort])
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  nameAr      String?
+  logoKey     String?
+  description Json? // LocalizedText
+  isFeatured  Boolean   @default(false)
+  sort        Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Product {
+  id               String            @id @default(cuid())
+  slug             String            @unique
+  brandId          String?
+  categoryId       String
+  model            String?
+  sku              String            @unique
+  name             Json // LocalizedText
+  description      Json? // LocalizedText (plain text / light markdown)
+  highlights       Json? // { ar: string[], en: string[], fr: string[] }
+  specs            Json              @default("[]") // [{ key, label: LocalizedText, value: LocalizedText | string }]
+  warrantyMonths   Int?
+  status           ProductStatus     @default(DRAFT)
+  isSellable       Boolean           @default(true)
+  isFeatured       Boolean           @default(false)
+  isDealOfDay      Boolean           @default(false)
+  isRecommended    Boolean           @default(false)
+  isNewArrival     Boolean           @default(false)
+  expressEligible  Boolean           @default(true)
+  weightGrams      Int?
+  volumeCm3        Int?
+  seoTitle         Json?
+  seoDescription   Json?
+  publishedAt      DateTime?
+  createdById      String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  brand            Brand?            @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  category         Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants         ProductVariant[]
+  images           ProductImage[]
+  reviews          Review[]
+  favorites        Favorite[]
+  compareItems     CompareItem[]
+  orderItems       OrderItem[]
+  flexApplications FlexApplication[]
+
+  @@index([categoryId, status])
+  @@index([brandId, status])
+  @@index([status, isFeatured])
+}
+
+model ProductVariant {
+  id                String                   @id @default(cuid())
+  productId         String
+  sku               String                   @unique
+  name              Json? // LocalizedText label, e.g. "256 GB · Titanium"
+  color             String?
+  colorHex          String?
+  capacity          String?
+  attributes        Json? // extra attributes { ram: "12GB", ... }
+  priceBaisa        Int? // null => "price unavailable", not sellable
+  compareAtBaisa    Int?
+  costBaisa         Int?
+  stock             Int                      @default(0)
+  reserved          Int                      @default(0)
+  lowStockThreshold Int                      @default(2)
+  isActive          Boolean                  @default(true)
+  isDefault         Boolean                  @default(false)
+  sort              Int                      @default(0)
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  product           Product                  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images            ProductImage[]
+  priceObservations MarketPriceObservation[]
+  reservations      StockReservation[]
+  movements         StockMovement[]
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+  flexApplications  FlexApplication[]
+
+  @@index([productId])
+}
+
+model ProductImage {
+  id        String          @id @default(cuid())
+  productId String
+  variantId String?
+  key       String // public storage key
+  alt       Json? // LocalizedText
+  width     Int
+  height    Int
+  sort      Int             @default(0)
+  createdAt DateTime        @default(now())
+  product   Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([productId, sort])
+}
+
+model MarketPriceObservation {
+  id          String         @id @default(cuid())
+  variantId   String
+  sourceName  String
+  sourceUrl   String
+  priceBaisa  Int
+  observedAt  DateTime
+  verified    Boolean        @default(false)
+  notes       String?
+  enteredById String
+  createdAt   DateTime       @default(now())
+  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  enteredBy   User           @relation(fields: [enteredById], references: [id])
+
+  @@index([variantId, observedAt])
+}
+
+model Promotion {
+  id               String        @id @default(cuid())
+  code             String?       @unique
+  name             Json // LocalizedText
+  description      Json?
+  type             PromotionType
+  value            Int // PERCENT: basis points; FIXED: baisa
+  minSubtotalBaisa Int?
+  maxDiscountBaisa Int?
+  productIds       String[]
+  categoryIds      String[]
+  brandIds         String[]
+  startsAt         DateTime?
+  endsAt           DateTime?
+  isActive         Boolean       @default(false)
+  usageLimit       Int?
+  usageCount       Int           @default(0)
+  perUserLimit     Int?
+  createdById      String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  orders           Order[]
+
+  @@index([isActive, startsAt, endsAt])
+}
+
+model StockReservation {
+  id        String            @id @default(cuid())
+  variantId String
+  qty       Int
+  cartId    String?
+  orderId   String?
+  userId    String?
+  status    ReservationStatus @default(ACTIVE)
+  expiresAt DateTime
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  variant   ProductVariant    @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  order     Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([variantId, status])
+  @@index([status, expiresAt])
+  @@index([orderId])
+}
+
+model StockMovement {
+  id         String            @id @default(cuid())
+  variantId  String
+  type       StockMovementType
+  qty        Int // signed delta applied to `stock` (0 for reservation bookkeeping)
+  stockAfter Int?
+  reason     String?
+  orderId    String?
+  actorId    String?
+  createdAt  DateTime          @default(now())
+  variant    ProductVariant    @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId, createdAt])
+}
+
+// ───────────────────────────── Cart / favourites / compare / reviews ─────────────────────────────
+
+model Cart {
+  id            String     @id @default(cuid())
+  userId        String?    @unique
+  anonTokenHash String?    @unique // sha256 of the `doom_cart` cookie token
+  currency      String     @default("OMR")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  expiresAt     DateTime?
+  user          User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items         CartItem[]
+}
+
+model CartItem {
+  id        String         @id @default(cuid())
+  cartId    String
+  variantId String
+  qty       Int
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, variantId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model CompareItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model Review {
+  id            String       @id @default(cuid())
+  productId     String
+  userId        String
+  orderItemId   String       @unique // verified purchase only
+  rating        Int // 1..5 (CHECK)
+  title         String?
+  text          String
+  locale        AppLocale    @default(ar)
+  status        ReviewStatus @default(PENDING)
+  moderatedById String?
+  moderatedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user          User         @relation("ReviewAuthor", fields: [userId], references: [id], onDelete: Cascade)
+  orderItem     OrderItem    @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  moderatedBy   User?        @relation("ReviewModerator", fields: [moderatedById], references: [id], onDelete: SetNull)
+
+  @@index([productId, status])
+}
+
+// ───────────────────────────── Orders ─────────────────────────────
+
+model Order {
+  id               String             @id @default(cuid())
+  number           String             @unique // human readable, e.g. DM-2026-000123
+  userId           String
+  status           OrderStatus        @default(PENDING_PAYMENT)
+  currency         String             @default("OMR")
+  subtotalBaisa    Int
+  deliveryFeeBaisa Int                @default(0)
+  discountBaisa    Int                @default(0)
+  totalBaisa       Int
+  paymentMethod    PaymentProvider?
+  deliveryType     DeliveryType       @default(STANDARD)
+  addressSnapshot  Json
+  contactPhone     String?
+  notes            String?
+  locale           AppLocale          @default(ar)
+  promotionId      String?
+  idempotencyKey   String             @unique
+  placedAt         DateTime           @default(now())
+  paidAt           DateTime?
+  cancelledAt      DateTime?
+  cancelReason     String?
+  deliveredAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  user             User               @relation(fields: [userId], references: [id])
+  promotion        Promotion?         @relation(fields: [promotionId], references: [id], onDelete: SetNull)
+  items            OrderItem[]
+  events           OrderStatusEvent[]
+  paymentIntents   PaymentIntent[]
+  reservations     StockReservation[]
+  shipment         Shipment?
+  refunds          Refund[]
+  flexApplication  FlexApplication?
+  supportTickets   SupportTicket[]
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id             String          @id @default(cuid())
+  orderId        String
+  productId      String?
+  variantId      String?
+  nameSnapshot   Json // LocalizedText at time of order
+  sku            String
+  variantLabel   String?
+  imageKey       String?
+  unitPriceBaisa Int
+  qty            Int
+  lineTotalBaisa Int
+  unitCostBaisa  Int?
+  warrantyMonths Int?
+  createdAt      DateTime        @default(now())
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product        Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant        ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  review         Review?
+
+  @@index([orderId])
+}
+
+model OrderStatusEvent {
+  id         String       @id @default(cuid())
+  orderId    String
+  fromStatus OrderStatus?
+  toStatus   OrderStatus
+  note       String?
+  actorId    String?
+  createdAt  DateTime     @default(now())
+  order      Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
+
+// ───────────────────────────── Payments ─────────────────────────────
+
+model PaymentIntent {
+  id                   String                 @id @default(cuid())
+  userId               String
+  provider             PaymentProvider
+  purpose              PaymentPurpose
+  amountBaisa          Int
+  currency             String                 @default("OMR")
+  status               PaymentStatus          @default(CREATED)
+  providerRef          String?                @unique
+  idempotencyKey       String                 @unique
+  confirmedAmountBaisa Int?
+  orderId              String?
+  redirectUrl          String?
+  failureCode          String?
+  failureMessage       String?
+  expiresAt            DateTime?
+  succeededAt          DateTime?
+  metadata             Json                   @default("{}")
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  user                 User                   @relation(fields: [userId], references: [id])
+  order                Order?                 @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  events               PaymentProviderEvent[]
+  ledgerTransactions   LedgerTransaction[]
+  installment          FlexInstallment?
+  refunds              Refund[]
+  giftCardSubmissions  GiftCardSubmission[]
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@index([orderId])
+}
+
+model PaymentProviderEvent {
+  id                String          @id @default(cuid())
+  provider          PaymentProvider
+  eventId           String
+  type              String?
+  paymentIntentId   String?
+  payload           Json
+  signatureVerified Boolean         @default(false)
+  receivedAt        DateTime        @default(now())
+  processedAt       DateTime?
+  processingError   String?
+  paymentIntent     PaymentIntent?  @relation(fields: [paymentIntentId], references: [id], onDelete: SetNull)
+
+  @@unique([provider, eventId])
+  @@index([paymentIntentId])
+}
+
+// ───────────────────────────── Wallet & double-entry ledger ─────────────────────────────
+
+model Wallet {
+  id              String        @id @default(cuid())
+  userId          String        @unique
+  currency        String        @default("OMR")
+  status          WalletStatus  @default(ACTIVE)
+  ledgerAccountId String        @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  user            User          @relation(fields: [userId], references: [id])
+  ledgerAccount   LedgerAccount @relation(fields: [ledgerAccountId], references: [id])
+}
+
+model LedgerAccount {
+  id           String            @id @default(cuid())
+  code         String            @unique // system: type name (e.g. "PLATFORM_CASH"); wallets: "WALLET:<userId>"
+  type         LedgerAccountType
+  name         String
+  currency     String            @default("OMR")
+  userId       String?
+  balanceBaisa Int               @default(0) // cache of SUM(entries.amountBaisa), updated in the same DB transaction
+  isSystem     Boolean           @default(false)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  user         User?             @relation(fields: [userId], references: [id])
+  wallet       Wallet?
+  entries      LedgerEntry[]
+
+  @@index([type])
+  @@index([userId])
+}
+
+model LedgerTransaction {
+  id                   String                @id @default(cuid())
+  reference            String                @unique
+  type                 LedgerTransactionType
+  idempotencyKey       String                @unique
+  description          String?
+  paymentIntentId      String?
+  orderId              String?
+  refundId             String?
+  giftCardSubmissionId String?
+  flexInstallmentId    String?
+  reversesId           String?               @unique
+  metadata             Json?
+  createdById          String?
+  createdAt            DateTime              @default(now())
+  paymentIntent        PaymentIntent?        @relation(fields: [paymentIntentId], references: [id], onDelete: SetNull)
+  reverses             LedgerTransaction?    @relation("Reversal", fields: [reversesId], references: [id])
+  reversedBy           LedgerTransaction?    @relation("Reversal")
+  entries              LedgerEntry[]
+
+  @@index([type, createdAt])
+  @@index([orderId])
+}
+
+/// Entries of one transaction MUST sum to zero (enforced by a deferred constraint trigger).
+model LedgerEntry {
+  id            String            @id @default(cuid())
+  transactionId String
+  accountId     String
+  amountBaisa   Int // signed, non-zero (CHECK)
+  createdAt     DateTime          @default(now())
+  transaction   LedgerTransaction @relation(fields: [transactionId], references: [id], onDelete: Restrict)
+  account       LedgerAccount     @relation(fields: [accountId], references: [id], onDelete: Restrict)
+
+  @@index([accountId, createdAt])
+  @@index([transactionId])
+}
+
+model GiftCardSubmission {
+  id                 String         @id @default(cuid())
+  userId             String
+  brand              String // e.g. "Apple", "Google Play", "PlayStation"
+  codeEncrypted      String // lib/crypto encryptString
+  codeLast4          String?
+  codeFingerprint    String // keyed HMAC for duplicate detection (lib/crypto fingerprint)
+  declaredValue      Int // minor units of declaredCurrency
+  declaredCurrency   String         @default("OMR")
+  imageKey           String? // private bucket (encrypted)
+  status             GiftCardStatus @default(SUBMITTED)
+  encashedValueBaisa Int?
+  reviewedById       String?
+  reviewedAt         DateTime?
+  notes              String?
+  paymentIntentId    String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  user               User           @relation("GiftCardOwner", fields: [userId], references: [id])
+  reviewedBy         User?          @relation("GiftCardReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  paymentIntent      PaymentIntent? @relation(fields: [paymentIntentId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([codeFingerprint])
+  @@index([userId])
+}
+
+model Refund {
+  id              String         @id @default(cuid())
+  orderId         String?
+  paymentIntentId String?
+  userId          String
+  amountBaisa     Int
+  reason          String
+  status          RefundStatus   @default(REQUESTED)
+  method          RefundMethod   @default(WALLET)
+  providerRef     String?
+  idempotencyKey  String         @unique
+  requestedById   String?
+  approvedById    String?
+  processedAt     DateTime?
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  order           Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  paymentIntent   PaymentIntent? @relation(fields: [paymentIntentId], references: [id], onDelete: SetNull)
+  user            User           @relation("RefundCustomer", fields: [userId], references: [id])
+  approvedBy      User?          @relation("RefundApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([orderId])
+}
+
+// ───────────────────────────── DOOM FLEX ─────────────────────────────
+
+model FlexApplication {
+  id              String            @id @default(cuid())
+  userId          String
+  orderId         String?           @unique
+  productId       String?
+  variantId       String?
+  kycSubmissionId String?
+  status          FlexStatus        @default(SUBMITTED)
+  months          Int // 3 | 6 | 12 (CHECK)
+  principalBaisa  Int
+  termsVersion    String?
+  termsAcceptedAt DateTime?
+  decidedById     String?
+  decidedAt       DateTime?
+  decisionNote    String?
+  partnerRef      String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  user            User              @relation("FlexApplicant", fields: [userId], references: [id])
+  order           Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  product         Product?          @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant         ProductVariant?   @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  kycSubmission   KycSubmission?    @relation(fields: [kycSubmissionId], references: [id], onDelete: SetNull)
+  decidedBy       User?             @relation("FlexDecider", fields: [decidedById], references: [id], onDelete: SetNull)
+  installments    FlexInstallment[]
+
+  @@index([userId])
+  @@index([status, createdAt])
+}
+
+model FlexInstallment {
+  id              String            @id @default(cuid())
+  applicationId   String
+  sequence        Int // 1..months
+  dueDate         DateTime          @db.Date
+  amountBaisa     Int
+  status          InstallmentStatus @default(PENDING)
+  paidAt          DateTime?
+  paymentIntentId String?           @unique
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  application     FlexApplication   @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  paymentIntent   PaymentIntent?    @relation(fields: [paymentIntentId], references: [id], onDelete: SetNull)
+
+  @@unique([applicationId, sequence])
+  @@index([status, dueDate])
+}
+
+// ───────────────────────────── Delivery — DOOM EXPRESS ─────────────────────────────
+
+/// Fees are admin-configured. NULL fee => not configured => that delivery type is unavailable.
+model DeliveryZone {
+  id                    String      @id @default(cuid())
+  governorateId         String
+  wilayaSlugs           String[] // empty = whole governorate
+  name                  Json // LocalizedText
+  standardFeeBaisa      Int?
+  expressFeeBaisa       Int?
+  expressAvailable      Boolean     @default(false)
+  standardHours         Int         @default(24)
+  expressHours          Int         @default(6)
+  perKgBaisa            Int?
+  perLitreBaisa         Int? // per 1000 cm3 of volume
+  freeStandardFromBaisa Int?
+  dailyCapacityStandard Int?
+  dailyCapacityExpress  Int?
+  isActive              Boolean     @default(true)
+  sort                  Int         @default(0)
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  governorate           Governorate @relation(fields: [governorateId], references: [id], onDelete: Cascade)
+
+  @@index([governorateId])
+}
+
+model Courier {
+  id             String     @id @default(cuid())
+  userId         String?    @unique
+  name           String
+  phone          String
+  vehicle        String?
+  governorateIds String[]
+  isActive       Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  user           User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  shipments      Shipment[]
+}
+
+model Shipment {
+  id            String             @id @default(cuid())
+  orderId       String             @unique
+  courierId     String?
+  status        ShipmentStatus     @default(CONFIRMED)
+  deliveryType  DeliveryType       @default(STANDARD)
+  trackingCode  String             @unique
+  promisedBy    DateTime?
+  otpHash       String?
+  otpExpiresAt  DateTime?
+  otpAttempts   Int                @default(0)
+  proofPhotoKey String? // private bucket
+  proofName     String?
+  deliveredAt   DateTime?
+  failedReason  String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  order         Order              @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  courier       Courier?           @relation(fields: [courierId], references: [id], onDelete: SetNull)
+  events        ShipmentEvent[]
+  incidents     DeliveryIncident[]
+
+  @@index([status, promisedBy])
+  @@index([courierId, status])
+}
+
+model ShipmentEvent {
+  id         String         @id @default(cuid())
+  shipmentId String
+  status     ShipmentStatus
+  note       String?
+  lat        Float?
+  lng        Float?
+  actorId    String?
+  createdAt  DateTime       @default(now())
+  shipment   Shipment       @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@index([shipmentId, createdAt])
+}
+
+model DeliveryIncident {
+  id           String         @id @default(cuid())
+  shipmentId   String
+  type         IncidentType
+  description  String
+  status       IncidentStatus @default(OPEN)
+  reportedById String?
+  resolvedById String?
+  resolution   String?
+  resolvedAt   DateTime?
+  createdAt    DateTime       @default(now())
+  shipment     Shipment       @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt])
+}
+
+// ───────────────────────────── Campaigns / ads ─────────────────────────────
+
+model Campaign {
+  id             String            @id @default(cuid())
+  slug           String            @unique
+  internalName   String
+  title          Json // LocalizedText
+  subtitle       Json? // LocalizedText
+  cta            Json? // LocalizedText
+  mediaType      CampaignMediaType @default(IMAGE)
+  sceneKind      SceneKind         @default(NONE)
+  mediaKey       String? // desktop media (public bucket)
+  mediaKeyMobile String?
+  posterKey      String?
+  placements     String[] // e.g. "home_hero", "home_flex", "category_top"
+  productIds     String[]
+  linkUrl        String? // locale-less internal path ("/category/smartphones") or absolute URL
+  priority       Int               @default(0)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  isActive       Boolean           @default(false)
+  theme          String? // "primary" | "secondary" | "premium"
+  createdById    String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  stats          CampaignStat[]
+
+  @@index([isActive, priority])
+}
+
+model CampaignStat {
+  id          String   @id @default(cuid())
+  campaignId  String
+  date        DateTime @db.Date
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, date])
+}
+
+// ───────────────────────────── Notifications & support ─────────────────────────────
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String // e.g. "order.status", "wallet.credit", "kyc.decision"
+  title     Json // LocalizedText
+  body      Json? // LocalizedText
+  link      String? // locale-less internal path
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+}
+
+model SupportTicket {
+  id           String           @id @default(cuid())
+  number       String           @unique
+  userId       String
+  orderId      String?
+  subject      String
+  status       TicketStatus     @default(OPEN)
+  priority     TicketPriority   @default(NORMAL)
+  assignedToId String?
+  closedAt     DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  user         User             @relation("TicketCustomer", fields: [userId], references: [id])
+  order        Order?           @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  assignedTo   User?            @relation("TicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  messages     SupportMessage[]
+
+  @@index([userId])
+  @@index([status, priority])
+}
+
+model SupportMessage {
+  id          String        @id @default(cuid())
+  ticketId    String
+  authorId    String?
+  isStaff     Boolean       @default(false)
+  isInternal  Boolean       @default(false) // staff-only note
+  body        String
+  attachments Json?
+  createdAt   DateTime      @default(now())
+  ticket      SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+}
+
+// ───────────────────────────── Governance ─────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actorRole Role?
+  action    String // dotted verb, e.g. "product.update", "wallet.adjust"
+  entity    String // model name, e.g. "Product"
+  entityId  String?
+  before    Json?
+  after     Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([actorId, createdAt])
+  @@index([createdAt])
+}
+
+model Setting {
+  key         String   @id
+  value       Json
+  updatedById String?
+  updatedAt   DateTime @updatedAt
+}
+
+model AgentRun {
+  id         String          @id @default(cuid())
+  agentKey   String
+  status     AgentRunStatus  @default(RUNNING)
+  trigger    String          @default("cron") // cron | manual
+  startedAt  DateTime        @default(now())
+  finishedAt DateTime?
+  summary    Json?
+  error      String?
+  proposals  AgentProposal[]
+
+  @@index([agentKey, startedAt])
+}
+
+model AgentProposal {
+  id           String           @id @default(cuid())
+  runId        String?
+  agentKey     String
+  severity     ProposalSeverity @default(INFO)
+  title        String
+  details      Json
+  status       ProposalStatus   @default(OPEN)
+  decidedById  String?
+  decidedAt    DateTime?
+  decisionNote String?
+  appliedAt    DateTime?
+  createdAt    DateTime         @default(now())
+  run          AgentRun?        @relation(fields: [runId], references: [id], onDelete: SetNull)
+  decidedBy    User?            @relation(fields: [decidedById], references: [id], onDelete: SetNull)
+
+  @@index([status, severity])
+  @@index([agentKey, createdAt])
+}
+
+model IdempotencyRecord {
+  id           String            @id @default(cuid())
+  scope        String // e.g. "order.create", "wallet.topup"
+  key          String
+  userId       String?
+  requestHash  String
+  status       IdempotencyStatus @default(IN_PROGRESS)
+  responseCode Int?
+  response     Json?
+  lockedUntil  DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  expiresAt    DateTime
+
+  @@unique([scope, key])
+  @@index([expiresAt])
+}
