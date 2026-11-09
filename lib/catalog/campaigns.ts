@@ -2,6 +2,7 @@ import type { CampaignMediaType, SceneKind } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { localize } from '@/lib/localized';
 import { mediaUrl } from '@/lib/storage';
+import { productPath } from './paths';
 
 /**
  * Campaigns (ads) for a placement: active, inside their date window, by priority.
@@ -133,7 +134,7 @@ export async function getCampaignSlides(placement: Placement, locale: string, no
           image: p.images[0] ? mediaUrl(p.images[0].key) : null,
         }
       : null;
-    const fallback = product ? `/p/${product.slug}` : '/';
+    const fallback = product ? productPath(product.slug) : '/';
     const { href, external } = resolveCampaignHref(c.linkUrl, fallback);
     const src = mediaUrl(c.mediaKey);
     return {

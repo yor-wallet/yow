@@ -1,1 +1,105 @@
-{}
+{
+  "notFoundTitle": "Product not found",
+  "notFoundText": "This product is no longer available or the link is incorrect.",
+  "backToCategories": "Browse categories",
+  "gallery": {
+    "label": "Product images",
+    "previous": "Previous image",
+    "next": "Next image",
+    "thumb": "Show image {index}",
+    "counter": "{current} / {total}",
+    "empty": "Photos coming soon"
+  },
+  "sku": "SKU {sku}",
+  "model": "Model {model}",
+  "brandLink": "More from {brand}",
+  "variants": {
+    "title": "Options",
+    "color": "Colour",
+    "capacity": "Capacity",
+    "other": "Version",
+    "selected": "Selected: {label}",
+    "unavailable": "Unavailable"
+  },
+  "availability": {
+    "in_stock": "In stock",
+    "low_stock": "Only {count} left",
+    "out_of_stock": "Out of stock",
+    "unavailable": "Unavailable"
+  },
+  "price": {
+    "unavailableTitle": "Price not available yet",
+    "unavailableText": "This product cannot be ordered until our team confirms its price."
+  },
+  "qty": {
+    "label": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "max": "Maximum {max} per order"
+  },
+  "addToCart": "Add to cart",
+  "buyNow": "Buy now",
+  "adding": "Adding…",
+  "added": "Added to cart",
+  "viewCart": "View cart",
+  "share": {
+    "label": "Share",
+    "title": "Share this product",
+    "copied": "Link copied",
+    "failed": "Could not share this product"
+  },
+  "compare": {
+    "add": "Compare",
+    "remove": "Remove from comparison",
+    "added": "Added to comparison",
+    "removed": "Removed from comparison",
+    "view": "View comparison"
+  },
+  "delivery": {
+    "title": "Delivery",
+    "standard": "Standard delivery, target 24 h",
+    "express": "DOOM EXPRESS, target 6 h",
+    "notExpress": "Not eligible for express delivery",
+    "text": "Exact times and fees depend on your area and are shown before you pay.",
+    "link": "Delivery zones & times"
+  },
+  "warranty": {
+    "title": "Warranty",
+    "months": "{count, plural, one {# month} other {# months}}",
+    "none": "No warranty information provided"
+  },
+  "flex": {
+    "title": "DOOM FLEX",
+    "from": "From {amount} / month over 12 months",
+    "text": "0% interest, no fees. The total equals the cash price.",
+    "cta": "Learn more about FLEX"
+  },
+  "payments": {
+    "title": "Secure payment",
+    "text": "The payment methods available to you are shown at checkout. A payment is only confirmed once it is really received."
+  },
+  "tabs": {
+    "overview": "Overview",
+    "specs": "Specifications",
+    "reviews": "Reviews"
+  },
+  "highlights": "Highlights",
+  "description": "Description",
+  "specs": {
+    "title": "Specifications",
+    "empty": "Specifications will be added soon."
+  },
+  "reviews": {
+    "title": "Customer reviews",
+    "empty": "No review yet",
+    "emptyText": "Only customers who received this product can review it.",
+    "verified": "Verified purchase",
+    "average": "{rating} out of 5",
+    "count": "{count, plural, one {# review} other {# reviews}}",
+    "by": "By {name}"
+  },
+  "errors": {
+    "pickVariant": "Choose an option first.",
+    "outOfStock": "This option is out of stock."
+  }
+}

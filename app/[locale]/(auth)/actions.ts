@@ -3,6 +3,7 @@
 import { getLocale } from 'next-intl/server';
 import { redirect } from '@/i18n/navigation';
 import { login, logout, register, type AuthErrorCode } from '@/lib/auth';
+import { mergeAnonymousCartFromCookie } from '@/lib/cart';
 import { formDataToObject, safeRedirectPath, type FieldErrors } from '@/lib/validation';
 import { routing } from '@/i18n/routing';
 
@@ -41,6 +42,8 @@ export async function loginAction(_prev: AuthFormState, formData: FormData): Pro
       values: { email: String(input.email ?? '') },
     };
   }
+  // Visitor cart (cookie) → the account's cart. Never blocks the sign-in.
+  await mergeAnonymousCartFromCookie(res.user.id);
   const locale = await getLocale();
   redirect({ href: nextPath(formData.get('next'), '/account'), locale });
   return { status: 'idle' };
@@ -68,6 +71,7 @@ export async function registerAction(_prev: AuthFormState, formData: FormData): 
   if (!res.ok) {
     return { status: 'error', error: res.error, fieldErrors: res.fieldErrors, retryAfterSec: res.retryAfterSec, values };
   }
+  await mergeAnonymousCartFromCookie(res.user.id);
   redirect({ href: nextPath(formData.get('next'), '/account'), locale });
   return { status: 'idle' };
 }

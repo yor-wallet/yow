@@ -17,6 +17,7 @@ export function PageHeader({
   actions,
   className,
   mobileOnly = false,
+  mobileHeading = 'h1',
 }: {
   title: string;
   subtitle?: ReactNode;
@@ -25,7 +26,10 @@ export function PageHeader({
   className?: string;
   /** Render only the mobile sticky bar (the page shows its own desktop heading). */
   mobileOnly?: boolean;
+  /** `div` when the page body already has its own <h1> (avoids two headings of level 1 on phones). */
+  mobileHeading?: 'h1' | 'div';
 }) {
+  const MobileTitle = mobileHeading;
   return (
     <>
       <div
@@ -35,7 +39,7 @@ export function PageHeader({
       >
         <div className="flex min-h-14 items-center gap-1 ps-[max(8px,var(--safe-left))] pe-[max(8px,var(--safe-right))]">
           <BackButton fallbackHref={fallbackHref} variant="icon" />
-          <h1 className="min-w-0 flex-1 truncate text-base font-bold">{title}</h1>
+          <MobileTitle className="min-w-0 flex-1 truncate text-base font-bold">{title}</MobileTitle>
           {actions ? <div className="flex shrink-0 items-center gap-1">{actions}</div> : null}
         </div>
       </div>

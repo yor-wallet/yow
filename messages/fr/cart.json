@@ -1,1 +1,38 @@
-{}
+{
+  "metaTitle": "Panier",
+  "title": "Panier",
+  "count": "{count, plural, one {# article} other {# articles}}",
+  "emptyTitle": "Votre panier est vide",
+  "emptyText": "Ajoutez des produits pour les voir ici. Votre panier est conservé sur cet appareil et, une fois connecté, sur votre compte.",
+  "shop": "Continuer mes achats",
+  "line": {
+    "qty": "Quantité",
+    "decrease": "Diminuer la quantité de {name}",
+    "increase": "Augmenter la quantité de {name}",
+    "remove": "Retirer {name}",
+    "removed": "Retiré du panier",
+    "unit": "{price} l'unité",
+    "state": {
+      "qty_reduced": "Seulement {count} disponible(s) — quantité ajustée.",
+      "out_of_stock": "Rupture de stock",
+      "unavailable": "N'est plus disponible"
+    }
+  },
+  "summary": {
+    "title": "Récapitulatif",
+    "subtotal": "Sous-total",
+    "discount": "Promotion",
+    "deliveryNote": "La livraison est calculée au paiement.",
+    "total": "Total",
+    "savings": "Vous économisez {amount}"
+  },
+  "checkout": "Passer à la caisse",
+  "checkoutBlocked": "Retirez ou ajustez les articles indisponibles pour continuer.",
+  "removeUnavailable": "Retirer les articles indisponibles",
+  "removedUnavailable": "{count, plural, one {# article retiré} other {# articles retirés}}",
+  "flexHint": "Payez en 3, 6 ou 12 mois avec DOOM FLEX — disponible au paiement une fois votre identité vérifiée.",
+  "secure": "Paiement sécurisé · Prix en OMR",
+  "errors": {
+    "generic": "Le panier n'a pas pu être mis à jour. Veuillez réessayer."
+  }
+}

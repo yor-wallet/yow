@@ -1,1 +1,38 @@
-{}
+{
+  "metaTitle": "Cart",
+  "title": "Cart",
+  "count": "{count, plural, one {# item} other {# items}}",
+  "emptyTitle": "Your cart is empty",
+  "emptyText": "Add products to see them here. Your cart is kept on this device and, once you sign in, on your account.",
+  "shop": "Continue shopping",
+  "line": {
+    "qty": "Quantity",
+    "decrease": "Decrease quantity of {name}",
+    "increase": "Increase quantity of {name}",
+    "remove": "Remove {name}",
+    "removed": "Removed from cart",
+    "unit": "{price} each",
+    "state": {
+      "qty_reduced": "Only {count} available — quantity adjusted.",
+      "out_of_stock": "Out of stock",
+      "unavailable": "No longer available"
+    }
+  },
+  "summary": {
+    "title": "Summary",
+    "subtotal": "Subtotal",
+    "discount": "Promotion",
+    "deliveryNote": "Delivery is calculated at checkout.",
+    "total": "Total",
+    "savings": "You save {amount}"
+  },
+  "checkout": "Checkout",
+  "checkoutBlocked": "Remove or adjust the unavailable items to continue.",
+  "removeUnavailable": "Remove unavailable items",
+  "removedUnavailable": "{count, plural, one {# item removed} other {# items removed}}",
+  "flexHint": "Pay in 3, 6 or 12 months with DOOM FLEX — available at checkout once your identity is verified.",
+  "secure": "Secure checkout · Prices in OMR",
+  "errors": {
+    "generic": "The cart could not be updated. Please try again."
+  }
+}

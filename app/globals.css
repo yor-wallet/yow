@@ -52,6 +52,7 @@
   --animate-sheet-in: doom-sheet-in var(--dur-nav) var(--ease-premium) both;
   --animate-modal-in: doom-modal-in var(--dur-nav) var(--ease-premium) both;
   --animate-toast-in: doom-toast-in var(--dur-nav) var(--ease-premium) both;
+  --animate-kenburns: doom-kenburns 9s ease-out both;
 
   @keyframes doom-shimmer {
     from { background-position: 200% 0; }
@@ -73,6 +74,12 @@
     from { opacity: 0; transform: translateY(8px) scale(0.97); }
     to { opacity: 1; transform: none; }
   }
+  /* Storefront hero: slow zoom on campaign photos (motion-safe only). */
+  @keyframes doom-kenburns {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+
   @keyframes doom-toast-in {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: none; }
@@ -375,5 +382,10 @@ html[lang='ar'] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  /* <Reveal> server-renders its hidden start state; never leave content invisible for these users. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
