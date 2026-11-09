@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: doom_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://postgres@localhost:5432/doom_test
+      TEST_DATABASE_URL: postgresql://postgres@localhost:5432/doom_test
+      APP_URL: http://localhost:3000
+      SESSION_SECRET: ci-only-session-secret-not-for-production-0123456789abcdef
+      KYC_ENCRYPTION_KEY: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
+      CRON_SECRET: ci-cron-secret
+      ADMIN_EMAIL: admin@ci.local
+      ADMIN_PASSWORD: Ci-Admin-Password-2026!
+      SESSION_COOKIE_SECURE: 'false'
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx prisma migrate deploy
+      - run: npm run db:seed
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: E2E (iPhone SE, iPad Mini, desktop)
+        run: E2E_SKIP_BUILD=1 npx playwright test --project=iphone-se --project=ipad-mini --project=desktop --trace off
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7

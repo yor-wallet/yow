@@ -1,0 +1,25 @@
+{
+  "appId": "om.doom.store",
+  "appName": "DOOM | دوم",
+  "webDir": "capacitor/www",
+  "backgroundColor": "#10052E",
+  "server": {
+    "url": "https://REPLACE-WITH-PRODUCTION-DOMAIN/ar",
+    "cleartext": false,
+    "androidScheme": "https",
+    "errorPath": "index.html"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#10052E",
+      "androidScaleType": "CENTER_INSIDE",
+      "showSpinner": false
+    }
+  }
+}
