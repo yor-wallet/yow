@@ -65,6 +65,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Separate build dirs let several dev servers run side by side (NEXT_DIST_DIR=.next-shop …).
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   reactStrictMode: true,
   poweredByHeader: false,
   images: {

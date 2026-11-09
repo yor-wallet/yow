@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "global.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "legacy", ".next", "storage", "playwright-report", "test-results"]
+  "include": ["next-env.d.ts", "global.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next-shop/types/**/*.ts", ".next-money/types/**/*.ts", ".next-logistics/types/**/*.ts", ".next-admin/types/**/*.ts"],
+  "exclude": ["node_modules", "legacy", ".next", ".next-shop", ".next-money", ".next-logistics", ".next-admin", "storage", "playwright-report", "test-results"]
 }

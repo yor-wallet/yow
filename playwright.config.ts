@@ -13,6 +13,8 @@ const TEST_DB = process.env.TEST_DATABASE_URL || 'postgresql://postgres@localhos
 const chromium = { browserName: 'chromium' as const, defaultBrowserType: 'chromium' as const };
 
 const build = process.env.E2E_SKIP_BUILD ? '' : 'npm run build && ';
+/** Point at an already running server (e.g. a module dev server) with BASE_URL=http://localhost:3101 — no webServer is started then. */
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -24,7 +26,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: BASE_URL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     timezoneId: 'Asia/Muscat',
@@ -41,7 +43,7 @@ export default defineConfig({
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1920, height: 1080 } } },
     { name: 'wide', use: { ...devices['Desktop Chrome'], viewport: { width: 2560, height: 1440 } } },
   ],
-  webServer: {
+  webServer: process.env.BASE_URL ? undefined : {
     command: `npx prisma migrate deploy && npm run db:seed && ${build}npm run start`,
     url: 'http://localhost:3000/api/health',
     reuseExistingServer: !process.env.CI,
