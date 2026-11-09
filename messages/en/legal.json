@@ -1,0 +1,39 @@
+{
+  "updated": "Last updated: {date}",
+  "terms": {
+    "title": "Terms of sale",
+    "intro": "These terms govern purchases made on DOOM | دوم in the Sultanate of Oman.",
+    "s1Title": "Prices and currency",
+    "s1Body": "Prices are shown in Omani rials (OMR) with three decimals and include the information available at the time of display. A product without a confirmed price cannot be ordered.",
+    "s2Title": "Orders and payment",
+    "s2Body": "An order is confirmed only after the payment has been confirmed by the payment provider or verified by our finance team. Payment methods that are not yet available are shown as unavailable and cannot be selected.",
+    "s3Title": "Delivery",
+    "s3Body": "Delivery times are targets that depend on your zone and on the capacity configured for it. The delivery fee and estimated time are shown before you pay. Handover is confirmed with a one-time code.",
+    "s4Title": "DOOM FLEX",
+    "s4Body": "Instalment plans of 3, 6 or 12 months carry no interest and no fees; the total equals the cash price. Each application requires identity verification and is subject to approval."
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "We collect only the data needed to sell, deliver and secure your purchases.",
+    "s1Title": "Data we collect",
+    "s1Body": "Name, email, mobile number, delivery addresses, order history and, if you request enhanced verification, identity documents.",
+    "s2Title": "Protection",
+    "s2Body": "Identity documents are encrypted at rest (AES-256-GCM), stored privately and accessible only to authorised staff. Every access is logged.",
+    "s3Title": "Use",
+    "s3Body": "Your data is used to process orders, payments, deliveries, support and fraud prevention. We do not sell your data.",
+    "s4Title": "Your rights",
+    "s4Body": "You can ask customer support to access, correct or delete your data, subject to legal record-keeping obligations."
+  },
+  "returns": {
+    "title": "Returns & refunds",
+    "intro": "If a product does not meet your expectations or arrives damaged, contact customer support.",
+    "s1Title": "Requesting a return",
+    "s1Body": "Open a support request from your order with the reason and photos if the item is damaged.",
+    "s2Title": "Inspection",
+    "s2Body": "Returned products are inspected to confirm their condition and completeness before a refund is approved.",
+    "s3Title": "Refund method",
+    "s3Body": "Approved refunds are credited to your DOOM Wallet or to the original payment method when the provider supports it.",
+    "s4Title": "Warranty",
+    "s4Body": "The warranty period of each product is shown on its page and on your receipt."
+  }
+}

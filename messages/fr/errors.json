@@ -1,0 +1,33 @@
+{
+  "validation": {
+    "required": "Ce champ est obligatoire.",
+    "email_invalid": "Saisissez une adresse e-mail valide.",
+    "phone_invalid": "Saisissez un numéro omanais valide (8 chiffres).",
+    "password_too_short": "Utilisez au moins 10 caractères.",
+    "password_weak": "Utilisez des lettres et des chiffres.",
+    "password_mismatch": "Les mots de passe ne correspondent pas.",
+    "name_too_short": "Saisissez votre nom complet.",
+    "too_long": "Cette valeur est trop longue.",
+    "terms_required": "Vous devez accepter les conditions pour continuer.",
+    "amount_invalid": "Saisissez un montant valide.",
+    "amount_too_large": "Ce montant est trop élevé.",
+    "slug_invalid": "Utilisez des minuscules, des chiffres et des tirets.",
+    "idempotency_invalid": "Cette demande a expiré. Rechargez la page et réessayez.",
+    "location_outside_oman": "Cet emplacement se trouve hors du Sultanat d'Oman.",
+    "redirect_invalid": "Lien invalide.",
+    "email_taken": "Un compte existe déjà avec cet e-mail.",
+    "phone_taken": "Ce numéro est déjà associé à un compte."
+  },
+  "notFound": {
+    "metaTitle": "Page introuvable",
+    "code": "Erreur 404",
+    "title": "Page introuvable",
+    "description": "La page que vous cherchez n'existe pas ou a été déplacée."
+  },
+  "error": {
+    "code": "Erreur",
+    "title": "Une erreur s'est produite",
+    "description": "Une erreur inattendue est survenue. Vous pouvez réessayer ou revenir en arrière.",
+    "reference": "Référence : {digest}"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "updated": "Dernière mise à jour : {date}",
+  "terms": {
+    "title": "Conditions de vente",
+    "intro": "Ces conditions régissent les achats effectués sur DOOM | دوم au Sultanat d'Oman.",
+    "s1Title": "Prix et devise",
+    "s1Body": "Les prix sont affichés en rials omanais (OMR) avec trois décimales. Un produit sans prix confirmé ne peut pas être commandé.",
+    "s2Title": "Commandes et paiement",
+    "s2Body": "Une commande n'est confirmée qu'après confirmation du paiement par le prestataire ou vérification par notre équipe financière. Les moyens de paiement non encore disponibles sont affichés comme indisponibles et ne peuvent pas être choisis.",
+    "s3Title": "Livraison",
+    "s3Body": "Les délais de livraison sont des objectifs qui dépendent de votre zone et de la capacité configurée. Les frais et le délai estimé sont affichés avant le paiement. La remise est confirmée par un code à usage unique.",
+    "s4Title": "DOOM FLEX",
+    "s4Body": "Les paiements en 3, 6 ou 12 mois sont sans intérêts ni frais ; le total est égal au prix comptant. Chaque demande nécessite une vérification d'identité et reste soumise à acceptation."
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "intro": "Nous collectons uniquement les données nécessaires pour vendre, livrer et sécuriser vos achats.",
+    "s1Title": "Données collectées",
+    "s1Body": "Nom, e-mail, numéro de mobile, adresses de livraison, historique de commandes et, si vous demandez la vérification renforcée, pièces d'identité.",
+    "s2Title": "Protection",
+    "s2Body": "Les pièces d'identité sont chiffrées au repos (AES-256-GCM), stockées de façon privée et accessibles uniquement au personnel autorisé. Chaque accès est journalisé.",
+    "s3Title": "Utilisation",
+    "s3Body": "Vos données servent au traitement des commandes, paiements, livraisons, au support et à la prévention de la fraude. Nous ne vendons pas vos données.",
+    "s4Title": "Vos droits",
+    "s4Body": "Vous pouvez demander au service client l'accès, la rectification ou la suppression de vos données, sous réserve des obligations légales de conservation."
+  },
+  "returns": {
+    "title": "Retours et remboursements",
+    "intro": "Si un produit ne vous convient pas ou arrive endommagé, contactez le service client.",
+    "s1Title": "Demander un retour",
+    "s1Body": "Ouvrez une demande d'assistance depuis votre commande en indiquant le motif, avec des photos si l'article est endommagé.",
+    "s2Title": "Contrôle",
+    "s2Body": "Les produits retournés sont contrôlés pour confirmer leur état et leur complétude avant l'approbation du remboursement.",
+    "s3Title": "Mode de remboursement",
+    "s3Body": "Les remboursements approuvés sont crédités sur votre portefeuille DOOM ou sur le moyen de paiement d'origine lorsque le prestataire le permet.",
+    "s4Title": "Garantie",
+    "s4Body": "La durée de garantie de chaque produit figure sur sa fiche et sur votre reçu."
+  }
+}

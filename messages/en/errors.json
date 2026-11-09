@@ -1,0 +1,33 @@
+{
+  "validation": {
+    "required": "This field is required.",
+    "email_invalid": "Enter a valid email address.",
+    "phone_invalid": "Enter a valid Omani number (8 digits).",
+    "password_too_short": "Use at least 10 characters.",
+    "password_weak": "Use both letters and numbers.",
+    "password_mismatch": "Passwords do not match.",
+    "name_too_short": "Enter your full name.",
+    "too_long": "This value is too long.",
+    "terms_required": "You must accept the terms to continue.",
+    "amount_invalid": "Enter a valid amount.",
+    "amount_too_large": "This amount is too large.",
+    "slug_invalid": "Use lowercase letters, numbers and dashes.",
+    "idempotency_invalid": "This request expired. Reload the page and try again.",
+    "location_outside_oman": "This location is outside the Sultanate of Oman.",
+    "redirect_invalid": "Invalid link.",
+    "email_taken": "An account already exists with this email.",
+    "phone_taken": "This number is already linked to an account."
+  },
+  "notFound": {
+    "metaTitle": "Page not found",
+    "code": "Error 404",
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has moved."
+  },
+  "error": {
+    "code": "Error",
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can try again or go back.",
+    "reference": "Reference: {digest}"
+  }
+}

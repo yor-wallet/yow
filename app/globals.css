@@ -1,0 +1,379 @@
+@import 'tailwindcss';
+
+/*
+ * DOOM | دوم — design tokens (Tailwind v4).
+ * The default Tailwind palette is REMOVED: only DOOM colours exist as utilities
+ * (bg-night, text-cyan, …) plus semantic theme tokens (bg-bg, text-fg, …).
+ * See docs/ARCHITECTURE.md → Design tokens.
+ */
+
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --color-*: initial;
+  --color-night: #10052e;
+  --color-night-2: #190b45;
+  --color-blue: #087bff;
+  --color-cyan: #00d9ff;
+  --color-orange: #ff7900;
+  --color-amber: #ffae00;
+  --color-white: #ffffff;
+  --color-mist: #c9c5de; /* secondary text on dark */
+  --color-snow: #f7f9ff; /* light background */
+  --color-ink: #17152d; /* light text */
+  --color-success: #16a673;
+  --color-error: #e5484d;
+
+  --font-sans: var(--app-font-stack);
+
+  --breakpoint-xs: 375px;
+  --breakpoint-sm: 430px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1600px;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-glow-blue: 0 0 0 1px rgb(8 123 255 / 0.28), 0 10px 34px -10px rgb(8 123 255 / 0.65);
+  --shadow-glow-cyan: 0 0 0 1px rgb(0 217 255 / 0.3), 0 10px 34px -10px rgb(0 217 255 / 0.6);
+  --shadow-glow-orange: 0 0 0 1px rgb(255 121 0 / 0.3), 0 10px 34px -10px rgb(255 121 0 / 0.6);
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 18px 40px -24px rgb(16 5 46 / 0.65);
+  --shadow-float: 0 24px 60px -20px rgb(16 5 46 / 0.75);
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --animate-shimmer: doom-shimmer 1.6s linear infinite;
+  --animate-fade-in: doom-fade-in var(--dur-nav) var(--ease-premium) both;
+  --animate-slide-up: doom-slide-up var(--dur-card) var(--ease-premium) both;
+  --animate-sheet-in: doom-sheet-in var(--dur-nav) var(--ease-premium) both;
+  --animate-modal-in: doom-modal-in var(--dur-nav) var(--ease-premium) both;
+  --animate-toast-in: doom-toast-in var(--dur-nav) var(--ease-premium) both;
+
+  @keyframes doom-shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes doom-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes doom-slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes doom-sheet-in {
+    from { transform: translateY(100%); }
+    to { transform: none; }
+  }
+  @keyframes doom-modal-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes doom-toast-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* Semantic tokens: switch with the theme. Use these in components. */
+@theme inline {
+  --color-bg: var(--doom-bg);
+  --color-bg-2: var(--doom-bg-2);
+  --color-surface: var(--doom-surface);
+  --color-surface-2: var(--doom-surface-2);
+  --color-fg: var(--doom-fg);
+  --color-muted: var(--doom-muted);
+  --color-border: var(--doom-border);
+  --color-border-strong: var(--doom-border-strong);
+  --color-accent: var(--doom-accent);
+  --color-on-accent: #10052e;
+  --color-ring: var(--doom-ring);
+}
+
+:root {
+  /* Motion durations (SPEC: buttons 100–180, nav 180–300, cards 200–350, banners 400–800 ms) */
+  --dur-btn: 140ms;
+  --dur-nav: 240ms;
+  --dur-card: 280ms;
+  --dur-banner: 600ms;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #087bff 0%, #00d9ff 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff7900 0%, #ffae00 100%);
+  --gradient-premium: linear-gradient(160deg, #10052e 0%, #190b45 55%, #087bff 140%);
+
+  /* Safe areas & chrome sizes */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --bottom-nav-h: 64px;
+  --page-max: 1600px;
+  --page-gutter: clamp(16px, 4vw, 40px);
+
+  --app-font-stack: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Noto Sans Arabic', Tahoma, sans-serif;
+}
+
+html[lang='ar'] {
+  --app-font-stack: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Tahoma,
+    'Noto Sans Arabic', sans-serif;
+}
+
+/* Dark is the default theme */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --doom-bg: #10052e;
+  --doom-bg-2: #190b45;
+  --doom-surface: #190b45;
+  --doom-surface-2: color-mix(in srgb, #190b45 88%, #c9c5de 12%);
+  --doom-fg: #ffffff;
+  --doom-muted: #c9c5de;
+  --doom-border: rgb(201 197 222 / 0.14);
+  --doom-border-strong: rgb(201 197 222 / 0.3);
+  --doom-accent: #00d9ff;
+  --doom-ring: #00d9ff;
+  --doom-glass: rgb(25 11 69 / 0.62);
+  --doom-header: rgb(16 5 46 / 0.82);
+  --doom-overlay: rgb(16 5 46 / 0.72);
+  --doom-skeleton: rgb(201 197 222 / 0.08);
+  --doom-skeleton-hi: rgb(201 197 222 / 0.18);
+  --doom-page-glow: radial-gradient(1100px 520px at 85% -8%, rgb(8 123 255 / 0.2), transparent 62%),
+    radial-gradient(800px 420px at -8% 4%, rgb(255 121 0 / 0.08), transparent 60%);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --doom-bg: #f7f9ff;
+  --doom-bg-2: #ffffff;
+  --doom-surface: #ffffff;
+  --doom-surface-2: color-mix(in srgb, #f7f9ff 75%, #c9c5de 25%);
+  --doom-fg: #17152d;
+  --doom-muted: color-mix(in srgb, #17152d 70%, #f7f9ff 30%);
+  --doom-border: rgb(23 21 45 / 0.12);
+  --doom-border-strong: rgb(23 21 45 / 0.26);
+  --doom-accent: color-mix(in srgb, #087bff 72%, #10052e 28%); /* AA on light surfaces */
+  --doom-ring: #087bff;
+  --doom-glass: rgb(255 255 255 / 0.74);
+  --doom-header: rgb(247 249 255 / 0.86);
+  --doom-overlay: rgb(16 5 46 / 0.55);
+  --doom-skeleton: rgb(23 21 45 / 0.06);
+  --doom-skeleton-hi: rgb(23 21 45 / 0.12);
+  --doom-page-glow: radial-gradient(1100px 520px at 85% -8%, rgb(8 123 255 / 0.1), transparent 62%),
+    radial-gradient(800px 420px at -8% 4%, rgb(255 174 0 / 0.08), transparent 60%);
+}
+
+@layer base {
+  html {
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background-color: var(--doom-bg);
+    color: var(--doom-fg);
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 88px;
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: clip;
+    background-color: var(--doom-bg);
+    background-image: var(--doom-page-glow);
+    background-repeat: no-repeat;
+    color: var(--doom-fg);
+    font-family: var(--app-font-stack);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  img,
+  video {
+    height: auto;
+  }
+
+  /* iOS zooms on focus below 16px — never go below. */
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
+  }
+
+  button,
+  [role='button'],
+  a {
+    touch-action: manipulation;
+  }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--doom-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: rgb(0 217 255 / 0.32);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  [dir='rtl'] h1,
+  [dir='rtl'] h2,
+  [dir='rtl'] h3 {
+    letter-spacing: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ───────── Utilities ───────── */
+
+@utility bg-gradient-primary {
+  background-image: var(--gradient-primary);
+}
+@utility bg-gradient-secondary {
+  background-image: var(--gradient-secondary);
+}
+@utility bg-gradient-premium {
+  background-image: var(--gradient-premium);
+}
+
+/* Gradient text — large display text on dark surfaces only (contrast). */
+@utility text-gradient-primary {
+  background-image: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility text-gradient-secondary {
+  background-image: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glass {
+  background-color: var(--doom-glass);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--doom-border);
+}
+
+/* 1px gradient border that keeps the surface background. */
+@utility gradient-border {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--doom-surface), var(--doom-surface)) padding-box,
+    var(--gradient-primary) border-box;
+}
+@utility gradient-border-secondary {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--doom-surface), var(--doom-surface)) padding-box,
+    var(--gradient-secondary) border-box;
+}
+
+@utility page-container {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-left: max(var(--page-gutter), var(--safe-left));
+  padding-right: max(var(--page-gutter), var(--safe-right));
+}
+
+@utility pb-safe {
+  padding-bottom: var(--safe-bottom);
+}
+@utility pt-safe {
+  padding-top: var(--safe-top);
+}
+
+/* Room for the fixed mobile bottom nav (applied to <main> under lg). */
+@utility pb-bottom-nav {
+  padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 16px);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Mirror directional icons (arrows, chevrons) in RTL. */
+@utility flip-rtl {
+  &:where([dir='rtl'], [dir='rtl'] *) {
+    transform: scaleX(-1);
+  }
+}
+
+@utility skeleton {
+  background-color: var(--doom-skeleton);
+  background-image: linear-gradient(90deg, transparent 0%, var(--doom-skeleton-hi) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+.skip-link {
+  position: fixed;
+  inset-inline-start: 12px;
+  top: calc(8px + var(--safe-top));
+  z-index: 100;
+  transform: translateY(-200%);
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: var(--gradient-primary);
+  color: #10052e;
+  font-weight: 700;
+  transition: transform var(--dur-btn) var(--ease-snappy);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Respect reduced motion everywhere. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-btn: 0.01ms;
+    --dur-nav: 0.01ms;
+    --dur-card: 0.01ms;
+    --dur-banner: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

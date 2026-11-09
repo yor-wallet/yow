@@ -1,0 +1,31 @@
+{
+  "metaTitle": "My account",
+  "title": "My account",
+  "greeting": "Hello, {name}",
+  "profile": {
+    "title": "Profile",
+    "email": "Email",
+    "phone": "Mobile",
+    "language": "Preferred language",
+    "notSet": "Not provided"
+  },
+  "kyc": {
+    "title": "Identity verification",
+    "status": {
+      "UNVERIFIED": "Not verified",
+      "PENDING": "Under review",
+      "DOCUMENTS_REQUESTED": "Documents requested",
+      "VERIFIED": "Verified",
+      "REJECTED": "Rejected"
+    }
+  },
+  "links": {
+    "orders": "My orders",
+    "ordersText": "Track deliveries and view past orders.",
+    "wallet": "DOOM Wallet",
+    "walletText": "Balance, top-ups and receipts.",
+    "admin": "Admin centre",
+    "adminText": "Manage the store according to your role."
+  },
+  "logout": "Sign out"
+}

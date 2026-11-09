@@ -1,0 +1,50 @@
+{
+  "brand": "DOOM | دوم",
+  "meta": {
+    "description": "DOOM | دوم — premium electronics in the Sultanate of Oman: smartphones, computers, audio and accessories, with prices in OMR, secure payments and delivery across the 11 governorates.",
+    "ogTitle": "DOOM | دوم — Premium electronics in Oman"
+  },
+  "actions": {
+    "back": "Back",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "continue": "Continue",
+    "retry": "Try again",
+    "search": "Search",
+    "seeAll": "See all",
+    "submit": "Submit",
+    "goHome": "Back to home",
+    "learnMore": "Learn more"
+  },
+  "loading": "Loading…",
+  "price": {
+    "unavailable": "Price unavailable",
+    "was": "Was {price}",
+    "save": "Save {amount}"
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "locale": {
+    "label": "Language",
+    "switchTo": "Switch language to {language}"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "required": "required",
+    "dismiss": "Dismiss",
+    "newWindow": "opens in a new window"
+  },
+  "offline": "You are offline. Some features are unavailable until the connection returns.",
+  "stepper": {
+    "progress": "Step {current} of {total}",
+    "completed": "completed",
+    "current": "current step"
+  },
+  "tabs": {
+    "label": "Sections"
+  }
+}

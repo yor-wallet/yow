@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "eyebrow": "Premium electronics · Sultanate of Oman",
+    "title": "The technology you want, delivered across Oman.",
+    "subtitle": "Smartphones, computers, audio and accessories — prices in OMR, verified-purchase reviews and secure payments.",
+    "ctaCategories": "Browse categories",
+    "ctaSearch": "Search the catalogue"
+  },
+  "categories": {
+    "title": "Shop by category",
+    "subcategories": "{count, plural, one {# subcategory} other {# subcategories}}"
+  },
+  "catalogue": {
+    "emptyTitle": "Products are on their way",
+    "emptyText": "Our team is adding products with verified prices and stock. Browse the categories in the meantime."
+  }
+}

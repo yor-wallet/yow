@@ -57,7 +57,7 @@ const securityHeaders = [
   {
     key: 'Permissions-Policy',
     value:
-      'camera=(self), geolocation=(self), microphone=(), payment=(self), usb=(), bluetooth=(), serial=(), browsing-topics=(), interest-cohort=()',
+      'camera=(self), geolocation=(self), microphone=(), payment=(self), usb=(), serial=(), browsing-topics=()',
   },
   { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },

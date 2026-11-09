@@ -1,0 +1,52 @@
+{
+  "home": "Home",
+  "categories": "Categories",
+  "allCategories": "All categories",
+  "cart": "Cart",
+  "orders": "Orders",
+  "profile": "Profile",
+  "account": "Account",
+  "wallet": "Wallet",
+  "promotions": "Promotions",
+  "notifications": "Notifications",
+  "login": "Sign in",
+  "admin": "Admin centre",
+  "mainNavigation": "Main navigation",
+  "bottomNavigation": "Primary navigation",
+  "categoryMenu": "Product categories",
+  "viewAllIn": "View all {name}",
+  "search": {
+    "label": "Search products",
+    "placeholder": "Search phones, laptops, audio…",
+    "submit": "Search"
+  },
+  "cartCount": "{count, plural, =0 {Cart, empty} one {Cart, # item} other {Cart, # items}}",
+  "unread": "{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}",
+  "footer": {
+    "about": "About DOOM",
+    "aboutText": "DOOM | دوم is a premium electronics store in the Sultanate of Oman. Prices are shown in Omani rials and every review comes from a verified purchase.",
+    "shop": "Shop",
+    "help": "Help",
+    "legal": "Legal",
+    "payments": "Payment methods",
+    "paymentsNote": "Methods available for your order are confirmed at checkout.",
+    "languages": "Languages",
+    "rights": "© {year} DOOM | دوم. All rights reserved.",
+    "delivery": "Delivery & DOOM EXPRESS",
+    "support": "Customer support",
+    "trackOrder": "Track an order",
+    "flex": "DOOM FLEX",
+    "terms": "Terms of sale",
+    "privacy": "Privacy policy",
+    "returns": "Returns & refunds"
+  },
+  "paymentMethods": {
+    "wallet": "DOOM Wallet",
+    "card": "Visa / Mastercard",
+    "ooredoo": "Ooredoo",
+    "omantel": "Omantel",
+    "crypto": "Crypto (BTC, ETH, USDT, USDC)",
+    "giftCard": "Gift cards",
+    "flex": "DOOM FLEX"
+  }
+}
