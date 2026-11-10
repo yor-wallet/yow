@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Heart, Loader2, ShoppingCart } from 'lucide-react';
+import { Heart, Loader2, Share2, ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useToast } from '@/components/ui/Toast';
@@ -108,6 +108,41 @@ export function FavoriteButton({
       )}
     >
       <Heart size={20} aria-hidden="true" fill={favorited ? 'currentColor' : 'none'} />
+    </button>
+  );
+}
+
+/** Share the current page (native share sheet, else copy the link). `iconOnly` for compact title rows. */
+export function ShareButton({ title, iconOnly = false, className }: { title: string; iconOnly?: boolean; className?: string }) {
+  const t = useTranslations('product.share');
+  const { toast } = useToast();
+  const share = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast({ title: t('copied'), variant: 'success', durationMs: 2500 });
+      }
+    } catch (err) {
+      if ((err as DOMException)?.name !== 'AbortError') toast({ title: t('failed'), variant: 'error' });
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={share}
+      aria-label={iconOnly ? t('label') : undefined}
+      data-testid="share"
+      className={cn(
+        'inline-flex min-h-11 items-center justify-center gap-2 rounded-full text-sm font-semibold text-fg transition-colors hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+        iconOnly ? 'size-11' : 'px-4',
+        className,
+      )}
+    >
+      <Share2 size={iconOnly ? 20 : 18} aria-hidden="true" />
+      {iconOnly ? null : t('label')}
     </button>
   );
 }

@@ -87,3 +87,9 @@ export async function gotoReady(page: Page, url: string) {
   await page.locator('html[data-hydrated="true"]').waitFor({ state: 'attached' });
   return res;
 }
+
+/** Pick a capacity on the product page: pill buttons on desktop, a native menu on phones/tablets. */
+export async function pickCapacity(page: Page, capacity: string) {
+  if (isDesktop(page)) await page.getByRole('button', { name: capacity }).click();
+  else await page.getByTestId('capacity-select').selectOption(capacity);
+}

@@ -14,6 +14,9 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Breadcrumb } from '@/components/shop/Breadcrumb';
 import { ProductHero } from '@/components/shop/ProductHero';
+import { FavoriteButton, ShareButton } from '@/components/shop/ProductCardActions';
+import { getPreferredArea, listAreaOptions } from '@/lib/delivery/area';
+import { localize } from '@/lib/localized';
 import { Stars } from '@/components/shop/Stars';
 import { getFormatter } from 'next-intl/server';
 
@@ -82,6 +85,14 @@ export default async function ProductPage({ params }: Props) {
     getProductReviews(product.id, 20),
   ]);
   const favorite = (await favoriteIdsFor(session?.user.id, [product.id])).has(product.id);
+  // Delivery row: the shopper's area and what its configured zone promises (nothing is promised otherwise).
+  const [areaOptions, area] = await Promise.all([listAreaOptions().catch(() => []), getPreferredArea(session?.user.id).catch(() => null)]);
+  const delivery = {
+    options: areaOptions.map((o) => ({ code: o.code, label: localize(o.name, locale, o.code) })),
+    area: area ? { code: area.code, label: localize(area.name, locale, area.code) } : null,
+    standardHours: area?.standard.configured ? area.standard.hours : null,
+    expressHours: area?.express.configured ? area.express.hours : null,
+  };
   const base = process.env.APP_URL || 'http://localhost:3000';
   const ld = jsonLd(product, `${base}/${locale}${productPath(product.slug)}`, reviewData.average, reviewData.count);
 
@@ -93,8 +104,19 @@ export default async function ProductPage({ params }: Props) {
   ];
 
   return (
-    <div className="pb-14">
-      <PageHeader title={product.name} fallbackHref={categoryPath(product.category.slug)} mobileOnly mobileHeading="div" />
+    <div className="pb-14 max-lg:pb-24">
+      <PageHeader
+        title={product.name}
+        fallbackHref={categoryPath(product.category.slug)}
+        mobileOnly
+        mobileHeading="div"
+        actions={
+          <>
+            <FavoriteButton productId={product.id} initial={favorite} className="static" />
+            <ShareButton title={product.name} iconOnly />
+          </>
+        }
+      />
       <div className="page-container hidden pt-6 lg:block">
         <BackButton fallbackHref={categoryPath(product.category.slug)} variant="text" className="-ms-3" />
       </div>
@@ -102,7 +124,7 @@ export default async function ProductPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
 
       <div className="page-container pt-4">
-        <ProductHero product={product} favorite={favorite} />
+        <ProductHero product={product} favorite={favorite} delivery={delivery} />
       </div>
 
       {(product.description || product.highlights.length > 0) ? (

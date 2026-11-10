@@ -112,7 +112,15 @@ export function ProductGallery({ images, activeId, name }: { images: ImageView[]
       </div>
 
       {count > 1 ? (
-        <ul className="scrollbar-none flex gap-2 overflow-x-auto pb-1" data-scroll-x aria-label={t('label')}>
+        <div className="flex justify-center gap-2 lg:hidden" aria-hidden="true" data-testid="gallery-dots">
+          {images.map((img, i) => (
+            <span key={img.id} className={cn('size-2 rounded-full transition-colors', i === index ? 'bg-blue' : 'bg-border-strong')} />
+          ))}
+        </div>
+      ) : null}
+
+      {count > 1 ? (
+        <ul className="scrollbar-none hidden gap-2 overflow-x-auto pb-1 lg:flex" data-scroll-x aria-label={t('label')}>
           {images.map((img, i) => (
             <li key={img.id} className="shrink-0">
               <button

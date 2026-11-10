@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { backButton, expectNoHorizontalOverflow, gotoReady, isDesktop, useUniqueIp } from './helpers';
+import { backButton, expectNoHorizontalOverflow, gotoReady, isDesktop, pickCapacity, useUniqueIp } from './helpers';
 
 const alpha = '/en/product/e2e-sf-alpha';
 
@@ -150,7 +150,7 @@ test.describe('product page and cart', () => {
     await expect(price).toContainText('100.000');
     await expect(page.getByTestId('product-availability')).toContainText('In stock');
 
-    await page.getByRole('button', { name: '256GB' }).click();
+    await pickCapacity(page, '256GB');
     await expect(price).toContainText('130.000');
     await expectNoHorizontalOverflow(page);
 
@@ -174,17 +174,33 @@ test.describe('product page and cart', () => {
 
   test('stock is a hard limit: the quantity stops at the real availability', async ({ page }) => {
     await gotoReady(page, alpha);
-    await page.getByRole('button', { name: '256GB' }).click(); // stock 3
-    const inc = page.getByRole('button', { name: 'Increase quantity' });
-    for (let i = 0; i < 6; i++) if (await inc.isEnabled()) await inc.click();
-    await expect(page.getByTestId('qty-value')).toHaveText('3');
+    await pickCapacity(page, '256GB'); // stock 3
+    if (isDesktop(page)) {
+      const inc = page.getByRole('button', { name: 'Increase quantity' });
+      for (let i = 0; i < 6; i++) if (await inc.isEnabled()) await inc.click();
+      await expect(page.getByTestId('qty-value')).toHaveText('3');
+      await expect(inc).toBeDisabled();
+      return;
+    }
+    // Phones add one unit from the product page; the quantity is adjusted (and capped) in the cart.
+    await page.getByTestId('add-to-cart').click();
+    await expect(page.getByText('Added to cart')).toBeVisible();
+    await gotoReady(page, '/en/cart');
+    const inc = page.getByRole('button', { name: /Increase quantity of E2E Alpha Phone/ });
+    for (let i = 0; i < 6; i++) {
+      if (!(await inc.isEnabled())) break;
+      const before = await page.getByTestId('cart-qty').textContent();
+      await inc.click();
+      await expect(page.getByTestId('cart-qty')).not.toHaveText(before ?? '');
+    }
+    await expect(page.getByTestId('cart-qty')).toHaveText('3');
     await expect(inc).toBeDisabled();
   });
 
   test('sold-out and unpriced products cannot be bought', async ({ page }) => {
     await gotoReady(page, '/en/product/e2e-sf-soldout');
     await expect(page.getByTestId('add-to-cart')).toBeDisabled();
-    await expect(page.getByTestId('buy-now')).toBeDisabled();
+    if (isDesktop(page)) await expect(page.getByTestId('buy-now')).toBeDisabled(); // phones only show the pinned add-to-cart
     await expect(page.getByTestId('product-availability')).toContainText('Out of stock');
 
     await gotoReady(page, '/en/product/e2e-sf-noprice');

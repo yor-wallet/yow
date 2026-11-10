@@ -8,7 +8,7 @@ export type Crumb = { label: string; href?: string };
 export function Breadcrumb({ items }: { items: Crumb[] }) {
   const t = useTranslations('catalog.category');
   return (
-    <nav aria-label={t('breadcrumb')} className="page-container pt-4">
+    <nav aria-label={t('breadcrumb')} className="page-container pt-4 max-lg:hidden">
       <ol className="flex flex-wrap items-center gap-1 text-sm text-muted">
         {items.map((c, i) => {
           const last = i === items.length - 1;

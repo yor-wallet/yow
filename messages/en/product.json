@@ -61,7 +61,11 @@
     "express": "DOOM EXPRESS, target 6 h",
     "notExpress": "Not eligible for express delivery",
     "text": "Exact times and fees depend on your area and are shown before you pay.",
-    "link": "Delivery zones & times"
+    "link": "Delivery zones & times",
+    "standardIn": "Standard within {hours} h",
+    "expressIn": "Express within {hours} h",
+    "notConfigured": "Delivery times for this area are confirmed at checkout.",
+    "chooseArea": "Choose your area to see delivery times."
   },
   "warranty": {
     "title": "Warranty",
@@ -72,7 +76,12 @@
     "title": "DOOM FLEX",
     "from": "From {amount} / month over 12 months",
     "text": "0% interest, no fees. The total equals the cash price.",
-    "cta": "Learn more about FLEX"
+    "cta": "Learn more about FLEX",
+    "optionsTitle": "Instalment options",
+    "noFees": "No extra fees",
+    "months": "{count} months",
+    "perMonth": "{amount} / month",
+    "note": "Illustration only: 0% interest, subject to identity check and approval."
   },
   "payments": {
     "title": "Secure payment",
@@ -101,5 +110,6 @@
   "errors": {
     "pickVariant": "Choose an option first.",
     "outOfStock": "This option is out of stock."
-  }
+  },
+  "details": "Details"
 }
