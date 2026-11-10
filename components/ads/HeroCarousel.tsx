@@ -186,7 +186,7 @@ export function HeroCarousel({ slides }: { slides: CampaignSlide[] }) {
       <HudCorners className="m-3 text-cyan/60 sm:m-4" size={16} />
 
       {count > 1 ? (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-3 px-4 pb-4 sm:px-8 sm:pb-5">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-3 px-3 pb-1.5 sm:px-8 sm:pb-5">
           <div className="pointer-events-auto flex items-center gap-1.5">
             <button
               type="button"
@@ -205,7 +205,7 @@ export function HeroCarousel({ slides }: { slides: CampaignSlide[] }) {
               <ChevronRight size={20} aria-hidden="true" className="flip-rtl" />
             </button>
           </div>
-          <ol className="pointer-events-auto flex min-w-0 items-center" data-scroll-x>
+          <ol className="pointer-events-auto flex min-w-0 items-center max-md:absolute max-md:inset-x-14 max-md:bottom-1.5 max-md:justify-center" data-scroll-x>
             {slides.map((s, i) => (
               <li key={s.id}>
                 <button
@@ -260,7 +260,7 @@ function Slide({
   const rise = (n: number) => ({ className: styles.rise, style: { '--i': n } as CSSProperties });
   const ctaLabel = slide.cta ?? t('buyNow');
   const onCta = () => trackCampaign(slide.id, 'click');
-  const ctaClass = cn(buttonClasses({ variant: slide.theme === 'secondary' ? 'accent' : 'primary', size: 'lg' }), styles.cta);
+  const ctaClass = cn(buttonClasses({ variant: slide.theme === 'secondary' ? 'accent' : 'primary', size: 'lg' }), styles.cta, 'max-md:min-h-11 max-md:rounded-pill max-md:px-4 max-md:text-sm');
 
   return (
     <div
@@ -312,22 +312,22 @@ function Slide({
       ) : null}
       <div className={styles.sheen} aria-hidden="true" />
 
-      <div className="relative z-[1] grid h-full items-center gap-4 px-5 pb-20 pt-9 sm:px-10 md:grid-cols-[1.05fr_0.95fr] md:gap-6 md:pb-20 lg:px-14">
+      <div className="relative z-[1] grid h-full grid-cols-[1.25fr_0.75fr] items-center gap-3 px-4 pb-12 pt-5 md:grid-cols-[1.05fr_0.95fr] md:gap-6 md:px-10 md:pb-20 md:pt-9 lg:px-14">
         <div className="min-w-0 max-w-xl">
-          <p {...rise(0)}>
+          <p {...rise(0)} className={cn(styles.rise, 'max-md:hidden')}>
             <span className="hud-label">{eyebrow}</span>
           </p>
-          <h2 {...rise(1)} className={cn(styles.rise, 'neon mt-3 font-display text-[clamp(1.75rem,4.8vw,3.25rem)] font-extrabold leading-[1.06]')}>
+          <h2 {...rise(1)} className={cn(styles.rise, 'neon font-display text-[1.35rem] font-extrabold leading-[1.15] md:mt-3 md:text-[clamp(1.75rem,4.8vw,3.25rem)] md:leading-[1.06]')}>
             {slide.title}
           </h2>
           {slide.subtitle ? (
-            <p {...rise(2)} className={cn(styles.rise, 'mt-3 max-w-lg text-base text-mist sm:text-lg')}>
+            <p {...rise(2)} className={cn(styles.rise, 'mt-3 hidden max-w-lg text-base text-mist sm:text-lg md:block')}>
               {slide.subtitle}
             </p>
           ) : null}
 
           {slide.product ? (
-            <div {...rise(3)} className={cn(styles.rise, 'mt-4 space-y-3', showScene && slide.sceneKind === 'PHONE' && 'md:sr-only')}>
+            <div {...rise(3)} className={cn(styles.rise, 'mt-4 space-y-3 max-md:hidden', showScene && slide.sceneKind === 'PHONE' && 'md:sr-only')}>
               {slide.product.specs.length > 0 ? (
                 <ul aria-label={t('specs')} className="flex flex-wrap gap-2">
                   {slide.product.specs.map((spec) => (
@@ -354,7 +354,7 @@ function Slide({
             </div>
           ) : null}
 
-          <div {...rise(4)} className={cn(styles.rise, 'mt-6 flex flex-wrap gap-3')}>
+          <div {...rise(4)} className={cn(styles.rise, 'mt-3 flex flex-wrap gap-3 md:mt-6')}>
             {slide.external ? (
               <a href={slide.href} target="_blank" rel="noopener noreferrer" onClick={onCta} data-testid="hero-cta" className={ctaClass}>
                 {ctaLabel}
@@ -371,7 +371,7 @@ function Slide({
                 href={productPath(slide.product.slug)}
                 onClick={onCta}
                 data-testid="hero-buy"
-                className={buttonClasses({ variant: 'secondary', size: 'lg' })}
+                className={buttonClasses({ variant: 'secondary', size: 'lg', className: 'max-md:hidden' })}
               >
                 {t('buyNow')}
               </Link>
@@ -380,7 +380,7 @@ function Slide({
         </div>
 
         {showScene ? (
-          <div className={cn(styles.near, 'mx-auto w-[min(62vw,15rem)] md:w-full md:max-w-[25rem]')}>
+          <div className={cn(styles.near, 'w-full max-w-[8.5rem] justify-self-end md:mx-auto md:max-w-[25rem] md:justify-self-auto')}>
             <PromoScene
               kind={slide.sceneKind}
               art={slide.art}

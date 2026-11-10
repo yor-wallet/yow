@@ -21,6 +21,8 @@ import {
   SupportSection,
 } from '@/components/shop/HomeSections';
 import { ProductRail, RailSkeleton } from '@/components/shop/ProductRail';
+import { ServiceChips } from '@/components/shop/ServiceChips';
+import { getDeliveryHighlights } from '@/lib/delivery/area';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -47,8 +49,8 @@ const SEE_ALL: Record<RailKey, string> = {
 };
 
 /**
- * Home (SPEC → Home page sections): hero ads → deals → smartphones → Apple → Samsung →
- * HONOR → computers → audio & accessories → DOOM FLEX → DOOM EXPRESS → recommended →
+ * Home (SPEC → Home page sections): hero ads → delivery promises → categories → recommended → deals → smartphones → Apple → Samsung →
+ * HONOR → computers → audio & accessories → DOOM FLEX → DOOM EXPRESS →
  * verified reviews → support (footer from the layout). The hero renders first; every data
  * section streams in behind a same-size skeleton (Suspense). Product sections show an honest
  * empty state until an administrator publishes real products.
@@ -64,13 +66,22 @@ export default async function HomePage({ params }: Props) {
         {t('hero.title')}
       </h1>
 
-      <section className="page-container pt-4 lg:pt-8" aria-labelledby="home-hero-title">
+      <section className="page-container pt-1 lg:pt-8" aria-labelledby="home-hero-title">
         <Suspense fallback={<HeroSkeleton />}>
           <Hero locale={locale} />
         </Suspense>
       </section>
 
+      <Suspense fallback={null}>
+        <Chips />
+      </Suspense>
+
       <CategoryStrip categories={categories} locale={locale} />
+
+      {/* Approved phone design: "Picks for you" comes right after the categories. */}
+      <Suspense fallback={<RailSkeleton id="recommended" />}>
+        <Rail railKey="recommended" locale={locale} />
+      </Suspense>
 
       <Suspense fallback={<RailSkeleton id="deals" />}>
         <Deals locale={locale} />
@@ -92,9 +103,6 @@ export default async function HomePage({ params }: Props) {
       ))}
       <FlexSection />
       <ExpressSection />
-      <Suspense fallback={<RailSkeleton id="recommended" />}>
-        <Rail railKey="recommended" locale={locale} />
-      </Suspense>
       <Suspense fallback={<ReviewsSkeleton />}>
         <Reviews locale={locale} />
       </Suspense>
@@ -106,6 +114,16 @@ export default async function HomePage({ params }: Props) {
 async function Hero({ locale }: { locale: string }) {
   const slides = await getCachedCampaigns('home_hero', locale);
   return slides.length > 0 ? <HeroCarousel slides={slides} /> : <StaticHero />;
+}
+
+/** Delivery promises under the hero: only what the configured zones can actually deliver. */
+async function Chips() {
+  const hours = await getDeliveryHighlights().catch(() => ({ standardHours: null, expressHours: null }));
+  return (
+    <div className="page-container mt-4 empty:hidden">
+      <ServiceChips expressHours={hours.expressHours} standardHours={hours.standardHours} />
+    </div>
+  );
 }
 
 async function Rail({ railKey, locale, children }: { railKey: RailKey; locale: string; children?: React.ReactNode }) {

@@ -8,7 +8,7 @@ for (const locale of LOCALES) {
     const html = page.locator('html');
     await expect(html).toHaveAttribute('lang', locale);
     await expect(html).toHaveAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr');
-    await expect(html).toHaveAttribute('data-theme', 'dark');
+    await expect(html).toHaveAttribute('data-theme', 'light'); // light is the default look
     await expect(page).toHaveTitle(/DOOM \| دوم/);
 
     // Official logo in the visible header, with fixed dimensions.
@@ -16,7 +16,8 @@ for (const locale of LOCALES) {
     await expect(header).toBeVisible();
     const logo = header.locator('img[alt="DOOM | دوم"]');
     await expect(logo).toBeVisible();
-    await expect(logo).toHaveAttribute('data-logo-surface', 'dark');
+    // The phone band is always violet (transparent logo); the desktop header follows the theme.
+    await expect(logo).toHaveAttribute('data-logo-surface', isDesktop(page) ? 'light' : 'dark');
     const box = await logo.boundingBox();
     expect(box?.height).toBeCloseTo(38, 0);
     expect(await logo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
@@ -68,11 +69,11 @@ test('viewport meta allows zoom and covers safe areas', async ({ page }) => {
 test('theme toggle persists (cookie) and renders server-side without flash', async ({ page }) => {
   await gotoReady(page, '/en');
   await page.locator('[data-testid="theme-toggle"]:visible').first().click();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   const header = isDesktop(page) ? page.getByTestId('desktop-header') : page.getByTestId('mobile-header');
-  await expect(header.locator('img[alt="DOOM | دوم"]')).toHaveAttribute('data-logo-surface', 'light');
+  await expect(header.locator('img[alt="DOOM | دوم"]')).toHaveAttribute('data-logo-surface', 'dark');
   await expectNoHorizontalOverflow(page);
 });
 

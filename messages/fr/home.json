@@ -81,7 +81,7 @@
     },
     "recommended": {
       "eyebrow": "Sélectionné pour vous",
-      "title": "Recommandés",
+      "title": "Choisis pour vous",
       "subtitle": "Produits mis en avant et dernières nouveautés.",
       "emptyTitle": "Les recommandations arrivent bientôt",
       "emptyText": "Dès que des produits sont en ligne, notre sélection apparaît ici."
@@ -144,5 +144,10 @@
     "ordersText": "Chaque étape, de la confirmation à la remise.",
     "delivery": "Livraison et retours",
     "deliveryText": "Zones, délais, frais et notre politique de retour."
+  },
+  "chips": {
+    "expressLabel": "Express en",
+    "standardLabel": "Livraison en",
+    "hours": "{count, plural, one {# heure} other {# heures}}"
   }
 }

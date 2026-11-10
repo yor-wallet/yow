@@ -25,19 +25,19 @@ import { Stars } from './Stars';
 export function StaticHero() {
   const t = useTranslations('home');
   return (
-    <div data-theme="dark" className="holo-border relative overflow-hidden rounded-[28px] bg-gradient-premium px-5 py-10 text-white shadow-float sm:px-10 sm:py-14 lg:px-14 lg:py-20">
+    <div data-theme="dark" className="holo-border relative overflow-hidden rounded-[28px] bg-gradient-premium px-5 py-6 text-white shadow-float md:px-10 md:py-14 lg:px-14 lg:py-20">
       <div aria-hidden="true" className="pointer-events-none absolute -end-24 -top-24 size-80 rounded-full opacity-60 blur-3xl" style={{ background: 'radial-gradient(circle, rgb(0 217 255 / 0.55), transparent 65%)' }} />
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-28 -start-20 size-72 rounded-full opacity-50 blur-3xl" style={{ background: 'radial-gradient(circle, rgb(255 121 0 / 0.5), transparent 65%)' }} />
       <HudCorners className="m-4" size={16} />
       <div className="relative max-w-2xl">
         <span className="hud-label">{t('hero.eyebrow')}</span>
-        <p className="neon mt-4 font-display text-[clamp(1.85rem,5vw,3.4rem)] font-extrabold leading-[1.08]">{t('hero.title')}</p>
-        <p className="mt-4 max-w-xl text-base text-mist sm:text-lg">{t('hero.subtitle')}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/categories" className={buttonClasses({ variant: 'primary', size: 'lg' })}>
+        <p className="neon mt-3 font-display text-[1.5rem] font-extrabold leading-[1.15] md:mt-4 md:text-[clamp(1.85rem,5vw,3.4rem)] md:leading-[1.08]">{t('hero.title')}</p>
+        <p className="mt-4 hidden max-w-xl text-base text-mist md:block md:text-lg">{t('hero.subtitle')}</p>
+        <div className="mt-4 flex flex-wrap gap-3 md:mt-8">
+          <Link href="/categories" className={buttonClasses({ variant: 'accent', size: 'md', className: 'md:min-h-13 md:px-7 md:text-base' })}>
             {t('hero.ctaCategories')}
           </Link>
-          <Link href="/search" className={buttonClasses({ variant: 'outline', size: 'lg' })}>
+          <Link href="/search" className={buttonClasses({ variant: 'outline', size: 'lg', className: 'hidden md:inline-flex' })}>
             <Search size={18} aria-hidden="true" />
             {t('hero.ctaSearch')}
           </Link>
@@ -57,9 +57,25 @@ export function CategoryStrip({ categories, locale }: { categories: readonly Nav
   const t = useTranslations('home.categories');
   if (categories.length === 0) return null;
   return (
-    <section className="page-container mt-12" aria-labelledby="home-categories-title">
-      <SectionHeading id="home-categories-title" title={t('title')} />
-      <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+    <section className="page-container mt-4 md:mt-12" aria-labelledby="home-categories-title" data-testid="home-categories">
+      <SectionHeading id="home-categories-title" title={t('title')} className="max-md:sr-only" />
+      {/* Phones: four compact tiles in one row (icon + short label). */}
+      <ul className="grid grid-cols-4 gap-2.5 md:hidden">
+        {categories.slice(0, 4).map((c) => (
+          <li key={c.id} className="min-w-0">
+            <Link
+              href={categoryPath(c.slug)}
+              className="flex h-full flex-col items-center justify-start gap-1.5 rounded-2xl border border-border bg-surface px-1 py-2.5 text-center shadow-card transition-colors hover:border-border-strong"
+            >
+              <span className="grid size-10 place-items-center text-fg" aria-hidden="true">
+                <CategoryIcon name={c.icon} size={26} />
+              </span>
+              <span className="line-clamp-2 text-[11px] font-semibold leading-tight text-fg break-words xs:text-xs">{localize(c.name, locale)}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <ul className="hidden grid-cols-2 gap-3 sm:gap-4 md:grid lg:grid-cols-4">
         {categories.map((c, i) => (
           <li key={c.id} className="min-w-0">
             <Reveal delay={i * 0.06}>

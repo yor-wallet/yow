@@ -81,7 +81,7 @@
     },
     "recommended": {
       "eyebrow": "Selected for you",
-      "title": "Recommended",
+      "title": "Picks for you",
       "subtitle": "Featured products and the latest arrivals.",
       "emptyTitle": "Recommendations coming soon",
       "emptyText": "As soon as products are online, our selection appears here."
@@ -144,5 +144,10 @@
     "ordersText": "Every step, from confirmation to handover.",
     "delivery": "Delivery & returns",
     "deliveryText": "Zones, times, fees and our returns policy."
+  },
+  "chips": {
+    "expressLabel": "Express within",
+    "standardLabel": "Delivery within",
+    "hours": "{count, plural, one {# hour} other {# hours}}"
   }
 }

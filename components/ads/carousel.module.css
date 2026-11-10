@@ -23,7 +23,8 @@
   grid-area: 1 / 1;
   position: relative;
   overflow: clip;
-  min-height: 36rem;
+  /* Phones: compact banner (approved phone design); the cinematic height starts at md. */
+  min-height: 14.5rem;
   opacity: 0;
   transform: translate3d(calc(var(--exit) * 3%), 0, 0) scale(1.015);
   transition:

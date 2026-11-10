@@ -1,4 +1,4 @@
-import { ArrowRight, PackageSearch } from 'lucide-react';
+import { ArrowRight, ChevronRight, PackageSearch } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Reveal } from '@/components/ui/Reveal';
@@ -40,27 +40,30 @@ export function ProductRail({
   priorityImages?: boolean;
 }) {
   return (
-    <section className="page-container mt-14" aria-labelledby={`${id}-title`} data-testid={`rail-${id}`}>
+    <section className="page-container mt-7 lg:mt-14" aria-labelledby={`${id}-title`} data-testid={`rail-${id}`}>
       <Reveal>
         <SectionHeading
           id={`${id}-title`}
           as={headingLevel === 2 ? 'h2' : 'h3'}
           eyebrow={eyebrow}
           title={title}
+          compact
           className="mb-2 sm:mb-2"
           action={
             seeAllHref && products.length > 0 ? (
               <Link
                 href={seeAllHref}
-                className="group inline-flex min-h-11 items-center gap-1.5 rounded-xl px-2 text-sm font-semibold text-accent transition-colors hover:text-fg"
+                aria-label={`${seeAllLabel} — ${title}`}
+                className="group inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-2 text-sm font-semibold text-fg transition-colors hover:text-fg lg:text-accent"
               >
-                {seeAllLabel}
-                <ArrowRight size={16} aria-hidden="true" className="flip-rtl transition-transform duration-(--dur-btn) group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
+                <span className="hidden lg:inline">{seeAllLabel}</span>
+                <ChevronRight size={22} aria-hidden="true" className="flip-rtl lg:hidden" />
+                <ArrowRight size={16} aria-hidden="true" className="flip-rtl hidden transition-transform duration-(--dur-btn) group-hover:translate-x-0.5 lg:block rtl:group-hover:-translate-x-0.5" />
               </Link>
             ) : undefined
           }
         />
-        {subtitle ? <p className="mb-5 max-w-2xl text-sm text-muted">{subtitle}</p> : null}
+        {subtitle ? <p className="mb-5 hidden max-w-2xl text-sm text-muted lg:block">{subtitle}</p> : null}
         {products.length === 0 ? (
           <EmptyState compact icon={<PackageSearch size={24} />} title={emptyTitle} description={emptyText} />
         ) : (

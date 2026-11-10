@@ -9,6 +9,8 @@ type Props = {
   action?: ReactNode;
   id?: string;
   as?: 'h1' | 'h2' | 'h3';
+  /** Phones show the title only (no eyebrow): the compact storefront layout. */
+  compact?: boolean;
   className?: string;
 };
 
@@ -16,10 +18,10 @@ type Props = {
  * Futuristic section heading: HUD eyebrow, display-face title, circuit rule that runs to the
  * action (mirrors in RTL). Use for every storefront/admin section for visual consistency.
  */
-export function SectionHeading({ title, eyebrow, action, id, as: Tag = 'h2', className }: Props) {
+export function SectionHeading({ title, eyebrow, action, id, as: Tag = 'h2', compact = false, className }: Props) {
   return (
     <div className={cn('mb-5 flex flex-col gap-2 sm:mb-6', className)}>
-      {eyebrow ? <span className="hud-label">{eyebrow}</span> : null}
+      {eyebrow ? <span className={cn('hud-label', compact && 'max-lg:hidden')}>{eyebrow}</span> : null}
       <div className="flex min-w-0 items-center gap-4">
         <Tag id={id} className="min-w-0 text-[clamp(1.25rem,1rem+1.2vw,1.875rem)] font-bold leading-tight text-fg">
           {title}

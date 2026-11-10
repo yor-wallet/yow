@@ -56,7 +56,7 @@ export function ProductCard({
         className,
       )}
     >
-      <div className="relative aspect-square w-full overflow-hidden border-b border-border bg-[radial-gradient(70%_62%_at_50%_42%,rgb(8_123_255/0.2),transparent_72%)]">
+      <div className="relative aspect-square w-full overflow-hidden bg-surface lg:border-b lg:border-border lg:bg-[radial-gradient(70%_62%_at_50%_42%,rgb(8_123_255/0.2),transparent_72%)]">
         {product.image ? (
           <ShopImage
             src={product.image.src}
@@ -68,10 +68,8 @@ export function ProductCard({
             className="size-full object-contain p-3 transition-transform duration-(--dur-card) ease-premium group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="grid size-full place-items-center text-cyan" aria-hidden="true">
-            <span className="neon-box grid size-20 place-items-center rounded-3xl bg-gradient-premium">
-              <CategoryIcon name={product.categoryIcon} size={36} />
-            </span>
+          <div className="grid size-full place-items-center bg-blue/8 text-accent" aria-hidden="true">
+            <CategoryIcon name={product.categoryIcon} size={44} />
           </div>
         )}
         <div className="pointer-events-none absolute inset-x-2 top-2 flex items-start justify-between gap-2">
@@ -87,9 +85,9 @@ export function ProductCard({
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5 p-3 sm:p-4">
-        {product.brand ? <p className="truncate font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent rtl:tracking-normal">{product.brand}</p> : null}
-        <h3 className="line-clamp-2 min-h-[2.6em] text-sm font-semibold leading-snug sm:text-[15px]">
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5 p-3 max-lg:items-center max-lg:pt-1 max-lg:text-center sm:p-4">
+        {product.brand ? <p className="hidden truncate font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent lg:block rtl:tracking-normal">{product.brand}</p> : null}
+        <h3 className="line-clamp-2 text-sm font-bold leading-snug sm:text-[15px] lg:min-h-[2.6em] lg:font-semibold">
           <Link
             href={productPath(product.slug)}
             className="outline-none after:absolute after:inset-0 after:content-[''] focus-visible:after:outline-2 focus-visible:after:outline-offset-[-2px] focus-visible:after:outline-ring"
@@ -98,18 +96,18 @@ export function ProductCard({
           </Link>
         </h3>
 
-        <div className="mt-auto flex flex-col gap-1 pt-1">
-          <div className="flex flex-wrap items-baseline gap-x-1.5">
+        <div className="mt-auto flex flex-col gap-1 pt-1 max-lg:items-center">
+          <div className="flex flex-wrap items-baseline gap-x-1.5 max-lg:justify-center">
             {product.priceBaisa !== null && product.priceFrom ? <span className="text-xs text-muted">{t('from')}</span> : null}
             <Price baisa={product.priceBaisa} compareAtBaisa={product.compareAtBaisa} size="md" className="font-display" />
           </div>
           {flexMonthly !== null ? (
-            <p className="text-xs text-muted">{t('flexFrom', { amount: formatBaisa(flexMonthly, locale) })}</p>
+            <p className="hidden text-xs text-muted lg:block">{t('flexFrom', { amount: formatBaisa(flexMonthly, locale) })}</p>
           ) : null}
           <StockChip availability={product.availability} label={stockLabel} />
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2 hidden lg:block">
           {purchasable && product.quickAddVariantId ? (
             <QuickAddButton variantId={product.quickAddVariantId} name={product.name} />
           ) : purchasable ? (

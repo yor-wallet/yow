@@ -36,7 +36,7 @@ export function Price({ baisa, compareAtBaisa, size = 'md', showSavings = false,
   const hasCompare = typeof compareAtBaisa === 'number' && compareAtBaisa > baisa;
   return (
     <span className={cn('inline-flex flex-wrap items-baseline gap-x-2 gap-y-0.5', className)} data-price={baisa}>
-      <span className={cn('font-bold tabular-nums [unicode-bidi:isolate]', sizes[size])}>{formatBaisa(baisa, locale)}</span>
+      <span className={cn('font-bold tabular-nums text-price [unicode-bidi:isolate]', sizes[size])}>{formatBaisa(baisa, locale)}</span>
       {hasCompare ? (
         <>
           <span className="sr-only">{t('was', { price: formatBaisa(compareAtBaisa, locale) })}</span>

@@ -1,6 +1,9 @@
 import { Bell, BadgePercent, ShoppingCart, UserRound, Wallet, LayoutDashboard } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { getSession } from '@/lib/auth/session';
+import { listAreaOptions, getPreferredArea } from '@/lib/delivery/area';
+import { localize } from '@/lib/localized';
 import { getHeaderCounts, getNavCategories } from '@/lib/nav';
 import { Logo } from '@/components/ui/Logo';
 import { CountBubble } from '@/components/ui/Badge';
@@ -18,8 +21,12 @@ const iconLink =
  * the categories mega-menu. Mobile/tablet: compact header (bottom nav handles primary nav).
  */
 export async function Header() {
-  const [t, categories, counts] = await Promise.all([getTranslations('nav'), getNavCategories(), getHeaderCounts()]);
+  const [t, categories, counts, locale, session] = await Promise.all([getTranslations('nav'), getNavCategories(), getHeaderCounts(), getLocale(), getSession()]);
   const accountHref = counts.signedIn ? '/account' : '/login';
+  // Delivery area for the phone header (the shopper's choice, else their default address' governorate).
+  const [areaOptions, preferred] = await Promise.all([listAreaOptions().catch(() => []), getPreferredArea(session?.user.id).catch(() => null)]);
+  const choices = areaOptions.map((o) => ({ code: o.code, label: localize(o.name, locale, o.code) }));
+  const area = preferred ? { code: preferred.code, label: localize(preferred.name, locale, preferred.code) } : null;
 
   return (
     <>
@@ -79,7 +86,7 @@ export async function Header() {
         <span aria-hidden="true" className="doom-hairline bottom-0" />
       </header>
 
-      <MobileHeader counts={counts} />
+      <MobileHeader counts={counts} areaOptions={choices} area={area} />
     </>
   );
 }

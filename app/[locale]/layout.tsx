@@ -23,8 +23,9 @@ import { ServiceWorkerRegister } from '@/components/layout/ServiceWorkerRegister
 type Props = { children: ReactNode; params: Promise<{ locale: string }> };
 
 // Every page is request-time rendered: the chrome reads the session, cart and theme cookies.
+// Light is the default look (the approved design); a visitor who switches to dark keeps it (cookie).
 async function readTheme(): Promise<Theme> {
-  return (await cookies()).get(THEME_COOKIE)?.value === 'light' ? 'light' : 'dark';
+  return (await cookies()).get(THEME_COOKIE)?.value === 'dark' ? 'dark' : 'light';
 }
 
 const OG_LOCALE: Record<Locale, string> = { ar: 'ar_OM', en: 'en_US', fr: 'fr_FR' };

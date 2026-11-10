@@ -26,6 +26,8 @@ type BackButtonProps = {
   label?: string;
   /** `icon`: 44px icon button (mobile headers); `text`: arrow + label. */
   variant?: 'icon' | 'text';
+  /** `onDark`: white arrow for the violet phone band. */
+  tone?: 'auto' | 'onDark';
   className?: string;
 };
 
@@ -33,7 +35,7 @@ type BackButtonProps = {
  * Back button. Renders a real link to `fallbackHref` (works without JS) and upgrades
  * to history-aware back on click. The arrow is mirrored in RTL.
  */
-export function BackButton({ fallbackHref = '/', label, variant = 'icon', className }: BackButtonProps) {
+export function BackButton({ fallbackHref = '/', label, variant = 'icon', tone = 'auto', className }: BackButtonProps) {
   const t = useTranslations('common.actions');
   const goBack = useSafeBack(fallbackHref);
   const text = label ?? t('back');
@@ -49,7 +51,8 @@ export function BackButton({ fallbackHref = '/', label, variant = 'icon', classN
       aria-label={variant === 'icon' ? text : undefined}
       data-testid="back-button"
       className={cn(
-        'inline-flex shrink-0 items-center gap-2 rounded-xl text-fg transition-colors duration-(--dur-btn) hover:bg-surface-2',
+        'inline-flex shrink-0 items-center gap-2 rounded-xl transition-colors duration-(--dur-btn)',
+        tone === 'onDark' ? 'text-white hover:bg-white/10' : 'text-fg hover:bg-surface-2',
         variant === 'icon' ? 'size-11 justify-center' : 'min-h-11 px-3 text-sm font-semibold',
         className,
       )}

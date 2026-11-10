@@ -18,7 +18,8 @@
   "search": {
     "label": "Search products",
     "placeholder": "Search phones, laptops, audio…",
-    "submit": "Search"
+    "submit": "Search",
+    "placeholderShort": "Find your next device"
   },
   "cartCount": "{count, plural, =0 {Cart, empty} one {Cart, # item} other {Cart, # items}}",
   "unread": "{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}",
@@ -48,5 +49,14 @@
     "crypto": "Crypto (BTC, ETH, USDT, USDC)",
     "giftCard": "Gift cards",
     "flex": "DOOM FLEX"
+  },
+  "favorites": "Favourites",
+  "deliver": {
+    "label": "Deliver to {area}",
+    "choose": "Choose delivery area",
+    "title": "Delivery area",
+    "hint": "Shows the delivery times and fees of this governorate. Your order always uses the address you choose at checkout.",
+    "clear": "Clear my choice",
+    "current": "Selected"
   }
 }

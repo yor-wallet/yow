@@ -9,7 +9,7 @@ export const THEME_COLORS: Record<Theme, string> = { dark: '#10052E', light: '#F
 
 type ThemeContextValue = { theme: Theme; setTheme: (t: Theme) => void; toggle: () => void };
 
-const ThemeContext = createContext<ThemeContextValue>({ theme: 'dark', setTheme: () => undefined, toggle: () => undefined });
+const ThemeContext = createContext<ThemeContextValue>({ theme: 'light', setTheme: () => undefined, toggle: () => undefined });
 
 /**
  * Theme state. The server reads the `doom_theme` cookie and renders

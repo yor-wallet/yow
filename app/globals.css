@@ -98,6 +98,7 @@
   --color-border: var(--doom-border);
   --color-border-strong: var(--doom-border-strong);
   --color-accent: var(--doom-accent);
+  --color-price: var(--doom-price);
   --color-on-accent: #10052e;
   --color-ring: var(--doom-ring);
 }
@@ -153,6 +154,7 @@ html[lang='ar'] {
   --doom-border: rgb(201 197 222 / 0.14);
   --doom-border-strong: rgb(201 197 222 / 0.3);
   --doom-accent: #00d9ff;
+  --doom-price: #ff8a1f; /* orange prices: 6.9:1 on the dark surfaces */
   --doom-ring: #00d9ff;
   --doom-glass: rgb(25 11 69 / 0.62);
   --doom-header: rgb(16 5 46 / 0.82);
@@ -181,6 +183,7 @@ html[lang='ar'] {
   --doom-border: rgb(23 21 45 / 0.12);
   --doom-border-strong: rgb(23 21 45 / 0.26);
   --doom-accent: color-mix(in srgb, #087bff 72%, #10052e 28%); /* AA on light surfaces */
+  --doom-price: #c24e00; /* orange prices: 4.8:1 on white (the brand orange #ff7900 is only 2.9:1) */
   --doom-ring: #087bff;
   --doom-glass: rgb(255 255 255 / 0.74);
   --doom-header: rgb(247 249 255 / 0.86);
@@ -309,6 +312,11 @@ html[lang='ar'] {
 }
 @utility bg-gradient-premium {
   background-image: var(--gradient-premium);
+}
+/* Phone header band. Horizontal only, so the band and the curved strip under it join without a seam. */
+@utility bg-band {
+  background-color: #10052e;
+  background-image: linear-gradient(90deg, #10052e 0%, #1f0e58 50%, #10052e 100%);
 }
 
 /* Gradient text — large display text on dark surfaces only (contrast). */

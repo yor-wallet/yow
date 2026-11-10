@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { BackButton } from './BackButton';
+import { BackTarget } from './back-target';
 
 /**
- * Header for every secondary page: back arrow (mirrored in RTL) + title.
- * Mobile/tablet: sticky glass bar at the top. Desktop (lg+): inline title with a text back button.
- * Renders siblings (a fragment) so the sticky bar sticks for the whole page: place it as
- * a DIRECT child of the page's top-level element.
+ * Header for every secondary page.
+ * Mobile/tablet: centred title row (the back arrow lives in the sticky violet band, which reads this
+ * page's `fallbackHref` through <BackTarget>). Desktop (lg+): inline title with a text back button.
  *
  *   <PageHeader title={t('title')} fallbackHref="/account" />
  */
@@ -24,7 +24,7 @@ export function PageHeader({
   fallbackHref?: string;
   actions?: ReactNode;
   className?: string;
-  /** Render only the mobile sticky bar (the page shows its own desktop heading). */
+  /** Render only the mobile title row (the page shows its own desktop heading). */
   mobileOnly?: boolean;
   /** `div` when the page body already has its own <h1> (avoids two headings of level 1 on phones). */
   mobileHeading?: 'h1' | 'div';
@@ -32,18 +32,15 @@ export function PageHeader({
   const MobileTitle = mobileHeading;
   return (
     <>
-      <div
-        className={cn('sticky top-0 z-30 border-b border-border lg:hidden', className)}
-        style={{ paddingTop: 'var(--safe-top)', background: 'var(--doom-header)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
-        data-testid="page-header-mobile"
-      >
-        <div className="flex min-h-14 items-center gap-1 ps-[max(8px,var(--safe-left))] pe-[max(8px,var(--safe-right))]">
-          <BackButton fallbackHref={fallbackHref} variant="icon" />
-          <MobileTitle className="min-w-0 flex-1 truncate text-base font-bold">{title}</MobileTitle>
-          {actions ? <div className="flex shrink-0 items-center gap-1">{actions}</div> : null}
+      <BackTarget href={fallbackHref} />
+      <div className={cn('page-container lg:hidden', className)} data-testid="page-header-mobile">
+        <div className="grid min-h-11 grid-cols-[1fr_auto_1fr] items-center gap-2">
+          <span aria-hidden="true" />
+          <MobileTitle className="line-clamp-2 min-w-0 text-center text-xl font-extrabold leading-tight">{title}</MobileTitle>
+          <div className="flex shrink-0 items-center gap-1 justify-self-end">{actions}</div>
         </div>
+        {subtitle ? <p className="mt-1 text-center text-sm text-muted">{subtitle}</p> : null}
       </div>
-      {subtitle ? <p className="page-container mt-3 text-sm text-muted lg:hidden">{subtitle}</p> : null}
       {mobileOnly ? null : (
       <div className={cn('page-container hidden items-end justify-between gap-4 pt-8 lg:flex', className)}>
         <div className="min-w-0">
