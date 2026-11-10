@@ -18,6 +18,7 @@ import {
   revokeSessionAction,
   type PasswordFormState,
 } from '@/app/[locale]/account/security/actions';
+import { IconTile } from './IconTile';
 
 export function ChangePasswordForm() {
   const t = useTranslations('account.security');
@@ -88,10 +89,8 @@ export function SessionList({ sessions }: { sessions: SessionView[] }) {
         {sessions.map((s) => {
           const Icon = s.mobile ? Smartphone : Monitor;
           return (
-            <li key={s.id} className="flex min-w-0 flex-wrap items-center gap-3 rounded-2xl border border-border bg-surface/70 p-3.5" data-testid="session-item">
-              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-premium text-cyan">
-                <Icon size={18} aria-hidden="true" />
-              </span>
+            <li key={s.id} className="flex min-w-0 flex-wrap items-center gap-3 rounded-2xl border border-border bg-surface p-3.5" data-testid="session-item">
+              <IconTile icon={Icon} size="sm" tone={s.current ? 'success' : 'blue'} />
               <div className="min-w-0 flex-1">
                 <p className="flex flex-wrap items-center gap-2 font-semibold">
                   <span className="min-w-0 break-words">{s.device}</span>

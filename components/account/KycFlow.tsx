@@ -6,6 +6,8 @@ import { useTranslations } from 'next-intl';
 import type { KycDocumentType } from '@prisma/client';
 import { Link, useRouter } from '@/i18n/navigation';
 import { Stepper } from '@/components/ui/Stepper';
+import { HudCorners } from '@/components/ui/HudCorners';
+import { IconTile } from './IconTile';
 import { Input, Checkbox } from '@/components/ui/Input';
 import { Button, buttonClasses } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
@@ -194,7 +196,15 @@ export function KycFlow({ mode, required, initialName, email, phone, addressLine
 
   return (
     <div className="min-w-0" data-testid="kyc-flow" data-step={step}>
-      <Stepper steps={steps} current={step} />
+      <div className="relative rounded-2xl border border-blue/20 bg-blue/5 p-3 sm:p-4 dark:border-cyan/20 dark:bg-night/30">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <span className="hud-label">{steps[step]}</span>
+          <span className="font-display neon text-sm font-bold tabular-nums text-accent" dir="ltr" aria-hidden="true">
+            {String(step + 1).padStart(2, '0')}/{String(steps.length).padStart(2, '0')}
+          </span>
+        </div>
+        <Stepper steps={steps} current={step} />
+      </div>
       <div className="mt-6">
         {step === 0 ? (
           <section aria-labelledby="kyc-step-title" className="grid grid-cols-1 gap-4">
@@ -346,7 +356,7 @@ export function KycFlow({ mode, required, initialName, email, phone, addressLine
               <Button variant="outline" onClick={() => setStep(1)} disabled={pending}>
                 {t('back')}
               </Button>
-              <Button onClick={submit} loading={pending} loadingLabel={t('review.submitting')} data-testid="kyc-submit">
+              <Button variant="accent" onClick={submit} loading={pending} loadingLabel={t('review.submitting')} data-testid="kyc-submit" className="max-sm:min-h-13 max-sm:w-full">
                 {mode === 'requested' ? t('uploadRequested') : t('review.submit')}
               </Button>
             </div>
@@ -388,15 +398,14 @@ function DocCapture({
       data-ready={doc ? 'true' : undefined}
     >
       <div className="flex items-center gap-2">
-        <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-premium text-cyan">
-          <Icon size={18} aria-hidden="true" />
-        </span>
+        <IconTile icon={Icon} size="sm" tone={doc ? 'success' : 'blue'} />
         <div className="min-w-0">
           <p className="font-semibold">{t(type)}</p>
           <p className="text-xs text-muted">{t(`hint.${type}`)}</p>
         </div>
       </div>
       <div className="relative mt-3 grid aspect-[4/3] place-items-center overflow-hidden rounded-xl border border-dashed border-border-strong bg-surface-2/50">
+        <HudCorners size={18} className={doc ? 'z-10 text-success/80' : 'z-10'} />
         {processing ? (
           <span className="flex flex-col items-center gap-2 text-sm text-muted">
             <Spinner label={t('processing')} />

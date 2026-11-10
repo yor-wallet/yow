@@ -437,7 +437,7 @@ export function AddressForm({
           {hasLocation ? (
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1" data-testid="address-gps-coords">
               <span className="inline-flex items-center gap-1.5 font-medium" dir="ltr">
-                <MapPin size={16} aria-hidden="true" className="text-cyan" />
+                <MapPin size={16} aria-hidden="true" className="text-accent" />
                 {t('location.coords', { lat: values.lat!.toFixed(5), lng: values.lng!.toFixed(5) })}
               </span>
               {geo.kind === 'ok' && geo.accuracy !== null ? (

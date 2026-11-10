@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState, useEffect, useTransition } from 'react';
-import { Check, Moon, Sun } from 'lucide-react';
+import { Languages, Moon, Sun } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { LOCALE_LABELS, locales, type Locale } from '@/i18n/routing';
@@ -11,7 +11,7 @@ import { useToast } from '@/components/ui/Toast';
 import { useValidationMessage } from '@/components/ui/useValidationMessage';
 import { useTheme, type Theme } from '@/components/layout/ThemeProvider';
 import { setPreferredLocaleAction, updateProfileAction, type ProfileFormState } from '@/app/[locale]/account/profile/actions';
-import { cn } from '@/lib/cn';
+import { RadioCard } from './RadioCard';
 
 function localDigits(phone: string | null): string {
   if (!phone) return '';
@@ -74,25 +74,18 @@ export function LanguagePicker() {
       router.replace(pathname, { locale: l });
     });
   return (
-    <div role="radiogroup" aria-label={t('languageTitle')} className="grid grid-cols-1 gap-2 xs:grid-cols-3">
+    <div role="radiogroup" aria-label={t('languageTitle')} className="grid grid-cols-1 gap-2">
       {locales.map((l) => (
-        <button
+        <RadioCard
           key={l}
-          type="button"
-          role="radio"
-          aria-checked={l === current}
+          icon={Languages}
+          label={<span lang={l}>{LOCALE_LABELS[l]}</span>}
+          hint={l.toUpperCase()}
+          checked={l === current}
           disabled={pending}
           onClick={() => l !== current && choose(l)}
-          lang={l}
-          className={cn(
-            'flex min-h-12 items-center justify-between gap-2 rounded-xl border px-4 text-start font-semibold transition-[border-color,box-shadow] duration-(--dur-btn)',
-            l === current ? 'border-cyan/60 bg-blue/12 neon-box' : 'border-border bg-surface hover:border-border-strong',
-          )}
           data-testid={`locale-${l}`}
-        >
-          {LOCALE_LABELS[l]}
-          {l === current ? <Check size={18} aria-hidden="true" className="text-cyan" /> : null}
-        </button>
+        />
       ))}
     </div>
   );
@@ -106,23 +99,9 @@ export function ThemePicker() {
     { id: 'light', label: t('themeLight'), icon: Sun },
   ];
   return (
-    <div role="radiogroup" aria-label={t('themeTitle')} className="grid grid-cols-2 gap-2">
-      {options.map(({ id, label, icon: Icon }) => (
-        <button
-          key={id}
-          type="button"
-          role="radio"
-          aria-checked={theme === id}
-          onClick={() => setTheme(id)}
-          className={cn(
-            'flex min-h-12 items-center justify-center gap-2 rounded-xl border px-4 font-semibold transition-[border-color,box-shadow] duration-(--dur-btn)',
-            theme === id ? 'border-cyan/60 bg-blue/12 neon-box' : 'border-border bg-surface hover:border-border-strong',
-          )}
-          data-testid={`theme-${id}`}
-        >
-          <Icon size={18} aria-hidden="true" />
-          {label}
-        </button>
+    <div role="radiogroup" aria-label={t('themeTitle')} className="grid grid-cols-1 gap-2 xs:grid-cols-2">
+      {options.map(({ id, label, icon }) => (
+        <RadioCard key={id} icon={icon} label={label} checked={theme === id} onClick={() => setTheme(id)} data-testid={`theme-${id}`} />
       ))}
     </div>
   );

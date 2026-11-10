@@ -9,6 +9,7 @@ import { Button, buttonClasses } from '@/components/ui/Button';
 import { Modal, useHistoryModal } from '@/components/ui/Modal';
 import { useToast } from '@/components/ui/Toast';
 import { localize } from '@/lib/localized';
+import { IconTile } from './IconTile';
 import { deleteAddressAction, setDefaultAddressAction, type SavedAddress } from './address-actions';
 
 /** Address book cards with set-default and delete (history-backed confirm modal). */
@@ -43,9 +44,7 @@ export function AddressList({ addresses }: { addresses: SavedAddress[] }) {
           <li key={a.id} className="flex min-w-0 flex-col rounded-card border border-border bg-surface p-4 shadow-card sm:p-5" data-testid="address-card">
             <div className="flex min-w-0 items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-premium text-cyan">
-                  <MapPin size={18} aria-hidden="true" />
-                </span>
+                <IconTile icon={MapPin} size="sm" />
                 <div className="min-w-0">
                   <p className="truncate font-semibold">{a.label || a.recipientName}</p>
                   {a.label ? <p className="truncate text-sm text-muted">{a.recipientName}</p> : null}

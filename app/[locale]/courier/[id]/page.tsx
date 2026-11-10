@@ -42,10 +42,9 @@ export default async function CourierShipmentPage({ params }: Props) {
       <PageHeader title={t('order', { number: s.order.number })} subtitle={s.trackingCode} fallbackHref="/courier" actions={<ShipmentStatusBadge status={s.status} />} />
       <div className="page-container mt-5 grid max-w-5xl grid-cols-1 gap-5 lg:mt-6 lg:grid-cols-2" data-testid="courier-detail" data-status={s.status}>
         <div className="flex min-w-0 flex-col gap-5">
-          <Card tone="glass" className="relative">
-            <HudCorners size={12} />
+          <Card>
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <MapPin size={20} aria-hidden="true" className="text-cyan" />
+              <MapPin size={20} aria-hidden="true" className="text-accent" />
               {t('address')}
             </h2>
             {a ? (
@@ -99,9 +98,9 @@ export default async function CourierShipmentPage({ params }: Props) {
             ) : null}
           </Card>
 
-          <Card tone="glass">
+          <Card>
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <Package size={20} aria-hidden="true" className="text-cyan" />
+              <Package size={20} aria-hidden="true" className="text-accent" />
               {t('contents')}
             </h2>
             <ul className="mt-2 divide-y divide-border text-sm">
@@ -160,7 +159,7 @@ export default async function CourierShipmentPage({ params }: Props) {
           {active ? <FailDeliveryButton shipmentId={s.id} /> : null}
 
           {active ? (
-            <Card tone="glass">
+            <Card>
               <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
                 <Siren size={20} aria-hidden="true" className="text-orange" />
                 {t('incidentTitle')}
@@ -170,7 +169,7 @@ export default async function CourierShipmentPage({ params }: Props) {
           ) : null}
 
           {s.incidents.length ? (
-            <Card tone="glass">
+            <Card>
               <h2 className="text-base font-bold">{t('incidents')}</h2>
               <ul className="mt-2 space-y-2 text-sm">
                 {s.incidents.map((i) => (
@@ -186,9 +185,9 @@ export default async function CourierShipmentPage({ params }: Props) {
             </Card>
           ) : null}
 
-          <Card tone="glass">
+          <Card>
             <h2 className="flex items-center gap-2 text-base font-bold">
-              <History size={18} aria-hidden="true" className="text-cyan" />
+              <History size={18} aria-hidden="true" className="text-accent" />
               {t('history')}
             </h2>
             <ol className="mt-2 space-y-1.5 text-sm">

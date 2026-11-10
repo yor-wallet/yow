@@ -48,7 +48,7 @@ export default async function SupportPage({ params }: Props) {
                       <Link
                         href={`/account/support/${tk.number}`}
                         data-spotlight=""
-                        className="spotlight holo-border-hover group flex min-w-0 items-center gap-4 rounded-card border border-border bg-surface/80 p-4 shadow-card backdrop-blur transition-[transform,box-shadow] duration-(--dur-card) hover:-translate-y-0.5 hover:shadow-glow-blue"
+                        className="spotlight holo-border-hover group flex min-w-0 items-center gap-4 rounded-card border border-border bg-surface p-4 shadow-card transition-[transform,box-shadow] duration-(--dur-card) hover:-translate-y-0.5 hover:shadow-glow-blue"
                         data-testid="ticket-card"
                       >
                         <div className="min-w-0 flex-1">
@@ -75,7 +75,7 @@ export default async function SupportPage({ params }: Props) {
           )}
         </div>
         <aside className="min-w-0 lg:col-span-4">
-          <div className="relative rounded-card glass p-5">
+          <div className="relative rounded-card border border-border bg-surface p-5 shadow-card">
             <span className="hud-label">{t('team')}</span>
             <p className="mt-3 text-sm text-muted">{t('subtitle')}</p>
             <Link href="/help" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-accent underline-offset-4 hover:underline">

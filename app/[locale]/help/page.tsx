@@ -54,9 +54,9 @@ export default async function HelpPage({ params }: Props) {
                 <li key={c} className="shrink-0">
                   <a
                     href={`#faq-${c}`}
-                    className="inline-flex min-h-11 w-full items-center gap-2 rounded-pill border border-border bg-surface/80 px-4 text-sm font-semibold text-muted backdrop-blur transition-colors duration-(--dur-btn) hover:border-cyan/50 hover:text-fg lg:rounded-xl"
+                    className="inline-flex min-h-11 w-full items-center gap-2 rounded-pill border border-border bg-surface px-4 text-sm font-semibold text-muted shadow-card transition-colors duration-(--dur-btn) hover:border-blue/50 hover:text-fg lg:rounded-xl"
                   >
-                    <Icon size={16} aria-hidden="true" className="text-cyan" />
+                    <Icon size={16} aria-hidden="true" className="text-accent" />
                     {t(`categories.${c}`)}
                   </a>
                 </li>
@@ -73,11 +73,11 @@ export default async function HelpPage({ params }: Props) {
                 {FAQ[c].map((q) => (
                   <details
                     key={q}
-                    className="holo-border-hover group rounded-card border border-border bg-surface/80 shadow-card backdrop-blur open:border-cyan/40"
+                    className="holo-border-hover group rounded-card border border-border bg-surface shadow-card open:border-blue/40"
                   >
                     <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-semibold sm:px-5 [&::-webkit-details-marker]:hidden">
                       <span className="min-w-0">{t(`faq.${c}.q${q}` as 'faq.delivery.q1')}</span>
-                      <ChevronDown size={18} aria-hidden="true" className="shrink-0 text-cyan transition-transform duration-(--dur-btn) group-open:rotate-180" />
+                      <ChevronDown size={18} aria-hidden="true" className="shrink-0 text-accent transition-transform duration-(--dur-btn) group-open:rotate-180" />
                     </summary>
                     <p className="px-4 pb-4 text-sm leading-relaxed text-muted sm:px-5">{t(`faq.${c}.a${q}` as 'faq.delivery.a1')}</p>
                   </details>

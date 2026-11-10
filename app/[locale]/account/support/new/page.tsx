@@ -5,7 +5,6 @@ import { requireUser } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card } from '@/components/ui/Card';
-import { HudCorners } from '@/components/ui/HudCorners';
 import { NewTicketForm } from '@/components/account/SupportForms';
 
 type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ order?: string }> };
@@ -38,8 +37,7 @@ export default async function NewTicketPage({ params, searchParams }: Props) {
     <div className="pb-14">
       <PageHeader title={t('newTitle')} subtitle={t('newSubtitle')} fallbackHref="/account/support" />
       <div className="page-container mt-5 lg:mt-6">
-        <Card tone="glass" className="relative mx-auto max-w-2xl">
-          <HudCorners size={12} />
+        <Card className="mx-auto max-w-2xl">
           <NewTicketForm orders={options} defaultOrder={defaultOrder} />
         </Card>
       </div>

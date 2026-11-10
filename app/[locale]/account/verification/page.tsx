@@ -10,10 +10,11 @@ import { getKycOverview, KYC_DOCUMENT_TYPES } from '@/lib/kyc';
 import { getDefaultAddress } from '@/lib/delivery/addresses';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card } from '@/components/ui/Card';
+import { HudCorners } from '@/components/ui/HudCorners';
+import { IconTile, type IconTileTone } from '@/components/account/IconTile';
 import { buttonClasses } from '@/components/ui/Button';
 import { KycStatusBadge } from '@/components/delivery/StatusBadges';
 import { KycFlow } from '@/components/account/KycFlow';
-import { cn } from '@/lib/cn';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -30,12 +31,12 @@ const STATUS_ICON: Record<KycStatus, typeof ShieldCheck> = {
   REJECTED: ShieldX,
 };
 
-const STATUS_TONE: Record<KycStatus, string> = {
-  UNVERIFIED: 'text-cyan',
-  PENDING: 'text-cyan',
-  DOCUMENTS_REQUESTED: 'text-amber',
-  VERIFIED: 'text-success',
-  REJECTED: 'text-error',
+const STATUS_TONE: Record<KycStatus, IconTileTone> = {
+  UNVERIFIED: 'blue',
+  PENDING: 'blue',
+  DOCUMENTS_REQUESTED: 'amber',
+  VERIFIED: 'success',
+  REJECTED: 'error',
 };
 
 export default async function VerificationPage({ params }: Props) {
@@ -63,11 +64,11 @@ export default async function VerificationPage({ params }: Props) {
       <PageHeader title={t('title')} subtitle={t('subtitle')} fallbackHref="/account" />
       <div className="page-container mt-5 grid grid-cols-1 gap-5 lg:mt-6 lg:grid-cols-12">
         <div className="flex min-w-0 flex-col gap-5 lg:col-span-8">
-          <Card tone={status === 'VERIFIED' ? 'gradient' : 'surface'} data-testid="kyc-status" data-status={status}>
+          <Card tone={status === 'VERIFIED' ? 'holo' : 'surface'} className="relative" data-testid="kyc-status" data-status={status}>
+            <HudCorners size={12} className={status === 'REJECTED' ? 'text-error/70' : status === 'DOCUMENTS_REQUESTED' ? 'text-amber/70' : undefined} />
+            <span className="hud-label mb-3">{t('title')}</span>
             <div className="flex items-start gap-4">
-              <span className={cn('grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-premium', STATUS_TONE[status])}>
-                <Icon size={24} aria-hidden="true" />
-              </span>
+              <IconTile icon={Icon} size="lg" tone={STATUS_TONE[status]} />
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-lg font-bold">{t(`statusCard.${status}.title`)}</h2>

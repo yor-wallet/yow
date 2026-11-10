@@ -61,7 +61,7 @@ export default async function TicketPage({ params }: Props) {
                 data-testid="ticket-message"
               >
                 <p className="flex items-center gap-2 text-xs font-semibold text-muted">
-                  {m.isStaff ? <Headset size={14} aria-hidden="true" className="text-cyan" /> : <UserRound size={14} aria-hidden="true" />}
+                  {m.isStaff ? <Headset size={14} aria-hidden="true" className="text-accent" /> : <UserRound size={14} aria-hidden="true" />}
                   {m.isStaff ? t('team') : t('you')}
                   <span aria-hidden="true">·</span>
                   <time dateTime={m.createdAt.toISOString()}>{format.dateTime(m.createdAt, 'long')}</time>
@@ -72,7 +72,7 @@ export default async function TicketPage({ params }: Props) {
           ))}
         </ol>
 
-        <Card tone="glass" className="mt-6">
+        <Card className="mt-6">
           {ticket.status === 'CLOSED' ? (
             <p className="text-sm text-muted" role="status">
               {t('closedNotice')}

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import {
   Bell,
   BadgePercent,
+  BriefcaseBusiness,
+  LayoutGrid,
   Bike,
   ChevronRight,
   CircleHelp,
@@ -31,6 +33,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { buttonClasses } from '@/components/ui/Button';
 import { KycStatusBadge } from '@/components/delivery/StatusBadges';
+import { IconTile } from '@/components/account/IconTile';
 import { logoutAction } from '../(auth)/actions';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -155,7 +158,7 @@ export default async function AccountPage({ params }: Props) {
             <Link href="/wallet" className="relative rounded-card holo-border p-4 shadow-card transition-shadow duration-(--dur-card) hover:shadow-glow-blue" data-testid="account-wallet">
               <HudCorners size={10} />
               <p className="flex items-center gap-2 text-sm text-muted">
-                <Wallet size={16} aria-hidden="true" className="text-cyan" />
+                <Wallet size={16} aria-hidden="true" className="text-accent" />
                 {t('overview.wallet')}
               </p>
               <p className="font-display neon mt-1 text-2xl font-extrabold tabular-nums [unicode-bidi:isolate]">
@@ -165,7 +168,7 @@ export default async function AccountPage({ params }: Props) {
             <Card interactive padded={false} className="p-4">
               <Link href="/orders" className="block">
                 <p className="flex items-center gap-2 text-sm text-muted">
-                  <Package size={16} aria-hidden="true" className="text-cyan" />
+                  <Package size={16} aria-hidden="true" className="text-accent" />
                   {t('overview.orders')}
                 </p>
                 <p className="font-display mt-1 text-2xl font-extrabold tabular-nums">{ordersCount}</p>
@@ -184,11 +187,13 @@ export default async function AccountPage({ params }: Props) {
           </div>
 
           {user.kycStatus !== 'VERIFIED' ? (
-            <div className="relative flex flex-col gap-3 rounded-card glass p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-              <HudCorners size={10} className="text-orange/60" />
-              <div className="min-w-0">
-                <p className="font-semibold">{t('links.verification')}</p>
-                <p className="text-sm text-muted">{t('links.verificationText')}</p>
+            <div className="relative flex flex-col gap-3 rounded-card border border-orange/30 bg-surface p-4 shadow-card sm:flex-row sm:items-center sm:justify-between sm:p-5">
+              <div className="flex min-w-0 items-center gap-3">
+                <IconTile icon={ShieldCheck} tone="orange" />
+                <div className="min-w-0">
+                  <p className="font-semibold">{t('links.verification')}</p>
+                  <p className="text-sm text-muted">{t('links.verificationText')}</p>
+                </div>
               </div>
               <Link href="/account/verification" className={buttonClasses({ variant: 'accent', size: 'sm', className: 'shrink-0' })}>
                 {t(`kyc.cta.${user.kycStatus}`)}
@@ -197,7 +202,15 @@ export default async function AccountPage({ params }: Props) {
           ) : null}
 
           <section aria-labelledby="account-sections">
-            <SectionHeading id="account-sections" eyebrow={t('title')} title={t('overview.sections')} />
+            <SectionHeading
+              id="account-sections"
+              title={
+                <span className="flex items-center gap-2.5">
+                  <LayoutGrid size={22} aria-hidden="true" className="shrink-0 text-accent" />
+                  {t('overview.sections')}
+                </span>
+              }
+            />
             <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {sections.map((s) => (
                 <li key={s.href}>
@@ -209,7 +222,15 @@ export default async function AccountPage({ params }: Props) {
 
           {staffSections.length ? (
             <section aria-labelledby="account-staff">
-              <SectionHeading id="account-staff" title={t('overview.staff')} />
+              <SectionHeading
+                id="account-staff"
+                title={
+                  <span className="flex items-center gap-2.5">
+                    <BriefcaseBusiness size={22} aria-hidden="true" className="shrink-0 text-accent" />
+                    {t('overview.staff')}
+                  </span>
+                }
+              />
               <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 {staffSections.map((s) => (
                   <li key={s.href}>
@@ -231,16 +252,15 @@ function SectionLink({ href, icon: Icon, title, text, badge, testId }: Section) 
       href={href}
       data-spotlight=""
       data-testid={testId}
-      className="spotlight holo-border-hover group flex min-h-20 items-center gap-4 rounded-card border border-border bg-surface/80 p-4 shadow-card backdrop-blur transition-[box-shadow,transform] duration-(--dur-card) ease-premium hover:-translate-y-0.5 hover:shadow-glow-blue"
+      className="spotlight holo-border-hover group flex min-h-20 items-center gap-4 rounded-card border border-border bg-surface p-4 shadow-card transition-[box-shadow,transform] duration-(--dur-card) ease-premium hover:-translate-y-0.5 hover:shadow-glow-blue"
     >
-      <span className="relative grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-premium text-cyan neon-box">
-        <Icon size={20} aria-hidden="true" />
+      <IconTile icon={Icon}>
         {badge ? (
           <span className="absolute -end-1.5 -top-1.5 inline-flex min-w-5 items-center justify-center rounded-pill bg-gradient-secondary px-1 text-[11px] font-bold leading-5 text-on-accent">
             {badge > 99 ? '99+' : badge}
           </span>
         ) : null}
-      </span>
+      </IconTile>
       <span className="min-w-0 flex-1">
         <span className="block font-semibold">{title}</span>
         <span className="block text-sm text-muted">{text}</span>

@@ -49,7 +49,7 @@ export default async function LegalPage({ params }: Props) {
       <PageHeader title={t(`${slug}.title`)} fallbackHref="/" />
       <div className="page-container mt-5 grid grid-cols-1 gap-8 lg:mt-6 lg:grid-cols-12">
         <aside className="min-w-0 lg:order-2 lg:col-span-4">
-          <nav aria-labelledby="legal-toc" className="rounded-card glass p-4 lg:sticky lg:top-28">
+          <nav aria-labelledby="legal-toc" className="rounded-card border border-border bg-surface p-4 shadow-card lg:sticky lg:top-28">
             <h2 id="legal-toc" className="hud-label">
               {t('contents')}
             </h2>
@@ -57,7 +57,7 @@ export default async function LegalPage({ params }: Props) {
               {sections.map((s, i) => (
                 <li key={s}>
                   <a href={`#${s}`} className="flex min-h-11 items-center gap-2 rounded-lg px-2 text-muted hover:bg-surface-2 hover:text-fg">
-                    <span className="font-display w-6 shrink-0 text-xs font-bold text-cyan tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="font-display w-6 shrink-0 text-xs font-bold text-accent tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                     <span className="min-w-0">{t(key(s, 'Title'))}</span>
                   </a>
                 </li>
@@ -90,7 +90,7 @@ export default async function LegalPage({ params }: Props) {
           {sections.map((s, i) => (
             <section key={s} id={s} className="mt-8 scroll-mt-28" aria-labelledby={`${s}-title`}>
               <h2 id={`${s}-title`} className="flex items-baseline gap-3 text-xl font-bold">
-                <span className="font-display neon text-sm font-bold text-cyan tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-display neon text-sm font-bold text-accent tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 {t(key(s, 'Title'))}
               </h2>
               <p className="mt-2 leading-relaxed text-muted">{t(key(s, 'Body'))}</p>

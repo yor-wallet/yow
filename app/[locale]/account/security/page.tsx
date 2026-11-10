@@ -7,7 +7,6 @@ import { prisma } from '@/lib/db';
 import { ACCOUNT_DELETION_SUBJECT } from '@/lib/support';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card } from '@/components/ui/Card';
-import { HudCorners } from '@/components/ui/HudCorners';
 import { ChangePasswordForm, DeletionRequest, SessionList, type SessionView } from '@/components/account/SecurityForms';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -86,19 +85,18 @@ export default async function SecurityPage({ params }: Props) {
     <div className="pb-14">
       <PageHeader title={t('title')} fallbackHref="/account" />
       <div className="page-container mt-5 grid grid-cols-1 gap-5 lg:mt-6 lg:grid-cols-12">
-        <Card tone="glass" className="relative lg:col-span-5">
-          <HudCorners size={12} />
+        <Card className="lg:col-span-5">
           <h2 className="flex items-center gap-2 text-lg font-bold">
-            <KeyRound size={20} aria-hidden="true" className="text-cyan" />
+            <KeyRound size={20} aria-hidden="true" className="text-accent" />
             {t('passwordTitle')}
           </h2>
           <p className="mb-4 text-sm text-muted">{t('passwordText')}</p>
           <ChangePasswordForm />
         </Card>
         <div className="flex min-w-0 flex-col gap-5 lg:col-span-7">
-          <Card tone="glass">
+          <Card>
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <MonitorSmartphone size={20} aria-hidden="true" className="text-cyan" />
+              <MonitorSmartphone size={20} aria-hidden="true" className="text-accent" />
               {t('sessionsTitle')}
             </h2>
             <p className="mb-4 text-sm text-muted">{t('sessionsText')}</p>

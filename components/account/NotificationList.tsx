@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 import { markNotificationsReadAction } from '@/app/[locale]/account/notifications/actions';
 import { cn } from '@/lib/cn';
+import { IconTile } from './IconTile';
 
 export type NotificationView = {
   id: string;
@@ -82,13 +83,11 @@ export function NotificationList({ items, unreadTotal }: { items: NotificationVi
                 data-testid="notification-item"
                 data-unread={n.unread ? 'true' : undefined}
                 className={cn(
-                  'spotlight holo-border-hover group flex w-full min-w-0 items-start gap-3 rounded-card border p-4 text-start shadow-card backdrop-blur transition-[box-shadow,transform] duration-(--dur-card) ease-premium hover:-translate-y-0.5 hover:shadow-glow-blue',
-                  n.unread ? 'border-blue/45 bg-blue/10' : 'border-border bg-surface/80',
+                  'spotlight holo-border-hover group flex w-full min-w-0 items-start gap-3 rounded-card border p-4 text-start shadow-card transition-[box-shadow,transform] duration-(--dur-card) ease-premium hover:-translate-y-0.5 hover:shadow-glow-blue',
+                  n.unread ? 'border-blue/40 bg-surface [box-shadow:inset_3px_0_0_var(--color-blue)] rtl:[box-shadow:inset_-3px_0_0_var(--color-blue)]' : 'border-border bg-surface',
                 )}
               >
-                <span className={cn('relative grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-premium', n.unread ? 'text-cyan neon-box' : 'text-muted')}>
-                  <Icon size={18} aria-hidden="true" />
-                </span>
+                <IconTile icon={Icon} size="sm" tone={n.unread ? 'blue' : 'muted'} />
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                     <span className={cn('min-w-0 break-words', n.unread ? 'font-bold' : 'font-semibold')}>{n.title}</span>
@@ -100,9 +99,9 @@ export function NotificationList({ items, unreadTotal }: { items: NotificationVi
                   </span>
                   {n.body ? <span className="mt-0.5 block text-sm text-muted">{n.body}</span> : null}
                   {n.handoverCode ? (
-                    <span className="mt-2 inline-flex flex-wrap items-center gap-2 rounded-xl border border-cyan/40 bg-night/50 px-3 py-2" data-testid="notification-handover">
+                    <span className="mt-2 inline-flex flex-wrap items-center gap-2 rounded-xl border border-blue/40 bg-blue/8 px-3 py-2 dark:border-cyan/40 dark:bg-night/50" data-testid="notification-handover">
                       <span className="text-xs font-semibold text-muted">{t('handoverCode')}</span>
-                      <span className="font-display neon font-mono text-lg font-extrabold tracking-[0.3em] text-white" dir="ltr">
+                      <span className="font-display neon font-mono text-lg font-extrabold tracking-[0.3em] text-fg" dir="ltr">
                         {n.handoverCode}
                       </span>
                       <span className="w-full text-xs text-muted">{t('handoverHint')}</span>

@@ -190,7 +190,7 @@ export function HandoverForm({ shipmentId }: { shipmentId: string }) {
           {error}
         </p>
       ) : null}
-      <Button type="submit" size="lg" fullWidth loading={pending} loadingLabel={t('completing')} leadingIcon={<PackageCheck size={20} aria-hidden="true" />} data-testid="handover-submit">
+      <Button type="submit" variant="accent" size="lg" fullWidth loading={pending} loadingLabel={t('completing')} leadingIcon={<PackageCheck size={20} aria-hidden="true" />} data-testid="handover-submit">
         {t('complete')}
       </Button>
     </form>
