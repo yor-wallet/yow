@@ -8,9 +8,9 @@
 | Contrôle | Résultat |
 |---|---|
 | `npm run typecheck` | propre |
-| `npm test` (Vitest, base PostgreSQL de test) | 162 tests verts : parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
+| `npm test` (Vitest, base PostgreSQL de test) | 177 tests verts, dont : parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
 | `npm run build` | réussi |
-| `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 89 tests verts sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
+| `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 148 tests verts (2 ignorés par conception) sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
 
 ## Modules
 
@@ -18,6 +18,10 @@
 Design system (jetons, thèmes sombre/clair), i18n ar (RTL) / en / fr avec test de parité, authentification (sessions, bcrypt 12, limitation de débit), RBAC, journal d'audit, idempotence, chiffrement AES-256-GCM, stockage (local / Supabase), PWA, schéma Prisma (52 modèles, contraintes CHECK, grand livre à écritures doubles), graine sans produit ni prix.
 
 ### Vitrine — ✅ (sauf points ci-dessous)
+- **Refonte téléphone selon la maquette validée** (thème clair par défaut, sombre au choix) : bandeau violet fixe avec logo centré, flèche retour dans le bandeau sur les pages secondaires, titres centrés, zone de livraison choisie par l'acheteur (témoin `doom_area`), recherche à bouton bleu, bannière compacte, pastilles de délais **lues dans les zones configurées** (rien n'est affiché sans configuration), 4 tuiles de catégories, cartes produit claires, barre d'onglets Accueil · Catégories · Favoris · Panier · Compte.
+- **Fiche produit (téléphone)** : pastilles de couleur, menu de capacité, « Détails » repliable, aperçu des mensualités FLEX 3/6/12 mois calculé sur le prix réel (illustration non contractuelle), ligne de livraison de la zone, bouton orange épinglé. Bureau : puces, quantité et achat immédiat conservés.
+- **Panier** : mode de livraison chiffré par le même moteur que la commande (colis réel, frais et capacité de la zone), moyens de paiement réellement disponibles (icônes neutres, « indisponible » sinon), récapitulatif ; le choix de livraison est transmis à la commande dans l'URL et recalculé sur l'adresse.
+- Police arabe d'affichage Alexandria (auto-hébergée) pour titres et prix, corps en IBM Plex Sans Arabic ; transition de page en fondu ; inclinaison 3D des cartes au survol (pointeur fin uniquement) ; tout respecte la réduction de mouvement.
 - Accueil selon la spec : carrousel d'annonces (scènes 3D CSS téléphone / portable / écouteurs, lecture/pause, balayage, réduction de mouvement), promotions réelles, rayons produits avec états vides honnêtes, DOOM FLEX (illustration calculée, non contractuelle), DOOM EXPRESS, avis vérifiés, support.
 - Catégories, liste d'une catégorie, recherche (arabe normalisé), filtres et tri dans l'URL, feuille de filtres mobile (brouillon + nombre de résultats en direct), « voir plus » par curseur.
 - Fiche produit : galerie avec zoom, variantes, prix et stock réels, quantité, ajout au panier / achat immédiat, favoris, partage, livraison / garantie / FLEX, caractéristiques, avis vérifiés, données structurées schema.org sans fait inventé.
