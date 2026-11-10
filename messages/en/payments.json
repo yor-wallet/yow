@@ -19,6 +19,18 @@
     "giftCardRejected": {
       "title": "Gift card not accepted",
       "body": "We could not verify the value of your gift card. Open your wallet for details."
+    },
+    "flexApproved": {
+      "title": "DOOM FLEX approved",
+      "body": "Your DOOM FLEX application was approved. Review and accept the instalment terms to confirm."
+    },
+    "flexRejected": {
+      "title": "DOOM FLEX application declined",
+      "body": "Your DOOM FLEX application was not approved. Open it for details."
+    },
+    "refundIssued": {
+      "title": "Refund issued",
+      "body": "A refund of {amount} was issued for order {number}."
     }
   },
   "methods": {

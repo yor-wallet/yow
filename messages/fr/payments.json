@@ -19,6 +19,18 @@
     "giftCardRejected": {
       "title": "Carte cadeau non acceptée",
       "body": "Nous n'avons pas pu vérifier la valeur de votre carte cadeau. Ouvrez votre portefeuille pour plus de détails."
+    },
+    "flexApproved": {
+      "title": "DOOM FLEX accepté",
+      "body": "Votre demande DOOM FLEX a été acceptée. Consultez et acceptez les conditions de l’échéancier pour confirmer."
+    },
+    "flexRejected": {
+      "title": "Demande DOOM FLEX refusée",
+      "body": "Votre demande DOOM FLEX n’a pas été acceptée. Ouvrez-la pour plus de détails."
+    },
+    "refundIssued": {
+      "title": "Remboursement effectué",
+      "body": "Un remboursement de {amount} a été effectué pour la commande {number}."
     }
   },
   "methods": {
