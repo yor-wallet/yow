@@ -331,5 +331,113 @@
     "apply": "Apply",
     "from": "From",
     "to": "To"
+  },
+  "picker": {
+    "placeholder": "Search by name or SKU…",
+    "searching": "Searching…",
+    "hint": "Up to {max} products. The first one feeds the product block of the ad.",
+    "remove": "Remove {name}"
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "subtitle": "Ads shown on the home page, categories and product pages. Statistics are recorded on the server.",
+    "new": "New campaign",
+    "newHint": "Texts in the three languages, media, dates and where the ad appears. Starts inactive unless you activate it.",
+    "editTitle": "Edit campaign",
+    "editHint": "Changes go live on the store within a few minutes (cache).",
+    "search": "Search campaigns",
+    "state": "State",
+    "active": "Active",
+    "inactive": "Inactive",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "empty": "No campaign matches.",
+    "ctrTrend": "Click rate per day",
+    "statsNote": "Impressions = ad at least 50% visible, counted once per visit; clicks = call-to-action clicks. Last 14 days.",
+    "create": "Create campaign",
+    "save": "Save campaign",
+    "delete": "Delete campaign",
+    "deleteTitle": "Delete this campaign?",
+    "deleteText": "Its media and statistics are removed too. This cannot be undone.",
+    "noStats": "No impression recorded yet.",
+    "impressionsPerDay": "Impressions per day",
+    "previewHint": "Exactly as the store renders it. Preview views are not counted.",
+    "sections": {
+      "content": "Campaign",
+      "preview": "Live preview",
+      "stats": "Statistics"
+    },
+    "columns": {
+      "campaign": "Campaign",
+      "placements": "Placements",
+      "dates": "Dates",
+      "priority": "Priority",
+      "stats": "Impressions / clicks · CTR",
+      "status": "Status",
+      "date": "Day",
+      "impressions": "Impressions",
+      "clicks": "Clicks",
+      "ctr": "CTR"
+    },
+    "fields": {
+      "internalName": "Internal name",
+      "slug": "Identifier (slug)",
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "cta": "Button text",
+      "mediaType": "Media type",
+      "sceneKind": "3D scene",
+      "theme": "Colour theme",
+      "media": "Media (desktop)",
+      "mediaMobile": "Media for phones (optional)",
+      "poster": "Poster image",
+      "removeMedia": "Remove the current media",
+      "placements": "Placements",
+      "products": "Linked products",
+      "linkUrl": "Link",
+      "priority": "Priority",
+      "startsAt": "Starts",
+      "endsAt": "Ends",
+      "isActive": "Active"
+    },
+    "hints": {
+      "internalName": "Only visible in the admin centre.",
+      "slug": "Lowercase letters, digits and dashes.",
+      "sceneKind": "Used by the 3D scene type (CSS animation, light on phones).",
+      "mediaIMAGE": "PNG, JPEG, WebP or AVIF, up to 8 MB. Optimised to WebP and AVIF automatically.",
+      "mediaVIDEO": "MP4 or WebM, up to 10 MB. Add a poster image.",
+      "mediaLOTTIE": "Lottie animation (JSON), up to 2 MB.",
+      "mediaSCENE_3D": "No file needed: the scene is drawn by the store.",
+      "mediaMobile": "Optional. For images a phone-sized version is generated automatically.",
+      "poster": "Shown before the video plays and when motion is reduced.",
+      "linkUrl": "Store path such as /category/smartphones, or an https:// address. Empty = first linked product.",
+      "priority": "Higher numbers are shown first (0–1000).",
+      "dates": "Muscat time. Leave empty for no limit."
+    },
+    "mediaTypes": {
+      "IMAGE": "Image",
+      "VIDEO": "Video",
+      "LOTTIE": "Lottie animation",
+      "SCENE_3D": "3D scene"
+    },
+    "scenes": {
+      "PHONE": "Phone",
+      "LAPTOP": "Laptop",
+      "EARBUDS": "Earbuds",
+      "NONE": "None"
+    },
+    "themes": {
+      "primary": "Blue",
+      "secondary": "Orange",
+      "premium": "Premium night"
+    },
+    "placements": {
+      "home_hero": "Home — hero",
+      "home_mid": "Home — middle",
+      "home_flex": "Home — DOOM FLEX",
+      "home_express": "Home — DOOM EXPRESS",
+      "category_top": "Category — top",
+      "product_side": "Product — side"
+    }
   }
 }

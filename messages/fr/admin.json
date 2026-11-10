@@ -331,5 +331,113 @@
     "apply": "Appliquer",
     "from": "Du",
     "to": "Au"
+  },
+  "picker": {
+    "placeholder": "Rechercher par nom ou SKU…",
+    "searching": "Recherche…",
+    "hint": "Jusqu’à {max} produits. Le premier alimente le bloc produit de la publicité.",
+    "remove": "Retirer {name}"
+  },
+  "campaigns": {
+    "title": "Campagnes",
+    "subtitle": "Publicités affichées sur l’accueil, les catégories et les fiches produit. Les statistiques sont enregistrées côté serveur.",
+    "new": "Nouvelle campagne",
+    "newHint": "Textes dans les trois langues, médias, dates et emplacements. Inactive tant que vous ne l’activez pas.",
+    "editTitle": "Modifier la campagne",
+    "editHint": "Les changements sont visibles sur la boutique en quelques minutes (cache).",
+    "search": "Rechercher une campagne",
+    "state": "État",
+    "active": "Active",
+    "inactive": "Inactive",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "empty": "Aucune campagne ne correspond.",
+    "ctrTrend": "Taux de clic par jour",
+    "statsNote": "Impressions = publicité visible à 50 % au moins, comptée une fois par visite ; clics = clics sur le bouton. 14 derniers jours.",
+    "create": "Créer la campagne",
+    "save": "Enregistrer la campagne",
+    "delete": "Supprimer la campagne",
+    "deleteTitle": "Supprimer cette campagne ?",
+    "deleteText": "Ses médias et statistiques seront aussi supprimés. Action irréversible.",
+    "noStats": "Aucune impression enregistrée pour l’instant.",
+    "impressionsPerDay": "Impressions par jour",
+    "previewHint": "Exactement comme la boutique l’affiche. Les vues de l’aperçu ne sont pas comptées.",
+    "sections": {
+      "content": "Campagne",
+      "preview": "Aperçu en direct",
+      "stats": "Statistiques"
+    },
+    "columns": {
+      "campaign": "Campagne",
+      "placements": "Emplacements",
+      "dates": "Dates",
+      "priority": "Priorité",
+      "stats": "Impressions / clics · CTR",
+      "status": "Statut",
+      "date": "Jour",
+      "impressions": "Impressions",
+      "clicks": "Clics",
+      "ctr": "CTR"
+    },
+    "fields": {
+      "internalName": "Nom interne",
+      "slug": "Identifiant (slug)",
+      "title": "Titre",
+      "subtitle": "Sous-titre",
+      "cta": "Texte du bouton",
+      "mediaType": "Type de média",
+      "sceneKind": "Scène 3D",
+      "theme": "Thème de couleur",
+      "media": "Média (ordinateur)",
+      "mediaMobile": "Média pour mobile (facultatif)",
+      "poster": "Image d’affiche",
+      "removeMedia": "Retirer le média actuel",
+      "placements": "Emplacements",
+      "products": "Produits liés",
+      "linkUrl": "Lien",
+      "priority": "Priorité",
+      "startsAt": "Début",
+      "endsAt": "Fin",
+      "isActive": "Active"
+    },
+    "hints": {
+      "internalName": "Visible uniquement dans le centre d’administration.",
+      "slug": "Minuscules, chiffres et tirets.",
+      "sceneKind": "Utilisée par le type scène 3D (animation CSS légère sur mobile).",
+      "mediaIMAGE": "PNG, JPEG, WebP ou AVIF, 8 Mo maximum. Optimisée automatiquement en WebP et AVIF.",
+      "mediaVIDEO": "MP4 ou WebM, 10 Mo maximum. Ajoutez une image d’affiche.",
+      "mediaLOTTIE": "Animation Lottie (JSON), 2 Mo maximum.",
+      "mediaSCENE_3D": "Aucun fichier : la scène est dessinée par la boutique.",
+      "mediaMobile": "Facultatif. Pour les images, une version mobile est générée automatiquement.",
+      "poster": "Affichée avant la lecture de la vidéo et quand les animations sont réduites.",
+      "linkUrl": "Chemin de la boutique comme /category/smartphones, ou une adresse https://. Vide = premier produit lié.",
+      "priority": "Les nombres les plus élevés passent en premier (0–1000).",
+      "dates": "Heure de Mascate. Laisser vide pour aucune limite."
+    },
+    "mediaTypes": {
+      "IMAGE": "Image",
+      "VIDEO": "Vidéo",
+      "LOTTIE": "Animation Lottie",
+      "SCENE_3D": "Scène 3D"
+    },
+    "scenes": {
+      "PHONE": "Téléphone",
+      "LAPTOP": "Ordinateur portable",
+      "EARBUDS": "Écouteurs",
+      "NONE": "Aucune"
+    },
+    "themes": {
+      "primary": "Bleu",
+      "secondary": "Orange",
+      "premium": "Nuit premium"
+    },
+    "placements": {
+      "home_hero": "Accueil — bannière principale",
+      "home_mid": "Accueil — milieu",
+      "home_flex": "Accueil — DOOM FLEX",
+      "home_express": "Accueil — DOOM EXPRESS",
+      "category_top": "Catégorie — haut",
+      "product_side": "Produit — côté"
+    }
   }
 }

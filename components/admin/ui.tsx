@@ -178,7 +178,7 @@ export function Breadcrumbs({ items }: { items: { label: string; href?: string }
       <ol className="flex flex-wrap items-center gap-1.5">
         {items.map((c, i) => (
           <li key={`${c.label}-${i}`} className="flex items-center gap-1.5">
-            {i > 0 ? <span aria-hidden="true" className="flip-rtl text-border-strong">/</span> : null}
+            {i > 0 ? <span aria-hidden="true" className="flip-rtl inline-block text-border-strong">›</span> : null}
             {c.href && i < items.length - 1 ? (
               <Link href={c.href} className="hover:text-fg">
                 {c.label}
