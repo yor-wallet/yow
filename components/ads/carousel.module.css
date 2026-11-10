@@ -1,0 +1,308 @@
+/*
+ * Hero ad carousel — cinematic motion with compositor-only properties (transform / opacity).
+ * The RESTING state of every element is its final state: animations only run while a slide
+ * has data-play="true" (active + motion allowed), so reduced motion = static, complete slide.
+ */
+
+.root {
+  --px: 0;
+  --py: 0;
+  --interval: 7000ms;
+  position: relative;
+  isolation: isolate;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.track {
+  display: grid;
+}
+
+.slide {
+  --exit: 1;
+  grid-area: 1 / 1;
+  position: relative;
+  overflow: clip;
+  min-height: 36rem;
+  opacity: 0;
+  transform: translate3d(calc(var(--exit) * 3%), 0, 0) scale(1.015);
+  transition:
+    opacity var(--dur-banner) var(--ease-premium),
+    transform var(--dur-banner) var(--ease-premium);
+}
+:global([dir='rtl']) .slide {
+  transform: translate3d(calc(var(--exit) * -3%), 0, 0) scale(1.015);
+}
+.slide[data-active='true'] {
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 768px) {
+  .slide {
+    min-height: 30rem;
+  }
+}
+@media (min-width: 1024px) {
+  .slide {
+    min-height: 33rem;
+  }
+}
+
+/* ───────── depth layers (pointer parallax, desktop only) ───────── */
+.layer {
+  position: absolute;
+  inset: -6%;
+  pointer-events: none;
+  transition: transform 700ms var(--ease-premium);
+}
+.far {
+  transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -14px), 0);
+}
+.mid {
+  transform: translate3d(calc(var(--px) * -10px), calc(var(--py) * -6px), 0);
+}
+.near {
+  transition: transform 700ms var(--ease-premium);
+  transform: translate3d(calc(var(--px) * 14px), calc(var(--py) * 9px), 0);
+}
+
+.orbA,
+.orbB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(48px);
+}
+.orbA {
+  inset-inline-end: 4%;
+  top: -6%;
+  width: 46%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgb(0 217 255 / 0.5), transparent 66%);
+}
+.orbB {
+  inset-inline-start: -4%;
+  bottom: -14%;
+  width: 40%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgb(255 121 0 / 0.42), transparent 66%);
+}
+.warm .orbA {
+  background: radial-gradient(circle, rgb(255 174 0 / 0.5), transparent 66%);
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.32;
+  background-image:
+    linear-gradient(rgb(0 217 255 / 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 217 255 / 0.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 70% at 70% 45%, #000 20%, transparent 75%);
+}
+:global([dir='rtl']) .grid {
+  mask-image: radial-gradient(ellipse 70% 70% at 30% 45%, #000 20%, transparent 75%);
+}
+
+.circuit {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 0;
+  width: 70%;
+  height: 100%;
+  opacity: 0.55;
+  color: rgb(0 217 255 / 0.55);
+}
+:global([dir='rtl']) .circuit {
+  transform: scaleX(-1);
+}
+
+/* ───────── media ───────── */
+.media {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
+.media img,
+.media video,
+.mediaFill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slide[data-play='true'] .kenburns {
+  animation: adsKenBurns 9s ease-out both;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(16 5 46 / 0.9) 0%, rgb(16 5 46 / 0.55) 48%, rgb(16 5 46 / 0.1) 100%);
+}
+:global([dir='rtl']) .scrim {
+  background: linear-gradient(270deg, rgb(16 5 46 / 0.9) 0%, rgb(16 5 46 / 0.55) 48%, rgb(16 5 46 / 0.1) 100%);
+}
+@media (max-width: 767px) {
+  .scrim,
+  :global([dir='rtl']) .scrim {
+    background: linear-gradient(180deg, rgb(16 5 46 / 0.88) 0%, rgb(16 5 46 / 0.5) 55%, rgb(16 5 46 / 0.2) 100%);
+  }
+}
+
+/* ───────── light sheen sweep (once per activation) ───────── */
+.sheen {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+.sheen::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: 0;
+  width: 32%;
+  background: linear-gradient(100deg, transparent 0%, rgb(255 255 255 / 0.14) 45%, rgb(0 217 255 / 0.12) 55%, transparent 100%);
+  transform: translate3d(-180%, 0, 0) skewX(-16deg);
+  opacity: 0;
+}
+.slide[data-play='true'] .sheen::before {
+  animation: adsSheen 1700ms 380ms var(--ease-premium) both;
+}
+
+/* ───────── staggered text ───────── */
+.rise {
+  --i: 0;
+}
+.slide[data-play='true'] .rise {
+  animation: adsRise 680ms var(--ease-premium) both;
+  animation-delay: calc(160ms + var(--i) * 95ms);
+}
+
+.cta {
+  position: relative;
+}
+.ctaArrow {
+  transition: transform var(--dur-btn) var(--ease-snappy);
+}
+.cta:hover .ctaArrow,
+.cta:focus-visible .ctaArrow {
+  transform: translateX(4px);
+}
+:global([dir='rtl']) .ctaArrow {
+  transform: scaleX(-1);
+}
+:global([dir='rtl']) .cta:hover .ctaArrow,
+:global([dir='rtl']) .cta:focus-visible .ctaArrow {
+  transform: scaleX(-1) translateX(4px);
+}
+
+/* ───────── controls ───────── */
+.dot {
+  position: relative;
+  display: block;
+  height: 0.5rem;
+  width: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.4);
+  transition:
+    width var(--dur-nav) var(--ease-premium),
+    background-color var(--dur-nav) var(--ease-premium);
+}
+.dot[data-current='true'] {
+  width: 2.25rem;
+  background: rgb(255 255 255 / 0.22);
+}
+.dotFill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #087bff, #00d9ff);
+  box-shadow: 0 0 10px rgb(0 217 255 / 0.8);
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+:global([dir='rtl']) .dotFill {
+  transform-origin: right center;
+}
+.root[data-playing='true'] .dot[data-current='true'] .dotFill {
+  animation: adsProgress var(--interval) linear both;
+}
+.root[data-held='true'] .dot[data-current='true'] .dotFill {
+  animation-play-state: paused;
+}
+
+.control {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  background: rgb(16 5 46 / 0.55);
+  color: #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color var(--dur-btn) var(--ease-snappy),
+    box-shadow var(--dur-btn) var(--ease-snappy),
+    transform var(--dur-btn) var(--ease-snappy);
+}
+.control:hover {
+  background: rgb(25 11 69 / 0.85);
+  box-shadow: 0 0 0 1px rgb(0 217 255 / 0.45), 0 0 18px -4px rgb(0 217 255 / 0.8);
+}
+.control:active {
+  transform: scale(0.95);
+}
+
+@keyframes adsKenBurns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+@keyframes adsSheen {
+  0% {
+    transform: translate3d(-180%, 0, 0) skewX(-16deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(420%, 0, 0) skewX(-16deg);
+    opacity: 0;
+  }
+}
+@keyframes adsRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes adsProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .layer,
+  .near {
+    transition: none;
+  }
+}

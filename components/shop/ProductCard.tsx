@@ -33,6 +33,12 @@ export function ProductCard({
   const t = useTranslations('catalog.card');
   const locale = useLocale();
   const purchasable = product.availability === 'in_stock' || product.availability === 'low_stock';
+  const stockLabel = {
+    in_stock: t('inStock'),
+    low_stock: t('lowStock'),
+    out_of_stock: t('outOfStock'),
+    unavailable: t('unavailable'),
+  }[product.availability];
   const flexMonthly = flexMonthlyFrom(product.priceBaisa);
   const promoLabel = product.promo
     ? product.promo.type === 'PERCENT'
@@ -43,13 +49,14 @@ export function ProductCard({
   return (
     <article
       data-testid="product-card"
+      data-spotlight=""
       className={cn(
-        'group relative flex h-full min-w-0 flex-col overflow-hidden rounded-card border border-border bg-surface shadow-card',
-        'transition-[transform,box-shadow,border-color] duration-(--dur-card) ease-premium hover:-translate-y-0.5 hover:border-border-strong hover:shadow-glow-blue',
+        'spotlight holo-border-hover group relative flex h-full min-w-0 flex-col overflow-hidden rounded-card border border-border bg-surface/90 shadow-card',
+        'transition-[transform,box-shadow,border-color] duration-(--dur-card) ease-premium hover:-translate-y-1 hover:shadow-glow-blue',
         className,
       )}
     >
-      <div className="relative aspect-square w-full overflow-hidden bg-surface-2">
+      <div className="relative aspect-square w-full overflow-hidden border-b border-border bg-[radial-gradient(70%_62%_at_50%_42%,rgb(8_123_255/0.2),transparent_72%)]">
         {product.image ? (
           <ShopImage
             src={product.image.src}
@@ -61,8 +68,10 @@ export function ProductCard({
             className="size-full object-contain p-3 transition-transform duration-(--dur-card) ease-premium group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="grid size-full place-items-center bg-gradient-premium text-cyan" aria-hidden="true">
-            <CategoryIcon name={product.categoryIcon} size={44} />
+          <div className="grid size-full place-items-center text-cyan" aria-hidden="true">
+            <span className="neon-box grid size-20 place-items-center rounded-3xl bg-gradient-premium">
+              <CategoryIcon name={product.categoryIcon} size={36} />
+            </span>
           </div>
         )}
         <div className="pointer-events-none absolute inset-x-2 top-2 flex items-start justify-between gap-2">
@@ -79,7 +88,7 @@ export function ProductCard({
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1.5 p-3 sm:p-4">
-        {product.brand ? <p className="truncate text-xs font-medium uppercase tracking-wide text-muted">{product.brand}</p> : null}
+        {product.brand ? <p className="truncate font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent rtl:tracking-normal">{product.brand}</p> : null}
         <h3 className="line-clamp-2 min-h-[2.6em] text-sm font-semibold leading-snug sm:text-[15px]">
           <Link
             href={productPath(product.slug)}
@@ -92,14 +101,12 @@ export function ProductCard({
         <div className="mt-auto flex flex-col gap-1 pt-1">
           <div className="flex flex-wrap items-baseline gap-x-1.5">
             {product.priceBaisa !== null && product.priceFrom ? <span className="text-xs text-muted">{t('from')}</span> : null}
-            <Price baisa={product.priceBaisa} compareAtBaisa={product.compareAtBaisa} size="md" />
+            <Price baisa={product.priceBaisa} compareAtBaisa={product.compareAtBaisa} size="md" className="font-display" />
           </div>
           {flexMonthly !== null ? (
             <p className="text-xs text-muted">{t('flexFrom', { amount: formatBaisa(flexMonthly, locale) })}</p>
           ) : null}
-          {product.availability === 'low_stock' ? <p className="text-xs font-semibold text-amber">{t('lowStock')}</p> : null}
-          {product.availability === 'out_of_stock' ? <p className="text-xs font-semibold text-muted">{t('outOfStock')}</p> : null}
-          {product.availability === 'unavailable' ? <p className="text-xs font-semibold text-muted">{t('unavailable')}</p> : null}
+          <StockChip availability={product.availability} label={stockLabel} />
         </div>
 
         <div className="mt-2">
@@ -117,5 +124,28 @@ export function ProductCard({
         </div>
       </div>
     </article>
+  );
+}
+
+const STOCK_DOT = {
+  in_stock: 'bg-success shadow-[0_0_8px_var(--color-success)]',
+  low_stock: 'bg-amber shadow-[0_0_8px_var(--color-amber)]',
+  out_of_stock: 'bg-error',
+  unavailable: 'bg-muted',
+} as const;
+
+/** HUD-style availability chip with a glowing status node. */
+export function StockChip({ availability, label }: { availability: ProductCardData['availability']; label: string }) {
+  return (
+    <p
+      className={cn(
+        'inline-flex items-center gap-1.5 text-xs font-semibold',
+        availability === 'low_stock' ? 'text-fg' : availability === 'in_stock' ? 'text-muted' : 'text-muted',
+      )}
+      data-availability={availability}
+    >
+      <span aria-hidden="true" className={cn('size-1.5 shrink-0 rounded-full', STOCK_DOT[availability])} />
+      {label}
+    </p>
   );
 }

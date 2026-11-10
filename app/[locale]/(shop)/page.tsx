@@ -1,25 +1,37 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { asLocale } from '@/i18n/routing';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Link } from '@/i18n/navigation';
+import { asLocale } from '@/i18n/routing';
 import { getSession } from '@/lib/auth';
 import { getNavCategories } from '@/lib/nav';
-import { localize } from '@/lib/localized';
 import { categoryPath } from '@/lib/catalog/paths';
 import { favoriteIdsFor } from '@/lib/catalog/favorites';
 import { getCachedCampaigns, getCachedLatestReviews, getHomeRail, getPromotionViews, type RailKey } from '@/lib/catalog/cache';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
-import { Reveal } from '@/components/ui/Reveal';
-import { HeroCarousel } from '@/components/shop/HeroCarousel';
-import { ExpressSection, FlexSection, PromotionStrip, ReviewsSection, StaticHero, SupportSection } from '@/components/shop/HomeSections';
-import { ProductRail } from '@/components/shop/ProductRail';
+import { HeroCarousel } from '@/components/ads/HeroCarousel';
+import { PromoBanner } from '@/components/ads/PromoBanner';
+import {
+  CategoryStrip,
+  ExpressSection,
+  FlexSection,
+  HeroSkeleton,
+  PromotionStrip,
+  ReviewsSection,
+  ReviewsSkeleton,
+  StaticHero,
+  SupportSection,
+} from '@/components/shop/HomeSections';
+import { ProductRail, RailSkeleton } from '@/components/shop/ProductRail';
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: asLocale(locale), namespace: 'home' });
-  return { title: { absolute: `DOOM | دوم — ${t('metaTitle')}` } };
+  return {
+    title: { absolute: `DOOM | دوم — ${t('metaTitle')}` },
+    description: t('hero.subtitle'),
+    openGraph: { title: `DOOM | دوم — ${t('metaTitle')}`, description: t('hero.subtitle') },
+  };
 }
 
 /** Where each rail's "See all" link goes (locale-less). Brand rails use the search page. */
@@ -37,41 +49,14 @@ const SEE_ALL: Record<RailKey, string> = {
 /**
  * Home (SPEC → Home page sections): hero ads → deals → smartphones → Apple → Samsung →
  * HONOR → computers → audio & accessories → DOOM FLEX → DOOM EXPRESS → recommended →
- * verified reviews → support. Every product section shows an honest empty state until an
- * administrator publishes real products.
+ * verified reviews → support (footer from the layout). The hero renders first; every data
+ * section streams in behind a same-size skeleton (Suspense). Product sections show an honest
+ * empty state until an administrator publishes real products.
  */
 export default async function HomePage({ params }: Props) {
   const locale = asLocale((await params).locale);
   setRequestLocale(locale);
-  const t = await getTranslations('home');
-
-  const keys: RailKey[] = ['deals', 'smartphones', 'apple', 'samsung', 'honor', 'computers', 'audio', 'recommended'];
-  const [categories, slides, promotions, reviews, session, ...rails] = await Promise.all([
-    getNavCategories(),
-    getCachedCampaigns('home_hero', locale),
-    getPromotionViews(locale),
-    getCachedLatestReviews(locale),
-    getSession(),
-    ...keys.map((k) => getHomeRail(k, locale)),
-  ]);
-  const byKey = Object.fromEntries(keys.map((k, i) => [k, rails[i] ?? []])) as Record<RailKey, (typeof rails)[number]>;
-  const favoriteIds = await favoriteIdsFor(session?.user.id, [...new Set(rails.flatMap((r) => r.map((p) => p.id)))]);
-
-  const rail = (key: RailKey, headingLevel: 2 | 3 = 2) => (
-    <ProductRail
-      id={key}
-      eyebrow={t(`sections.${key}.eyebrow`)}
-      title={t(`sections.${key}.title`)}
-      subtitle={t(`sections.${key}.subtitle`)}
-      seeAllHref={SEE_ALL[key]}
-      seeAllLabel={t('sections.seeAll')}
-      emptyTitle={t(`sections.${key}.emptyTitle`)}
-      emptyText={t(`sections.${key}.emptyText`)}
-      products={byKey[key]}
-      favoriteIds={favoriteIds}
-      headingLevel={headingLevel}
-    />
-  );
+  const [t, categories] = await Promise.all([getTranslations('home'), getNavCategories()]);
 
   return (
     <div className="pb-10">
@@ -80,54 +65,86 @@ export default async function HomePage({ params }: Props) {
       </h1>
 
       <section className="page-container pt-4 lg:pt-8" aria-labelledby="home-hero-title">
-        {slides.length > 0 ? <HeroCarousel slides={slides} /> : <StaticHero />}
+        <Suspense fallback={<HeroSkeleton />}>
+          <Hero locale={locale} />
+        </Suspense>
       </section>
 
-      {categories.length > 0 ? (
-        <section className="page-container mt-10" aria-labelledby="home-categories-title">
-          <h2 id="home-categories-title" className="text-xl font-bold sm:text-2xl">
-            {t('categories.title')}
-          </h2>
-          <ul className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {categories.map((c, i) => (
-              <li key={c.id} className="min-w-0">
-                <Reveal delay={i * 0.06}>
-                  <Link
-                    href={categoryPath(c.slug)}
-                    className="group flex h-full min-h-32 flex-col justify-between gap-4 rounded-card border border-border bg-surface p-4 shadow-card transition-[transform,border-color,box-shadow] duration-(--dur-card) ease-premium hover:-translate-y-0.5 hover:border-border-strong hover:shadow-glow-blue sm:p-5"
-                  >
-                    <span className="grid size-12 place-items-center rounded-2xl bg-gradient-premium text-cyan">
-                      <CategoryIcon name={c.icon} size={22} />
-                    </span>
-                    <span>
-                      <span className="block font-bold text-fg">{localize(c.name, locale)}</span>
-                      <span className="mt-0.5 block text-xs text-muted">{t('categories.subcategories', { count: c.children.length })}</span>
-                    </span>
-                  </Link>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <CategoryStrip categories={categories} locale={locale} />
 
-      {promotions.length > 0 ? (
-        <div className="page-container mt-12">
-          <PromotionStrip promotions={promotions} />
-        </div>
-      ) : null}
-      {rail('deals')}
-      {rail('smartphones')}
-      {rail('apple')}
-      {rail('samsung')}
-      {rail('honor')}
-      {rail('computers')}
-      {rail('audio')}
+      <Suspense fallback={<RailSkeleton id="deals" />}>
+        <Deals locale={locale} />
+      </Suspense>
+      {(['smartphones', 'apple', 'samsung', 'honor'] as const).map((k) => (
+        <Suspense key={k} fallback={<RailSkeleton id={k} />}>
+          <Rail railKey={k} locale={locale} />
+        </Suspense>
+      ))}
+
+      <Suspense fallback={null}>
+        <PromoBanner placement="home_mid" locale={locale} className="page-container mt-14" />
+      </Suspense>
+
+      {(['computers', 'audio'] as const).map((k) => (
+        <Suspense key={k} fallback={<RailSkeleton id={k} />}>
+          <Rail railKey={k} locale={locale} />
+        </Suspense>
+      ))}
       <FlexSection />
       <ExpressSection />
-      {rail('recommended')}
-      <ReviewsSection reviews={reviews} />
+      <Suspense fallback={<RailSkeleton id="recommended" />}>
+        <Rail railKey="recommended" locale={locale} />
+      </Suspense>
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <Reviews locale={locale} />
+      </Suspense>
       <SupportSection />
     </div>
   );
+}
+
+async function Hero({ locale }: { locale: string }) {
+  const slides = await getCachedCampaigns('home_hero', locale);
+  return slides.length > 0 ? <HeroCarousel slides={slides} /> : <StaticHero />;
+}
+
+async function Rail({ railKey, locale, children }: { railKey: RailKey; locale: string; children?: React.ReactNode }) {
+  const [t, products, session] = await Promise.all([getTranslations('home'), getHomeRail(railKey, locale), getSession()]);
+  const favoriteIds = await favoriteIdsFor(session?.user.id, products.map((p) => p.id));
+  return (
+    <>
+      {children}
+      <ProductRail
+        id={railKey}
+        eyebrow={t(`sections.${railKey}.eyebrow`)}
+        title={t(`sections.${railKey}.title`)}
+        subtitle={t(`sections.${railKey}.subtitle`)}
+        seeAllHref={SEE_ALL[railKey]}
+        seeAllLabel={t('sections.seeAll')}
+        emptyTitle={t(`sections.${railKey}.emptyTitle`)}
+        emptyText={t(`sections.${railKey}.emptyText`)}
+        products={products}
+        favoriteIds={favoriteIds}
+        priorityImages={false}
+      />
+    </>
+  );
+}
+
+/** Deals of the day: live promotions (real rows) above the products flagged as deals. */
+async function Deals({ locale }: { locale: string }) {
+  const promotions = await getPromotionViews(locale);
+  return (
+    <Rail railKey="deals" locale={locale}>
+      {promotions.length > 0 ? (
+        <div className="page-container mt-14 -mb-8">
+          <PromotionStrip promotions={promotions} />
+        </div>
+      ) : null}
+    </Rail>
+  );
+}
+
+async function Reviews({ locale }: { locale: string }) {
+  return <ReviewsSection reviews={await getCachedLatestReviews(locale)} />;
 }
