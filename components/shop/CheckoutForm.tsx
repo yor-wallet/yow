@@ -367,7 +367,7 @@ export function CheckoutForm({
           />
           <div className="flex items-baseline justify-between gap-3 border-t border-border pt-3">
             <dt className="text-base font-bold">{t('summary.total')}</dt>
-            <dd className="text-xl font-extrabold tabular-nums [unicode-bidi:isolate]" data-testid="checkout-total">
+            <dd className="text-2xl font-extrabold tabular-nums text-price [unicode-bidi:isolate]" data-testid="checkout-total">
               {total === null ? <span className="text-sm font-medium text-muted">{t('summary.totalPending')}</span> : formatBaisa(total, locale)}
             </dd>
           </div>
@@ -381,7 +381,7 @@ export function CheckoutForm({
         ) : null}
         {!canPlace && quote.ready ? <p className="text-xs text-muted" data-testid="checkout-incomplete">{t('incomplete')}</p> : null}
 
-        <Button type="button" size="lg" fullWidth disabled={!canPlace || !idempotencyKey} loading={placing} loadingLabel={t('placing')} onClick={place} data-testid="place-order">
+        <Button type="button" variant="accent" size="lg" fullWidth disabled={!canPlace || !idempotencyKey} loading={placing} loadingLabel={t('placing')} onClick={place} data-testid="place-order">
           {total === null ? t('place') : t('placeAndPay', { amount: formatBaisa(total, locale) })}
         </Button>
         <p className="text-center text-xs text-muted">{t('reserved', { minutes: RESERVATION_MINUTES })}</p>

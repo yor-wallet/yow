@@ -11,7 +11,9 @@ import { getHeaderCounts } from '@/lib/nav';
 import { alexandria, exo2, inter, plexArabic } from '../fonts';
 import { THEME_COLORS, ThemeProvider, type Theme } from '@/components/layout/ThemeProvider';
 import { ToastProvider } from '@/components/ui/Toast';
+import { Suspense } from 'react';
 import { NavigationTracker } from '@/components/layout/NavigationTracker';
+import { NavigationProgress } from '@/components/layout/NavigationProgress';
 import { AmbientBackground } from '@/components/layout/AmbientBackground';
 import { SpotlightTracker } from '@/components/layout/SpotlightTracker';
 import { SiteChrome } from '@/components/layout/SiteChrome';
@@ -101,6 +103,9 @@ export default async function LocaleLayout({ children, params }: Props) {
                 {t('skipToContent')}
               </a>
               <NavigationTracker />
+              <Suspense fallback={null}>
+                <NavigationProgress />
+              </Suspense>
               <SpotlightTracker />
               <SiteChrome header={<Header />} footer={<Footer />} bottomNav={<MobileBottomNav cartCount={counts.cart} />}>
                 {children}

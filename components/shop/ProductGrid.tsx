@@ -21,7 +21,8 @@ export function ProductGrid({
       data-testid="product-grid"
     >
       {products.map((p, i) => (
-        <li key={p.id} className="min-w-0">
+        // Staggered entrance on the <li> (the card keeps its own transform for the 3D tilt).
+        <li key={p.id} className="animate-slide-up min-w-0" style={{ animationDelay: `${(i % 10) * 40}ms` }}>
           <ProductCard product={p} favorite={favoriteIds?.has(p.id) ?? false} priority={i < priorityCount} />
         </li>
       ))}

@@ -428,6 +428,47 @@ html[lang='ar'] {
   }
 }
 
+/* Top progress bar while a page loads (components/layout/NavigationProgress.tsx). */
+@keyframes doom-progress-run {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.85);
+  }
+}
+@keyframes doom-progress-done {
+  from {
+    transform: scaleX(0.85);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+.nav-progress-run,
+.nav-progress-done {
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #087bff, #00d9ff, #ff7900);
+  box-shadow: 0 0 10px rgb(0 217 255 / 0.6);
+}
+[dir='rtl'] .nav-progress-run,
+[dir='rtl'] .nav-progress-done {
+  transform-origin: right center;
+}
+.nav-progress-run {
+  animation: doom-progress-run 6s cubic-bezier(0.1, 0.7, 0.2, 1) both;
+}
+.nav-progress-done {
+  animation: doom-progress-done 320ms ease-out both;
+}
+
 /* Route change: the incoming page fades in (see app/[locale]/template.tsx). */
 @keyframes doom-page-in {
   from {
