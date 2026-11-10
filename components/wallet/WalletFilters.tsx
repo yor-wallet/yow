@@ -23,7 +23,7 @@ export function WalletFilters({ active }: { active: WalletFilter }) {
           data-testid={`wallet-filter-${f}`}
           className={cn(
             'inline-flex min-h-11 shrink-0 items-center rounded-pill border px-4 text-sm font-semibold transition-colors duration-(--dur-btn)',
-            f === active ? 'border-transparent bg-gradient-primary text-on-accent shadow-glow-blue' : 'border-border bg-surface/60 text-muted hover:text-fg',
+            f === active ? 'border-blue bg-blue/10 text-accent' : 'border-border bg-surface text-muted hover:border-blue/40 hover:text-fg',
           )}
         >
           {t(f)}

@@ -115,7 +115,7 @@ export function GiftCardForm() {
         </p>
       ) : null}
 
-      <SubmitButton size="lg" fullWidth loadingLabel={t('submitting')} data-testid="giftcard-submit" leadingIcon={<ShieldCheck size={18} aria-hidden="true" />}>
+      <SubmitButton variant="accent" size="lg" fullWidth className="min-h-14" loadingLabel={t('submitting')} data-testid="giftcard-submit" leadingIcon={<ShieldCheck size={18} aria-hidden="true" />}>
         {t('submit')}
       </SubmitButton>
     </form>

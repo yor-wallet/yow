@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircle2, CircleAlert, ExternalLink, Loader2 } from 'lucide-react';
-import { useFormatter, useLocale, useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { formatBaisa } from '@/lib/money';
 import { cn } from '@/lib/cn';
 import type { PaymentIntentView } from '@/lib/payments/core';
 import { buttonClasses } from '@/components/ui/Button';
 import { HudCorners } from '@/components/ui/HudCorners';
+import { Price } from '@/components/ui/Price';
 
 const PENDING = new Set(['CREATED', 'PENDING', 'REQUIRES_ACTION']);
 
@@ -20,7 +20,6 @@ const PENDING = new Set(['CREATED', 'PENDING', 'REQUIRES_ACTION']);
 export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentView; cancelled: boolean }) {
   const t = useTranslations('payments.status');
   const tp = useTranslations('payments');
-  const locale = useLocale();
   const format = useFormatter();
   const [view, setView] = useState(initial);
   const [checking, setChecking] = useState(false);
@@ -61,7 +60,7 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
 
   return (
     <div
-      className={cn('relative rounded-card p-5 shadow-float sm:p-8', succeeded ? 'holo-border' : 'glass')}
+      className={cn('relative rounded-card p-5 shadow-card sm:p-8', succeeded ? 'holo-border' : 'border border-border bg-surface')}
       data-testid="payment-status"
       data-status={view.status}
       aria-live="polite"
@@ -103,8 +102,8 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
       <dl className="mt-6 grid grid-cols-1 divide-y divide-border text-sm">
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 py-2.5">
           <dt className="text-muted">{t('amount')}</dt>
-          <dd className="font-display text-lg font-bold tabular-nums [unicode-bidi:isolate]" data-testid="payment-status-amount">
-            {formatBaisa(view.confirmedAmountBaisa ?? view.amountBaisa, locale)}
+          <dd className="font-display" data-testid="payment-status-amount">
+            <Price baisa={view.confirmedAmountBaisa ?? view.amountBaisa} size="lg" />
           </dd>
         </div>
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 py-2.5">
@@ -135,7 +134,7 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         {pending && view.redirectUrl ? (
-          <a href={view.redirectUrl} className={buttonClasses({ variant: 'primary', className: 'sheen' })} data-testid="payment-continue">
+          <a href={view.redirectUrl} className={buttonClasses({ variant: 'accent', size: 'lg', className: 'sheen' })} data-testid="payment-continue">
             {t('continue')}
             <ExternalLink size={16} aria-hidden="true" />
           </a>
@@ -156,7 +155,7 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
           </Link>
         ) : null}
         {failed && view.purpose === 'TOPUP' ? (
-          <Link href="/wallet/top-up" className={buttonClasses({ variant: 'primary' })}>
+          <Link href="/wallet/top-up" className={buttonClasses({ variant: 'accent' })}>
             {t('actions.retryTopUp')}
           </Link>
         ) : null}

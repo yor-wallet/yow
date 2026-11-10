@@ -29,9 +29,10 @@ export function BalanceCard({
     <section
       aria-labelledby="wallet-balance-label"
       data-testid="wallet-balance"
-      className="relative isolate overflow-hidden rounded-card holo-border p-5 shadow-float sm:p-7"
+      data-theme="dark"
+      className="relative isolate overflow-hidden rounded-card holo-border p-5 text-fg shadow-float sm:p-7"
     >
-      <span aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-card">
+      <span aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-card bg-gradient-premium">
         <span
           className="absolute -inset-1/4 animate-[doom-aurora_16s_ease-in-out_infinite_alternate] opacity-90 motion-reduce:animate-none"
           style={{
@@ -69,11 +70,11 @@ export function BalanceCard({
         </p>
       ) : null}
       <div className="mt-6 grid grid-cols-1 gap-3 xs:grid-cols-2">
-        <Link href="/wallet/top-up" className={buttonClasses({ variant: 'primary', size: 'lg', fullWidth: true, className: 'sheen' })} data-testid="wallet-topup">
+        <Link href="/wallet/top-up" className={buttonClasses({ variant: 'accent', size: 'lg', fullWidth: true, className: 'sheen min-h-13' })} data-testid="wallet-topup">
           <Plus size={18} aria-hidden="true" />
           {t('actions.topUp')}
         </Link>
-        <Link href="/wallet/gift-card" className={buttonClasses({ variant: 'secondary', size: 'lg', fullWidth: true })} data-testid="wallet-giftcard">
+        <Link href="/wallet/gift-card" className={buttonClasses({ variant: 'secondary', size: 'lg', fullWidth: true, className: 'min-h-13' })} data-testid="wallet-giftcard">
           <Gift size={18} aria-hidden="true" />
           {t('actions.giftCard')}
         </Link>
@@ -86,7 +87,7 @@ export function TrustCard() {
   const t = useTranslations('wallet.trust');
   const items = [t('confirmed'), t('giftcards'), t('ledger')];
   return (
-    <section className="glass rounded-card p-5" aria-labelledby="wallet-trust">
+    <section className="rounded-card border border-border bg-surface p-5 shadow-card" aria-labelledby="wallet-trust">
       <h2 id="wallet-trust" className="flex items-center gap-2 text-base font-bold">
         <ShieldCheck size={18} aria-hidden="true" className="text-cyan" />
         {t('title')}

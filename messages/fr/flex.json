@@ -102,7 +102,8 @@
     "kycTitle": "Vérifiez d'abord votre identité",
     "kycText": "DOOM FLEX nécessite une identité vérifiée (carte d'identité et selfie). Cela prend quelques minutes.",
     "notEligible": "Vous ne pouvez pas faire de demande pour le moment",
-    "backToFlex": "À propos de DOOM FLEX"
+    "backToFlex": "À propos de DOOM FLEX",
+    "perMonthLabel": "par mois"
   },
   "detail": {
     "metaTitle": "Mon plan DOOM FLEX",
@@ -167,6 +168,7 @@
     },
     "paidOn": "Payée le {date}",
     "due": "Échéance le {date}",
-    "paidToast": "Échéance payée"
+    "paidToast": "Échéance payée",
+    "walletBalanceLabel": "Solde du portefeuille"
   }
 }

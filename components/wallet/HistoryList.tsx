@@ -19,7 +19,7 @@ const TYPE_ICON: Record<string, LucideIcon> = {
 };
 
 const rowClasses =
-  'group flex min-h-16 items-center gap-3 rounded-2xl border border-border bg-surface/70 p-3 backdrop-blur transition-[border-color,box-shadow,transform] duration-(--dur-card) hover:-translate-y-px hover:border-border-strong hover:shadow-glow-blue sm:gap-4 sm:p-4';
+  'group flex min-h-16 items-center gap-3 rounded-2xl border border-border bg-surface p-3 shadow-card transition-[border-color,box-shadow,transform] duration-(--dur-card) hover:-translate-y-px hover:border-blue/50 sm:gap-4 sm:p-4';
 
 function Icon({ icon: I, tone }: { icon: LucideIcon; tone: 'credit' | 'debit' | 'pending' | 'rejected' }) {
   return (

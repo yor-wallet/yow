@@ -30,7 +30,7 @@ export default async function GiftCardPage({ params }: Props) {
       <div className="page-container mt-4 grid grid-cols-1 gap-6 lg:mt-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)]">
         <ol className="grid grid-cols-1 gap-3 self-start" aria-label={t('eyebrow')}>
           {steps.map(({ icon: Icon, text }, i) => (
-            <li key={i} className="relative flex items-center gap-4 rounded-2xl glass p-4">
+            <li key={i} className="relative flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 shadow-card">
               <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-premium font-display text-lg font-bold text-cyan neon-box" aria-hidden="true">
                 {i + 1}
               </span>
@@ -39,7 +39,7 @@ export default async function GiftCardPage({ params }: Props) {
             </li>
           ))}
         </ol>
-        <div className="relative min-w-0 rounded-card glass p-5 shadow-card sm:p-7">
+        <div className="relative min-w-0 rounded-card border border-border bg-surface p-5 shadow-card sm:p-7">
           <HudCorners />
           <span className="hud-label">{t('eyebrow')}</span>
           <div className="mt-5">

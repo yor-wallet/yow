@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useState, useTransition, type FormEvent } from 'react';
-import { CircleAlert, CreditCard, Gift, Lock, Smartphone, Bitcoin, ChevronRight } from 'lucide-react';
+import { CircleAlert, CreditCard, Gift, Lock, Smartphone, Coins, ChevronRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { topUpAction } from '@/app/[locale]/wallet/actions';
 
-const ICONS: Record<string, LucideIcon> = { CARD: CreditCard, OOREDOO: Smartphone, OMANTEL: Smartphone, CRYPTO: Bitcoin, GIFT_CARD: Gift };
+const ICONS: Record<string, LucideIcon> = { CARD: CreditCard, OOREDOO: Smartphone, OMANTEL: Smartphone, CRYPTO: Coins, GIFT_CARD: Gift };
 const QUICK_OMR = [5, 10, 20, 50];
 
 function newKey() {
@@ -100,7 +100,7 @@ export function TopUpForm({ methods, minBaisa, maxBaisa }: { methods: PaymentMet
               }}
               className={cn(
                 'min-h-11 rounded-pill border px-4 font-display text-sm font-semibold tabular-nums transition-colors duration-(--dur-btn) disabled:opacity-50',
-                amountBaisa === v * 1000 ? 'border-cyan bg-cyan/10 text-fg shadow-glow-cyan' : 'border-border bg-surface/60 text-muted hover:text-fg',
+                amountBaisa === v * 1000 ? 'border-blue bg-blue/10 text-accent' : 'border-border bg-surface text-muted hover:border-blue/40 hover:text-fg',
               )}
             >
               {formatBaisa(v * 1000, locale, { trimWhole: true })}
@@ -111,7 +111,7 @@ export function TopUpForm({ methods, minBaisa, maxBaisa }: { methods: PaymentMet
 
       <fieldset className="min-w-0">
         <legend className="mb-3 text-sm font-medium text-fg">{t('methodLabel')}</legend>
-        <div className="grid grid-cols-1 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
           {external.map((m) => {
             const Icon = ICONS[m.id] ?? CreditCard;
             const checked = method === m.id;
@@ -120,10 +120,12 @@ export function TopUpForm({ methods, minBaisa, maxBaisa }: { methods: PaymentMet
                 key={m.id}
                 data-testid={`topup-method-${m.id}`}
                 data-available={m.available}
+                data-selected={checked}
                 className={cn(
-                  'relative flex min-h-16 items-start gap-3 rounded-2xl border p-3.5 transition-[border-color,box-shadow] duration-(--dur-btn) sm:p-4',
-                  m.available ? 'cursor-pointer bg-surface/70' : 'cursor-not-allowed bg-surface/40 opacity-70',
-                  checked ? 'border-cyan shadow-glow-cyan' : 'border-border',
+                  'relative flex min-h-28 flex-col items-center gap-1.5 rounded-2xl border p-3 text-center transition-[border-color,box-shadow,background-color] duration-(--dur-btn) has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring',
+                  !m.available && 'cursor-not-allowed border-dashed border-border bg-surface-2/60 opacity-70 grayscale',
+                  m.available && !checked && 'cursor-pointer border-border bg-surface shadow-card hover:border-blue/50',
+                  m.available && checked && 'cursor-pointer border-blue bg-blue/10 shadow-card ring-1 ring-blue',
                 )}
               >
                 <input
@@ -136,39 +138,31 @@ export function TopUpForm({ methods, minBaisa, maxBaisa }: { methods: PaymentMet
                     setMethod(m.id);
                     setKey(newKey());
                   }}
-                  className="mt-3 size-4 shrink-0 accent-[#00d9ff]"
+                  className="sr-only"
                 />
-                <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-premium text-cyan">
-                  <Icon size={19} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block font-semibold">{tp(`methods.${m.id}.label`)}</span>
-                  <span className="mt-0.5 block text-sm text-muted">
-                    {m.available ? tp(`methods.${m.id}.description`) : tp(`reasons.${m.reason ?? 'not_configured'}`)}
-                  </span>
+                {checked ? <span aria-hidden="true" className="absolute end-2 top-2 size-2.5 rounded-full bg-blue shadow-glow-blue" /> : null}
+                <Icon size={24} aria-hidden="true" className={cn('mt-1 shrink-0', checked ? 'text-blue' : m.available ? 'text-accent' : 'text-muted')} />
+                <span className="text-sm font-semibold leading-tight">{tp(`methods.${m.id}.label`)}</span>
+                <span className="text-[11px] leading-snug text-muted">
+                  {m.available ? tp(`methods.${m.id}.description`) : tp(`reasons.${m.reason ?? 'not_configured'}`)}
                 </span>
               </label>
             );
           })}
+          {giftCard ? (
+            <Link
+              href="/wallet/gift-card"
+              data-testid="topup-giftcard-link"
+              className="relative flex min-h-28 flex-col items-center gap-1.5 rounded-2xl border border-orange/50 bg-surface p-3 text-center shadow-card transition-[border-color,box-shadow] duration-(--dur-btn) hover:shadow-glow-orange"
+            >
+              <Gift size={24} aria-hidden="true" className="mt-1 shrink-0 text-orange" />
+              <span className="text-sm font-semibold leading-tight">{t('giftCardLink')}</span>
+              <span className="text-[11px] leading-snug text-muted">{t('giftCardHint')}</span>
+              <ChevronRight size={14} aria-hidden="true" className="flip-rtl absolute end-2 top-2 text-muted" />
+            </Link>
+          ) : null}
         </div>
       </fieldset>
-
-      {giftCard ? (
-        <Link
-          href="/wallet/gift-card"
-          data-testid="topup-giftcard-link"
-          className="group flex min-h-16 items-center gap-3 rounded-2xl border border-orange/40 bg-orange/5 p-3.5 transition-[box-shadow] duration-(--dur-btn) hover:shadow-glow-orange sm:p-4"
-        >
-          <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-secondary text-on-accent">
-            <Gift size={19} />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block font-semibold">{t('giftCardLink')}</span>
-            <span className="mt-0.5 block text-sm text-muted">{t('giftCardHint')}</span>
-          </span>
-          <ChevronRight size={18} aria-hidden="true" className="flip-rtl shrink-0 text-muted" />
-        </Link>
-      ) : null}
 
       {error ? (
         <p role="alert" className="flex items-start gap-2 rounded-xl border border-error/40 bg-error/10 p-3 text-sm font-medium text-fg" data-testid="topup-error">
@@ -179,7 +173,7 @@ export function TopUpForm({ methods, minBaisa, maxBaisa }: { methods: PaymentMet
 
       {available.length > 0 ? (
         <div className="flex flex-col gap-3">
-          <Button type="submit" size="lg" fullWidth loading={pending || redirecting} loadingLabel={redirecting ? tp('pay.redirecting') : t('submitting')} data-testid="topup-submit">
+          <Button type="submit" variant="accent" size="lg" fullWidth className="min-h-14" loading={pending || redirecting} loadingLabel={redirecting ? tp('pay.redirecting') : t('submitting')} data-testid="topup-submit">
             {t('submit')}
           </Button>
           <p className="flex items-start gap-2 text-xs text-muted">

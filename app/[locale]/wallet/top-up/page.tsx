@@ -25,7 +25,7 @@ export default async function TopUpPage({ params }: Props) {
     <div className="pb-16">
       <PageHeader title={t('title')} fallbackHref="/wallet" />
       <div className="page-container mt-4 lg:mt-8">
-        <div className="relative mx-auto max-w-2xl rounded-card glass p-5 shadow-card sm:p-7">
+        <div className="relative mx-auto max-w-2xl rounded-card border border-border bg-surface p-5 shadow-card sm:p-7">
           <HudCorners />
           <span className="hud-label">{t('eyebrow')}</span>
           <div className="mt-5">

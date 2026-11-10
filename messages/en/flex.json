@@ -102,7 +102,8 @@
     "kycTitle": "Verify your identity first",
     "kycText": "DOOM FLEX requires a verified identity (ID card and selfie). It takes a few minutes.",
     "notEligible": "You cannot apply right now",
-    "backToFlex": "About DOOM FLEX"
+    "backToFlex": "About DOOM FLEX",
+    "perMonthLabel": "per month"
   },
   "detail": {
     "metaTitle": "My DOOM FLEX plan",
@@ -167,6 +168,7 @@
     },
     "paidOn": "Paid on {date}",
     "due": "Due {date}",
-    "paidToast": "Instalment paid"
+    "paidToast": "Instalment paid",
+    "walletBalanceLabel": "Wallet balance"
   }
 }
