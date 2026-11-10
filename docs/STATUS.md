@@ -8,7 +8,7 @@
 | Contrôle | Résultat |
 |---|---|
 | `npm run typecheck` | propre |
-| `npm test` (Vitest, base PostgreSQL de test) | 177 tests verts, dont : parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
+| `npm test` (Vitest, base PostgreSQL de test) | 182 tests verts, dont : 5 tests des zones de livraison (rien n'est promis sans configuration), parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
 | `npm run build` | réussi |
 | `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 148 tests verts (2 ignorés par conception) sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
 
