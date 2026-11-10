@@ -127,7 +127,7 @@
   --app-font-stack: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Noto Sans Arabic', Tahoma, sans-serif;
   /* Futuristic display face (Exo 2) for headings, prices, HUD labels. */
-  --app-display-stack: var(--font-exo2), var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --app-display-stack: var(--font-exo2), var(--font-alexandria), var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   /* Holographic spectrum (DOOM palette only) */
   --gradient-holo: conic-gradient(from var(--doom-angle), #087bff, #00d9ff, #ffae00, #ff7900, #087bff);
@@ -137,8 +137,8 @@
 html[lang='ar'] {
   --app-font-stack: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Tahoma,
     'Noto Sans Arabic', sans-serif;
-  /* Arabic glyphs from Plex Arabic, Latin glyphs (DOOM, model names) from Exo 2. */
-  --app-display-stack: var(--font-plex-arabic), var(--font-exo2), ui-sans-serif, system-ui, Tahoma, sans-serif;
+  /* Display: Arabic glyphs from Alexandria, Latin glyphs (DOOM, model names) from Exo 2. */
+  --app-display-stack: var(--font-alexandria), var(--font-exo2), var(--font-plex-arabic), ui-sans-serif, system-ui, Tahoma, sans-serif;
 }
 
 /* Dark is the default theme */
@@ -387,6 +387,16 @@ html[lang='ar'] {
 }
 
 /* Mirror directional icons (arrows, chevrons) in RTL. */
+/* Route change: the incoming page fades in (see app/[locale]/template.tsx). */
+@keyframes doom-page-in {
+  from {
+    opacity: 0;
+  }
+}
+@utility page-enter {
+  animation: doom-page-in var(--dur-nav) var(--ease-premium);
+}
+
 @utility flip-rtl {
   &:where([dir='rtl'], [dir='rtl'] *) {
     transform: scaleX(-1);

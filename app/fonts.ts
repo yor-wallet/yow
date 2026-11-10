@@ -30,7 +30,7 @@ export const plexArabic = localFont({
 
 /**
  * Exo 2 (variable, Latin) — futuristic display face for headings, prices and HUD labels
- * in en/fr. Arabic headings keep IBM Plex Sans Arabic (Exo 2 has no Arabic glyphs).
+ * in en/fr. Arabic headings use Alexandria (Exo 2 has no Arabic glyphs).
  */
 export const exo2 = localFont({
   src: '../node_modules/@fontsource-variable/exo-2/files/exo-2-latin-wght-normal.woff2',
@@ -39,4 +39,18 @@ export const exo2 = localFont({
   display: 'swap',
   preload: false,
   fallback: ['ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
+});
+
+/**
+ * Alexandria (variable, Arabic subset) — geometric Arabic display face for headings, prices and
+ * labels in Arabic. It pairs with Exo 2 (same wide, technical proportions); body text stays in
+ * IBM Plex Sans Arabic, which reads better at small sizes.
+ */
+export const alexandria = localFont({
+  src: '../node_modules/@fontsource-variable/alexandria/files/alexandria-arabic-wght-normal.woff2',
+  variable: '--font-alexandria',
+  weight: '100 900',
+  display: 'swap',
+  preload: false,
+  fallback: ['Tahoma', 'Noto Sans Arabic', 'sans-serif'],
 });
