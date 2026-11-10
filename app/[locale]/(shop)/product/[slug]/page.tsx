@@ -6,7 +6,8 @@ import { asLocale } from '@/i18n/routing';
 import { getSession } from '@/lib/auth';
 import { favoriteIdsFor } from '@/lib/catalog/favorites';
 import { categoryPath, productPath } from '@/lib/catalog/paths';
-import { getProductDetail, getProductReviews, type ProductDetail } from '@/lib/catalog/queries';
+import { getProductDetail, getProductReviews, hasPendingReview, reviewableOrderItem, type ProductDetail } from '@/lib/catalog/queries';
+import { ReviewForm } from '@/components/shop/ReviewForm';
 import { BackButton } from '@/components/layout/BackButton';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Badge } from '@/components/ui/Badge';
@@ -14,6 +15,8 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Breadcrumb } from '@/components/shop/Breadcrumb';
 import { ProductHero } from '@/components/shop/ProductHero';
+import { ProductRail } from '@/components/shop/ProductRail';
+import { getRelatedProducts } from '@/lib/catalog/cache';
 import { FavoriteButton, ShareButton } from '@/components/shop/ProductCardActions';
 import { getPreferredArea, listAreaOptions } from '@/lib/delivery/area';
 import { localize } from '@/lib/localized';
@@ -84,7 +87,13 @@ export default async function ProductPage({ params }: Props) {
     getSession(),
     getProductReviews(product.id, 20),
   ]);
-  const favorite = (await favoriteIdsFor(session?.user.id, [product.id])).has(product.id);
+  // Reviews: only a buyer with a delivered, not-yet-reviewed item gets the form.
+  const [canReview, reviewPending] = session
+    ? await Promise.all([reviewableOrderItem(session.user.id, product.id).then((i) => !!i), hasPendingReview(session.user.id, product.id)])
+    : [false, false];
+  const related = await getRelatedProducts({ productId: product.id, categorySlug: product.category.slug, parentSlug: product.category.parent?.slug ?? null, locale });
+  const favoriteIds = await favoriteIdsFor(session?.user.id, [product.id, ...related.map((p) => p.id)]);
+  const favorite = favoriteIds.has(product.id);
   // Delivery row: the shopper's area and what its configured zone promises (nothing is promised otherwise).
   const [areaOptions, area] = await Promise.all([listAreaOptions().catch(() => []), getPreferredArea(session?.user.id).catch(() => null)]);
   const delivery = {
@@ -187,6 +196,15 @@ export default async function ProductPage({ params }: Props) {
             </p>
           ) : null}
         </div>
+        {canReview ? (
+          <div className="mt-4">
+            <ReviewForm productId={product.id} />
+          </div>
+        ) : reviewPending ? (
+          <p role="status" className="mt-4 rounded-card border border-border bg-surface-2 p-3 text-sm text-muted" data-testid="review-pending">
+            {t('reviews.write.pending')}
+          </p>
+        ) : null}
         {reviewData.reviews.length === 0 ? (
           <EmptyState compact className="mt-4" icon={<Star size={24} />} title={t('reviews.empty')} description={t('reviews.emptyText')} />
         ) : (
@@ -209,6 +227,19 @@ export default async function ProductPage({ params }: Props) {
           </ul>
         )}
       </section>
+
+      {related.length > 0 ? (
+        <ProductRail
+          id="related"
+          title={t('related.title')}
+          seeAllHref={categoryPath(product.category.slug)}
+          seeAllLabel={t('related.seeAll')}
+          emptyTitle=""
+          emptyText=""
+          products={related}
+          favoriteIds={favoriteIds}
+        />
+      ) : null}
     </div>
   );
 }

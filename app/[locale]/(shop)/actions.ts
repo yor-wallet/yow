@@ -6,6 +6,9 @@ import { z } from 'zod';
 import { addToCart, getCartCount, removeCartItem, removeUnavailableItems, updateCartItem } from '@/lib/cart';
 import { getSession } from '@/lib/auth';
 import { toggleFavorite } from '@/lib/catalog/favorites';
+import { submitReview, type ReviewInput } from '@/lib/catalog/reviews';
+import { getLocale } from 'next-intl/server';
+import { asLocale } from '@/i18n/routing';
 import { MAX_QTY_PER_LINE } from '@/lib/catalog/stock';
 import { rateLimit } from '@/lib/rate-limit';
 import { getRequestMeta } from '@/lib/request';
@@ -116,6 +119,26 @@ export async function toggleFavoriteAction(productId: string): Promise<FavoriteA
   } catch (err) {
     unstable_rethrow(err);
     console.error('[favorites] toggle failed', err);
+    return { ok: false, error: 'generic' };
+  }
+}
+
+export type ReviewActionResult = { ok: true } | { ok: false; error: 'signInRequired' | 'invalid' | 'not_eligible' | 'rate_limited' | 'generic' };
+
+/** Verified buyers only; the review is stored pending moderation (never published automatically). */
+export async function submitReviewAction(productId: string, input: ReviewInput): Promise<ReviewActionResult> {
+  const id = idSchema.safeParse(productId);
+  if (!id.success) return { ok: false, error: 'invalid' };
+  try {
+    const session = await getSession();
+    if (!session) return { ok: false, error: 'signInRequired' };
+    if (!(await rateLimit(`review:user:${session.user.id}`, 5, 60 * 60_000)).ok) return { ok: false, error: 'rate_limited' };
+    const res = await submitReview(session.user.id, id.data, input, asLocale(await getLocale()));
+    if (!res.ok) return { ok: false, error: res.error };
+    return { ok: true };
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error('[reviews] submit failed', err);
     return { ok: false, error: 'generic' };
   }
 }

@@ -105,11 +105,35 @@
     "verified": "Verified purchase",
     "average": "{rating} out of 5",
     "count": "{count, plural, one {# review} other {# reviews}}",
-    "by": "By {name}"
+    "by": "By {name}",
+    "write": {
+      "title": "Write a review",
+      "intro": "You received this product. Your review is published after a quick check by our team.",
+      "rating": "Your rating",
+      "stars": "{count, plural, one {# star} other {# stars}}",
+      "titleLabel": "Title (optional)",
+      "textLabel": "Your review",
+      "textHint": "At least 10 characters.",
+      "submit": "Send my review",
+      "sending": "Sending…",
+      "thanks": "Thank you. Your review was received and will appear once our team has checked it.",
+      "pending": "Your review is waiting for a check by our team.",
+      "errors": {
+        "invalid": "Choose a rating and write at least 10 characters.",
+        "not_eligible": "Only customers who received this product can review it, once per purchase.",
+        "rate_limited": "Too many attempts. Please try again later.",
+        "signInRequired": "Sign in to write a review.",
+        "generic": "Your review could not be sent. Please try again."
+      }
+    }
   },
   "errors": {
     "pickVariant": "Choose an option first.",
     "outOfStock": "This option is out of stock."
   },
-  "details": "Details"
+  "details": "Details",
+  "related": {
+    "title": "You may also like",
+    "seeAll": "See all"
+  }
 }

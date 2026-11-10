@@ -78,6 +78,31 @@ const cachedRail = unstable_cache(
   { revalidate: REVALIDATE, tags: [CATALOG_TAG] },
 );
 
+const cachedRelated = unstable_cache(
+  async (categorySlug: string, locale: string): Promise<ProductCardData[]> => {
+    const promotions = await getCachedPromotions();
+    const categoryIds = await categoryScopeIds([categorySlug]);
+    if (categoryIds.length === 0) return [];
+    return (await listProducts({ locale, categoryIds, filters: { sort: 'relevance' }, limit: 13, withTotal: false, promotions })).items;
+  },
+  ['related-products-v1'],
+  { revalidate: REVALIDATE, tags: [CATALOG_TAG] },
+);
+
+/**
+ * "You may also like": other published products of the same category, then of the parent category
+ * when the category alone has too few. Real catalogue rows only — an empty list renders nothing.
+ */
+export async function getRelatedProducts(input: { productId: string; categorySlug: string; parentSlug: string | null; locale: string }): Promise<ProductCardData[]> {
+  const MIN = 4;
+  const MAX = 12;
+  const own = (await cachedRelated(input.categorySlug, input.locale)).filter((p) => p.id !== input.productId);
+  if (own.length >= MIN || !input.parentSlug) return own.slice(0, MAX);
+  const seen = new Set([input.productId, ...own.map((p) => p.id)]);
+  const wider = (await cachedRelated(input.parentSlug, input.locale)).filter((p) => !seen.has(p.id));
+  return [...own, ...wider].slice(0, MAX);
+}
+
 export function getHomeRail(key: RailKey, locale: string): Promise<ProductCardData[]> {
   return cachedRail(key, locale);
 }

@@ -105,11 +105,35 @@
     "verified": "Achat vérifié",
     "average": "{rating} sur 5",
     "count": "{count, plural, one {# avis} other {# avis}}",
-    "by": "Par {name}"
+    "by": "Par {name}",
+    "write": {
+      "title": "Donner mon avis",
+      "intro": "Vous avez reçu ce produit. Votre avis est publié après une vérification rapide par notre équipe.",
+      "rating": "Votre note",
+      "stars": "{count, plural, one {# étoile} other {# étoiles}}",
+      "titleLabel": "Titre (facultatif)",
+      "textLabel": "Votre avis",
+      "textHint": "Au moins 10 caractères.",
+      "submit": "Envoyer mon avis",
+      "sending": "Envoi…",
+      "thanks": "Merci. Votre avis a bien été reçu et apparaîtra après vérification par notre équipe.",
+      "pending": "Votre avis est en attente de vérification par notre équipe.",
+      "errors": {
+        "invalid": "Choisissez une note et écrivez au moins 10 caractères.",
+        "not_eligible": "Seuls les clients ayant reçu ce produit peuvent donner un avis, une fois par achat.",
+        "rate_limited": "Trop de tentatives. Veuillez réessayer plus tard.",
+        "signInRequired": "Connectez-vous pour donner votre avis.",
+        "generic": "Votre avis n'a pas pu être envoyé. Veuillez réessayer."
+      }
+    }
   },
   "errors": {
     "pickVariant": "Choisissez d'abord une option.",
     "outOfStock": "Cette option est en rupture de stock."
   },
-  "details": "Détails"
+  "details": "Détails",
+  "related": {
+    "title": "Vous aimerez aussi",
+    "seeAll": "Tout voir"
+  }
 }
