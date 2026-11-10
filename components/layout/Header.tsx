@@ -25,12 +25,12 @@ export async function Header() {
     <>
       {/* Desktop */}
       <header
-        className="sticky top-0 z-40 hidden border-b border-border lg:block"
+        className="sticky top-0 z-40 hidden lg:block"
         style={{ background: 'var(--doom-header)', backdropFilter: 'blur(18px) saturate(140%)', WebkitBackdropFilter: 'blur(18px) saturate(140%)' }}
         data-testid="desktop-header"
       >
         <div className="page-container flex h-18 items-center gap-6">
-          <Link href="/" aria-label={t('home')} className="shrink-0 rounded-lg">
+          <Link href="/" aria-label={t('home')} className="shrink-0 rounded-lg transition-[filter] duration-(--dur-nav) hover:drop-shadow-[0_0_14px_rgb(0_217_255/0.45)]">
             <Logo height={38} priority />
           </Link>
           <SearchBox className="max-w-2xl flex-1" />
@@ -76,6 +76,7 @@ export async function Header() {
             <MegaMenu categories={categories} />
           </div>
         </div>
+        <span aria-hidden="true" className="doom-hairline bottom-0" />
       </header>
 
       <MobileHeader counts={counts} />

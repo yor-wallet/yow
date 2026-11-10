@@ -8,10 +8,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getDirection, routing, type Locale } from '@/i18n/routing';
 import { THEME_COOKIE } from '@/lib/cookies';
 import { getHeaderCounts } from '@/lib/nav';
-import { inter, plexArabic } from '../fonts';
+import { exo2, inter, plexArabic } from '../fonts';
 import { THEME_COLORS, ThemeProvider, type Theme } from '@/components/layout/ThemeProvider';
 import { ToastProvider } from '@/components/ui/Toast';
 import { NavigationTracker } from '@/components/layout/NavigationTracker';
+import { AmbientBackground } from '@/components/layout/AmbientBackground';
+import { SpotlightTracker } from '@/components/layout/SpotlightTracker';
 import { SiteChrome } from '@/components/layout/SiteChrome';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -86,10 +88,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       dir={getDirection(locale)}
       data-theme={theme}
-      className={`${inter.variable} ${plexArabic.variable}`}
+      className={`${inter.variable} ${plexArabic.variable} ${exo2.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">
+        <AmbientBackground />
         <NextIntlClientProvider>
           <ThemeProvider initialTheme={theme}>
             <ToastProvider>
@@ -97,6 +100,7 @@ export default async function LocaleLayout({ children, params }: Props) {
                 {t('skipToContent')}
               </a>
               <NavigationTracker />
+              <SpotlightTracker />
               <SiteChrome header={<Header />} footer={<Footer />} bottomNav={<MobileBottomNav cartCount={counts.cart} />}>
                 {children}
               </SiteChrome>

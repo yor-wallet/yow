@@ -27,3 +27,16 @@ export const plexArabic = localFont({
   preload: false,
   fallback: ['Tahoma', 'Noto Sans Arabic', 'sans-serif'],
 });
+
+/**
+ * Exo 2 (variable, Latin) — futuristic display face for headings, prices and HUD labels
+ * in en/fr. Arabic headings keep IBM Plex Sans Arabic (Exo 2 has no Arabic glyphs).
+ */
+export const exo2 = localFont({
+  src: '../node_modules/@fontsource-variable/exo-2/files/exo-2-latin-wght-normal.woff2',
+  variable: '--font-exo2',
+  weight: '100 900',
+  display: 'swap',
+  preload: false,
+  fallback: ['ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
+});

@@ -26,6 +26,7 @@
   --color-error: #e5484d;
 
   --font-sans: var(--app-font-stack);
+  --font-display: var(--app-display-stack);
 
   --breakpoint-xs: 375px;
   --breakpoint-sm: 430px;
@@ -124,11 +125,19 @@
 
   --app-font-stack: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Noto Sans Arabic', Tahoma, sans-serif;
+  /* Futuristic display face (Exo 2) for headings, prices, HUD labels. */
+  --app-display-stack: var(--font-exo2), var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Holographic spectrum (DOOM palette only) */
+  --gradient-holo: conic-gradient(from var(--doom-angle), #087bff, #00d9ff, #ffae00, #ff7900, #087bff);
+  --gradient-hairline: linear-gradient(90deg, transparent 0%, #087bff 18%, #00d9ff 50%, #ff7900 82%, transparent 100%);
 }
 
 html[lang='ar'] {
   --app-font-stack: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Tahoma,
     'Noto Sans Arabic', sans-serif;
+  /* Arabic glyphs from Plex Arabic, Latin glyphs (DOOM, model names) from Exo 2. */
+  --app-display-stack: var(--font-plex-arabic), var(--font-exo2), ui-sans-serif, system-ui, Tahoma, sans-serif;
 }
 
 /* Dark is the default theme */
@@ -152,6 +161,13 @@ html[lang='ar'] {
   --doom-skeleton-hi: rgb(201 197 222 / 0.18);
   --doom-page-glow: radial-gradient(1100px 520px at 85% -8%, rgb(8 123 255 / 0.2), transparent 62%),
     radial-gradient(800px 420px at -8% 4%, rgb(255 121 0 / 0.08), transparent 60%);
+  --doom-grid-line: rgb(0 217 255 / 0.16);
+  --doom-circuit-opacity: 0.9;
+  --doom-aurora-a: rgb(8 123 255 / 0.38);
+  --doom-aurora-b: rgb(0 217 255 / 0.14);
+  --doom-aurora-c: rgb(255 121 0 / 0.12);
+  --doom-spot: rgb(0 217 255 / 0.12);
+  --doom-neon: 0 0 22px rgb(0 217 255 / 0.45), 0 0 2px rgb(0 217 255 / 0.6);
 }
 
 [data-theme='light'] {
@@ -173,6 +189,13 @@ html[lang='ar'] {
   --doom-skeleton-hi: rgb(23 21 45 / 0.12);
   --doom-page-glow: radial-gradient(1100px 520px at 85% -8%, rgb(8 123 255 / 0.1), transparent 62%),
     radial-gradient(800px 420px at -8% 4%, rgb(255 174 0 / 0.08), transparent 60%);
+  --doom-grid-line: rgb(8 123 255 / 0.12);
+  --doom-circuit-opacity: 0.35;
+  --doom-aurora-a: rgb(8 123 255 / 0.14);
+  --doom-aurora-b: rgb(0 217 255 / 0.1);
+  --doom-aurora-c: rgb(255 174 0 / 0.1);
+  --doom-spot: rgb(8 123 255 / 0.08);
+  --doom-neon: none;
 }
 
 @layer base {
@@ -189,9 +212,8 @@ html[lang='ar'] {
   body {
     min-height: 100dvh;
     overflow-x: clip;
-    background-color: var(--doom-bg);
-    background-image: var(--doom-page-glow);
-    background-repeat: no-repeat;
+    /* Transparent: html carries the colour, AmbientBackground (fixed, z -1) the atmosphere. */
+    background: transparent;
     color: var(--doom-fg);
     font-family: var(--app-font-stack);
     line-height: 1.5;
@@ -239,9 +261,29 @@ html[lang='ar'] {
     background: rgb(0 217 255 / 0.32);
   }
 
+  /* Thin futuristic scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(0 217 255 / 0.35) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #087bff, #00d9ff) border-box;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   h1,
   h2,
   h3 {
+    font-family: var(--app-display-stack);
     text-wrap: balance;
     letter-spacing: -0.01em;
   }
@@ -365,6 +407,247 @@ html[lang='ar'] {
 }
 .skip-link:focus-visible {
   transform: none;
+}
+
+
+/* ───────── Futuristic layer ─────────
+ * Atmosphere + holographic / HUD primitives. All animations are transform/opacity
+ * (composited) except the holographic border angle (small elements only). Everything is
+ * neutralised by the global prefers-reduced-motion rule below. Documented in ARCHITECTURE.md.
+ */
+
+@property --doom-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes doom-holo-spin {
+  to {
+    --doom-angle: 360deg;
+  }
+}
+@keyframes doom-aurora {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-3%, 2%, 0) scale(1.06); }
+  100% { transform: translate3d(2%, -2%, 0) scale(1.02); }
+}
+@keyframes doom-grid-run {
+  from { transform: rotateX(62deg) translate3d(0, 0, 0); }
+  to { transform: rotateX(62deg) translate3d(0, 64px, 0); }
+}
+@keyframes doom-scan {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(400%); }
+}
+@keyframes doom-pulse-node {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+/* Fixed atmosphere behind everything (components/layout/AmbientBackground.tsx). */
+.doom-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+  background-color: var(--doom-bg);
+}
+.doom-ambient__aurora {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(38% 32% at 80% 10%, var(--doom-aurora-a), transparent 70%),
+    radial-gradient(26% 26% at 94% 34%, var(--doom-aurora-b), transparent 70%),
+    radial-gradient(30% 28% at 6% 88%, var(--doom-aurora-c), transparent 70%),
+    radial-gradient(28% 24% at 18% 12%, var(--doom-aurora-b), transparent 70%);
+  will-change: transform;
+}
+.doom-ambient__circuit {
+  position: absolute;
+  inset: 0;
+  opacity: var(--doom-circuit-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' fill='none' stroke-width='1.2' stroke-linecap='round'%3E%3Cg stroke='%2300D9FF' stroke-opacity='.16'%3E%3Cpath d='M0 44h64l22 22h46'/%3E%3Ccircle cx='137' cy='66' r='4.5'/%3E%3Cpath d='M280 170h-58l-22-22V92'/%3E%3Ccircle cx='200' cy='87' r='4.5'/%3E%3Cpath d='M70 280v-56l32-32h44'/%3E%3Ccircle cx='151' cy='192' r='4.5'/%3E%3C/g%3E%3Cg stroke='%23087BFF' stroke-opacity='.18'%3E%3Cpath d='M140 0v26l18 18h40l16 16'/%3E%3Ccircle cx='217' cy='63' r='3.5'/%3E%3C/g%3E%3Cg stroke='%23FF7900' stroke-opacity='.14'%3E%3Cpath d='M0 226h34l18-18'/%3E%3Ccircle cx='55' cy='205' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  -webkit-mask-image: radial-gradient(120% 70% at 50% 0%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(120% 70% at 50% 0%, #000 0%, transparent 75%);
+}
+.doom-ambient__floor {
+  position: absolute;
+  inset-inline: -40%;
+  bottom: -6%;
+  height: 46vh;
+  perspective: 520px;
+  perspective-origin: 50% 0%;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 90%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 90%);
+}
+.doom-ambient__plane {
+  position: absolute;
+  inset: -64px 0 0;
+  background-image:
+    linear-gradient(var(--doom-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--doom-grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: rotateX(62deg);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+/* Motion only on capable desktops; phones/tablets get the static (battery-friendly) scene. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .doom-ambient__aurora { animation: doom-aurora 32s ease-in-out infinite alternate; }
+  .doom-ambient__plane { animation: doom-grid-run 5s linear infinite; }
+}
+
+/* Gradient hairline with a travelling light (header bottom, bottom-nav top, dividers). */
+.doom-hairline {
+  position: absolute;
+  inset-inline: 0;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--gradient-hairline);
+  opacity: 0.75;
+}
+.doom-hairline::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 25%;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  animation: doom-scan 7s var(--ease-premium) infinite;
+}
+
+/* Holographic animated border — always on. */
+@utility holo-border {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--doom-surface), var(--doom-surface)) padding-box,
+    var(--gradient-holo) border-box;
+  animation: doom-holo-spin 6s linear infinite;
+}
+/* Holographic border that lights up on hover/focus-within only. */
+@utility holo-border-hover {
+  &:hover,
+  &:focus-within {
+    border-color: transparent;
+    background:
+      linear-gradient(var(--doom-surface), var(--doom-surface)) padding-box,
+      var(--gradient-holo) border-box;
+    animation: doom-holo-spin 4s linear infinite;
+  }
+}
+
+/* Light sweep across the element on hover (uses ::after). */
+@utility sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+    transform: translateX(-130%);
+    transition: transform 750ms var(--ease-premium);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    transform: translateX(130%);
+  }
+}
+
+/* Pointer-following light (uses ::before). Requires data-spotlight (SpotlightTracker sets --mx/--my). */
+@utility spotlight {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* -1 inside the isolated context: above the element's own background, below its content. */
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--doom-spot), transparent 45%);
+    transition: opacity var(--dur-card) var(--ease-premium);
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Neon glow for display text / icons on dark surfaces (no-op in light theme). */
+@utility neon {
+  text-shadow: var(--doom-neon);
+}
+@utility neon-box {
+  box-shadow:
+    0 0 0 1px rgb(0 217 255 / 0.35),
+    0 0 28px -4px rgb(0 217 255 / 0.55),
+    inset 0 0 18px -8px rgb(0 217 255 / 0.6);
+}
+
+@utility font-display {
+  font-family: var(--app-display-stack);
+}
+
+/* HUD micro-label with a glowing circuit node: <span class="hud-label">Live</span> */
+@utility hud-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--app-display-stack);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--doom-accent);
+  &::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 999px;
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+    animation: doom-pulse-node 2.4s ease-in-out infinite;
+  }
+  &:where([lang='ar'], [lang='ar'] *) {
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Circuit rule: line ending in nodes, like the logo's tagline rules. */
+@utility circuit-rule {
+  position: relative;
+  height: 1px;
+  min-width: 24px;
+  background: linear-gradient(90deg, rgb(0 217 255 / 0.7), rgb(8 123 255 / 0.25) 70%, transparent);
+  &:where([dir='rtl'], [dir='rtl'] *) {
+    background: linear-gradient(270deg, rgb(0 217 255 / 0.7), rgb(8 123 255 / 0.25) 70%, transparent);
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -3px;
+    top: -3.5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: 1.5px solid #00d9ff;
+    background: var(--doom-bg);
+    box-shadow: 0 0 8px rgb(0 217 255 / 0.7);
+  }
 }
 
 /* Respect reduced motion everywhere. */

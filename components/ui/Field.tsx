@@ -61,7 +61,7 @@ export const controlClasses =
   'block w-full min-w-0 min-h-11 rounded-xl border bg-surface px-3.5 py-2.5 text-base text-fg ' +
   'placeholder:text-muted/70 shadow-[inset_0_1px_0_rgb(255_255_255/0.03)] ' +
   'transition-[border-color,box-shadow] duration-(--dur-btn) ' +
-  'focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/35 ' +
+  'focus:border-cyan focus:outline-none focus:shadow-[0_0_0_3px_rgb(0_217_255/0.18),0_0_22px_-6px_rgb(0_217_255/0.65)] ' +
   'disabled:cursor-not-allowed disabled:opacity-60';
 
 function describedBy(id: string, error?: ReactNode, hint?: ReactNode) {

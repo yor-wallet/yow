@@ -13,9 +13,9 @@ const base =
 
 const variants: Record<ButtonVariant, string> = {
   // Dark ink on the gradients keeps AA contrast across the whole gradient.
-  primary: 'bg-gradient-primary text-on-accent shadow-glow-blue hover:shadow-glow-cyan',
-  accent: 'bg-gradient-secondary text-on-accent shadow-glow-orange hover:brightness-105',
-  secondary: 'gradient-border text-fg hover:shadow-glow-blue',
+  primary: 'sheen bg-gradient-primary text-on-accent shadow-glow-blue hover:-translate-y-px hover:shadow-glow-cyan',
+  accent: 'sheen bg-gradient-secondary text-on-accent shadow-glow-orange hover:-translate-y-px hover:brightness-105',
+  secondary: 'gradient-border holo-border-hover text-fg hover:shadow-glow-blue',
   outline: 'border border-border-strong bg-transparent text-fg hover:bg-surface-2',
   ghost: 'bg-transparent text-fg hover:bg-surface-2',
   danger: 'bg-error text-on-accent hover:brightness-110',

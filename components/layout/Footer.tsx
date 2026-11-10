@@ -20,9 +20,10 @@ export async function Footer() {
   return (
     <footer
       data-theme="dark"
-      className="mt-16 border-t border-border bg-night text-fg max-lg:pb-[calc(var(--bottom-nav-h)+var(--safe-bottom)+8px)]"
+      className="relative mt-16 bg-night/85 text-fg backdrop-blur-sm max-lg:pb-[calc(var(--bottom-nav-h)+var(--safe-bottom)+8px)]"
       data-testid="site-footer"
     >
+      <span aria-hidden="true" className="doom-hairline top-0" />
       <div className="page-container grid grid-cols-1 gap-10 py-12 md:grid-cols-2 lg:grid-cols-12">
         <section className="lg:col-span-4" aria-labelledby="footer-about">
           <Logo surface="dark" height={44} />

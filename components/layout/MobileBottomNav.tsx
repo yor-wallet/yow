@@ -26,7 +26,7 @@ export function MobileBottomNav({ cartCount }: { cartCount: number }) {
   return (
     <nav
       aria-label={t('bottomNavigation')}
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-border lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 lg:hidden"
       style={{
         paddingBottom: 'var(--safe-bottom)',
         background: 'var(--doom-header)',
@@ -35,6 +35,7 @@ export function MobileBottomNav({ cartCount }: { cartCount: number }) {
       }}
       data-testid="bottom-nav"
     >
+      <span aria-hidden="true" className="doom-hairline top-0" />
       <ul className="mx-auto grid h-(--bottom-nav-h) max-w-xl grid-cols-5 px-1">
         {ITEMS.map(({ key, href, icon: Icon, match }) => {
           const active = match.test(pathname);
@@ -53,7 +54,7 @@ export function MobileBottomNav({ cartCount }: { cartCount: number }) {
                 <span
                   className={cn(
                     'relative grid h-8 w-12 place-items-center rounded-pill transition-[background-color,box-shadow] duration-(--dur-nav)',
-                    active && 'bg-gradient-primary text-on-accent shadow-glow-blue',
+                    active && 'bg-gradient-primary text-on-accent shadow-glow-cyan',
                   )}
                 >
                   <Icon size={20} aria-hidden="true" strokeWidth={active ? 2.4 : 2} />
