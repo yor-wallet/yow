@@ -235,7 +235,7 @@
     },
     "flexOverdue": {
       "title": "قسط DOOM FLEX متأخر",
-      "body": "القسط {sequence} من {months} ({amount}) كان مستحقًا في {dueDate}. يرجى دفعه في أقرب وقت من محفظة DOOM."
+      "body": "القسط {sequence} من {months} ({amount}) كان مستحقًا في {dueDate}. يُرجى دفعه في أقرب وقت من محفظة DOOM."
     }
   }
 }

@@ -20,7 +20,7 @@ export function MobileHeader({ counts, areaOptions, area }: { counts: HeaderCoun
   const onDark = 'text-white hover:bg-white/10';
   return (
     <>
-      <header className="bg-band sticky top-0 z-40 text-white lg:hidden" style={{ paddingTop: 'var(--safe-top)' }} data-testid="mobile-header">
+      <header className="bg-band band-scroll-shadow sticky top-0 z-40 text-white lg:hidden" style={{ paddingTop: 'var(--safe-top)' }} data-testid="mobile-header">
         <div className="grid h-14 grid-cols-[1fr_auto_1fr] items-center ps-[max(8px,var(--safe-left))] pe-[max(8px,var(--safe-right))]">
           <div className="flex items-center justify-self-start">
             <MobileHeaderStart />

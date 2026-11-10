@@ -50,9 +50,10 @@ export function ProductCard({
     <article
       data-testid="product-card"
       data-spotlight=""
+      data-tilt=""
       className={cn(
         'spotlight holo-border-hover group relative flex h-full min-w-0 flex-col overflow-hidden rounded-card border border-border bg-surface/90 shadow-card',
-        'transition-[transform,box-shadow,border-color] duration-(--dur-card) ease-premium hover:-translate-y-1 hover:shadow-glow-blue',
+        'tilt-3d transition-[transform,box-shadow,border-color] duration-(--dur-card) ease-premium hover:shadow-glow-blue',
         className,
       )}
     >

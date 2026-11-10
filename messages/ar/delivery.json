@@ -181,7 +181,7 @@
     "receiver_required": "أدخل اسم المستلم.",
     "photo_required": "صورة الإثبات مطلوبة.",
     "photo_invalid": "صيغة هذه الصورة غير مدعومة (JPEG أو PNG أو WebP، بحد أقصى 8 ميغابايت).",
-    "description_required": "يرجى وصف ما حدث.",
+    "description_required": "يُرجى وصف ما حدث.",
     "otp_format": "أدخل الرمز المكوّن من 6 أرقام.",
     "generic": "تعذّر تنفيذ الإجراء. يُرجى المحاولة مرة أخرى."
   }

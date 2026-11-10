@@ -107,7 +107,7 @@ export function FavoriteButton({
         className,
       )}
     >
-      <Heart size={20} aria-hidden="true" fill={favorited ? 'currentColor' : 'none'} />
+      <Heart key={favorited ? 'on' : 'off'} size={20} aria-hidden="true" fill={favorited ? 'currentColor' : 'none'} className={favorited ? 'animate-pop' : undefined} />
     </button>
   );
 }

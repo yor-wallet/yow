@@ -48,7 +48,8 @@ export function MobileBottomNav({ cartCount }: { cartCount: number }) {
                 )}
               >
                 <span className="relative grid h-7 w-12 place-items-center">
-                  <Icon size={22} aria-hidden="true" strokeWidth={active ? 2.4 : 1.9} />
+                  {active ? <span aria-hidden="true" className="animate-fade-in absolute -top-2 h-[3px] w-7 rounded-full bg-gradient-primary" /> : null}
+                  <Icon key={active ? 'on' : 'off'} size={22} aria-hidden="true" strokeWidth={active ? 2.4 : 1.9} className={active ? 'animate-pop' : undefined} />
                   {key === 'cart' ? <CountBubble count={cartCount} className="-top-1 end-1" /> : null}
                 </span>
                 <span className="max-w-full truncate px-0.5" aria-hidden={key === 'cart' ? true : undefined}>

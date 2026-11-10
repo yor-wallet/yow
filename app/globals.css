@@ -387,6 +387,47 @@ html[lang='ar'] {
 }
 
 /* Mirror directional icons (arrows, chevrons) in RTL. */
+/* 3D tilt towards the pointer (desktop pointers only; --rx/--ry come from SpotlightTracker). */
+@utility tilt-3d {
+  @media (hover: hover) and (pointer: fine) {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    will-change: transform;
+    &:hover {
+      transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+    }
+  }
+}
+
+/* Short "pop" for things that just changed: cart count, favourite heart, active tab. */
+@keyframes doom-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@utility animate-pop {
+  animation: doom-pop 320ms var(--ease-premium);
+}
+
+/* Phone band: a soft shadow appears once the page has scrolled under it (scroll-driven, no JS). */
+@keyframes doom-band-shadow {
+  to {
+    box-shadow: 0 10px 28px -12px rgb(16 5 46 / 0.75);
+  }
+}
+@utility band-scroll-shadow {
+  @supports (animation-timeline: scroll()) {
+    animation: doom-band-shadow linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 64px;
+  }
+}
+
 /* Route change: the incoming page fades in (see app/[locale]/template.tsx). */
 @keyframes doom-page-in {
   from {

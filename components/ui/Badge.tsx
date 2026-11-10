@@ -31,9 +31,10 @@ export function CountBubble({ count, className }: { count: number; className?: s
   if (!count) return null;
   return (
     <span
+      key={count}
       aria-hidden="true"
       className={cn(
-        'absolute -top-1 -end-1 inline-flex min-w-5 items-center justify-center rounded-pill bg-gradient-secondary px-1 text-[11px] font-bold leading-5 text-on-accent',
+        'animate-pop absolute -top-1 -end-1 inline-flex min-w-5 items-center justify-center rounded-pill bg-gradient-secondary px-1 text-[11px] font-bold leading-5 text-on-accent',
         className,
       )}
     >
