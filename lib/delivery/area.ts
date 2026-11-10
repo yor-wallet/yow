@@ -14,6 +14,7 @@ export type AreaOption = { code: string; name: LocalizedText };
 
 /** What the storefront may say about delivery to the area. Anything not configured is `configured: false` — never guessed. */
 export type AreaInfo = {
+  governorateId: string;
   code: string;
   name: LocalizedText;
   standard: { configured: boolean; hours: number; feeBaisa: number | null };
@@ -33,6 +34,7 @@ export async function getAreaInfo(code: string): Promise<AreaInfo | null> {
   const gov = await prisma.governorate.findUnique({
     where: { code },
     select: {
+      id: true,
       code: true,
       name: true,
       deliveryZones: { where: { isActive: true }, orderBy: { sort: 'asc' }, take: 1 },
@@ -42,6 +44,7 @@ export async function getAreaInfo(code: string): Promise<AreaInfo | null> {
   const zone = gov.deliveryZones[0];
   const standardConfigured = !!zone && zone.standardFeeBaisa !== null;
   return {
+    governorateId: gov.id,
     code: gov.code,
     name: gov.name as LocalizedText,
     standard: { configured: standardConfigured, hours: zone?.standardHours ?? 24, feeBaisa: zone?.standardFeeBaisa ?? null },

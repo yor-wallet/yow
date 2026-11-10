@@ -19,14 +19,15 @@
     }
   },
   "summary": {
-    "title": "Summary",
+    "title": "Order summary",
     "subtotal": "Subtotal",
     "discount": "Promotion",
     "deliveryNote": "Delivery is calculated at checkout.",
     "total": "Total",
-    "savings": "You save {amount}"
+    "savings": "You save {amount}",
+    "delivery": "Delivery (estimate)"
   },
-  "checkout": "Checkout",
+  "checkout": "Continue to payment",
   "checkoutBlocked": "Remove or adjust the unavailable items to continue.",
   "removeUnavailable": "Remove unavailable items",
   "removedUnavailable": "{count, plural, one {# item removed} other {# items removed}}",
@@ -34,5 +35,21 @@
   "secure": "Secure checkout · Prices in OMR",
   "errors": {
     "generic": "The cart could not be updated. Please try again."
+  },
+  "delivery": {
+    "title": "Delivery method",
+    "STANDARD": "Standard",
+    "EXPRESS": "Express",
+    "eta": "{hours} h",
+    "free": "Free",
+    "extraFee": "Extra fee",
+    "chooseArea": "Choose your delivery area to see the options and their fees.",
+    "unavailable": "Unavailable",
+    "note": "Estimate for your area. The final fee depends on the address you choose at checkout."
+  },
+  "payment": {
+    "title": "Payment method",
+    "hint": "You choose how to pay at the next step. A payment is confirmed only when it is really received.",
+    "unavailable": "Unavailable"
   }
 }

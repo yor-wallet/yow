@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Lock } from 'lucide-react';
+import { CreditCard, FileText, Lock } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button, buttonClasses } from '@/components/ui/Button';
@@ -12,7 +12,18 @@ import { formatBaisa } from '@/lib/money';
 import { removeUnavailableItemsAction } from '@/app/[locale]/(shop)/actions';
 
 /** Order summary: totals as computed by the server, checkout link, and the "remove unavailable" shortcut. */
-export function CartSummary({ totals, hasUnavailable }: { totals: CartTotals; hasUnavailable: boolean }) {
+export function CartSummary({
+  totals,
+  hasUnavailable,
+  checkoutHref = '/checkout',
+  deliveryFeeBaisa = null,
+}: {
+  totals: CartTotals;
+  hasUnavailable: boolean;
+  checkoutHref?: string;
+  /** Estimated delivery fee for the chosen method (shown on its own line; the total stays the products total). */
+  deliveryFeeBaisa?: number | null;
+}) {
   const t = useTranslations('cart');
   const locale = useLocale();
   const { toast } = useToast();
@@ -21,8 +32,9 @@ export function CartSummary({ totals, hasUnavailable }: { totals: CartTotals; ha
   const blocked = !totals.checkoutReady;
 
   return (
-    <aside className="flex flex-col gap-4 rounded-card border border-border bg-surface p-4 shadow-card sm:p-5 lg:sticky lg:top-24" aria-labelledby="cart-summary-title" data-testid="cart-summary">
-      <h2 id="cart-summary-title" className="text-lg font-bold">
+    <aside className="flex flex-col gap-4 rounded-card border border-border bg-surface p-4 shadow-card sm:p-5" aria-labelledby="cart-summary-title" data-testid="cart-summary">
+      <h2 id="cart-summary-title" className="flex items-center gap-2 text-lg font-bold">
+        <FileText size={22} aria-hidden="true" />
         {t('summary.title')}
       </h2>
       <dl className="flex flex-col gap-2 text-sm">
@@ -42,13 +54,22 @@ export function CartSummary({ totals, hasUnavailable }: { totals: CartTotals; ha
         ) : null}
         <div className="flex items-center justify-between gap-3 border-t border-border pt-3 text-base">
           <dt className="font-bold">{t('summary.total')}</dt>
-          <dd className="text-xl font-extrabold tabular-nums [unicode-bidi:isolate]" data-testid="cart-total">
+          <dd className="text-2xl font-extrabold tabular-nums text-price [unicode-bidi:isolate]" data-testid="cart-total">
             {formatBaisa(totals.totalBaisa, locale)}
           </dd>
         </div>
       </dl>
       {totals.discountBaisa > 0 ? <p className="text-sm font-medium text-success">{t('summary.savings', { amount: formatBaisa(totals.discountBaisa, locale) })}</p> : null}
-      <p className="text-xs text-muted">{t('summary.deliveryNote')}</p>
+      {deliveryFeeBaisa !== null ? (
+        <p className="flex items-center justify-between gap-3 text-sm text-muted">
+          <span>+ {t('summary.delivery')}</span>
+          <span className="font-semibold tabular-nums text-fg [unicode-bidi:isolate]" data-testid="cart-delivery-fee">
+            {deliveryFeeBaisa === 0 ? t('delivery.free') : formatBaisa(deliveryFeeBaisa, locale)}
+          </span>
+        </p>
+      ) : (
+        <p className="text-xs text-muted">{t('summary.deliveryNote')}</p>
+      )}
 
       {blocked ? (
         <div className="flex flex-col gap-2">
@@ -81,13 +102,14 @@ export function CartSummary({ totals, hasUnavailable }: { totals: CartTotals; ha
       ) : null}
 
       <Link
-        href="/checkout"
+        href={checkoutHref}
         aria-disabled={blocked || undefined}
         tabIndex={blocked ? -1 : undefined}
         onClick={(e) => blocked && e.preventDefault()}
-        className={cn(buttonClasses({ variant: 'primary', size: 'lg', fullWidth: true }))}
+        className={cn(buttonClasses({ variant: 'accent', size: 'lg', fullWidth: true }))}
         data-testid="go-checkout"
       >
+        <CreditCard size={20} aria-hidden="true" />
         {t('checkout')}
       </Link>
       <p className="flex items-center justify-center gap-1.5 text-xs text-muted">

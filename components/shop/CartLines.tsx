@@ -123,7 +123,7 @@ function CartLine({ line }: { line: CartLineView }) {
           <div className="text-end">
             {ok && line.unitPriceBaisa !== null ? (
               <>
-                <p className="text-xs text-muted [unicode-bidi:isolate]">{t('unit', { price: formatBaisa(line.unitPriceBaisa, locale) })}</p>
+                {line.allowedQty > 1 ? <p className="text-xs text-muted [unicode-bidi:isolate]">{t('unit', { price: formatBaisa(line.unitPriceBaisa, locale) })}</p> : null}
                 <Price baisa={line.lineTotalBaisa} size="lg" className="justify-end" />
               </>
             ) : null}
