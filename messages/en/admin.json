@@ -259,7 +259,11 @@
     "created": "Created",
     "deleted": "Deleted",
     "uploaded": "Image added",
-    "statusChanged": "Status updated"
+    "statusChanged": "Status updated",
+    "agentsRun": "Agents run finished",
+    "approved": "Proposal approved",
+    "rejected": "Proposal rejected",
+    "applied": "Action applied"
   },
   "errors": {
     "forbidden": "You do not have permission to do this.",
@@ -288,7 +292,44 @@
       "bad_type": "This file is not a supported image.",
       "empty": "This file is empty.",
       "too_large": "This file is too large.",
-      "bad_image": "This image could not be read."
-    }
+      "bad_image": "This image could not be read.",
+      "out_of_range": "This value is out of range.",
+      "date_invalid": "Enter a valid date.",
+      "link_invalid": "Use an internal path starting with / or an https:// address.",
+      "url_invalid": "Enter a valid web address.",
+      "percent_invalid": "Enter a percentage between 0.01 and 100.",
+      "end_before_start": "The end must be after the start.",
+      "too_many": "Too many items.",
+      "code_invalid": "3 to 32 capital letters, digits, dash or underscore.",
+      "code_taken": "This code is already used.",
+      "notes_required": "Write a short note (at least 3 characters).",
+      "encashed_required": "Enter the value actually encashed.",
+      "category_cycle": "A category cannot be placed inside itself.",
+      "phone_invalid": "Enter an Omani number (8 digits).",
+      "email_invalid": "Enter a valid email address.",
+      "time_invalid": "Use the HH:MM format.",
+      "placement_required": "Choose at least one placement.",
+      "scene_required": "Choose the 3D scene.",
+      "poster_required": "A poster image is required for a video.",
+      "bad_lottie": "This file is not a valid Lottie animation (JSON).",
+      "qty_zero": "Enter a quantity other than 0.",
+      "date_future": "The date cannot be in the future.",
+      "media_empty": "This file is empty.",
+      "media_too_large": "This file is too large.",
+      "media_bad_type": "This file type is not allowed.",
+      "media_bad_lottie": "This file is not a valid Lottie animation (JSON).",
+      "media_bad_image": "This image could not be read.",
+      "requested_docs_required": "Choose the documents to request."
+    },
+    "proposal_not_open": "This proposal was already decided.",
+    "proposal_no_action": "This proposal has no action to apply.",
+    "action_invalid": "The proposed action is no longer valid.",
+    "action_unavailable": "This action is not available yet."
+  },
+  "filters": {
+    "all": "All",
+    "apply": "Apply",
+    "from": "From",
+    "to": "To"
   }
 }

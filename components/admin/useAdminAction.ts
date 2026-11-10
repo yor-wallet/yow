@@ -8,32 +8,17 @@ import type { ActionState } from '@/lib/admin/action';
 
 const IDLE: ActionState = { status: 'idle' };
 
-/** Field error codes with a translation under `admin.errors.fields`; anything else is shown as "invalid". */
-const FIELD_CODES = [
-  'required',
-  'too_long',
-  'invalid',
-  'sku_invalid',
-  'sku_taken',
-  'slug_invalid',
-  'slug_taken',
-  'amount_invalid',
-  'amount_too_large',
-  'compare_not_higher',
-  'below_reserved',
-  'color_invalid',
-  'bad_type',
-  'empty',
-  'too_large',
-  'bad_image',
-] as const;
-type FieldCode = (typeof FIELD_CODES)[number];
+type LooseT = ((key: string, values?: Record<string, string | number>) => string) & { has: (key: string) => boolean };
 
-/** Codes with a message under `admin.errors` (the rest fall back to `generic`). */
-const ERROR_CODES = ['forbidden', 'not_found', 'validation', 'constraint', 'generic', 'idempotency', 'duplicate', 'in_progress', 'product_needs_variant', 'variant_in_use'] as const;
-type ErrorCode = (typeof ERROR_CODES)[number];
-const TOAST_CODES = ['saved', 'created', 'deleted', 'uploaded', 'statusChanged'] as const;
-type ToastCode = (typeof TOAST_CODES)[number];
+/** Toast keys under `admin.toast`; anything unknown falls back to `saved`. */
+function toastKey(t: LooseT, code: string | undefined): string {
+  return code && t.has(`toast.${code}`) ? `toast.${code}` : 'toast.saved';
+}
+
+/** Error keys under `admin.errors` (incl. `ext.*` codes of the money / logistics modules); else `generic`. */
+function errorKey(t: LooseT, code: string | undefined): string {
+  return code && t.has(`errors.${code}`) ? `errors.${code}` : 'errors.generic';
+}
 
 /**
  * Wires a server action (`(prev, formData) => ActionState`) to a form: pending flag, a toast for the outcome,
@@ -50,7 +35,8 @@ export function useAdminAction(
   action: (prev: ActionState, formData: FormData) => Promise<ActionState>,
   opts: { onSuccess?: (state: ActionState) => void; refresh?: boolean } = {},
 ) {
-  const t = useTranslations('admin');
+  const t = useTranslations('admin') as unknown as LooseT;
+  const tv = useTranslations('errors') as unknown as LooseT;
   const router = useRouter();
   const { toast } = useToast();
   const [state, formAction, pending] = useActionState(action, IDLE);
@@ -61,14 +47,12 @@ export function useAdminAction(
     if (state.status === 'idle' || state.at === handled.current) return;
     handled.current = state.at;
     if (state.status === 'success') {
-      const code = (TOAST_CODES as readonly string[]).includes(state.code ?? '') ? (state.code as ToastCode) : 'saved';
-      toast({ title: t(`toast.${code}`), variant: 'success' });
+      toast({ title: t(toastKey(t, state.code)), variant: 'success' });
       onSuccess?.(state);
       if (state.redirectTo) router.push(state.redirectTo);
       else if (refresh) router.refresh();
     } else {
-      const code = (ERROR_CODES as readonly string[]).includes(state.code ?? '') ? (state.code as ErrorCode) : 'generic';
-      toast({ title: t(`errors.${code}`), variant: 'error' });
+      toast({ title: t(errorKey(t, state.code)), variant: 'error' });
     }
   }, [state, t, toast, router, onSuccess, refresh]);
 
@@ -86,7 +70,9 @@ export function useAdminAction(
     const key = Object.keys(errors).find((k) => k === name || k.startsWith(`${name}.`));
     const code = key ? errors[key]?.[0] : undefined;
     if (!code) return undefined;
-    return t(`errors.fields.${(FIELD_CODES as readonly string[]).includes(code) ? (code as FieldCode) : 'invalid'}`);
+    if (t.has(`errors.fields.${code}`)) return t(`errors.fields.${code}`);
+    if (tv.has(`validation.${code}`)) return tv(`validation.${code}`);
+    return t('errors.fields.invalid');
   };
 
   return { state, formAction, onSubmit, pending, fieldError };

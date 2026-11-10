@@ -6,7 +6,6 @@ import { isStaff } from '@/lib/rbac';
 import { IdempotencyError, withIdempotency } from '@/lib/idempotency';
 import { idempotencyKeySchema, type FieldErrors } from '@/lib/validation';
 import { AdminError, type Actor } from './actor';
-import type { Mutation } from './mutation';
 
 /** State returned by every admin server action (consumed by `<AdminForm>`). */
 export type ActionState = {
@@ -35,6 +34,10 @@ export function errorState(err: unknown): ActionState {
   unstable_rethrow(err);
   if (err instanceof AdminError) return { status: 'error', code: err.code, fieldErrors: err.fieldErrors, at: Date.now() };
   if (err instanceof IdempotencyError) return { status: 'error', code: err.code === 'in_progress' ? 'in_progress' : 'duplicate', at: Date.now() };
+  // Domain errors of other modules (MoneyError, KycError, DeliveryError, OrderError) carry a stable code.
+  if (err instanceof Error && /^(Money|Kyc|Delivery|Order)Error$/.test(err.name) && typeof (err as { code?: unknown }).code === 'string') {
+    return { status: 'error', code: `ext.${(err as unknown as { code: string }).code}`, at: Date.now() };
+  }
   console.error('[admin] action failed', err);
   const code = err instanceof Error && /constraint|violates|check/i.test(err.message) ? 'constraint' : 'generic';
   return { status: 'error', code, at: Date.now() };
@@ -55,7 +58,9 @@ type RunOpts<R> = {
  * Execute an admin mutation for the signed-in staff member and map the outcome to an
  * ActionState. Revalidates every page so lists and the storefront refresh.
  */
-export async function runAdminAction<I, R>(mutation: Mutation<I, R>, input: unknown, opts: RunOpts<R> = {}): Promise<ActionState> {
+type AdminFn<R> = ((actor: Actor | null, input: unknown) => Promise<R>) & { mutationName?: string };
+
+export async function runAdminAction<R>(mutation: AdminFn<R>, input: unknown, opts: RunOpts<R> & { scope?: string } = {}): Promise<ActionState> {
   try {
     const actor = await currentActor();
     let result: R;
@@ -63,7 +68,7 @@ export async function runAdminAction<I, R>(mutation: Mutation<I, R>, input: unkn
       const key = idempotencyKeySchema.safeParse(opts.idempotencyKey);
       if (!key.success) return { status: 'error', code: 'idempotency', at: Date.now() };
       const res = await withIdempotency(
-        { scope: `admin.${mutation.mutationName}`, key: key.data, userId: actor?.id ?? null, request: input },
+        { scope: `admin.${opts.scope ?? mutation.mutationName ?? 'action'}`, key: key.data, userId: actor?.id ?? null, request: input },
         () => mutation(actor, input),
       );
       result = res.result;

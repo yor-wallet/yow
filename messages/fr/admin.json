@@ -259,7 +259,11 @@
     "created": "Créé",
     "deleted": "Supprimé",
     "uploaded": "Image ajoutée",
-    "statusChanged": "Statut mis à jour"
+    "statusChanged": "Statut mis à jour",
+    "agentsRun": "Exécution des agents terminée",
+    "approved": "Proposition approuvée",
+    "rejected": "Proposition rejetée",
+    "applied": "Action appliquée"
   },
   "errors": {
     "forbidden": "Vous n'avez pas l'autorisation d'effectuer cette action.",
@@ -288,7 +292,44 @@
       "bad_type": "Ce fichier n'est pas une image prise en charge.",
       "empty": "Ce fichier est vide.",
       "too_large": "Ce fichier est trop volumineux.",
-      "bad_image": "Cette image n'a pas pu être lue."
-    }
+      "bad_image": "Cette image n'a pas pu être lue.",
+      "out_of_range": "Cette valeur est hors limites.",
+      "date_invalid": "Saisissez une date valide.",
+      "link_invalid": "Utilisez un chemin interne commençant par / ou une adresse https://.",
+      "url_invalid": "Saisissez une adresse web valide.",
+      "percent_invalid": "Saisissez un pourcentage entre 0,01 et 100.",
+      "end_before_start": "La fin doit être postérieure au début.",
+      "too_many": "Trop d’éléments.",
+      "code_invalid": "3 à 32 majuscules, chiffres, tirets ou soulignés.",
+      "code_taken": "Ce code est déjà utilisé.",
+      "notes_required": "Écrivez une courte note (3 caractères minimum).",
+      "encashed_required": "Saisissez la valeur réellement encaissée.",
+      "category_cycle": "Une catégorie ne peut pas être placée dans elle-même.",
+      "phone_invalid": "Saisissez un numéro omanais (8 chiffres).",
+      "email_invalid": "Saisissez une adresse e-mail valide.",
+      "time_invalid": "Utilisez le format HH:MM.",
+      "placement_required": "Choisissez au moins un emplacement.",
+      "scene_required": "Choisissez la scène 3D.",
+      "poster_required": "Une image d’affiche est requise pour une vidéo.",
+      "bad_lottie": "Ce fichier n’est pas une animation Lottie valide (JSON).",
+      "qty_zero": "Saisissez une quantité différente de 0.",
+      "date_future": "La date ne peut pas être dans le futur.",
+      "media_empty": "Ce fichier est vide.",
+      "media_too_large": "Ce fichier est trop volumineux.",
+      "media_bad_type": "Ce type de fichier n’est pas autorisé.",
+      "media_bad_lottie": "Ce fichier n’est pas une animation Lottie valide (JSON).",
+      "media_bad_image": "Cette image est illisible.",
+      "requested_docs_required": "Choisissez les documents à demander."
+    },
+    "proposal_not_open": "Cette proposition a déjà été traitée.",
+    "proposal_no_action": "Cette proposition ne comporte aucune action à appliquer.",
+    "action_invalid": "L’action proposée n’est plus valable.",
+    "action_unavailable": "Cette action n’est pas encore disponible."
+  },
+  "filters": {
+    "all": "Tous",
+    "apply": "Appliquer",
+    "from": "Du",
+    "to": "Au"
   }
 }

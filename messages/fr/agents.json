@@ -1,1 +1,241 @@
-{}
+{
+  "title": "Agents IA",
+  "subtitle": "Quinze agents analysent la plateforme et émettent des propositions. Ils ne font que lire ; une personne décide.",
+  "principle": "Chaque agent déclare les données qu’il peut lire et ne peut que proposer. Rien ne change tant qu’un membre de l’équipe disposant de la bonne permission n’a pas approuvé puis appliqué une proposition — chaque décision est inscrite au journal d’audit.",
+  "openInbox": "Boîte des propositions",
+  "runAll": "Lancer tous les agents",
+  "runOne": "Lancer",
+  "number": "Agent {n}",
+  "open": "Ouvertes",
+  "runs24h": "Exécutions 24 h",
+  "failed24h": "Échecs 24 h",
+  "lastRun": "Dernière exécution {when} · {status}",
+  "neverRun": "Jamais exécuté",
+  "every": "toutes les {minutes} min",
+  "scopes": "Données qu’il peut lire",
+  "viewProposals": "Propositions",
+  "recentRuns": "Dernières exécutions",
+  "noRuns": "Aucune exécution. Lancez les agents pour obtenir un premier rapport.",
+  "columns": {
+    "agent": "Agent",
+    "trigger": "Déclencheur",
+    "started": "Début",
+    "duration": "Durée",
+    "status": "Statut"
+  },
+  "triggers": {
+    "cron": "Planification",
+    "manual": "Manuel",
+    "cli": "Ligne de commande",
+    "test": "Test"
+  },
+  "runStatus": {
+    "RUNNING": "En cours",
+    "SUCCEEDED": "Réussie",
+    "FAILED": "Échouée"
+  },
+  "list": {
+    "supervision": {
+      "name": "Supervision",
+      "mission": "Lance les autres agents, détecte les exécutions échouées ou bloquées et résume la santé de la plateforme."
+    },
+    "catalogue": {
+      "name": "Catalogue",
+      "mission": "Repère les produits publiés sans images, sans caractéristiques, sans traductions ou sans aucun prix."
+    },
+    "priceAnalysis": {
+      "name": "Analyse des prix",
+      "mission": "Compare les prix aux relevés de marché vérifiés et signale les marges négatives."
+    },
+    "stock": {
+      "name": "Stock",
+      "mission": "Surveille les stocks bas, les articles épuisés encore demandés dans les paniers et les réservations expirées."
+    },
+    "promotions": {
+      "name": "Promotions",
+      "mission": "Détecte les promotions expirées ou qui se chevauchent et les campagnes terminées ou peu performantes."
+    },
+    "payments": {
+      "name": "Surveillance des paiements",
+      "mission": "Repère les paiements bloqués, les pics d’échecs, les écarts de montant et les webhooks non vérifiés."
+    },
+    "finance": {
+      "name": "Analyse financière",
+      "mission": "Synthèse quotidienne du chiffre d’affaires et du bénéfice estimé, taux de remboursement sur 30 jours."
+    },
+    "flex": {
+      "name": "Suivi FLEX",
+      "mission": "Suit les échéances DOOM FLEX en retard ou proches et prépare les rappels."
+    },
+    "support": {
+      "name": "Service client",
+      "mission": "Signale les tickets qui attendent au-delà du délai de réponse et classe les tickets ouverts par sujet."
+    },
+    "orders": {
+      "name": "Commandes",
+      "mission": "Repère les commandes payées non traitées, les impayées et les réservations restées sur des commandes annulées."
+    },
+    "delivery": {
+      "name": "Livraison",
+      "mission": "Expéditions en retard, saturation de la capacité express, livraisons échouées et incidents ouverts."
+    },
+    "server": {
+      "name": "Surveillance serveur",
+      "mission": "Latence de la base, taux d’erreur des agents, volume du stockage privé et fraîcheur de la planification."
+    },
+    "anomaly": {
+      "name": "Détection d’anomalies",
+      "mission": "Contrôles de vélocité sur les recharges et cartes cadeaux, commandes inhabituelles et numéros partagés."
+    },
+    "optimisation": {
+      "name": "Optimisation",
+      "mission": "Stocks à rotation lente et campagnes qui méritent plus de visibilité."
+    },
+    "finalAudit": {
+      "name": "Audit final",
+      "mission": "Rapprochement du grand livre, intégrité du journal d’audit et revue des comptes à privilèges."
+    }
+  },
+  "inbox": {
+    "title": "Boîte des propositions",
+    "subtitle": "Examinez ce que les agents ont trouvé : approuvez, rejetez ou appliquez une action approuvée.",
+    "openBySeverity": "Propositions ouvertes par gravité",
+    "search": "Rechercher une proposition",
+    "status": "Statut",
+    "allStatuses": "Tous les statuts",
+    "severity": "Gravité",
+    "agent": "Agent",
+    "results": "{count, plural, =0 {Aucune proposition} one {# proposition} other {# propositions}}",
+    "empty": "Rien à examiner. Lancez les agents pour actualiser l’analyse.",
+    "proposedAction": "Action proposée :",
+    "requires": "nécessite {permission}",
+    "alertOnly": "Pour information — aucune action automatique.",
+    "evidence": "Éléments",
+    "decided": "Décidé par {who} le {when}",
+    "approve": "Approuver",
+    "acknowledge": "Pris en compte",
+    "reject": "Rejeter",
+    "note": "Note (facultative)",
+    "apply": "Appliquer l’action",
+    "applyTitle": "Appliquer cette action ?",
+    "applyConfirm": "Oui, appliquer"
+  },
+  "severity": {
+    "CRITICAL": "Critique",
+    "HIGH": "Élevée",
+    "MEDIUM": "Moyenne",
+    "LOW": "Faible",
+    "INFO": "Info"
+  },
+  "status": {
+    "OPEN": "Ouverte",
+    "APPROVED": "Approuvée",
+    "REJECTED": "Rejetée",
+    "APPLIED": "Appliquée"
+  },
+  "actionTypes": {
+    "variant_setPrice": "Fixer le prix de la variante à {price}.",
+    "product_disableSale": "Arrêter la vente de ce produit.",
+    "campaign_deactivate": "Désactiver la campagne.",
+    "promotion_deactivate": "Désactiver la promotion.",
+    "payment_flag": "Signaler le paiement pour revue manuelle (son statut et son montant ne changent pas).",
+    "notification_send": "Envoyer la notification de rappel au client.",
+    "ticket_escalate": "Augmenter la priorité du ticket.",
+    "reservations_releaseExpired": "Libérer les réservations de stock expirées et annuler les commandes impayées concernées."
+  },
+  "proposals": {
+    "supervision": {
+      "failedRuns": "L’agent « {agent} » a échoué {count} fois en 24 h",
+      "staleAgents": "{count} agent(s) ne se sont pas exécutés récemment",
+      "criticalBacklog": "{count} proposition(s) critique(s) ouvertes depuis plus de 24 h",
+      "healthSummary": "Santé : {ok}/{total} agents OK, {open} propositions ouvertes"
+    },
+    "catalogue": {
+      "noPrice": "{count} produit(s) publié(s) sans variante avec prix",
+      "noImages": "{count} produit(s) publié(s) sans image",
+      "noSpecs": "{count} produit(s) publié(s) sans caractéristiques",
+      "missingTranslations": "{count} produit(s) publié(s) avec des traductions manquantes"
+    },
+    "price": {
+      "negativeMargin": "{sku} est vendu sous son coût",
+      "aboveMarket": "{sku} est {pct} % au-dessus de la moyenne vérifiée du marché",
+      "belowMarket": "{sku} est {pct} % en dessous de la moyenne vérifiée du marché"
+    },
+    "stock": {
+      "low": "{count} variante(s) presque épuisée(s)",
+      "outWithDemand": "{sku} est épuisé mais présent dans {carts} panier(s)",
+      "staleReservations": "{count} réservation(s) expirée(s) bloquent encore du stock"
+    },
+    "promotions": {
+      "expiredActive": "La promotion « {name} » est terminée mais toujours active",
+      "exhausted": "La promotion « {name} » a atteint sa limite d’utilisation",
+      "overlap": "{count} paire(s) de promotions se chevauchent",
+      "campaignEnded": "La campagne « {name} » est terminée mais toujours active",
+      "lowCtr": "{count} campagne(s) avec un taux de clic inférieur à 0,3 %"
+    },
+    "payments": {
+      "stuck": "Paiement {provider} en attente depuis {minutes} min",
+      "failureSpike": "Pic d’échecs de paiement : {count} échecs sur la dernière heure",
+      "amountMismatch": "Paiement {provider} confirmé pour un montant différent",
+      "signatureFailures": "{count} webhook(s) {provider} à la signature invalide"
+    },
+    "finance": {
+      "dailySummary": "Synthèse du {date} : {orders} commande(s) payée(s)",
+      "refundRatio": "Les remboursements atteignent {pct} % du chiffre d’affaires sur 30 jours"
+    },
+    "flex": {
+      "overdue": "Échéance FLEX {sequence}/{months} en retard de {days} jour(s)",
+      "dueSoon": "Échéance FLEX {sequence}/{months} due dans {days} jour(s)"
+    },
+    "support": {
+      "slaBreach": "Le ticket {number} attend une réponse depuis {hours} h",
+      "categories": "{count} ticket(s) ouvert(s) par sujet"
+    },
+    "orders": {
+      "stuckPaid": "{count} commande(s) payée(s) non traitée(s) après 24 h",
+      "cancelledReservations": "{count} réservation(s) encore active(s) sur des commandes annulées",
+      "unpaid": "{count} commande(s) en attente de paiement depuis plus de 24 h"
+    },
+    "delivery": {
+      "late": "{count} expédition(s) en retard sur l’heure promise ({express} express)",
+      "expressSaturation": "Capacité express à 90 % ou plus dans {count} gouvernorat(s) aujourd’hui",
+      "failed": "{count} livraison(s) échouée(s) en 7 jours",
+      "staleIncidents": "{count} incident(s) de livraison ouvert(s) depuis plus de 48 h"
+    },
+    "server": {
+      "dbLatency": "Latence de la base de données : {ms} ms",
+      "errorRate": "Taux d’erreur des agents : {pct} % sur 24 h",
+      "disk": "Le stockage privé occupe {gb} Go",
+      "cronStale": "Aucune exécution planifiée depuis {hours} h",
+      "idempotencyBacklog": "{count} enregistrements d’idempotence expirés à purger"
+    },
+    "anomaly": {
+      "topupVelocity": "{count} tentatives de recharge par un même client en 24 h",
+      "giftCardVelocity": "{count} cartes cadeaux soumises par un même client en 24 h",
+      "sharedGiftCard": "Un même code de carte cadeau soumis par {accounts} comptes",
+      "largeOrders": "{count} commande(s) d’un montant inhabituel en 24 h",
+      "sharedPhone": "{count} numéro(s) de téléphone utilisé(s) par 3 comptes ou plus"
+    },
+    "optimisation": {
+      "slowMoving": "{count} produit(s) sans vente depuis 60 jours",
+      "boostCampaigns": "{count} campagne(s) au-dessus du taux de clic moyen"
+    },
+    "audit": {
+      "reconcileFailed": "Le contrôle du grand livre « {check} » a échoué ({count})",
+      "integrity": "Intégrité du journal d’audit : {count} entrée(s) suspecte(s)",
+      "elevatedUsers": "{count} compte(s) à privilèges, dont {superadmins} super-administrateur(s)",
+      "dormantStaff": "{count} compte(s) du personnel inutilisé(s) depuis 90 jours",
+      "suspendedSessions": "{count} session(s) active(s) appartenant à du personnel suspendu"
+    }
+  },
+  "notificationTemplates": {
+    "flexReminder": {
+      "title": "Échéance DOOM FLEX bientôt due",
+      "body": "L’échéance {sequence} sur {months} ({amount}) est due le {dueDate}. Réglez-la depuis votre portefeuille DOOM."
+    },
+    "flexOverdue": {
+      "title": "Échéance DOOM FLEX en retard",
+      "body": "L’échéance {sequence} sur {months} ({amount}) était due le {dueDate}. Merci de la régler au plus vite depuis votre portefeuille DOOM."
+    }
+  }
+}

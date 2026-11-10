@@ -1,1 +1,241 @@
-{}
+{
+  "title": "AI agents",
+  "subtitle": "Fifteen agents analyse the platform and raise proposals. They can only read; a person decides.",
+  "principle": "Each agent declares the data it may read and can only propose. Nothing changes until a member of staff with the right permission approves and applies a proposal — every decision is recorded in the audit log.",
+  "openInbox": "Proposals inbox",
+  "runAll": "Run all agents now",
+  "runOne": "Run",
+  "number": "Agent {n}",
+  "open": "Open",
+  "runs24h": "Runs 24h",
+  "failed24h": "Failed 24h",
+  "lastRun": "Last run {when} · {status}",
+  "neverRun": "Never run yet",
+  "every": "every {minutes} min",
+  "scopes": "Data it may read",
+  "viewProposals": "Proposals",
+  "recentRuns": "Latest runs",
+  "noRuns": "No run yet. Run the agents to get a first report.",
+  "columns": {
+    "agent": "Agent",
+    "trigger": "Trigger",
+    "started": "Started",
+    "duration": "Duration",
+    "status": "Status"
+  },
+  "triggers": {
+    "cron": "Schedule",
+    "manual": "Manual",
+    "cli": "Command line",
+    "test": "Test"
+  },
+  "runStatus": {
+    "RUNNING": "Running",
+    "SUCCEEDED": "Succeeded",
+    "FAILED": "Failed"
+  },
+  "list": {
+    "supervision": {
+      "name": "Supervision",
+      "mission": "Runs the other agents, detects failed or stale runs and summarises platform health."
+    },
+    "catalogue": {
+      "name": "Catalogue",
+      "mission": "Finds published products without images, specifications, translations or any price."
+    },
+    "priceAnalysis": {
+      "name": "Price analysis",
+      "mission": "Compares prices with verified market observations and flags negative margins."
+    },
+    "stock": {
+      "name": "Stock",
+      "mission": "Watches low stock, sold-out items still wanted in carts and expired reservations."
+    },
+    "promotions": {
+      "name": "Promotions",
+      "mission": "Detects expired or overlapping promotions and campaigns that ended or under-perform."
+    },
+    "payments": {
+      "name": "Payment monitoring",
+      "mission": "Spots stuck payments, failure spikes, amount mismatches and unverified webhooks."
+    },
+    "finance": {
+      "name": "Financial analysis",
+      "mission": "Daily revenue and estimated profit summary, refund ratio over 30 days."
+    },
+    "flex": {
+      "name": "FLEX follow-up",
+      "mission": "Tracks overdue and upcoming DOOM FLEX instalments and drafts reminders."
+    },
+    "support": {
+      "name": "Customer support",
+      "mission": "Flags tickets waiting beyond the reply target and groups open tickets by topic."
+    },
+    "orders": {
+      "name": "Orders",
+      "mission": "Finds paid orders not processed, unpaid orders and reservations left on cancelled orders."
+    },
+    "delivery": {
+      "name": "Delivery",
+      "mission": "Late shipments, express capacity saturation, failed deliveries and open incidents."
+    },
+    "server": {
+      "name": "Server monitoring",
+      "mission": "Database latency, agent error rate, private storage size and scheduler freshness."
+    },
+    "anomaly": {
+      "name": "Anomaly detection",
+      "mission": "Velocity checks on top-ups and gift cards, unusual order sizes and shared phone numbers."
+    },
+    "optimisation": {
+      "name": "Optimisation",
+      "mission": "Slow-moving stock and campaigns that deserve more visibility."
+    },
+    "finalAudit": {
+      "name": "Final audit",
+      "mission": "Ledger reconciliation, audit-log integrity and review of elevated accounts."
+    }
+  },
+  "inbox": {
+    "title": "Proposals inbox",
+    "subtitle": "Review what the agents found. Approve, reject, or apply an approved action.",
+    "openBySeverity": "Open proposals by severity",
+    "search": "Search proposals",
+    "status": "Status",
+    "allStatuses": "Every status",
+    "severity": "Severity",
+    "agent": "Agent",
+    "results": "{count, plural, =0 {No proposal} one {# proposal} other {# proposals}}",
+    "empty": "Nothing to review. Run the agents to refresh the analysis.",
+    "proposedAction": "Proposed action:",
+    "requires": "needs {permission}",
+    "alertOnly": "Information only — no automatic action.",
+    "evidence": "Evidence",
+    "decided": "Decided by {who} on {when}",
+    "approve": "Approve",
+    "acknowledge": "Acknowledge",
+    "reject": "Reject",
+    "note": "Note (optional)",
+    "apply": "Apply action",
+    "applyTitle": "Apply this action?",
+    "applyConfirm": "Yes, apply"
+  },
+  "severity": {
+    "CRITICAL": "Critical",
+    "HIGH": "High",
+    "MEDIUM": "Medium",
+    "LOW": "Low",
+    "INFO": "Info"
+  },
+  "status": {
+    "OPEN": "Open",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
+    "APPLIED": "Applied"
+  },
+  "actionTypes": {
+    "variant_setPrice": "Set the variant price to {price}.",
+    "product_disableSale": "Stop selling this product.",
+    "campaign_deactivate": "Deactivate the campaign.",
+    "promotion_deactivate": "Deactivate the promotion.",
+    "payment_flag": "Flag the payment for manual review (its status and amount do not change).",
+    "notification_send": "Send the reminder notification to the customer.",
+    "ticket_escalate": "Raise the ticket priority.",
+    "reservations_releaseExpired": "Release expired stock reservations and cancel the unpaid orders they belong to."
+  },
+  "proposals": {
+    "supervision": {
+      "failedRuns": "Agent “{agent}” failed {count} time(s) in 24 h",
+      "staleAgents": "{count} agent(s) have not completed recently",
+      "criticalBacklog": "{count} critical proposal(s) open for more than 24 h",
+      "healthSummary": "Health: {ok}/{total} agents OK, {open} open proposals"
+    },
+    "catalogue": {
+      "noPrice": "{count} published product(s) have no priced variant",
+      "noImages": "{count} published product(s) have no image",
+      "noSpecs": "{count} published product(s) have no specifications",
+      "missingTranslations": "{count} published product(s) miss translations"
+    },
+    "price": {
+      "negativeMargin": "{sku} is priced below its cost",
+      "aboveMarket": "{sku} is {pct}% above the verified market average",
+      "belowMarket": "{sku} is {pct}% below the verified market average"
+    },
+    "stock": {
+      "low": "{count} variant(s) are running low",
+      "outWithDemand": "{sku} is sold out but sits in {carts} cart(s)",
+      "staleReservations": "{count} expired reservation(s) still hold stock"
+    },
+    "promotions": {
+      "expiredActive": "Promotion “{name}” has ended but is still active",
+      "exhausted": "Promotion “{name}” reached its usage limit",
+      "overlap": "{count} pair(s) of promotions overlap",
+      "campaignEnded": "Campaign “{name}” has ended but is still active",
+      "lowCtr": "{count} campaign(s) with a click rate below 0.3%"
+    },
+    "payments": {
+      "stuck": "{provider} payment pending for {minutes} min",
+      "failureSpike": "Payment failure spike: {count} failures in the last hour",
+      "amountMismatch": "{provider} payment confirmed for a different amount",
+      "signatureFailures": "{count} {provider} webhook(s) failed signature verification"
+    },
+    "finance": {
+      "dailySummary": "Daily summary {date}: {orders} paid order(s)",
+      "refundRatio": "Refunds reached {pct}% of revenue over 30 days"
+    },
+    "flex": {
+      "overdue": "FLEX instalment {sequence}/{months} overdue by {days} day(s)",
+      "dueSoon": "FLEX instalment {sequence}/{months} due in {days} day(s)"
+    },
+    "support": {
+      "slaBreach": "Ticket {number} has waited {hours} h for a reply",
+      "categories": "{count} open ticket(s) by topic"
+    },
+    "orders": {
+      "stuckPaid": "{count} paid order(s) not processed after 24 h",
+      "cancelledReservations": "{count} reservation(s) still active on cancelled orders",
+      "unpaid": "{count} order(s) awaiting payment for more than 24 h"
+    },
+    "delivery": {
+      "late": "{count} shipment(s) past their promised time ({express} express)",
+      "expressSaturation": "Express capacity at 90% or more in {count} governorate(s) today",
+      "failed": "{count} failed delivery(ies) in 7 days",
+      "staleIncidents": "{count} delivery incident(s) open for more than 48 h"
+    },
+    "server": {
+      "dbLatency": "Database latency {ms} ms",
+      "errorRate": "Agent error rate {pct}% over 24 h",
+      "disk": "Private storage uses {gb} GB",
+      "cronStale": "No scheduled run for {hours} h",
+      "idempotencyBacklog": "{count} expired idempotency records awaiting purge"
+    },
+    "anomaly": {
+      "topupVelocity": "{count} top-up attempts by one customer in 24 h",
+      "giftCardVelocity": "{count} gift cards submitted by one customer in 24 h",
+      "sharedGiftCard": "One gift-card code submitted by {accounts} accounts",
+      "largeOrders": "{count} unusually large order(s) in 24 h",
+      "sharedPhone": "{count} phone number(s) used by 3 or more accounts"
+    },
+    "optimisation": {
+      "slowMoving": "{count} product(s) without a sale in 60 days",
+      "boostCampaigns": "{count} campaign(s) beat the average click rate"
+    },
+    "audit": {
+      "reconcileFailed": "Ledger check “{check}” failed ({count})",
+      "integrity": "Audit log integrity: {count} suspicious entry(ies)",
+      "elevatedUsers": "{count} elevated account(s), {superadmins} superadmin(s)",
+      "dormantStaff": "{count} staff account(s) unused for 90 days",
+      "suspendedSessions": "{count} live session(s) belong to suspended staff"
+    }
+  },
+  "notificationTemplates": {
+    "flexReminder": {
+      "title": "DOOM FLEX instalment due soon",
+      "body": "Instalment {sequence} of {months} ({amount}) is due on {dueDate}. Pay it from your DOOM Wallet."
+    },
+    "flexOverdue": {
+      "title": "DOOM FLEX instalment overdue",
+      "body": "Instalment {sequence} of {months} ({amount}) was due on {dueDate}. Please pay it as soon as possible from your DOOM Wallet."
+    }
+  }
+}
