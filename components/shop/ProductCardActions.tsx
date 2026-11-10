@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Heart, Loader2, Share2, ShoppingCart } from 'lucide-react';
+import { Heart, Loader2, Scale, Share2, ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { usePathname, useRouter } from '@/i18n/navigation';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/cn';
-import { addToCartAction, toggleFavoriteAction, type CartActionError } from '@/app/[locale]/(shop)/actions';
+import { addToCartAction, toggleCompareAction, toggleFavoriteAction, type CartActionError } from '@/app/[locale]/(shop)/actions';
 
 export type CatalogErrorKey = 'generic' | 'signInRequired' | 'compareLimit' | 'notFound' | 'unavailable' | 'outOfStock' | 'invalidQty' | 'rateLimited';
 
@@ -144,5 +144,51 @@ export function ShareButton({ title, iconOnly = false, className }: { title: str
       <Share2 size={iconOnly ? 20 : 18} aria-hidden="true" />
       {iconOnly ? null : t('label')}
     </button>
+  );
+}
+
+/** "Compare" toggle on the product page. Visitors are sent to sign in and come back. */
+export function CompareButton({ productId, initial, className }: { productId: string; initial: boolean; className?: string }) {
+  const t = useTranslations('product.compare');
+  const tc = useTranslations('catalog');
+  const { toast } = useToast();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [compared, setCompared] = useState(initial);
+  const [pending, start] = useTransition();
+  return (
+    <span className={cn('inline-flex flex-wrap items-center gap-x-3 gap-y-1', className)}>
+      <button
+        type="button"
+        disabled={pending}
+        aria-pressed={compared}
+        data-testid="compare-toggle"
+        onClick={() =>
+          start(async () => {
+            const res = await toggleCompareAction(productId);
+            if (res.ok) {
+              setCompared(res.compared);
+              toast({ title: t(res.compared ? 'added' : 'removed'), variant: 'success', durationMs: 2500 });
+            } else if (res.error === 'signInRequired') {
+              router.push({ pathname: '/login', query: { next: pathname } });
+            } else {
+              toast({ title: tc(`errors.${res.error === 'limit_reached' ? 'compareLimit' : cartErrorKey(res.error)}`), variant: 'error' });
+            }
+          })
+        }
+        className={cn(
+          'inline-flex min-h-11 items-center gap-2 rounded-pill border px-4 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-60',
+          compared ? 'border-blue bg-blue/10 text-fg' : 'border-border-strong text-fg hover:bg-surface-2',
+        )}
+      >
+        <Scale size={18} aria-hidden="true" />
+        {t(compared ? 'remove' : 'add')}
+      </button>
+      {compared ? (
+        <Link href="/compare" className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline-offset-4 hover:underline" data-testid="compare-view">
+          {t('view')}
+        </Link>
+      ) : null}
+    </span>
   );
 }

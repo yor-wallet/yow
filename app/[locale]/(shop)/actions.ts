@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { addToCart, getCartCount, removeCartItem, removeUnavailableItems, updateCartItem } from '@/lib/cart';
 import { getSession } from '@/lib/auth';
 import { toggleFavorite } from '@/lib/catalog/favorites';
+import { clearCompare, removeCompare, toggleCompare } from '@/lib/catalog/compare';
 import { submitReview, type ReviewInput } from '@/lib/catalog/reviews';
 import { getLocale } from 'next-intl/server';
 import { asLocale } from '@/i18n/routing';
@@ -140,5 +141,46 @@ export async function submitReviewAction(productId: string, input: ReviewInput):
     unstable_rethrow(err);
     console.error('[reviews] submit failed', err);
     return { ok: false, error: 'generic' };
+  }
+}
+
+export type CompareActionResult =
+  | { ok: true; compared: boolean; count: number }
+  | { ok: false; error: 'signInRequired' | 'not_found' | 'limit_reached' | 'invalid' | 'generic' };
+
+export async function toggleCompareAction(productId: string): Promise<CompareActionResult> {
+  const id = idSchema.safeParse(productId);
+  if (!id.success) return { ok: false, error: 'invalid' };
+  try {
+    const session = await getSession();
+    if (!session) return { ok: false, error: 'signInRequired' };
+    const res = await toggleCompare(session.user.id, id.data);
+    if (!res.ok) return { ok: false, error: res.error };
+    revalidatePath('/[locale]/compare', 'page');
+    return res;
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error('[compare] toggle failed', err);
+    return { ok: false, error: 'generic' };
+  }
+}
+
+/** Remove one product from the comparison (`productId`) or empty it (`null`). */
+export async function removeCompareAction(productId: string | null): Promise<{ ok: boolean }> {
+  try {
+    const session = await getSession();
+    if (!session) return { ok: false };
+    if (productId === null) await clearCompare(session.user.id);
+    else {
+      const id = idSchema.safeParse(productId);
+      if (!id.success) return { ok: false };
+      await removeCompare(session.user.id, id.data);
+    }
+    revalidatePath('/[locale]/compare', 'page');
+    return { ok: true };
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error('[compare] remove failed', err);
+    return { ok: false };
   }
 }

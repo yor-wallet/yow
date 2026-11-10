@@ -107,7 +107,7 @@ function localizedList(value: unknown, locale: string): string[] {
   return [];
 }
 
-function specRows(value: unknown, locale: string): SpecRow[] {
+export function specRows(value: unknown, locale: string): SpecRow[] {
   if (!Array.isArray(value)) return [];
   return value
     .map((row, i): SpecRow | null => {

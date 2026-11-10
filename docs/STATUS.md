@@ -8,9 +8,9 @@
 | Contrôle | Résultat |
 |---|---|
 | `npm run typecheck` | propre |
-| `npm test` (Vitest, base PostgreSQL de test) | 182 tests verts, dont : 5 tests des zones de livraison (rien n'est promis sans configuration), parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
+| `npm test` (Vitest, base PostgreSQL de test) | 192 tests verts, dont : 5 tests du dépôt d'avis, 5 tests du comparateur, 5 tests des zones de livraison (rien n'est promis sans configuration), parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
 | `npm run build` | réussi |
-| `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 148 tests verts (2 ignorés par conception) sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
+| `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 151 tests verts (2 ignorés par conception) sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
 
 ## Modules
 
@@ -29,7 +29,9 @@ Design system (jetons, thèmes sombre/clair), i18n ar (RTL) / en / fr avec test 
 - Commande : adresse (ajout en feuille), type de livraison et frais réels de la zone, code promo, moyen de paiement, passage de commande idempotent avec réservation de stock 15 min, redirection vers la page de commande.
 - Pages `/orders` (liste filtrable, recherche par numéro) et `/orders/[numéro]` (suivi, code de remise, articles, adresse, paiements, remboursements, historique, **payer / réessayer**, **annuler** une commande non payée).
 - `/promotions`, `/favorites`, `/delivery` (chiffres lus dans la configuration des zones).
-- ⛔ À faire : comparateur (`/compare` + bouton), dépôt d'avis, reçu PDF, produits associés.
+- Comparateur `/compare` (jusqu'à 4 produits, bouton sur la fiche produit, valeurs absentes signalées et jamais inventées), **dépôt d'avis** réservé aux acheteurs livrés (un avis par article, enregistré « en attente » : rien n'est publié automatiquement), **produits associés** (même catégorie, puis catégorie parente).
+- Retour de navigation : barre de progression en haut de page, squelette du panier, apparition échelonnée des grilles. Les fiches produit et catégories n'ont volontairement pas de fichier `loading` (le flux transformerait leur 404 en 200).
+- ⛔ À faire : écran d'administration pour **modérer les avis** (sans lui, les avis déposés restent en attente).
 
 ### Paiements — 🟡
 - ✅ Bibliothèques : registre des moyens, adaptateurs (carte, Ooredoo, Omantel, crypto : « indisponible » tant que non configurés), cartes cadeaux, webhooks, notifications.

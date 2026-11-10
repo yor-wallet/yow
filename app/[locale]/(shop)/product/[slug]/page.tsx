@@ -17,7 +17,8 @@ import { Breadcrumb } from '@/components/shop/Breadcrumb';
 import { ProductHero } from '@/components/shop/ProductHero';
 import { ProductRail } from '@/components/shop/ProductRail';
 import { getRelatedProducts } from '@/lib/catalog/cache';
-import { FavoriteButton, ShareButton } from '@/components/shop/ProductCardActions';
+import { CompareButton, FavoriteButton, ShareButton } from '@/components/shop/ProductCardActions';
+import { getUserProductFlags } from '@/lib/catalog/queries';
 import { getPreferredArea, listAreaOptions } from '@/lib/delivery/area';
 import { localize } from '@/lib/localized';
 import { Stars } from '@/components/shop/Stars';
@@ -91,6 +92,7 @@ export default async function ProductPage({ params }: Props) {
   const [canReview, reviewPending] = session
     ? await Promise.all([reviewableOrderItem(session.user.id, product.id).then((i) => !!i), hasPendingReview(session.user.id, product.id)])
     : [false, false];
+  const compared = (await getUserProductFlags(session?.user.id ?? null, product.id)).compared;
   const related = await getRelatedProducts({ productId: product.id, categorySlug: product.category.slug, parentSlug: product.category.parent?.slug ?? null, locale });
   const favoriteIds = await favoriteIdsFor(session?.user.id, [product.id, ...related.map((p) => p.id)]);
   const favorite = favoriteIds.has(product.id);
@@ -134,6 +136,7 @@ export default async function ProductPage({ params }: Props) {
 
       <div className="page-container pt-4">
         <ProductHero product={product} favorite={favorite} delivery={delivery} />
+        <CompareButton productId={product.id} initial={compared} className="mt-4" />
       </div>
 
       {(product.description || product.highlights.length > 0) ? (

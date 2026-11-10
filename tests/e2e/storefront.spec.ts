@@ -214,6 +214,15 @@ test.describe('product page and cart', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   });
 
+  test('compare: visitors are sent to sign in; the comparison page explains itself when signed out', async ({ page }) => {
+    await gotoReady(page, alpha);
+    await page.getByTestId('compare-toggle').click();
+    await expect(page).toHaveURL(/\/en\/login\?next=/);
+    await gotoReady(page, '/en/compare');
+    await expect(page.getByText('Sign in to compare')).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+
   test('visitors are sent to sign in (and back) to use favourites', async ({ page }) => {
     await gotoReady(page, '/en/category/smartphones');
     await page.getByTestId('product-card').filter({ hasText: 'E2E Alpha Phone' }).getByTestId('favorite-toggle').click();
