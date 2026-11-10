@@ -22,6 +22,7 @@ export type ReceiptData = {
   id: string;
   reference: string;
   issuedAt: Date;
+  ownerId: string;
   customer: { name: string; email: string; phone: string | null };
   /** Ledger transaction type (wallet) or 'ORDER'. */
   type: string;
@@ -91,6 +92,7 @@ export async function loadWalletReceipt(transactionId: string, viewer: Viewer, d
     id: tx.id,
     reference: tx.reference,
     issuedAt: tx.createdAt,
+    ownerId,
     customer: { name: owner.fullName, email: owner.email, phone: owner.phone },
     type: tx.type,
     method: tx.paymentIntent?.provider ?? null,
@@ -126,6 +128,7 @@ export async function loadOrderReceipt(orderRef: string, viewer: Viewer, locale 
     id: order.id,
     reference: order.number,
     issuedAt: order.paidAt ?? order.paymentIntents[0]?.succeededAt ?? order.placedAt,
+    ownerId: order.userId,
     customer: { name: order.user.fullName, email: order.user.email, phone: order.contactPhone ?? order.user.phone },
     type: 'ORDER',
     method: order.paymentIntents[0]?.provider ?? order.paymentMethod,

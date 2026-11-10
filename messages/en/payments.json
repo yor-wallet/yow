@@ -91,7 +91,21 @@
     "order_already_paid": "This order is already paid.",
     "provider_unavailable": "The payment provider is not available right now. Please try again later.",
     "provider_error": "The payment provider reported a problem. Please try again.",
-    "generic": "The payment could not be started. Please try again."
+    "generic": "The payment could not be started. Please try again.",
+    "balance_limit_exceeded": "This top-up would take your wallet above its maximum balance.",
+    "payment_not_pending": "This payment is no longer pending.",
+    "duplicate_code": "This gift card code has already been submitted.",
+    "invalid_image": "Use a PNG, JPEG or WebP photo of up to 8 MB.",
+    "already_decided": "A decision was already recorded.",
+    "kyc_required": "Verify your identity to use DOOM FLEX.",
+    "flex_not_eligible": "This DOOM FLEX plan cannot be confirmed right now.",
+    "flex_invalid_state": "This DOOM FLEX application cannot be changed at this stage.",
+    "flex_active_limit": "You already have the maximum number of open DOOM FLEX plans.",
+    "terms_required": "Accept the terms to continue.",
+    "installment_not_payable": "This instalment cannot be paid (it may already be paid).",
+    "too_many_open": "You already have several gift cards awaiting verification. Please wait for them to be processed.",
+    "rate_limited": "Too many attempts. Please wait a moment and try again.",
+    "unauthenticated": "Your session expired. Sign in again."
   },
   "pay": {
     "title": "Pay for this order",
@@ -104,5 +118,46 @@
     "succeeded": "Payment confirmed. Thank you!",
     "retry": "Try again",
     "minimum": "Minimum {amount}"
+  },
+  "status": {
+    "metaTitle": "Payment status",
+    "title": "Payment status",
+    "eyebrow": "Secure payment",
+    "pending": "Waiting for confirmation",
+    "pendingText": "We are waiting for {provider} to confirm your payment. This page updates on its own — you can safely leave it.",
+    "checking": "Checking with the provider…",
+    "continue": "Continue to the payment page",
+    "instructions": "Instructions from the provider",
+    "succeeded": "Payment confirmed",
+    "succeededText": "{provider} confirmed the payment. It is recorded in your history.",
+    "failed": "Payment not completed",
+    "cancelledNote": "You left the payment page. If you did not pay, nothing was charged.",
+    "creditedToWallet": "This order could no longer be paid, so the amount was credited to your DOOM Wallet.",
+    "amount": "Amount",
+    "method": "Method",
+    "purposeLabel": "Purpose",
+    "reference": "Payment ID",
+    "createdAt": "Started",
+    "confirmedAt": "Confirmed",
+    "purpose": {
+      "TOPUP": "Wallet top-up",
+      "ORDER": "Order payment",
+      "INSTALLMENT": "DOOM FLEX instalment"
+    },
+    "failure": {
+      "amount_mismatch": "The amount confirmed by the provider did not match. Our finance team has been alerted and will contact you.",
+      "provider_error": "The payment provider could not start the payment.",
+      "provider_declined": "The payment was declined by the provider.",
+      "cancelled": "The payment was cancelled.",
+      "expired": "The payment session expired before it was completed.",
+      "generic": "The payment was not completed. Nothing was credited."
+    },
+    "actions": {
+      "wallet": "Go to my wallet",
+      "order": "View order {number}",
+      "flex": "View my FLEX plan",
+      "retryTopUp": "Start a new top-up",
+      "receipt": "View receipt"
+    }
   }
 }

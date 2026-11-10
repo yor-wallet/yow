@@ -91,7 +91,21 @@
     "order_already_paid": "Cette commande est déjà payée.",
     "provider_unavailable": "Le prestataire de paiement n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
     "provider_error": "Le prestataire de paiement a signalé un problème. Veuillez réessayer.",
-    "generic": "Le paiement n'a pas pu être démarré. Veuillez réessayer."
+    "generic": "Le paiement n'a pas pu être démarré. Veuillez réessayer.",
+    "balance_limit_exceeded": "Cette recharge dépasserait le solde maximal de votre portefeuille.",
+    "payment_not_pending": "Ce paiement n'est plus en attente.",
+    "duplicate_code": "Ce code de carte cadeau a déjà été envoyé.",
+    "invalid_image": "Utilisez une photo PNG, JPEG ou WebP de 8 Mo maximum.",
+    "already_decided": "Une décision a déjà été enregistrée.",
+    "kyc_required": "Vérifiez votre identité pour utiliser DOOM FLEX.",
+    "flex_not_eligible": "Ce plan DOOM FLEX ne peut pas être confirmé pour le moment.",
+    "flex_invalid_state": "Cette demande DOOM FLEX ne peut pas être modifiée à ce stade.",
+    "flex_active_limit": "Vous avez déjà le nombre maximal de plans DOOM FLEX en cours.",
+    "terms_required": "Acceptez les conditions pour continuer.",
+    "installment_not_payable": "Cette échéance ne peut pas être payée (elle l'est peut-être déjà).",
+    "too_many_open": "Plusieurs de vos cartes cadeaux attendent déjà une vérification. Merci de patienter.",
+    "rate_limited": "Trop de tentatives. Patientez un instant puis réessayez.",
+    "unauthenticated": "Votre session a expiré. Reconnectez-vous."
   },
   "pay": {
     "title": "Payer cette commande",
@@ -104,5 +118,46 @@
     "succeeded": "Paiement confirmé. Merci !",
     "retry": "Réessayer",
     "minimum": "Minimum {amount}"
+  },
+  "status": {
+    "metaTitle": "Statut du paiement",
+    "title": "Statut du paiement",
+    "eyebrow": "Paiement sécurisé",
+    "pending": "En attente de confirmation",
+    "pendingText": "Nous attendons la confirmation de votre paiement par {provider}. Cette page se met à jour toute seule — vous pouvez la quitter sans risque.",
+    "checking": "Vérification auprès du prestataire…",
+    "continue": "Continuer vers la page de paiement",
+    "instructions": "Instructions du prestataire",
+    "succeeded": "Paiement confirmé",
+    "succeededText": "{provider} a confirmé le paiement. Il figure dans votre historique.",
+    "failed": "Paiement non abouti",
+    "cancelledNote": "Vous avez quitté la page de paiement. Si vous n'avez pas payé, rien n'a été prélevé.",
+    "creditedToWallet": "Cette commande ne pouvait plus être payée : le montant a été crédité sur votre portefeuille DOOM.",
+    "amount": "Montant",
+    "method": "Moyen",
+    "purposeLabel": "Objet",
+    "reference": "Identifiant du paiement",
+    "createdAt": "Initié le",
+    "confirmedAt": "Confirmé le",
+    "purpose": {
+      "TOPUP": "Rechargement du portefeuille",
+      "ORDER": "Paiement de commande",
+      "INSTALLMENT": "Échéance DOOM FLEX"
+    },
+    "failure": {
+      "amount_mismatch": "Le montant confirmé par le prestataire ne correspond pas. Notre équipe finance a été alertée et vous contactera.",
+      "provider_error": "Le prestataire n'a pas pu initier le paiement.",
+      "provider_declined": "Le paiement a été refusé par le prestataire.",
+      "cancelled": "Le paiement a été annulé.",
+      "expired": "La session de paiement a expiré avant d'être finalisée.",
+      "generic": "Le paiement n'a pas abouti. Rien n'a été crédité."
+    },
+    "actions": {
+      "wallet": "Aller à mon portefeuille",
+      "order": "Voir la commande {number}",
+      "flex": "Voir mon plan FLEX",
+      "retryTopUp": "Nouvelle recharge",
+      "receipt": "Voir le reçu"
+    }
   }
 }

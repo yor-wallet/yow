@@ -1,1 +1,172 @@
-{}
+{
+  "metaTitle": "DOOM FLEX — pay in instalments",
+  "title": "DOOM FLEX",
+  "eyebrow": "Pay over time",
+  "heroTitle": "Pay in 3, 6 or 12 months. 0% interest. No fees.",
+  "heroText": "Split the cash price into equal monthly instalments, paid from your DOOM Wallet. You never pay more than the price.",
+  "browse": "Browse products",
+  "example": {
+    "title": "Example",
+    "text": "For a cash price of {amount}:",
+    "months": "{months} months",
+    "perMonth": "{amount} / month",
+    "note": "Illustration only. Your schedule is computed from the product's live price."
+  },
+  "facts": {
+    "interest": "0% interest",
+    "fees": "No fees",
+    "total": "Total = cash price",
+    "rounding": "The last instalment absorbs baisa rounding"
+  },
+  "how": {
+    "title": "How it works",
+    "s1": "Choose a product and a duration on its page.",
+    "s2": "Verify your identity once (ID card and selfie).",
+    "s3": "Submit your application — nothing is charged.",
+    "s4": "After approval, review the schedule and accept the terms: your order is confirmed.",
+    "s5": "Pay each instalment from your DOOM Wallet."
+  },
+  "financing": {
+    "self": "DOOM finances your plan itself, after approval by our finance team.",
+    "partner": "Plans are financed with our partner {name}, after approval."
+  },
+  "eligibility": {
+    "title": "Your eligibility",
+    "signIn": "Sign in to check your eligibility.",
+    "signInCta": "Sign in",
+    "kycVerified": "Identity verified",
+    "kycRequired": "Identity verification required",
+    "kycCta": "Verify my identity",
+    "eligible": "You can apply from any product page.",
+    "openCount": "{count, plural, =0 {No open plan} one {# open plan or application} other {# open plans or applications}}",
+    "reasons": {
+      "login_required": "Sign in to apply.",
+      "kyc_required": "Verify your identity to apply.",
+      "account_inactive": "Your account is not active.",
+      "overdue_installments": "Pay your overdue instalment first.",
+      "too_many_open": "You already have the maximum number of open plans.",
+      "product_unavailable": "This product is not available.",
+      "price_unavailable": "This product has no price yet.",
+      "out_of_stock": "This product is out of stock."
+    }
+  },
+  "mine": {
+    "title": "My FLEX plans",
+    "empty": "No application yet",
+    "emptyText": "Choose a product and select DOOM FLEX on its page.",
+    "view": "Open",
+    "progress": "{paid} of {total} paid"
+  },
+  "statuses": {
+    "SUBMITTED": "Submitted",
+    "UNDER_REVIEW": "Under review",
+    "APPROVED": "Approved — awaiting your acceptance",
+    "REJECTED": "Declined",
+    "ACCEPTED": "Accepted",
+    "ACTIVE": "Active",
+    "COMPLETED": "Completed",
+    "DEFAULTED": "In default",
+    "CANCELLED": "Cancelled"
+  },
+  "faq": {
+    "title": "Questions",
+    "q1": "Are there really no fees?",
+    "a1": "Yes. The sum of the instalments equals the cash price, to the baisa. No interest, no fees.",
+    "q2": "Why is the last instalment sometimes slightly different?",
+    "a2": "Amounts are in baisa: when the price does not divide exactly, the last instalment absorbs the remainder.",
+    "q3": "Why do I need to verify my identity?",
+    "a3": "DOOM FLEX is a credit: identity verification protects you and us. Your documents are encrypted.",
+    "q4": "How do I pay the instalments?",
+    "a4": "From your DOOM Wallet balance, from your plan page. Top up your wallet before each due date."
+  },
+  "apply": {
+    "metaTitle": "Apply for DOOM FLEX",
+    "title": "Apply for DOOM FLEX",
+    "chooseDuration": "Choose your duration",
+    "months": "{months} months",
+    "perMonth": "{amount} / month",
+    "schedule": "Your schedule",
+    "sequence": "No.",
+    "dueDate": "Due date",
+    "amount": "Amount",
+    "cashPrice": "Cash price",
+    "total": "Total to repay",
+    "interest": "Interest",
+    "fees": "Fees",
+    "submit": "Submit my application",
+    "submitting": "Submitting…",
+    "notice": "Submitting creates no order and charges nothing. Our finance team reviews your application, then you accept the terms to confirm.",
+    "deliveryNote": "If delivery has a fee, it is added to the amount financed on the confirmation step, before you accept.",
+    "productMissing": "Product not found",
+    "productMissingText": "Open DOOM FLEX from a product page to choose what you want to finance.",
+    "kycTitle": "Verify your identity first",
+    "kycText": "DOOM FLEX requires a verified identity (ID card and selfie). It takes a few minutes.",
+    "notEligible": "You cannot apply right now",
+    "backToFlex": "About DOOM FLEX"
+  },
+  "detail": {
+    "metaTitle": "My DOOM FLEX plan",
+    "title": "DOOM FLEX plan",
+    "steps": {
+      "application": "Application",
+      "decision": "Decision",
+      "terms": "Terms",
+      "instalments": "Instalments"
+    },
+    "product": "Product",
+    "duration": "Duration",
+    "monthsValue": "{months} months",
+    "financed": "Amount financed",
+    "submittedTitle": "Your application is being reviewed",
+    "submittedText": "Our finance team reviews it shortly. You will be notified of the decision — nothing has been charged.",
+    "rejectedTitle": "Application declined",
+    "rejectedText": "Your application was not approved this time. You can still buy the product with another payment method.",
+    "cancelledTitle": "Application cancelled",
+    "cancel": "Cancel my application",
+    "approvedTitle": "Approved — review and accept",
+    "approvedText": "Choose the delivery address, check the final schedule and accept the terms to confirm your order.",
+    "address": "Delivery address",
+    "noAddress": "Add a delivery address to continue.",
+    "addAddress": "Add an address",
+    "subtotal": "Product",
+    "discount": "Discount",
+    "delivery": "Standard delivery",
+    "notReady": {
+      "address_required": "Choose a delivery address.",
+      "delivery_unavailable": "Delivery is not available yet for this address.",
+      "price_changed": "The product price changed since your application. Please apply again.",
+      "out_of_stock": "This product is no longer in stock."
+    },
+    "terms": {
+      "title": "DOOM FLEX terms",
+      "t1": "0% interest and no fees: you repay exactly the amount financed.",
+      "t2": "{months} monthly instalments, paid from your DOOM Wallet; the last one absorbs baisa rounding.",
+      "t3": "A late instalment is marked overdue, and you cannot open another plan until it is paid.",
+      "t4": "Your order is confirmed and delivered once you accept. Returns and refunds follow our returns policy.",
+      "version": "Terms version {version}"
+    },
+    "acceptLabel": "I have read and accept the DOOM FLEX terms and the schedule above.",
+    "confirm": "Confirm and place my order",
+    "confirming": "Confirming…",
+    "activeTitle": "Plan active",
+    "completedTitle": "Plan completed — thank you!",
+    "instalments": "Instalments",
+    "paidTotal": "Paid",
+    "remaining": "Remaining",
+    "pay": "Pay {amount}",
+    "paying": "Paying…",
+    "walletBalance": "Wallet balance: {amount}",
+    "lowBalance": "Your balance is too low for the next instalment.",
+    "topUp": "Top up my wallet",
+    "order": "Order {number}",
+    "instStatus": {
+      "PENDING": "Upcoming",
+      "PAID": "Paid",
+      "OVERDUE": "Overdue",
+      "CANCELLED": "Cancelled"
+    },
+    "paidOn": "Paid on {date}",
+    "due": "Due {date}",
+    "paidToast": "Instalment paid"
+  }
+}

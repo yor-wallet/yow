@@ -1,1 +1,172 @@
-{}
+{
+  "metaTitle": "DOOM FLEX — payer en plusieurs fois",
+  "title": "DOOM FLEX",
+  "eyebrow": "Payer dans le temps",
+  "heroTitle": "Payez en 3, 6 ou 12 mois. 0 % d'intérêt. Aucuns frais.",
+  "heroText": "Divisez le prix comptant en mensualités égales, payées depuis votre portefeuille DOOM. Vous ne payez jamais plus que le prix.",
+  "browse": "Parcourir les produits",
+  "example": {
+    "title": "Exemple",
+    "text": "Pour un prix comptant de {amount} :",
+    "months": "{months} mois",
+    "perMonth": "{amount} / mois",
+    "note": "Illustration uniquement. Votre échéancier est calculé à partir du prix actuel du produit."
+  },
+  "facts": {
+    "interest": "0 % d'intérêt",
+    "fees": "Aucuns frais",
+    "total": "Total = prix comptant",
+    "rounding": "La dernière échéance absorbe l'arrondi en baïsas"
+  },
+  "how": {
+    "title": "Comment ça marche",
+    "s1": "Choisissez un produit et une durée sur sa fiche.",
+    "s2": "Vérifiez votre identité une seule fois (carte d'identité et selfie).",
+    "s3": "Envoyez votre demande — rien n'est prélevé.",
+    "s4": "Après accord, vérifiez l'échéancier et acceptez les conditions : votre commande est confirmée.",
+    "s5": "Payez chaque échéance depuis votre portefeuille DOOM."
+  },
+  "financing": {
+    "self": "DOOM finance lui-même votre plan, après accord de son équipe finance.",
+    "partner": "Les plans sont financés avec notre partenaire {name}, après accord."
+  },
+  "eligibility": {
+    "title": "Votre éligibilité",
+    "signIn": "Connectez-vous pour vérifier votre éligibilité.",
+    "signInCta": "Se connecter",
+    "kycVerified": "Identité vérifiée",
+    "kycRequired": "Vérification d'identité requise",
+    "kycCta": "Vérifier mon identité",
+    "eligible": "Vous pouvez faire une demande depuis n'importe quelle fiche produit.",
+    "openCount": "{count, plural, =0 {Aucun plan en cours} one {# plan ou demande en cours} other {# plans ou demandes en cours}}",
+    "reasons": {
+      "login_required": "Connectez-vous pour faire une demande.",
+      "kyc_required": "Vérifiez votre identité pour faire une demande.",
+      "account_inactive": "Votre compte n'est pas actif.",
+      "overdue_installments": "Réglez d'abord votre échéance en retard.",
+      "too_many_open": "Vous avez déjà le nombre maximal de plans en cours.",
+      "product_unavailable": "Ce produit n'est pas disponible.",
+      "price_unavailable": "Ce produit n'a pas encore de prix.",
+      "out_of_stock": "Ce produit est en rupture de stock."
+    }
+  },
+  "mine": {
+    "title": "Mes plans FLEX",
+    "empty": "Aucune demande pour l'instant",
+    "emptyText": "Choisissez un produit et sélectionnez DOOM FLEX sur sa fiche.",
+    "view": "Ouvrir",
+    "progress": "{paid} sur {total} payées"
+  },
+  "statuses": {
+    "SUBMITTED": "Envoyée",
+    "UNDER_REVIEW": "En cours d'examen",
+    "APPROVED": "Acceptée — en attente de votre accord",
+    "REJECTED": "Refusée",
+    "ACCEPTED": "Acceptée",
+    "ACTIVE": "Active",
+    "COMPLETED": "Terminée",
+    "DEFAULTED": "En défaut",
+    "CANCELLED": "Annulée"
+  },
+  "faq": {
+    "title": "Questions",
+    "q1": "N'y a-t-il vraiment aucuns frais ?",
+    "a1": "Oui. La somme des échéances est égale au prix comptant, au baïsa près. Ni intérêt, ni frais.",
+    "q2": "Pourquoi la dernière échéance est-elle parfois légèrement différente ?",
+    "a2": "Les montants sont en baïsas : quand le prix ne se divise pas exactement, la dernière échéance absorbe le reste.",
+    "q3": "Pourquoi dois-je vérifier mon identité ?",
+    "a3": "DOOM FLEX est un crédit : la vérification d'identité vous protège et nous protège. Vos documents sont chiffrés.",
+    "q4": "Comment payer les échéances ?",
+    "a4": "Depuis le solde de votre portefeuille DOOM, sur la page de votre plan. Rechargez votre portefeuille avant chaque échéance."
+  },
+  "apply": {
+    "metaTitle": "Demander DOOM FLEX",
+    "title": "Demander DOOM FLEX",
+    "chooseDuration": "Choisissez votre durée",
+    "months": "{months} mois",
+    "perMonth": "{amount} / mois",
+    "schedule": "Votre échéancier",
+    "sequence": "N°",
+    "dueDate": "Échéance",
+    "amount": "Montant",
+    "cashPrice": "Prix comptant",
+    "total": "Total à rembourser",
+    "interest": "Intérêts",
+    "fees": "Frais",
+    "submit": "Envoyer ma demande",
+    "submitting": "Envoi…",
+    "notice": "L'envoi ne crée aucune commande et ne prélève rien. Notre équipe finance examine votre demande, puis vous acceptez les conditions pour confirmer.",
+    "deliveryNote": "Si la livraison est payante, elle est ajoutée au montant financé à l'étape de confirmation, avant votre accord.",
+    "productMissing": "Produit introuvable",
+    "productMissingText": "Ouvrez DOOM FLEX depuis une fiche produit pour choisir ce que vous voulez financer.",
+    "kycTitle": "Vérifiez d'abord votre identité",
+    "kycText": "DOOM FLEX nécessite une identité vérifiée (carte d'identité et selfie). Cela prend quelques minutes.",
+    "notEligible": "Vous ne pouvez pas faire de demande pour le moment",
+    "backToFlex": "À propos de DOOM FLEX"
+  },
+  "detail": {
+    "metaTitle": "Mon plan DOOM FLEX",
+    "title": "Plan DOOM FLEX",
+    "steps": {
+      "application": "Demande",
+      "decision": "Décision",
+      "terms": "Conditions",
+      "instalments": "Échéances"
+    },
+    "product": "Produit",
+    "duration": "Durée",
+    "monthsValue": "{months} mois",
+    "financed": "Montant financé",
+    "submittedTitle": "Votre demande est en cours d'examen",
+    "submittedText": "Notre équipe finance l'examine rapidement. Vous serez informé de la décision — rien n'a été prélevé.",
+    "rejectedTitle": "Demande refusée",
+    "rejectedText": "Votre demande n'a pas été acceptée cette fois. Vous pouvez toujours acheter le produit avec un autre moyen de paiement.",
+    "cancelledTitle": "Demande annulée",
+    "cancel": "Annuler ma demande",
+    "approvedTitle": "Acceptée — vérifiez et confirmez",
+    "approvedText": "Choisissez l'adresse de livraison, vérifiez l'échéancier final et acceptez les conditions pour confirmer votre commande.",
+    "address": "Adresse de livraison",
+    "noAddress": "Ajoutez une adresse de livraison pour continuer.",
+    "addAddress": "Ajouter une adresse",
+    "subtotal": "Produit",
+    "discount": "Remise",
+    "delivery": "Livraison standard",
+    "notReady": {
+      "address_required": "Choisissez une adresse de livraison.",
+      "delivery_unavailable": "La livraison n'est pas encore disponible pour cette adresse.",
+      "price_changed": "Le prix du produit a changé depuis votre demande. Merci d'en faire une nouvelle.",
+      "out_of_stock": "Ce produit n'est plus en stock."
+    },
+    "terms": {
+      "title": "Conditions DOOM FLEX",
+      "t1": "0 % d'intérêt et aucuns frais : vous remboursez exactement le montant financé.",
+      "t2": "{months} mensualités, payées depuis votre portefeuille DOOM ; la dernière absorbe l'arrondi en baïsas.",
+      "t3": "Une échéance en retard est signalée comme telle, et vous ne pouvez pas ouvrir d'autre plan tant qu'elle n'est pas réglée.",
+      "t4": "Votre commande est confirmée et livrée dès votre accord. Retours et remboursements suivent notre politique de retour.",
+      "version": "Version des conditions {version}"
+    },
+    "acceptLabel": "J'ai lu et j'accepte les conditions DOOM FLEX et l'échéancier ci-dessus.",
+    "confirm": "Confirmer et passer ma commande",
+    "confirming": "Confirmation…",
+    "activeTitle": "Plan actif",
+    "completedTitle": "Plan terminé — merci !",
+    "instalments": "Échéances",
+    "paidTotal": "Payé",
+    "remaining": "Restant",
+    "pay": "Payer {amount}",
+    "paying": "Paiement…",
+    "walletBalance": "Solde du portefeuille : {amount}",
+    "lowBalance": "Votre solde est insuffisant pour la prochaine échéance.",
+    "topUp": "Recharger mon portefeuille",
+    "order": "Commande {number}",
+    "instStatus": {
+      "PENDING": "À venir",
+      "PAID": "Payée",
+      "OVERDUE": "En retard",
+      "CANCELLED": "Annulée"
+    },
+    "paidOn": "Payée le {date}",
+    "due": "Échéance le {date}",
+    "paidToast": "Échéance payée"
+  }
+}
