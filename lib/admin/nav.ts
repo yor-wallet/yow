@@ -23,6 +23,7 @@ export const ADMIN_NAV: readonly AdminNavGroup[] = [
       { key: 'promotions', href: '/admin/promotions', icon: 'percent', permission: 'promotions:write' },
       { key: 'campaigns', href: '/admin/campaigns', icon: 'megaphone', permission: 'campaigns:write' },
       { key: 'orders', href: '/admin/orders', icon: 'receipt', permission: 'orders:read' },
+      { key: 'reviews', href: '/admin/reviews', icon: 'star', permission: 'reviews:moderate' },
     ],
   },
   {
@@ -99,7 +100,7 @@ export function activeNavItem(pathname: string): AdminNavItem | null {
  * Sections that already have pages. The rest of `ADMIN_NAV` is declared (the plan is visible in one place) but
  * stays hidden from the menu until its screens exist, so nobody is sent to a dead link.
  */
-export const BUILT_NAV_KEYS: ReadonlySet<string> = new Set(['overview', 'products', 'orders', 'agents', 'proposals', 'campaigns']);
+export const BUILT_NAV_KEYS: ReadonlySet<string> = new Set(['overview', 'products', 'orders', 'reviews', 'agents', 'proposals', 'campaigns']);
 
 /** `navForRole` limited to the sections that are built. */
 export function builtNavForRole(role: Role | null | undefined): AdminNavGroup[] {

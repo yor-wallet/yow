@@ -32,8 +32,7 @@ import {
   Undo2,
   Users,
   Wallet,
-  type LucideIcon,
-} from 'lucide-react';
+  type LucideIcon, Star } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { MouseEvent } from 'react';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
@@ -50,6 +49,7 @@ const ICONS: Record<string, LucideIcon> = {
   percent: Percent,
   megaphone: Megaphone,
   receipt: Receipt,
+  star: Star,
   wallet: Wallet,
   book: BookOpen,
   card: CreditCard,

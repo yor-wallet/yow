@@ -56,7 +56,8 @@
     "brand": "Brand",
     "agents": "AI agents",
     "proposals": "Proposals",
-    "audit": "Audit log"
+    "audit": "Audit log",
+    "reviews": "Reviews"
   },
   "overview": {
     "title": "Overview",
@@ -439,5 +440,30 @@
       "category_top": "Category — top",
       "product_side": "Product — side"
     }
+  },
+  "reviews": {
+    "title": "Customer reviews",
+    "subtitle": "Reviews come from verified purchases and are shown only after you publish them.",
+    "search": "Text, product SKU or customer email",
+    "filterStatus": "Status",
+    "all": "All statuses",
+    "status": {
+      "PENDING": "Waiting",
+      "PUBLISHED": "Published",
+      "REJECTED": "Rejected"
+    },
+    "results": "{count, plural, =0 {No review} one {# review} other {# reviews}}",
+    "pendingCount": "{count, plural, =0 {none waiting} one {# waiting} other {# waiting}}",
+    "empty": "No review matches these filters.",
+    "emptyPending": "No review is waiting for moderation.",
+    "rating": "{rating} out of 5",
+    "publish": "Publish",
+    "reject": "Reject",
+    "unpublish": "Take down",
+    "publishConfirm": "Publish this review?",
+    "publishText": "It becomes visible on the product page and counts in the product rating.",
+    "rejectConfirm": "Reject this review?",
+    "unpublishConfirm": "Take this review down?",
+    "rejectText": "It will not be shown on the site. The decision is recorded in the audit log."
   }
 }
