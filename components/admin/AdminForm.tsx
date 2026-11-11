@@ -96,7 +96,8 @@ export function FInput({ name, ...rest }: InputProps & { name: string }) {
 /** OMR amount: decimal keypad, Latin digits, currency suffix. */
 export function FMoney({ name, ...rest }: InputProps & { name: string }) {
   const { fieldError } = useFormCtx();
-  return <Input name={name} inputMode="decimal" autoComplete="off" dir="ltr" placeholder="0.000" error={fieldError(name)} endAdornment={<span className="pe-3 text-xs font-semibold text-muted">OMR</span>} {...rest} />;
+  // The amount is typed left-to-right; in RTL pages it is right-aligned so it never sits under the "OMR" label (inline end).
+  return <Input name={name} inputMode="decimal" autoComplete="off" dir="ltr" placeholder="0.000" className="rtl:text-right" error={fieldError(name)} endAdornment={<span className="pe-3 text-xs font-semibold text-muted">OMR</span>} {...rest} />;
 }
 
 export function FTextarea({ name, ...rest }: TextareaProps & { name: string }) {
