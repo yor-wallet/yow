@@ -320,12 +320,22 @@
       "media_bad_type": "Ce type de fichier n’est pas autorisé.",
       "media_bad_lottie": "Ce fichier n’est pas une animation Lottie valide (JSON).",
       "media_bad_image": "Cette image est illisible.",
-      "requested_docs_required": "Choisissez les documents à demander."
+      "requested_docs_required": "Choisissez les documents à demander.",
+      "account_not_found": "Aucun compte n'utilise cet e-mail.",
+      "account_already_courier": "Ce compte est déjà relié à un livreur."
     },
     "proposal_not_open": "Cette proposition a déjà été traitée.",
     "proposal_no_action": "Cette proposition ne comporte aucune action à appliquer.",
     "action_invalid": "L’action proposée n’est plus valable.",
-    "action_unavailable": "Cette action n’est pas encore disponible."
+    "action_unavailable": "Cette action n’est pas encore disponible.",
+    "ext": {
+      "invalid_transition": "Cette étape est impossible dans l'état actuel de la livraison.",
+      "courier_required": "Choisissez d'abord un livreur.",
+      "courier_inactive": "Ce livreur n'est pas actif.",
+      "order_not_active": "Cette commande n'est pas dans un état livrable.",
+      "forbidden": "Vous n'avez pas la permission de faire cela.",
+      "not_found": "Cette livraison n'existe plus."
+    }
   },
   "filters": {
     "all": "Tous",
@@ -501,5 +511,58 @@
     "summaryExpress": "Express : +{fee} · {hours} h",
     "summaryNoExpress": "Pas d'express",
     "empty": "Aucune zone de livraison n'existe encore."
+  },
+  "fulfilment": {
+    "title": "Préparation et livraison",
+    "none": "Pas encore de livraison : elle est créée à la confirmation du paiement.",
+    "tracking": "Code de suivi",
+    "promisedBy": "Promise pour le",
+    "courier": "Livreur",
+    "noCourier": "Non attribué",
+    "failedReason": "Motif de l'échec de livraison",
+    "readOnly": "Vous pouvez suivre la livraison mais pas la modifier.",
+    "startPreparing": "Commencer la préparation",
+    "startPreparingConfirm": "Commencer la préparation de cette commande ?",
+    "markPacked": "Marquer comme emballée",
+    "markPackedConfirm": "Le colis est-il emballé et prêt pour un livreur ?",
+    "redispatch": "Relancer la livraison",
+    "redispatchConfirm": "Remettre ce colis en attente d'un livreur ?",
+    "unassign": "Retirer le livreur",
+    "unassignConfirm": "Reprendre cette livraison au livreur ?",
+    "noCouriers": "Aucun livreur actif pour le moment.",
+    "addCourier": "Ajouter un livreur",
+    "assign": "Attribuer le livreur",
+    "changeCourier": "Changer de livreur",
+    "chooseCourier": "Livreur",
+    "assignHintPacked": "Le client est informé que sa commande est en route.",
+    "assignHintEarly": "Le livreur est réservé dès maintenant ; la livraison démarre une fois le colis emballé.",
+    "withCourier": "Le colis est chez le livreur. La remise est confirmée dans l'espace livreur avec le code du client.",
+    "delivered": "Remis au client.",
+    "markFailed": "Signaler un échec de livraison",
+    "failReason": "Que s'est-il passé ?",
+    "failHint": "Le client est prévenu. Le colis pourra ensuite être relancé."
+  },
+  "couriers": {
+    "title": "Livreurs",
+    "subtitle": "Les personnes qui livrent les commandes. Un livreur relié à un compte voit ses livraisons dans l'espace livreur.",
+    "empty": "Aucun livreur pour le moment",
+    "emptyText": "Ajoutez un livreur pour pouvoir expédier des commandes.",
+    "noAccount": "Aucun compte relié",
+    "open": "{count, plural, =0 {aucune livraison en cours} one {# livraison en cours} other {# livraisons en cours}}",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "activateConfirm": "Activer {name} ?",
+    "deactivateConfirm": "Désactiver {name} ?",
+    "deactivateText": "Il ne pourra plus recevoir de nouvelles livraisons.",
+    "add": "Ajouter un livreur",
+    "addText": "Le nom et le mobile sont affichés à l'équipe lors de l'attribution d'une livraison.",
+    "name": "Nom complet",
+    "phone": "Numéro de mobile",
+    "phoneHint": "Numéro omanais, 8 chiffres.",
+    "vehicle": "Véhicule (facultatif)",
+    "account": "E-mail du compte (facultatif)",
+    "accountHint": "L'e-mail avec lequel le livreur se connecte, pour utiliser l'espace livreur."
   }
 }

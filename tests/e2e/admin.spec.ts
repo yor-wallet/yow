@@ -213,6 +213,7 @@ test.describe('orders', () => {
     await expect(page.getByTestId('admin-order-total')).toContainText('201.500'); // 2 × 100.000 + 1.500 standard delivery
     await expect(page.getByTestId('order-history')).toContainText('Awaiting payment');
     await expect(page.getByTestId('order-payments')).toHaveCount(0); // nothing was paid
+    await expect(page.getByTestId('fulfilment-none')).toBeVisible(); // no delivery before the payment is confirmed
     await expectNoHorizontalOverflow(page);
 
     await expect(backButton(page)).toBeVisible();

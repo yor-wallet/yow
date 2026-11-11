@@ -4,6 +4,8 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 import { asLocale } from '@/i18n/routing';
 import { requireAdmin } from '@/lib/admin/guard';
 import { getAdminOrder } from '@/lib/admin/orders';
+import { listActiveCouriers } from '@/lib/admin/couriers';
+import { FulfilmentPanel } from '@/components/admin/FulfilmentPanel';
 import { parseAddressSnapshot } from '@/lib/delivery/addresses';
 import { formatBaisa } from '@/lib/money';
 import { localize } from '@/lib/localized';
@@ -23,7 +25,7 @@ export default async function AdminOrderPage({ params }: Props) {
   const locale = asLocale(rawLocale);
   setRequestLocale(locale);
   const number = decodeURIComponent(rawNumber);
-  await requireAdmin('orders:read', `/admin/orders/${number}`);
+  const ctx = await requireAdmin('orders:read', `/admin/orders/${number}`);
   const [t, tOrder, tDelivery, format, order] = await Promise.all([
     getTranslations('admin'),
     getTranslations('orders.detail'),
@@ -32,6 +34,8 @@ export default async function AdminOrderPage({ params }: Props) {
     getAdminOrder(number),
   ]);
   if (!order) notFound();
+  const canDeliver = ctx.can('delivery:write');
+  const couriers = canDeliver ? await listActiveCouriers() : [];
 
   const money = (b: number) => formatBaisa(b, locale);
   const when = (d: Date) => format.dateTime(d, { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Muscat' });
@@ -101,6 +105,7 @@ export default async function AdminOrderPage({ params }: Props) {
         </div>
 
         <div className="flex min-w-0 flex-col gap-6">
+          <FulfilmentPanel shipment={order.shipment} couriers={couriers} canWrite={canDeliver} />
           <Section id="summary" title={tOrder('summary')}>
             <dl className="flex flex-col gap-2 text-sm">
               <Row label={tOrder('subtotal')} value={money(order.subtotalBaisa)} />

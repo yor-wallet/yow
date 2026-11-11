@@ -78,6 +78,7 @@ export async function getAdminOrder(number: string) {
       events: { orderBy: { createdAt: 'asc' } },
       paymentIntents: { orderBy: { createdAt: 'desc' } },
       refunds: { orderBy: { createdAt: 'desc' } },
+      shipment: { select: { id: true, status: true, trackingCode: true, promisedBy: true, failedReason: true, courier: { select: { id: true, name: true, phone: true } } } },
     },
   });
 }

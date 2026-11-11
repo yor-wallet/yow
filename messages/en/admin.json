@@ -320,12 +320,22 @@
       "media_bad_type": "This file type is not allowed.",
       "media_bad_lottie": "This file is not a valid Lottie animation (JSON).",
       "media_bad_image": "This image could not be read.",
-      "requested_docs_required": "Choose the documents to request."
+      "requested_docs_required": "Choose the documents to request.",
+      "account_not_found": "No account uses this e-mail.",
+      "account_already_courier": "This account is already linked to a courier."
     },
     "proposal_not_open": "This proposal was already decided.",
     "proposal_no_action": "This proposal has no action to apply.",
     "action_invalid": "The proposed action is no longer valid.",
-    "action_unavailable": "This action is not available yet."
+    "action_unavailable": "This action is not available yet.",
+    "ext": {
+      "invalid_transition": "This step is not possible in the current delivery state.",
+      "courier_required": "Choose a courier first.",
+      "courier_inactive": "This courier is not active.",
+      "order_not_active": "This order is not in a deliverable state.",
+      "forbidden": "You do not have permission to do this.",
+      "not_found": "This delivery no longer exists."
+    }
   },
   "filters": {
     "all": "All",
@@ -501,5 +511,58 @@
     "summaryExpress": "Express: +{fee} · {hours} h",
     "summaryNoExpress": "No express",
     "empty": "No delivery zone exists yet."
+  },
+  "fulfilment": {
+    "title": "Preparation & delivery",
+    "none": "No delivery yet: it is created when the payment is confirmed.",
+    "tracking": "Tracking code",
+    "promisedBy": "Promised by",
+    "courier": "Courier",
+    "noCourier": "Not assigned",
+    "failedReason": "Reason for the failed delivery",
+    "readOnly": "You can follow the delivery but not change it.",
+    "startPreparing": "Start preparing",
+    "startPreparingConfirm": "Start preparing this order?",
+    "markPacked": "Mark as packed",
+    "markPackedConfirm": "Is the parcel packed and ready for a courier?",
+    "redispatch": "Send out again",
+    "redispatchConfirm": "Put this parcel back in the queue for a courier?",
+    "unassign": "Remove the courier",
+    "unassignConfirm": "Take this delivery back from the courier?",
+    "noCouriers": "No active courier yet.",
+    "addCourier": "Add a courier",
+    "assign": "Assign the courier",
+    "changeCourier": "Change the courier",
+    "chooseCourier": "Courier",
+    "assignHintPacked": "The customer is told that the order is on its way.",
+    "assignHintEarly": "The courier is reserved now; the delivery starts once the parcel is packed.",
+    "withCourier": "The parcel is with the courier. Hand-over is confirmed in the courier workspace with the customer's code.",
+    "delivered": "Delivered to the customer.",
+    "markFailed": "Report a failed delivery",
+    "failReason": "What happened?",
+    "failHint": "The customer is notified. The parcel can be sent out again afterwards."
+  },
+  "couriers": {
+    "title": "Couriers",
+    "subtitle": "People who deliver orders. A courier linked to an account sees their deliveries in the courier workspace.",
+    "empty": "No courier yet",
+    "emptyText": "Add a courier to be able to send orders out.",
+    "noAccount": "No linked account",
+    "open": "{count, plural, =0 {no delivery in progress} one {# delivery in progress} other {# deliveries in progress}}",
+    "active": "Active",
+    "inactive": "Inactive",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "activateConfirm": "Activate {name}?",
+    "deactivateConfirm": "Deactivate {name}?",
+    "deactivateText": "They can no longer be assigned new deliveries.",
+    "add": "Add a courier",
+    "addText": "Name and mobile are shown to the team when assigning a delivery.",
+    "name": "Full name",
+    "phone": "Mobile number",
+    "phoneHint": "Omani number, 8 digits.",
+    "vehicle": "Vehicle (optional)",
+    "account": "Account e-mail (optional)",
+    "accountHint": "The e-mail the courier signs in with, to use the courier workspace."
   }
 }

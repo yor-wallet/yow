@@ -8,7 +8,7 @@
 | Contrôle | Résultat |
 |---|---|
 | `npm run typecheck` | propre |
-| `npm test` (Vitest, base PostgreSQL de test) | 192 tests verts, dont : 5 tests du dépôt d'avis, 5 tests du comparateur, 5 tests des zones de livraison (rien n'est promis sans configuration), parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
+| `npm test` (Vitest, base PostgreSQL de test) | 211 tests verts, dont : 5 tests de modération des avis, 5 tests des zones et tarifs, 6 tests des livreurs et de la préparation des commandes, 5 tests du dépôt d'avis, 5 tests du comparateur, 5 tests des zones de livraison (rien n'est promis sans configuration), parité i18n ar/en/fr (40), 22 tests purs du catalogue, 17 tests d'intégration vitrine (listes, filtres, tri numérique, pagination par curseur, recherche arabe, favoris, panier, fusion de panier), 15 tests du socle (contraintes SQL, auth, idempotence…), 15 tests des mutations du catalogue admin, 4 tests de lecture des formulaires admin, 4 tests du tableau de bord et des commandes admin, 8 tests « chaque page admin se protège elle-même » |
 | `npm run build` | réussi |
 | `npm run test:e2e` | vitrine, panier, commande, commandes **et administration** (création d'un produit → variante avec prix/stock → image → publication → visible en boutique ; erreurs de formulaire ; commandes ; contrôle d'accès ; arabe RTL) : 151 tests verts (2 ignorés par conception) sur iPhone SE, iPad mini et bureau (voir la CI pour les 10 formats) |
 
@@ -31,7 +31,7 @@ Design system (jetons, thèmes sombre/clair), i18n ar (RTL) / en / fr avec test 
 - `/promotions`, `/favorites`, `/delivery` (chiffres lus dans la configuration des zones).
 - Comparateur `/compare` (jusqu'à 4 produits, bouton sur la fiche produit, valeurs absentes signalées et jamais inventées), **dépôt d'avis** réservé aux acheteurs livrés (un avis par article, enregistré « en attente » : rien n'est publié automatiquement), **produits associés** (même catégorie, puis catégorie parente).
 - Retour de navigation : barre de progression en haut de page, squelette du panier, apparition échelonnée des grilles. Les fiches produit et catégories n'ont volontairement pas de fichier `loading` (le flux transformerait leur 404 en 200).
-- ⛔ À faire : écran d'administration pour **modérer les avis** (sans lui, les avis déposés restent en attente).
+- Les avis déposés sont publiés ou refusés depuis l'administration (`/admin/reviews`).
 
 ### Paiements — 🟡
 - ✅ Bibliothèques : registre des moyens, adaptateurs (carte, Ooredoo, Omantel, crypto : « indisponible » tant que non configurés), cartes cadeaux, webhooks, notifications.
@@ -49,7 +49,8 @@ Modèles de données et prévisions de paiement (3/6/12 mois, dernière échéan
 ### Administration et agents — 🟡
 - ✅ Cadre de mutations (RBAC + validation + transaction + audit), paramètres, moteur de prix, médias, 15 agents à périmètre limité, exécution par cron.
 - ✅ Centre d'administration `/admin` (accès réservé au personnel : visiteur → connexion, client → 404, chaque page se protège elle-même avec `requireAdmin`) : coque (barre latérale / feuille mobile, arabe RTL), **vue d'ensemble** (chiffres réels : chiffre d'affaires encaissé 30 jours net des remboursements partiels, commandes, impayés, produits, stock faible / rupture), **produits** (liste filtrable dans l'URL, création, édition, caractéristiques, variantes avec prix et stock réels, images optimisées, publication / brouillon / archivage — un produit ne se publie qu'avec au moins une variante active), **commandes** (liste, recherche, détail en lecture : client, articles, totaux, paiements, remboursements, historique).
-- ⛔ Pas encore d'écrans pour : catégories, marques, promotions, campagnes, actions sur les commandes (préparation, expédition, remboursement), finance, clients, KYC, support, logistique, réglages du site, agents IA et propositions, journal d'audit. Ces entrées restent masquées du menu tant qu'elles n'existent pas.
+- ✅ **Avis** (`/admin/reviews` : file d'attente, publier / refuser / retirer, audit), **zones et tarifs** (`/admin/logistics/zones` : frais, délais, capacités ; l'express exige frais standard, supplément et capacité), **livreurs** (`/admin/logistics/couriers` : création, compte relié, activation), **préparation et livraison** sur la fiche commande (préparer → emballer → attribuer un livreur, échec et relance ; la remise au client reste faite par le livreur avec le code du client).
+- ⛔ Pas encore d'écrans pour : catégories, marques, promotions, remboursements, finance (portefeuilles, grand livre, paiements, cartes cadeaux, FLEX), clients, KYC, support, incidents de livraison, réglages du site, journal d'audit. Ces entrées restent masquées du menu tant qu'elles n'existent pas. (Campagnes, agents IA et propositions : livrés.)
 
 ## Points d'attention connus
 - Dépendances : `npm audit` signale 6 avis (zod < 4.6.6, postcss via Next, `@prisma/config`). Les corrections demandent des montées de version majeures (zod 4, Prisma 7, Next 16) : à planifier et à tester, pas à forcer.
