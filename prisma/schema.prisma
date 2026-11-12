@@ -545,6 +545,14 @@ model Product {
   publishedAt      DateTime?
   /// Admin-only notes of a catalogue import (candidate colours/capacities to verify, source URL). Never shown to shoppers.
   importMeta       Json?
+  /// Product family ("iPhone 17", "Galaxy S25", "Magic") and release year: catalogue filters.
+  series           String?
+  modelYear        Int?
+  /// Official pages the facts come from: [{ label, url }], and when they were checked.
+  sourceLinks      Json?
+  sourceCheckedAt  DateTime?
+  /// True when `specs` come from an official page (never set for hand-typed content).
+  specsVerified    Boolean           @default(false)
   createdById      String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -561,6 +569,7 @@ model Product {
   @@index([categoryId, status])
   @@index([brandId, status])
   @@index([status, isFeatured])
+  @@index([brandId, series, modelYear])
 }
 
 model ProductVariant {
@@ -578,6 +587,11 @@ model ProductVariant {
   stock             Int                      @default(0)
   reserved          Int                      @default(0)
   lowStockThreshold Int                      @default(2)
+  /// Numeric facts for filters/sorting (capacity text stays the display value).
+  storageGb         Int?
+  ramGb             Int?
+  /// Manufacturer part number / model code when the source gives one (e.g. Samsung SM-S931BLBOMEA).
+  mpn               String?
   isActive          Boolean                  @default(true)
   isDefault         Boolean                  @default(false)
   sort              Int                      @default(0)

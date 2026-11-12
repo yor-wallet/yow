@@ -2,7 +2,7 @@
   "name": "doom-platform",
   "version": "0.1.0",
   "private": true,
-  "description": "DOOM | دوم — premium electronics marketplace for the Sultanate of Oman",
+  "description": "DOOM | \u062f\u0648\u0645 \u2014 premium electronics marketplace for the Sultanate of Oman",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "prisma generate && next build",
@@ -15,7 +15,8 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "brand:icons": "node scripts/generate-icons.mjs",
-    "agents:run": "tsx scripts/run-agents.ts"
+    "agents:run": "tsx scripts/run-agents.ts",
+    "catalogue:import": "tsx scripts/import-verified-catalogue.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
