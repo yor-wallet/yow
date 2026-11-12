@@ -28,6 +28,7 @@ npm run dev                     # http://localhost:3000/ar
 | `npm test` | Tests unitaires (Vitest) |
 | `npm run test:e2e` | Tests de bout en bout sur 10 formats d'écran (Playwright) |
 | `npm run brand:icons` | Régénère toutes les déclinaisons du logo officiel |
+| `npm run catalogue:import` | Applique le catalogue vérifié 2026 (brouillons ; `-- --publish` pour publier les modèles vérifiés) |
 | `npm run agents:run` | Exécute les 15 agents IA (propositions à valider dans l'admin) |
 
 ## Règles du projet
@@ -44,6 +45,7 @@ npm run dev                     # http://localhost:3000/ar
 - [docs/SPEC.md](docs/SPEC.md) — cahier des charges condensé
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — architecture, conventions, modules
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — déploiement Vercel + Supabase, checklist de mise en production
+- [docs/CATALOGUE_2026.md](docs/CATALOGUE_2026.md) — catalogue vérifié 2026 (sources, variantes, ce qui reste à saisir)
 - [docs/ANDROID.md](docs/ANDROID.md) — application Android/iOS (Capacitor) et PWA
 - `docs/PAYMENTS.md`, `docs/DELIVERY.md`, `docs/KYC_PRIVACY.md`, `docs/ADMIN.md`, `docs/AGENTS.md` —
   livrés avec leurs modules

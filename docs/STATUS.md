@@ -53,6 +53,13 @@ Modèles de données et prévisions de paiement (3/6/12 mois, dernière échéan
 - ✅ **Import de catalogue** (`/admin/products/import`) : charge un fichier JSON de modèles **en brouillon uniquement**. Aucune variante, aucun prix, aucun stock, aucune photo n'est créé ; les couleurs et capacités du fichier sont gardées comme « candidats à vérifier » (notes réservées à l'administration, colonne `Product.importMeta`, migration `20261112090000_product_import_meta` réversible). Réimporter ne crée pas de doublon et n'écrase pas les modifications. Le pack 2026 (48 modèles candidats, non vérifiés) est dans `data/catalogue/doom-pack-catalogue-2026.json` ; il n'est importé dans aucune base par le code.
 - ⛔ Pas encore d'écrans pour : catégories, marques, promotions, remboursements, finance (portefeuilles, grand livre, paiements, cartes cadeaux, FLEX), clients, KYC, support, incidents de livraison, réglages du site, journal d'audit. Ces entrées restent masquées du menu tant qu'elles n'existent pas. (Campagnes, agents IA et propositions : livrés.)
 
+### Catalogue 2026 — ✅ (faits vérifiés) · ⛔ (prix, stocks, photos)
+Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
+- 46 modèles sur 48 vérifiés sur les pages officielles Apple / Samsung / HONOR / OPPO ; 420 variantes réelles (Apple, Samsung) créées **sans prix ni stock** ; HONOR et OPPO en brouillon (combinaisons à confirmer) ; 2 modèles OPPO à vérifier.
+- Boutique : filtres série et année, catégorie OPPO, caractéristiques officielles en 3 langues, illustrations vectorielles légendées tant qu'aucune photo n'existe, « prix bientôt disponible ».
+- Administration : grille prix/coût/stock par produit, export/import CSV avec simulation, compteurs « sans prix / sans photo », bouton « Appliquer le catalogue vérifié ».
+- ⛔ À saisir par l'équipe : prix, stocks, photos officielles, garanties, disponibilité locale.
+
 ## Points d'attention connus
 - Dépendances : `npm audit` signale 6 avis (zod < 4.6.6, postcss via Next, `@prisma/config`). Les corrections demandent des montées de version majeures (zod 4, Prisma 7, Next 16) : à planifier et à tester, pas à forcer.
 - Le composant `Logo` demande `quality=90` à `next/image` : à déclarer dans `images.qualities` avant Next 16.

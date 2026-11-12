@@ -129,7 +129,7 @@ test.describe('catalogue', () => {
     await expect(card('E2E Alpha Phone')).toContainText('From'); // two variants with different prices
     await expect(card('E2E Soldout Phone')).toContainText('Out of stock');
     await expect(card('E2E Soldout Phone').getByTestId('quick-add')).toHaveCount(0);
-    await expect(card('E2E Unpriced Phone')).toContainText('Price unavailable');
+    await expect(card('E2E Unpriced Phone')).toContainText('Price coming soon');
     await expect(card('E2E Unpriced Phone').getByTestId('quick-add')).toHaveCount(0);
   });
 
