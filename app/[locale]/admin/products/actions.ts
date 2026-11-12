@@ -6,6 +6,7 @@ import { ValidationError } from '@/lib/admin/actor';
 import { fileToBuffer } from '@/lib/admin/media';
 import { localizedText, productFormToRaw, text, textOrNull, variantFormToRaw } from '@/lib/admin/form';
 import { addProductImage, createProduct, deleteProductImage, deleteVariant, saveVariant, setProductStatus, updateProduct } from '@/lib/admin/products';
+import { parseGridForm, saveVariantGrid } from '@/lib/admin/variant-pricing';
 
 /**
  * Server actions of the catalogue screens. Each one only translates the form into the raw input of a
@@ -53,4 +54,11 @@ export async function addProductImageAction(_prev: ActionState, fd: FormData): P
 
 export async function deleteProductImageAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
   return runAdminAction(deleteProductImage, { id: text(fd, 'id') }, { successCode: 'deleted' });
+}
+
+/** Quick-edit grid: prices / previous prices / costs / stock of every variant of one product (all-or-nothing). */
+export async function saveVariantGridAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  const { input, fieldErrors } = parseGridForm(fd);
+  if (Object.keys(fieldErrors).length) return { status: 'error', code: 'validation', fieldErrors, at: Date.now() };
+  return runAdminAction(saveVariantGrid, input, { successCode: 'pricesSaved' });
 }

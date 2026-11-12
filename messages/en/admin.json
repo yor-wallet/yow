@@ -114,7 +114,17 @@
     "emptyFiltered": "No product matches this search.",
     "results": "{count, plural, =0 {No product} one {# product} other {# products}}",
     "viewOnSite": "View on the store",
-    "edit": "Edit"
+    "edit": "Edit",
+    "gaps": {
+      "needsPrice": "products need a price",
+      "noPhoto": "products have no photo"
+    },
+    "badges": {
+      "needsPrice": "Needs a price",
+      "noPhoto": "No photo"
+    },
+    "filterPrice": "Price",
+    "filterPhoto": "Photo"
   },
   "pagination": {
     "label": "Pagination",
@@ -265,7 +275,11 @@
     "approved": "Proposal approved",
     "rejected": "Proposal rejected",
     "applied": "Action applied",
-    "imported": "Catalogue imported"
+    "imported": "Catalogue imported",
+    "pricesSaved": "Prices and stock saved",
+    "importChecked": "File checked — nothing saved yet",
+    "importApplied": "Prices and stock updated",
+    "verifiedApplied": "Verified catalogue applied"
   },
   "errors": {
     "forbidden": "You do not have permission to do this.",
@@ -601,5 +615,91 @@
     "colors": "Candidate colours",
     "source": "Official source to check",
     "unknown": "To confirm"
+  },
+  "pricing": {
+    "gridTitle": "Prices and stock",
+    "gridText": "Enter the real price, previous price, cost and stock of each variant. Nothing is saved until you press Save; a variant without a price cannot be bought.",
+    "noVariants": "This product has no variant yet.",
+    "save": "Save changes",
+    "saveCount": "Save {count, plural, one {# change} other {# changes}}",
+    "columns": {
+      "variant": "Variant",
+      "price": "Price (OMR)",
+      "compareAt": "Previous price",
+      "cost": "Cost",
+      "stock": "Stock",
+      "bulk": "Fill",
+      "line": "Line",
+      "result": "Result"
+    },
+    "inactive": "Inactive",
+    "noPrice": "No price",
+    "reserved": "{count} reserved",
+    "fillCapacity": "Same capacity",
+    "fillCapacityHint": "Copy price, previous price and cost to the {count} variant(s) with the same capacity ({capacity})",
+    "fillAll": "All variants",
+    "fillAllHint": "Copy price, previous price and cost to all {count} variants",
+    "reason": "Reason for the stock change",
+    "reasonHint": "Recorded in the stock movement history (optional).",
+    "pending": "{count, plural, one {# row changed — not saved yet} other {# rows changed — not saved yet}}",
+    "hint": "Leave a price empty while it is not decided: the variant stays \"price coming soon\".",
+    "importTitle": "Prices and stock import",
+    "importSubtitle": "Export the variants to complete, fill them in a spreadsheet, check the file, then apply it.",
+    "exportTitle": "1. Export",
+    "exportText": "A CSV with one line per variant. Only the SKU column is required when you import it back.",
+    "exportNeedsPrice": "Variants without a price ({count})",
+    "exportAll": "All variants",
+    "exportNote": "{products} product(s) still need at least one price.",
+    "importStep": "2. Check and apply",
+    "importText": "Load or paste the CSV. A dry run shows every change and every refused row before anything is written.",
+    "importFile": "CSV file",
+    "importPaste": "or paste the content",
+    "importRules": "Columns: sku (required), priceOmr, compareAtOmr, costOmr, stock. An empty cell leaves the value unchanged; to remove a price, edit it in the grid.",
+    "importCheck": "Check the file (nothing is saved)",
+    "importApply": "Apply {count, plural, one {# change} other {# changes}}",
+    "importApplyHint": "All or nothing: one audited transaction.",
+    "importFixErrors": "Fix the refused rows, then check again.",
+    "importNothing": "Nothing to change.",
+    "willChange": "Will change",
+    "summary": {
+      "total": "{count, plural, one {# line} other {# lines}}",
+      "changes": "{count, plural, one {# change} other {# changes}}",
+      "unchanged": "{count} unchanged",
+      "errors": "{count, plural, =0 {No error} one {# error} other {# errors}}"
+    },
+    "errors": {
+      "unknown_sku": "Unknown SKU",
+      "duplicate_sku": "SKU repeated in the file",
+      "forbidden_prices": "You may not change prices",
+      "forbidden_stock": "You may not change stock",
+      "compare_not_higher": "Previous price must be higher than the price",
+      "compare_without_price": "Previous price needs a price",
+      "below_reserved": "Stock is lower than the quantity reserved by orders",
+      "amount_invalid": "Invalid amount (use up to 3 decimals)",
+      "negative": "Negative values are not allowed",
+      "stock_invalid": "Stock must be a whole number",
+      "empty": "The file is empty",
+      "too_large": "The file is too large (2 MB maximum)",
+      "too_many_rows": "Too many lines (5000 maximum)",
+      "missing_sku_column": "The \"sku\" column is missing",
+      "no_value_column": "No priceOmr, compareAtOmr, costOmr or stock column found",
+      "malformed": "The file could not be read as CSV"
+    }
+  },
+  "verified": {
+    "title": "Verified catalogue 2026",
+    "text": "Models, colours, capacities and specifications taken from the official manufacturer pages (checked on 2026-11-12).",
+    "rules": {
+      "facts": "46 of 48 models verified on official pages; 2 stay \"to verify\" (no official page found).",
+      "variants": "Variants (colour × capacity) are created only where the source confirms them: all Apple finishes in every capacity, and each real Samsung SKU. HONOR and OPPO stay drafts until you confirm the combinations.",
+      "noPrice": "No price, stock, photo or review is ever created. Variants without a price show \"price coming soon\" and cannot be bought.",
+      "drafts": "Safe to run again: existing products, prices, stock and your edits are never overwritten."
+    },
+    "apply": "Apply the verified catalogue",
+    "publish": "Also publish the fully verified models",
+    "publishHint": "They appear in the shop with \"price coming soon\" until you enter real prices. You can archive any of them afterwards.",
+    "done": "{created} product(s) created, {updated} updated.",
+    "doneVariants": "{variants} variant(s) created, {published} model(s) published.",
+    "doneDrafts": "{awaiting} draft(s) waiting for the colour × capacity check, {unverified} model(s) without an official page."
   }
 }

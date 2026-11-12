@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { localize } from '@/lib/localized';
 import { mediaUrl } from '@/lib/storage';
+import { resolveDeviceArt } from '@/lib/devices/art';
 import { decodeCursor, encodeCursor, type CatalogFilters, type SortKey } from './filters';
 import { ARABIC_FROM, ARABIC_STRIP, ARABIC_TO, escapeLike, type ParsedQuery } from './search-query';
 import { productAvailability, variantAvailability, availableQty } from './stock';
@@ -96,6 +97,8 @@ function whereClauses(opts: ListOptions): Prisma.Sql[] {
   } else if (brands.length) {
     conds.push(Prisma.sql`b.slug IN (${Prisma.join(brands)})`);
   }
+  if (f.series?.length) conds.push(Prisma.sql`p.series IN (${Prisma.join(f.series)})`);
+  if (f.years?.length) conds.push(Prisma.sql`p."modelYear" IN (${Prisma.join(f.years)})`);
   if (opts.flags?.length) {
     const map: Record<ListFlag, Prisma.Sql> = {
       featured: Prisma.sql`p."isFeatured"`,
@@ -186,12 +189,12 @@ export const CARD_SELECT = {
   isSellable: true,
   isNewArrival: true,
   brand: { select: { name: true, nameAr: true } },
-  category: { select: { icon: true, parentId: true } },
+  category: { select: { icon: true, parentId: true, slug: true, parent: { select: { slug: true } } } },
   images: { orderBy: { sort: 'asc' }, take: 1, select: { key: true, width: true, height: true, alt: true } },
   variants: {
     where: { isActive: true },
     orderBy: [{ isDefault: 'desc' }, { sort: 'asc' }],
-    select: { id: true, priceBaisa: true, compareAtBaisa: true, stock: true, reserved: true, lowStockThreshold: true, isActive: true },
+    select: { id: true, priceBaisa: true, compareAtBaisa: true, stock: true, reserved: true, lowStockThreshold: true, isActive: true, colorHex: true },
   },
 } satisfies Prisma.ProductSelect;
 
@@ -218,6 +221,16 @@ export function toCard(p: CardRow, locale: string, promotions: readonly Promotio
     name,
     brand: brandLabel(p.brand, locale),
     categoryIcon: p.category.icon,
+    // No uploaded photo yet: smartphones get an honest generic illustration in the default colour.
+    art: img
+      ? null
+      : resolveDeviceArt({
+          brand: p.brand?.name ?? null,
+          name,
+          categorySlug: p.category.slug,
+          rootCategorySlug: p.category.parent?.slug ?? p.category.slug,
+          colorHex: p.variants[0]?.colorHex ?? null,
+        }),
     image: img
       ? { src: mediaUrl(img.key)!, width: img.width, height: img.height, alt: localize(img.alt, locale, name) }
       : null,
@@ -247,12 +260,12 @@ export async function getFacets(opts: { categoryIds: string[] | null; search?: P
   const conds = whereClauses({ locale: opts.locale, categoryIds: opts.categoryIds, search: opts.search ?? null, limit: 1 });
   const where = Prisma.join(conds, ' AND ');
   const scope = Prisma.sql`WITH ${V_CTE}, scope AS (
-      SELECT p.id, p."brandId" FROM "Product" p
+      SELECT p.id, p."brandId", p.series, p."modelYear" FROM "Product" p
       LEFT JOIN "Brand" b ON b.id = p."brandId"
       LEFT JOIN v ON v."productId" = p.id
       WHERE ${where}
     )`;
-  const [brands, caps, colors, bounds] = await Promise.all([
+  const [brands, caps, colors, bounds, series, years] = await Promise.all([
     prisma.$queryRaw<{ slug: string; name: string; nameAr: string | null; n: bigint }[]>`${scope}
       SELECT b.slug, b.name, b."nameAr", count(*)::bigint AS n FROM scope s JOIN "Brand" b ON b.id = s."brandId"
       GROUP BY b.slug, b.name, b."nameAr", b.sort ORDER BY b.sort, b.name`,
@@ -267,6 +280,14 @@ export async function getFacets(opts: { categoryIds: string[] | null; search?: P
     prisma.$queryRaw<{ lo: number | null; hi: number | null }[]>`${scope}
       SELECT min(pv."priceBaisa")::int AS lo, max(pv."priceBaisa")::int AS hi FROM scope s
       JOIN "ProductVariant" pv ON pv."productId" = s.id AND pv."isActive" AND pv."priceBaisa" IS NOT NULL`,
+    prisma.$queryRaw<{ value: string; yr: number | null; n: bigint }[]>`${scope}
+      SELECT s.series AS value, max(s."modelYear") AS yr, count(*)::bigint AS n FROM scope s
+      WHERE s.series IS NOT NULL AND s.series <> ''
+      GROUP BY s.series ORDER BY max(s."modelYear") DESC NULLS LAST, s.series`,
+    prisma.$queryRaw<{ value: number; n: bigint }[]>`${scope}
+      SELECT s."modelYear" AS value, count(*)::bigint AS n FROM scope s
+      WHERE s."modelYear" IS NOT NULL
+      GROUP BY s."modelYear" ORDER BY s."modelYear" DESC`,
   ]);
   const lo = bounds[0]?.lo ?? null;
   const hi = bounds[0]?.hi ?? null;
@@ -275,6 +296,8 @@ export async function getFacets(opts: { categoryIds: string[] | null; search?: P
     capacities: caps
       .map((c) => ({ value: c.value, count: Number(c.n) }))
       .sort((a, b) => capacityRank(a.value) - capacityRank(b.value) || a.value.localeCompare(b.value)),
+    series: series.map((x) => ({ value: x.value, count: Number(x.n) })),
+    years: years.map((y) => ({ value: Number(y.value), count: Number(y.n) })),
     colors: colors.map((c) => ({ value: c.value, hex: c.hex && /^#[0-9a-fA-F]{6}$/.test(c.hex) ? c.hex : null, count: Number(c.n) })),
     priceMinOmr: lo === null ? null : Math.floor(lo / 1000),
     priceMaxOmr: hi === null ? null : Math.ceil(hi / 1000),

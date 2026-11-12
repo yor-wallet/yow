@@ -17,6 +17,8 @@ import { addToCartAction } from '@/app/[locale]/(shop)/actions';
 import { DeliverTo, type AreaChoice } from '@/components/layout/DeliverTo';
 import { cartErrorKey, FavoriteButton, ShareButton } from './ProductCardActions';
 import { ProductGallery } from './ProductGallery';
+import { Ltr, ltr } from '@/components/ui/Ltr';
+import { resolveDeviceArt } from '@/lib/devices/art';
 
 /** "256 GB" / "1 TB" → comparable number of GB (unknown formats sort last, keeping input order). */
 function capacityRank(value: string): number {
@@ -46,6 +48,7 @@ export type HeroDelivery = {
 
 export function ProductHero({ product, favorite, delivery }: { product: ProductDetail; favorite: boolean; delivery: HeroDelivery }) {
   const t = useTranslations('product');
+  const tg = useTranslations('product.gallery');
   const tc = useTranslations('catalog');
   const locale = useLocale();
   const router = useRouter();
@@ -88,6 +91,13 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
   const flexMonthly = flexMonthlyFrom(selected?.priceBaisa ?? null);
   const schedule = selected && selected.priceBaisa !== null && selected.priceBaisa > 0 ? computeSchedule(selected.priceBaisa, months) : null;
   const activeImage = product.images.find((i) => i.variantId === selectedId)?.id ?? null;
+  const art = resolveDeviceArt({
+    brand: product.brand?.name ?? null,
+    name: product.name,
+    categorySlug: product.category.slug,
+    rootCategorySlug: product.category.parent?.slug ?? product.category.slug,
+    colorHex: selected?.colorHex ?? null,
+  });
 
   const addToCart = (then?: 'checkout') =>
     start(async () => {
@@ -109,7 +119,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10" data-testid="product-hero">
-      <ProductGallery images={product.images} activeId={activeImage} name={product.name} />
+      <ProductGallery images={product.images} activeId={activeImage} name={product.name} art={art} artLabel={`${tg('illustration')} — ${product.name}${selected?.color ? `, ${selected.color}` : ''}`} />
 
       <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
         <div className="min-w-0 lg:order-1">
@@ -135,7 +145,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
               <fieldset className="min-w-0 shrink-0">
                 <legend className="mb-2 text-sm font-semibold max-lg:sr-only">
                   {t('variants.color')}
-                  {selected?.color ? <span className="ms-2 font-normal text-muted">{selected.color}</span> : null}
+                  {selected?.color ? <Ltr className="ms-2 font-normal text-muted">{selected.color}</Ltr> : null}
                 </legend>
                 <ul className="flex flex-wrap gap-1 lg:gap-2">
                   {colors.map(([color, hex]) => {
@@ -165,7 +175,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                               style={{ backgroundColor: hex }}
                             />
                           ) : null}
-                          <span className={cn(hex && 'max-lg:sr-only')}>{color}</span>
+                          <Ltr className={cn(hex && 'max-lg:sr-only')}>{color}</Ltr>
                         </button>
                       </li>
                     );
@@ -188,7 +198,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                     {selected?.capacity ? null : <option value="" disabled />}
                     {capacities.map((cap) => (
                       <option key={cap} value={cap}>
-                        {cap}
+                        {ltr(cap)}
                       </option>
                     ))}
                   </select>
@@ -200,7 +210,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                     return (
                       <li key={cap}>
                         <button type="button" onClick={() => choose({ capacity: cap })} aria-pressed={on} className={cn(PILL, on ? 'border-blue bg-blue/12 shadow-glow-blue' : 'border-border-strong hover:bg-surface-2')}>
-                          {cap}
+                          <Ltr>{cap}</Ltr>
                         </button>
                       </li>
                     );

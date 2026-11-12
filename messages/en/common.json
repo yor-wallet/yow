@@ -20,7 +20,7 @@
   },
   "loading": "Loading…",
   "price": {
-    "unavailable": "Price unavailable",
+    "unavailable": "Price coming soon",
     "was": "Was {price}",
     "save": "Save {amount}"
   },

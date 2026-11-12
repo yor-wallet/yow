@@ -4,10 +4,12 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 import { asLocale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { requireAdmin } from '@/lib/admin/guard';
-import { listAdminProducts } from '@/lib/admin/products';
+import { catalogueGaps, listAdminProducts } from '@/lib/admin/products';
 import { formatBaisa } from '@/lib/money';
 import { localize } from '@/lib/localized';
 import { Button, buttonClasses } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { withParams } from '@/lib/admin/table';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Input, Select } from '@/components/ui/Field';
 import { DataTable, Td, Th, Tr } from '@/components/admin/DataTable';
@@ -27,15 +29,16 @@ export default async function AdminProductsPage({ params, searchParams }: Props)
   setRequestLocale(locale);
   const ctx = await requireAdmin('catalog:read', '/admin/products');
   const sp = await searchParams;
-  const [t, tc, format, list] = await Promise.all([getTranslations('admin'), getTranslations('common.actions'), getFormatter(), listAdminProducts(sp)]);
+  const [t, tc, format, list, gaps] = await Promise.all([getTranslations('admin'), getTranslations('common.actions'), getFormatter(), listAdminProducts(sp), catalogueGaps()]);
   const canWrite = ctx.can('catalog:write');
-  const filtered = !!list.query.q || !!list.status;
+  const filtered = !!list.query.q || !!list.status || !!list.price || !!list.photo;
 
   return (
     <>
       <AdminPageHeader
         title={t('products.title')}
         subtitle={t('products.subtitle')}
+        eyebrow={t('nav.groups.commerce')}
         actions={
           canWrite ? (
             <>
@@ -50,6 +53,27 @@ export default async function AdminProductsPage({ params, searchParams }: Props)
         }
       />
 
+      <div className="mb-4 flex flex-wrap gap-2" data-testid="catalogue-gaps">
+        <Link
+          href={`/admin/products${withParams(sp, { price: list.price ? undefined : 'missing', page: undefined })}`}
+          aria-pressed={!!list.price}
+          className={`inline-flex min-h-11 items-center gap-2 rounded-pill border px-4 text-sm font-semibold transition-colors ${list.price ? 'border-blue bg-blue/10 text-accent' : 'border-border-strong hover:bg-surface-2'}`}
+          data-testid="gap-needs-price"
+        >
+          <span className="font-display tabular-nums text-orange">{format.number(gaps.needsPrice)}</span>
+          {t('products.gaps.needsPrice')}
+        </Link>
+        <Link
+          href={`/admin/products${withParams(sp, { photo: list.photo ? undefined : 'missing', page: undefined })}`}
+          aria-pressed={!!list.photo}
+          className={`inline-flex min-h-11 items-center gap-2 rounded-pill border px-4 text-sm font-semibold transition-colors ${list.photo ? 'border-blue bg-blue/10 text-accent' : 'border-border-strong hover:bg-surface-2'}`}
+          data-testid="gap-no-photo"
+        >
+          <span className="font-display tabular-nums text-accent">{format.number(gaps.noPhoto)}</span>
+          {t('products.gaps.noPhoto')}
+        </Link>
+      </div>
+
       <form method="get" role="search" className="mb-4 flex flex-wrap items-end gap-3" data-testid="product-filters">
         <Input name="q" type="search" label={t('products.search')} placeholder={t('products.searchPlaceholder')} defaultValue={list.query.q} containerClassName="min-w-56 flex-1" data-testid="product-search" />
         <Select name="status" label={t('products.filterStatus')} defaultValue={list.status ?? ''} containerClassName="w-44" data-testid="product-status-filter">
@@ -59,6 +83,14 @@ export default async function AdminProductsPage({ params, searchParams }: Props)
               {t(`products.status.${s}`)}
             </option>
           ))}
+        </Select>
+        <Select name="price" label={t('products.filterPrice')} defaultValue={list.price ?? ''} containerClassName="w-48" data-testid="product-price-filter">
+          <option value="">{t('products.all')}</option>
+          <option value="missing">{t('products.gaps.needsPrice')}</option>
+        </Select>
+        <Select name="photo" label={t('products.filterPhoto')} defaultValue={list.photo ?? ''} containerClassName="w-48" data-testid="product-photo-filter">
+          <option value="">{t('products.all')}</option>
+          <option value="missing">{t('products.gaps.noPhoto')}</option>
         </Select>
         <Button type="submit" variant="outline">
           {tc('search')}
@@ -117,6 +149,12 @@ export default async function AdminProductsPage({ params, searchParams }: Props)
                         <span className="block truncate font-semibold">{name}</span>
                       )}
                       {p.brand ? <p className="truncate text-xs text-muted">{p.brand}</p> : null}
+                      {p.needsPrice || p.needsPhoto ? (
+                        <span className="mt-1 flex flex-wrap gap-1">
+                          {p.needsPrice ? <Badge variant="secondary" data-testid="badge-needs-price">{t('products.badges.needsPrice')}</Badge> : null}
+                          {p.needsPhoto ? <Badge variant="info" data-testid="badge-no-photo">{t('products.badges.noPhoto')}</Badge> : null}
+                        </span>
+                      ) : null}
                     </div>
                   </div>
                 </Td>

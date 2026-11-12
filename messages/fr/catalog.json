@@ -35,7 +35,9 @@
     "priceChip": "{min} – {max} OMR",
     "priceMinChip": "À partir de {min} OMR",
     "priceMaxChip": "Jusqu'à {max} OMR",
-    "none": "Les filtres apparaissent dès que des produits sont disponibles ici."
+    "none": "Les filtres apparaissent dès que des produits sont disponibles ici.",
+    "series": "Série",
+    "year": "Année de sortie"
   },
   "sort": {
     "label": "Trier par",
@@ -79,7 +81,9 @@
     "favoriteAdd": "Ajouter aux favoris",
     "favoriteRemove": "Retirer des favoris",
     "favoriteAdded": "Ajouté aux favoris",
-    "favoriteRemoved": "Retiré des favoris"
+    "favoriteRemoved": "Retiré des favoris",
+    "illustration": "Illustration",
+    "illustrationOf": "Illustration de {name}"
   },
   "rail": {
     "previous": "Défiler en arrière",

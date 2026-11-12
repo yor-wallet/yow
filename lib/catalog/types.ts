@@ -1,3 +1,4 @@
+import type { DeviceArtSpec } from '@/lib/devices/art';
 import type { Availability } from './stock';
 
 /** Serializable product summary for cards, rails, grids, search results. */
@@ -8,6 +9,8 @@ export type ProductCardData = {
   name: string;
   brand: string | null;
   categoryIcon: string | null;
+  /** Illustration used when `image` is null (smartphones only). */
+  art: DeviceArtSpec | null;
   image: { src: string; width: number; height: number; alt: string } | null;
   /** Lowest active variant price (null ⇒ price unavailable). */
   priceBaisa: number | null;
@@ -30,11 +33,16 @@ export type ListResult = {
 };
 
 export type FacetBrand = { slug: string; name: string; count: number };
+export type FacetSeries = { value: string; count: number };
+export type FacetYear = { value: number; count: number };
 export type FacetColor = { value: string; hex: string | null; count: number };
 export type FacetCapacity = { value: string; count: number };
 
 export type Facets = {
   brands: FacetBrand[];
+  /** Product families present in the scope, newest first. */
+  series: FacetSeries[];
+  years: FacetYear[];
   capacities: FacetCapacity[];
   colors: FacetColor[];
   /** Whole OMR bounds of priced variants (null when nothing is priced). */

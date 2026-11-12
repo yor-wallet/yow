@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Input, Select } from '@/components/ui/Field';
 import { useHistoryModal } from '@/components/ui/useHistoryModal';
 import { cn } from '@/lib/cn';
+import { Ltr } from '@/components/ui/Ltr';
 import {
   activeFilterCount,
   DEFAULT_FILTERS,
@@ -192,7 +193,7 @@ function FilterPanel({
     setMax(filters.maxOmr?.toString() ?? '');
   }, [filters.minOmr, filters.maxOmr]);
 
-  if (!facets || (facets.brands.length === 0 && facets.priceMinOmr === null && subcategories.length === 0)) {
+  if (!facets || (facets.brands.length === 0 && facets.series.length === 0 && facets.priceMinOmr === null && subcategories.length === 0)) {
     return <p className="text-sm text-muted">{t('none')}</p>;
   }
 
@@ -234,6 +235,39 @@ function FilterPanel({
         </fieldset>
       ) : null}
 
+      {facets.series.length > 1 ? (
+        <fieldset className="flex flex-col gap-2" data-testid="filter-series">
+          <legend className="mb-1 text-sm font-semibold">{t('series')}</legend>
+          <ul className="flex flex-wrap gap-2">
+            {facets.series.map((x) => (
+              <li key={x.value}>
+                <Chip pressed={filters.series.includes(x.value)} onClick={() => apply({ series: toggleValue(filters.series, x.value) })}>
+                  <Ltr>{x.value}</Ltr>
+                </Chip>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
+      ) : null}
+
+      {facets.years.length > 1 ? (
+        <fieldset className="flex flex-col gap-2" data-testid="filter-year">
+          <legend className="mb-1 text-sm font-semibold">{t('year')}</legend>
+          <ul className="flex flex-wrap gap-2">
+            {facets.years.map((y) => (
+              <li key={y.value}>
+                <Chip
+                  pressed={filters.years.includes(y.value)}
+                  onClick={() => apply({ years: filters.years.includes(y.value) ? filters.years.filter((v) => v !== y.value) : [...filters.years, y.value].sort((a, b) => a - b) })}
+                >
+                  <Ltr>{y.value}</Ltr>
+                </Chip>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
+      ) : null}
+
       {facets.priceMinOmr !== null && facets.priceMaxOmr !== null ? (
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-1 text-sm font-semibold">{t('price')}</legend>
@@ -271,7 +305,7 @@ function FilterPanel({
             {facets.capacities.map((c) => (
               <li key={c.value}>
                 <Chip pressed={filters.capacities.includes(c.value)} onClick={() => apply({ capacities: toggleValue(filters.capacities, c.value) })}>
-                  {c.value}
+                  <Ltr>{c.value}</Ltr>
                 </Chip>
               </li>
             ))}
@@ -287,7 +321,7 @@ function FilterPanel({
               <li key={c.value}>
                 <Chip pressed={filters.colors.includes(c.value)} onClick={() => apply({ colors: toggleValue(filters.colors, c.value) })}>
                   {c.hex ? <span aria-hidden="true" className="size-3.5 rounded-full border border-border-strong" style={{ backgroundColor: c.hex }} /> : null}
-                  {c.value}
+                  <Ltr>{c.value}</Ltr>
                 </Chip>
               </li>
             ))}
@@ -351,6 +385,8 @@ function ActiveChips({
           : t('priceMaxChip', { max: filters.maxOmr as number });
     chips.push({ key: 'price', label, remove: () => apply({ minOmr: null, maxOmr: null }) });
   }
+  for (const x of filters.series) chips.push({ key: `ser:${x}`, label: x, remove: () => apply({ series: filters.series.filter((v) => v !== x) }) });
+  for (const y of filters.years) chips.push({ key: `yr:${y}`, label: String(y), remove: () => apply({ years: filters.years.filter((v) => v !== y) }) });
   for (const c of filters.capacities) chips.push({ key: `cap:${c}`, label: c, remove: () => apply({ capacities: filters.capacities.filter((x) => x !== c) }) });
   for (const c of filters.colors) chips.push({ key: `color:${c}`, label: c, remove: () => apply({ colors: filters.colors.filter((x) => x !== c) }) });
   if (filters.inStock) chips.push({ key: 'stock', label: t('inStock'), remove: () => apply({ inStock: false }) });
@@ -366,7 +402,7 @@ function ActiveChips({
             aria-label={t('remove', { name: c.label })}
             className="inline-flex min-h-11 items-center gap-1.5 rounded-pill border border-border-strong bg-surface px-3.5 text-sm font-medium transition-colors hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
-            {c.label}
+            <Ltr>{c.label}</Ltr>
             <X size={14} aria-hidden="true" />
           </button>
         </li>

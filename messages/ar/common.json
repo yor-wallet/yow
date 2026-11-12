@@ -20,7 +20,7 @@
   },
   "loading": "جارٍ التحميل…",
   "price": {
-    "unavailable": "السعر غير متوفر",
+    "unavailable": "السعر قريبًا",
     "was": "بدلًا من {price}",
     "save": "وفّر {amount}"
   },

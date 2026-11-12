@@ -1,10 +1,13 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { currentActor, errorState, type ActionState } from '@/lib/admin/action';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { currentActor, errorState, runAdminAction, type ActionState } from '@/lib/admin/action';
 import { ValidationError } from '@/lib/admin/actor';
 import { importCatalogue, parseCataloguePack } from '@/lib/admin/catalogue-import';
+import { importVerifiedCatalogue } from '@/lib/admin/catalogue-verified';
+import { applyVariantImport, previewVariantImport } from '@/lib/admin/variant-pricing';
 import { text } from '@/lib/admin/form';
+import { CATALOG_TAG } from '@/lib/catalog/cache';
 
 const MAX_BYTES = 2 * 1024 * 1024;
 
@@ -31,4 +34,44 @@ export async function importCatalogueAction(_prev: ActionState, fd: FormData): P
   } catch (err) {
     return errorState(err);
   }
+}
+
+/**
+ * Apply the verified 2026 catalogue shipped with the code (facts from official manufacturer pages):
+ * products, specifications and the colour x capacity variants the sources confirm — never a price,
+ * a stock quantity, a photo or a review. `publish` also activates the fully verified models.
+ */
+export async function applyVerifiedCatalogueAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  try {
+    const actor = await currentActor();
+    const mod = (await import('@/data/catalogue/verified-catalogue-2026.json')) as unknown as { default?: { models: unknown[] }; models?: unknown[] };
+    const models = mod.default?.models ?? mod.models ?? [];
+    const res = await importVerifiedCatalogue(actor, { models, publish: fd.get('publish') === 'on' });
+    revalidatePath('/[locale]/admin/products', 'page');
+    revalidateTag(CATALOG_TAG);
+    return { status: 'success', code: 'verifiedApplied', data: { ...res, brandsCreated: res.brandsCreated.join(', ') }, at: Date.now() };
+  } catch (err) {
+    return errorState(err);
+  }
+}
+
+/** CSV price & stock import: a dry run first (never writes), then an atomic, audited apply. */
+
+export async function previewImportAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  try {
+    const preview = await previewVariantImport(await currentActor(), { csv: text(fd, 'csv') ?? '' });
+    return { status: 'success', code: 'importChecked', data: preview as unknown as Record<string, unknown>, at: Date.now() };
+  } catch (err) {
+    return errorState(err);
+  }
+}
+
+export async function applyImportAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  const state = await runAdminAction(
+    applyVariantImport,
+    { csv: text(fd, 'csv') ?? '', idempotencyKey: text(fd, 'idempotencyKey') },
+    { successCode: 'importApplied', idempotent: true, idempotencyKey: text(fd, 'idempotencyKey'), data: (r) => r },
+  );
+  if (state.status === 'success') revalidateTag(CATALOG_TAG);
+  return state;
 }

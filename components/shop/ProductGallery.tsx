@@ -7,6 +7,8 @@ import { Modal } from '@/components/ui/Modal';
 import { useHistoryModal } from '@/components/ui/useHistoryModal';
 import { cn } from '@/lib/cn';
 import type { ImageView } from '@/lib/catalog/queries';
+import { DeviceArt } from '@/components/devices/DeviceArt';
+import type { DeviceArtSpec } from '@/lib/devices/art';
 import { ShopImage } from './ShopImage';
 
 /**
@@ -14,7 +16,7 @@ import { ShopImage } from './ShopImage';
  * zoom dialog (click/tap the image; Back closes it). `activeId` lets the parent jump to the image
  * of the selected variant. All images keep their intrinsic ratio box, so nothing shifts on load.
  */
-export function ProductGallery({ images, activeId, name }: { images: ImageView[]; activeId?: string | null; name: string }) {
+export function ProductGallery({ images, activeId, name, art, artLabel }: { images: ImageView[]; activeId?: string | null; name: string; art?: DeviceArtSpec | null; artLabel?: string }) {
   const t = useTranslations('product.gallery');
   const [index, setIndex] = useState(0);
   const [zoomed, setZoomed] = useState(false);
@@ -47,6 +49,18 @@ export function ProductGallery({ images, activeId, name }: { images: ImageView[]
     const i = Math.round(Math.abs(el.scrollLeft) / el.clientWidth);
     if (i !== index && i >= 0 && i < count) setIndex(i);
   };
+
+  if (count === 0 && art) {
+    // No official photo yet: an honest, colour-matched illustration that follows the selected variant.
+    return (
+      <div className="flex flex-col gap-2" data-testid="gallery-art">
+        <div className="relative aspect-square w-full overflow-hidden rounded-card border border-border bg-gradient-to-b from-tint-blue to-surface p-6 transition-colors duration-(--dur-nav)">
+          <DeviceArt art={art} title={artLabel ?? name} />
+        </div>
+        <p className="text-center text-xs text-muted">{t('illustration')}</p>
+      </div>
+    );
+  }
 
   if (count === 0) {
     return (

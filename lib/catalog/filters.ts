@@ -2,7 +2,7 @@
  * Catalogue filters <-> URL search params (pure). Filters ALWAYS live in the URL so
  * Back/Forward, reloads and shared links restore the exact same listing.
  *
- *   ?sub=smartphones-apple&brand=apple,samsung&min=100&max=500&cap=256GB&color=Black&stock=1&sort=price_asc&n=48
+ *   ?sub=smartphones-apple&brand=apple,samsung&ser=iPhone%2017&yr=2025,2026&min=100&max=500&cap=256GB&color=Black&stock=1&sort=price_asc&n=48
  */
 
 export const SORT_KEYS = ['relevance', 'newest', 'price_asc', 'price_desc'] as const;
@@ -15,6 +15,10 @@ export const MAX_RESTORE = 240;
 export type CatalogFilters = {
   sub: string | null;
   brands: string[];
+  /** Product family ("iPhone 17", "Galaxy S25"): `Product.series`. */
+  series: string[];
+  /** Release years: `Product.modelYear`. */
+  years: number[];
   /** Whole OMR (user-facing). */
   minOmr: number | null;
   maxOmr: number | null;
@@ -31,6 +35,8 @@ export type SearchParamsInput = URLSearchParams | Record<string, string | string
 export const DEFAULT_FILTERS: CatalogFilters = {
   sub: null,
   brands: [],
+  series: [],
+  years: [],
   minOmr: null,
   maxOmr: null,
   capacities: [],
@@ -63,6 +69,17 @@ function list(sp: SearchParamsInput, key: string, re: RegExp): string[] {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b, 'en')).slice(0, 20);
 }
 
+/** Comma-separated release years (2000–2100), distinct, ascending, max 12. */
+function yearList(sp: SearchParamsInput, key: string): number[] {
+  const years = getAll(sp, key)
+    .flatMap((v) => v.split(','))
+    .map((v) => v.trim())
+    .filter((v) => /^\d{4}$/.test(v))
+    .map(Number)
+    .filter((y) => y >= 2000 && y <= 2100);
+  return [...new Set(years)].sort((a, b) => a - b).slice(0, 12);
+}
+
 function omr(value: string | null): number | null {
   if (value === null || value.trim() === '') return null;
   if (!/^\d{1,7}$/.test(value.trim())) return null;
@@ -81,6 +98,8 @@ export function parseCatalogParams(sp: SearchParamsInput, opts: { defaultSort?: 
   return {
     sub: subRaw && SLUG.test(subRaw) ? subRaw : null,
     brands: list(sp, 'brand', SLUG),
+    series: list(sp, 'ser', SAFE_VALUE),
+    years: yearList(sp, 'yr'),
     minOmr,
     maxOmr,
     capacities: list(sp, 'cap', SAFE_VALUE),
@@ -100,6 +119,8 @@ export function serializeCatalogParams(
   if (opts.q) sp.set('q', opts.q);
   if (f.sub) sp.set('sub', f.sub);
   if (f.brands?.length) sp.set('brand', [...f.brands].sort().join(','));
+  if (f.series?.length) sp.set('ser', [...f.series].sort().join(','));
+  if (f.years?.length) sp.set('yr', [...f.years].sort((a, b) => a - b).join(','));
   if (f.minOmr !== null && f.minOmr !== undefined) sp.set('min', String(f.minOmr));
   if (f.maxOmr !== null && f.maxOmr !== undefined) sp.set('max', String(f.maxOmr));
   if (f.capacities?.length) sp.set('cap', [...f.capacities].sort().join(','));
@@ -115,6 +136,8 @@ export function activeFilterCount(f: CatalogFilters): number {
   return (
     (f.sub ? 1 : 0) +
     f.brands.length +
+    f.series.length +
+    f.years.length +
     (f.minOmr !== null || f.maxOmr !== null ? 1 : 0) +
     f.capacities.length +
     f.colors.length +

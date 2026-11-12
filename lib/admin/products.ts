@@ -374,14 +374,40 @@ export type AdminProductRow = {
   priceMaxBaisa: number | null;
   stock: number;
   image: string | null;
+  /** At least one active variant without a price (or no variant at all). */
+  needsPrice: boolean;
+  /** No uploaded photo yet (the storefront shows a device illustration instead). */
+  needsPhoto: boolean;
   updatedAt: Date;
 };
+
+/** Products (not archived) that still need a real price: no variant, or an active variant without a price. */
+export const NEEDS_PRICE_WHERE: Prisma.ProductWhereInput = {
+  status: { not: 'ARCHIVED' },
+  OR: [{ variants: { none: {} } }, { variants: { some: { isActive: true, priceBaisa: null } } }],
+};
+
+/** Products (not archived) without any uploaded photo. */
+export const NO_PHOTO_WHERE: Prisma.ProductWhereInput = { status: { not: 'ARCHIVED' }, images: { none: {} } };
+
+/** Counters for the "complete the catalogue" workflow (products list + overview alerts). */
+export async function catalogueGaps(): Promise<{ needsPrice: number; noPhoto: number; variantsWithoutPrice: number }> {
+  const [needsPrice, noPhoto, variantsWithoutPrice] = await Promise.all([
+    prisma.product.count({ where: NEEDS_PRICE_WHERE }),
+    prisma.product.count({ where: NO_PHOTO_WHERE }),
+    prisma.productVariant.count({ where: { isActive: true, priceBaisa: null, product: { status: { not: 'ARCHIVED' } } } }),
+  ]);
+  return { needsPrice, noPhoto, variantsWithoutPrice };
+}
 
 export async function listAdminProducts(sp: SearchParams) {
   const t = parseTableQuery(sp, { sortable: PRODUCT_SORTS, defaultSort: 'updatedAt' });
   const status = enumParam(sp, 'status', STATUSES);
+  const price = enumParam(sp, 'price', ['missing'] as const);
+  const photo = enumParam(sp, 'photo', ['missing'] as const);
   const q = t.q;
   const where: Prisma.ProductWhereInput = {
+    AND: [...(price ? [NEEDS_PRICE_WHERE] : []), ...(photo ? [NO_PHOTO_WHERE] : [])],
     ...(status ? { status } : {}),
     ...(q
       ? {
@@ -414,7 +440,7 @@ export async function listAdminProducts(sp: SearchParams) {
         brand: { select: { name: true } },
         category: { select: { name: true } },
         images: { orderBy: { sort: 'asc' }, take: 1, select: { key: true } },
-        variants: { select: { priceBaisa: true, stock: true } },
+        variants: { select: { priceBaisa: true, stock: true, isActive: true } },
       },
     }),
   ]);
@@ -433,10 +459,12 @@ export async function listAdminProducts(sp: SearchParams) {
       priceMaxBaisa: prices.length ? Math.max(...prices) : null,
       stock: r.variants.reduce((s, v) => s + v.stock, 0),
       image: mediaUrl(r.images[0]?.key),
+      needsPrice: r.variants.length === 0 || r.variants.some((v) => v.isActive && v.priceBaisa === null),
+      needsPhoto: r.images.length === 0,
       updatedAt: r.updatedAt,
     };
   });
-  return { items, total, query: t, status };
+  return { items, total, query: t, status, price, photo };
 }
 
 export async function getAdminProduct(id: string) {

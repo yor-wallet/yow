@@ -20,7 +20,7 @@
   },
   "loading": "Chargement…",
   "price": {
-    "unavailable": "Prix indisponible",
+    "unavailable": "Prix bientôt disponible",
     "was": "Au lieu de {price}",
     "save": "Économisez {amount}"
   },

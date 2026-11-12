@@ -114,7 +114,17 @@
     "emptyFiltered": "Aucun produit ne correspond à cette recherche.",
     "results": "{count, plural, =0 {Aucun produit} one {# produit} other {# produits}}",
     "viewOnSite": "Voir dans la boutique",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "gaps": {
+      "needsPrice": "produits à tarifer",
+      "noPhoto": "produits sans photo"
+    },
+    "badges": {
+      "needsPrice": "Prix à saisir",
+      "noPhoto": "Sans photo"
+    },
+    "filterPrice": "Prix",
+    "filterPhoto": "Photo"
   },
   "pagination": {
     "label": "Pagination",
@@ -265,7 +275,11 @@
     "approved": "Proposition approuvée",
     "rejected": "Proposition rejetée",
     "applied": "Action appliquée",
-    "imported": "Catalogue importé"
+    "imported": "Catalogue importé",
+    "pricesSaved": "Prix et stock enregistrés",
+    "importChecked": "Fichier vérifié — rien n’est encore enregistré",
+    "importApplied": "Prix et stock mis à jour",
+    "verifiedApplied": "Catalogue vérifié appliqué"
   },
   "errors": {
     "forbidden": "Vous n'avez pas l'autorisation d'effectuer cette action.",
@@ -601,5 +615,91 @@
     "colors": "Couleurs candidates",
     "source": "Source officielle à consulter",
     "unknown": "À confirmer"
+  },
+  "pricing": {
+    "gridTitle": "Prix et stock",
+    "gridText": "Saisissez le vrai prix, l’ancien prix, le coût et le stock de chaque variante. Rien n’est enregistré avant « Enregistrer » ; une variante sans prix ne peut pas être achetée.",
+    "noVariants": "Ce produit n’a pas encore de variante.",
+    "save": "Enregistrer",
+    "saveCount": "Enregistrer {count, plural, one {# modification} other {# modifications}}",
+    "columns": {
+      "variant": "Variante",
+      "price": "Prix (OMR)",
+      "compareAt": "Ancien prix",
+      "cost": "Coût",
+      "stock": "Stock",
+      "bulk": "Remplir",
+      "line": "Ligne",
+      "result": "Résultat"
+    },
+    "inactive": "Inactive",
+    "noPrice": "Sans prix",
+    "reserved": "{count} réservé(s)",
+    "fillCapacity": "Même capacité",
+    "fillCapacityHint": "Copier prix, ancien prix et coût vers les {count} variante(s) de même capacité ({capacity})",
+    "fillAll": "Toutes les variantes",
+    "fillAllHint": "Copier prix, ancien prix et coût vers les {count} variantes",
+    "reason": "Motif du changement de stock",
+    "reasonHint": "Conservé dans l’historique des mouvements de stock (facultatif).",
+    "pending": "{count, plural, one {# ligne modifiée — pas encore enregistrée} other {# lignes modifiées — pas encore enregistrées}}",
+    "hint": "Laissez le prix vide tant qu’il n’est pas décidé : la variante reste « prix bientôt disponible ».",
+    "importTitle": "Import des prix et du stock",
+    "importSubtitle": "Exportez les variantes à compléter, remplissez-les dans un tableur, vérifiez le fichier, puis appliquez-le.",
+    "exportTitle": "1. Exporter",
+    "exportText": "Un CSV avec une ligne par variante. Seule la colonne SKU est obligatoire au réimport.",
+    "exportNeedsPrice": "Variantes sans prix ({count})",
+    "exportAll": "Toutes les variantes",
+    "exportNote": "{products} produit(s) attendent encore au moins un prix.",
+    "importStep": "2. Vérifier et appliquer",
+    "importText": "Chargez ou collez le CSV. Une simulation montre chaque modification et chaque ligne refusée avant toute écriture.",
+    "importFile": "Fichier CSV",
+    "importPaste": "ou collez le contenu",
+    "importRules": "Colonnes : sku (obligatoire), priceOmr, compareAtOmr, costOmr, stock. Une cellule vide laisse la valeur inchangée ; pour retirer un prix, modifiez-le dans la grille.",
+    "importCheck": "Vérifier le fichier (rien n’est enregistré)",
+    "importApply": "Appliquer {count, plural, one {# modification} other {# modifications}}",
+    "importApplyHint": "Tout ou rien : une seule transaction journalisée.",
+    "importFixErrors": "Corrigez les lignes refusées, puis vérifiez à nouveau.",
+    "importNothing": "Rien à modifier.",
+    "willChange": "Sera modifié",
+    "summary": {
+      "total": "{count, plural, one {# ligne} other {# lignes}}",
+      "changes": "{count, plural, one {# modification} other {# modifications}}",
+      "unchanged": "{count} inchangée(s)",
+      "errors": "{count, plural, =0 {Aucune erreur} one {# erreur} other {# erreurs}}"
+    },
+    "errors": {
+      "unknown_sku": "SKU inconnu",
+      "duplicate_sku": "SKU répété dans le fichier",
+      "forbidden_prices": "Vous ne pouvez pas modifier les prix",
+      "forbidden_stock": "Vous ne pouvez pas modifier le stock",
+      "compare_not_higher": "L’ancien prix doit être supérieur au prix",
+      "compare_without_price": "L’ancien prix nécessite un prix",
+      "below_reserved": "Le stock est inférieur à la quantité réservée par des commandes",
+      "amount_invalid": "Montant invalide (3 décimales maximum)",
+      "negative": "Les valeurs négatives ne sont pas admises",
+      "stock_invalid": "Le stock doit être un nombre entier",
+      "empty": "Le fichier est vide",
+      "too_large": "Fichier trop volumineux (2 Mo maximum)",
+      "too_many_rows": "Trop de lignes (5000 maximum)",
+      "missing_sku_column": "La colonne « sku » est absente",
+      "no_value_column": "Aucune colonne priceOmr, compareAtOmr, costOmr ou stock",
+      "malformed": "Le fichier n’a pas pu être lu comme un CSV"
+    }
+  },
+  "verified": {
+    "title": "Catalogue vérifié 2026",
+    "text": "Modèles, couleurs, capacités et caractéristiques issus des pages officielles des fabricants (contrôlés le 2026-11-12).",
+    "rules": {
+      "facts": "46 modèles sur 48 vérifiés sur les pages officielles ; 2 restent « à vérifier » (aucune page officielle trouvée).",
+      "variants": "Les variantes (couleur × capacité) ne sont créées que si la source les confirme : tous les coloris Apple dans chaque capacité, et chaque référence Samsung réelle. HONOR et OPPO restent en brouillon tant que vous n’avez pas confirmé les combinaisons.",
+      "noPrice": "Aucun prix, stock, photo ni avis n’est jamais créé. Les variantes sans prix affichent « prix bientôt disponible » et ne peuvent pas être achetées.",
+      "drafts": "Peut être relancé sans risque : produits, prix, stock et modifications existants ne sont jamais écrasés."
+    },
+    "apply": "Appliquer le catalogue vérifié",
+    "publish": "Publier aussi les modèles entièrement vérifiés",
+    "publishHint": "Ils apparaissent en boutique avec « prix bientôt disponible » jusqu’à la saisie des vrais prix. Vous pourrez en archiver ensuite.",
+    "done": "{created} produit(s) créé(s), {updated} mis à jour.",
+    "doneVariants": "{variants} variante(s) créée(s), {published} modèle(s) publié(s).",
+    "doneDrafts": "{awaiting} brouillon(s) en attente de la vérification couleur × capacité, {unverified} modèle(s) sans page officielle."
   }
 }

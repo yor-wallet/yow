@@ -35,7 +35,9 @@
     "priceChip": "{min} – {max} ر.ع.",
     "priceMinChip": "من {min} ر.ع.",
     "priceMaxChip": "حتى {max} ر.ع.",
-    "none": "ستظهر عوامل التصفية بمجرد توفر منتجات هنا."
+    "none": "ستظهر عوامل التصفية بمجرد توفر منتجات هنا.",
+    "series": "السلسلة",
+    "year": "سنة الإصدار"
   },
   "sort": {
     "label": "ترتيب حسب",
@@ -79,7 +81,9 @@
     "favoriteAdd": "أضف إلى المفضلة",
     "favoriteRemove": "أزل من المفضلة",
     "favoriteAdded": "أُضيف إلى المفضلة",
-    "favoriteRemoved": "أُزيل من المفضلة"
+    "favoriteRemoved": "أُزيل من المفضلة",
+    "illustration": "رسم توضيحي",
+    "illustrationOf": "رسم توضيحي لـ {name}"
   },
   "rail": {
     "previous": "تمرير للخلف",

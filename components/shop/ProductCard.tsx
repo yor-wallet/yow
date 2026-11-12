@@ -3,6 +3,8 @@ import { Link } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/Badge';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { Price } from '@/components/ui/Price';
+import { DeviceArt } from '@/components/devices/DeviceArt';
+import { Ltr } from '@/components/ui/Ltr';
 import { flexMonthlyFrom } from '@/lib/catalog/flex-preview';
 import { productPath } from '@/lib/catalog/paths';
 import type { ProductCardData } from '@/lib/catalog/types';
@@ -68,6 +70,13 @@ export function ProductCard({
             priority={priority}
             className="size-full object-contain p-3 transition-transform duration-(--dur-card) ease-premium group-hover:scale-[1.03]"
           />
+        ) : product.art ? (
+          <div className="relative size-full p-3 transition-transform duration-(--dur-card) ease-premium group-hover:scale-[1.03]" data-testid="card-art">
+            <DeviceArt art={product.art} title={t('illustrationOf', { name: product.name })} />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-1.5 mx-auto w-fit rounded-pill bg-bg/75 px-2 py-0.5 text-[10px] font-medium text-muted backdrop-blur">
+              {t('illustration')}
+            </span>
+          </div>
         ) : (
           <div className="grid size-full place-items-center bg-blue/8 text-accent" aria-hidden="true">
             <CategoryIcon name={product.categoryIcon} size={44} />
@@ -93,7 +102,7 @@ export function ProductCard({
             href={productPath(product.slug)}
             className="outline-none after:absolute after:inset-0 after:content-[''] focus-visible:after:outline-2 focus-visible:after:outline-offset-[-2px] focus-visible:after:outline-ring"
           >
-            {product.name}
+            <Ltr>{product.name}</Ltr>
           </Link>
         </h3>
 

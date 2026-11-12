@@ -8,7 +8,8 @@
     "next": "Image suivante",
     "thumb": "Afficher l'image {index}",
     "counter": "{current} / {total}",
-    "empty": "Photos bientôt disponibles"
+    "empty": "Photos bientôt disponibles",
+    "illustration": "Illustration — les photos officielles seront ajoutées. La couleur suit votre sélection."
   },
   "sku": "SKU {sku}",
   "model": "Modèle {model}",

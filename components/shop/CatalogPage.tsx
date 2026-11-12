@@ -31,7 +31,7 @@ export function CatalogPage({
   intro?: React.ReactNode;
 }) {
   const t = useTranslations('catalog.category');
-  const narrowed = filters.sub !== null || filters.brands.length > 0 || filters.minOmr !== null || filters.maxOmr !== null || filters.capacities.length > 0 || filters.colors.length > 0 || filters.inStock;
+  const narrowed = filters.sub !== null || filters.brands.length > 0 || filters.series.length > 0 || filters.years.length > 0 || filters.minOmr !== null || filters.maxOmr !== null || filters.capacities.length > 0 || filters.colors.length > 0 || filters.inStock;
   const resetKey = JSON.stringify([scope, q ?? '', filters]);
   return (
     <div className="page-container grid gap-6 pb-12 pt-4 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-8">

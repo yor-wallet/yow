@@ -35,7 +35,9 @@
     "priceChip": "{min} – {max} OMR",
     "priceMinChip": "From {min} OMR",
     "priceMaxChip": "Up to {max} OMR",
-    "none": "Filters appear as soon as products are available here."
+    "none": "Filters appear as soon as products are available here.",
+    "series": "Series",
+    "year": "Release year"
   },
   "sort": {
     "label": "Sort by",
@@ -79,7 +81,9 @@
     "favoriteAdd": "Add to favourites",
     "favoriteRemove": "Remove from favourites",
     "favoriteAdded": "Added to favourites",
-    "favoriteRemoved": "Removed from favourites"
+    "favoriteRemoved": "Removed from favourites",
+    "illustration": "Illustration",
+    "illustrationOf": "Illustration of {name}"
   },
   "rail": {
     "previous": "Scroll back",
