@@ -264,7 +264,8 @@
     "agentsRun": "Exécution des agents terminée",
     "approved": "Proposition approuvée",
     "rejected": "Proposition rejetée",
-    "applied": "Action appliquée"
+    "applied": "Action appliquée",
+    "imported": "Catalogue importé"
   },
   "errors": {
     "forbidden": "Vous n'avez pas l'autorisation d'effectuer cette action.",
@@ -322,7 +323,11 @@
       "media_bad_image": "Cette image est illisible.",
       "requested_docs_required": "Choisissez les documents à demander.",
       "account_not_found": "Aucun compte n'utilise cet e-mail.",
-      "account_already_courier": "Ce compte est déjà relié à un livreur."
+      "account_already_courier": "Ce compte est déjà relié à un livreur.",
+      "file_invalid": "Ce fichier n'est pas une liste de catalogue valide.",
+      "file_too_large": "Ce fichier est trop volumineux (2 Mo au maximum).",
+      "duplicate_ids": "Le fichier contient deux fois le même identifiant de modèle.",
+      "category_missing": "La catégorie des smartphones est introuvable."
     },
     "proposal_not_open": "Cette proposition a déjà été traitée.",
     "proposal_no_action": "Cette proposition ne comporte aucune action à appliquer.",
@@ -564,5 +569,37 @@
     "vehicle": "Véhicule (facultatif)",
     "account": "E-mail du compte (facultatif)",
     "accountHint": "L'e-mail avec lequel le livreur se connecte, pour utiliser l'espace livreur."
+  },
+  "import": {
+    "link": "Importer un catalogue",
+    "title": "Importer un catalogue",
+    "subtitle": "Chargez une liste de modèles en brouillon. Vous vérifiez ensuite chacun et ajoutez ses vraies variantes, prix, stock et photos.",
+    "formTitle": "Fichier du catalogue",
+    "file": "Fichier JSON",
+    "fileHint": "Une liste de modèles (id, marque, série, modèle, année, couleurs, capacités, source officielle). 2 Mo au maximum.",
+    "batch": "Nom de cet import (facultatif)",
+    "batchHint": "Conservé sur chaque produit pour retrouver ce qui vient de ce fichier.",
+    "submit": "Importer en brouillon",
+    "done": "{total, plural, one {# modèle lu} other {# modèles lus}}.",
+    "doneDetail": "{created} créés en brouillon, {refreshed} déjà présents (notes mises à jour, rien d'autre n'a changé).",
+    "brandsCreated": "Nouvelles marques ajoutées : {brands}.",
+    "seeDrafts": "Voir les brouillons",
+    "rulesTitle": "Ce que fait un import",
+    "rules": {
+      "drafts": "Chaque modèle est créé en brouillon. Rien n'est publié.",
+      "noVariants": "Aucune variante n'est créée : les couleurs et capacités du fichier ne sont que des candidats, gardés en notes à vérifier sur la page officielle.",
+      "noPrices": "Aucun prix, stock, promotion ni photo n'est jamais défini par un import.",
+      "idempotent": "Réimporter le même fichier ne crée aucun doublon et n'écrase jamais ce que vous avez modifié."
+    }
+  },
+  "importNotes": {
+    "title": "Modèle importé : à vérifier",
+    "warning": "Ces couleurs et capacités sont des candidats issus du fichier d'import, pas des faits vérifiés. Consultez la page officielle pour votre marché, puis créez uniquement les variantes qui existent réellement. Rien de ceci n'est montré aux clients.",
+    "batch": "Import",
+    "series": "Série et année",
+    "storage": "Capacités candidates",
+    "colors": "Couleurs candidates",
+    "source": "Source officielle à consulter",
+    "unknown": "À confirmer"
   }
 }

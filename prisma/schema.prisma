@@ -543,6 +543,8 @@ model Product {
   seoTitle         Json?
   seoDescription   Json?
   publishedAt      DateTime?
+  /// Admin-only notes of a catalogue import (candidate colours/capacities to verify, source URL). Never shown to shoppers.
+  importMeta       Json?
   createdById      String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt

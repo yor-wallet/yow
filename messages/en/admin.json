@@ -264,7 +264,8 @@
     "agentsRun": "Agents run finished",
     "approved": "Proposal approved",
     "rejected": "Proposal rejected",
-    "applied": "Action applied"
+    "applied": "Action applied",
+    "imported": "Catalogue imported"
   },
   "errors": {
     "forbidden": "You do not have permission to do this.",
@@ -322,7 +323,11 @@
       "media_bad_image": "This image could not be read.",
       "requested_docs_required": "Choose the documents to request.",
       "account_not_found": "No account uses this e-mail.",
-      "account_already_courier": "This account is already linked to a courier."
+      "account_already_courier": "This account is already linked to a courier.",
+      "file_invalid": "This file is not a valid catalogue list.",
+      "file_too_large": "This file is too large (2 MB at most).",
+      "duplicate_ids": "The file contains the same model id twice.",
+      "category_missing": "The smartphones category is missing."
     },
     "proposal_not_open": "This proposal was already decided.",
     "proposal_no_action": "This proposal has no action to apply.",
@@ -564,5 +569,37 @@
     "vehicle": "Vehicle (optional)",
     "account": "Account e-mail (optional)",
     "accountHint": "The e-mail the courier signs in with, to use the courier workspace."
+  },
+  "import": {
+    "link": "Import a catalogue",
+    "title": "Import a catalogue",
+    "subtitle": "Load a list of models as drafts. You then check each one and add its real variants, prices, stock and photos.",
+    "formTitle": "Catalogue file",
+    "file": "JSON file",
+    "fileHint": "A list of models (id, brand, series, model, year, colours, capacities, official source). 2 MB at most.",
+    "batch": "Name of this import (optional)",
+    "batchHint": "Kept on each product so you can find what came from this file.",
+    "submit": "Import as drafts",
+    "done": "{total, plural, one {# model read} other {# models read}}.",
+    "doneDetail": "{created} created as drafts, {refreshed} already present (notes refreshed, nothing else changed).",
+    "brandsCreated": "New brands added: {brands}.",
+    "seeDrafts": "See the drafts",
+    "rulesTitle": "What an import does",
+    "rules": {
+      "drafts": "Every model is created as a draft. Nothing is published.",
+      "noVariants": "No variant is created: the colours and capacities of the file are only candidates, kept as notes to verify on the official page.",
+      "noPrices": "No price, stock, promotion or photo is ever set by an import.",
+      "idempotent": "Importing the same file again creates no duplicate and never overwrites what you edited."
+    }
+  },
+  "importNotes": {
+    "title": "Imported model: to verify",
+    "warning": "These colours and capacities are candidates from the import file, not verified facts. Check the official page for your market, then create only the variants that really exist. Nothing here is shown to shoppers.",
+    "batch": "Import",
+    "series": "Series and year",
+    "storage": "Candidate capacities",
+    "colors": "Candidate colours",
+    "source": "Official source to check",
+    "unknown": "To confirm"
   }
 }

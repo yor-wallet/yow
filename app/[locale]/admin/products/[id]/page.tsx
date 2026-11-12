@@ -6,6 +6,8 @@ import { requireAdmin } from '@/lib/admin/guard';
 import { getAdminProduct, productFormOptions } from '@/lib/admin/products';
 import { localize } from '@/lib/localized';
 import { ImageManager } from '@/components/admin/ImageManager';
+import { ImportNotes } from '@/components/admin/ImportNotes';
+import { readImportMeta } from '@/lib/admin/catalogue-import';
 import { ProductForm } from '@/components/admin/ProductForm';
 import { ProductStatusBar } from '@/components/admin/ProductStatusBar';
 import { VariantEditor } from '@/components/admin/VariantEditor';
@@ -30,6 +32,7 @@ export default async function EditProductPage({ params }: Props) {
   if (!product) notFound();
 
   const name = localize(product.name, locale, product.sku);
+  const importMeta = readImportMeta(product.importMeta);
   const images = product.images.map((img) => imageToItem(img, product.variants, locale, name)).filter((i): i is NonNullable<typeof i> => i !== null);
 
   return (
@@ -37,6 +40,7 @@ export default async function EditProductPage({ params }: Props) {
       <AdminPageHeader title={name} subtitle={`SKU ${product.sku}`} backHref="/admin/products" />
       <ProductStatusBar productId={product.id} slug={product.slug} status={product.status} activeVariants={product.variants.filter((v) => v.isActive).length} />
       <div className="flex flex-col gap-6">
+        {importMeta ? <ImportNotes meta={importMeta} /> : null}
         <ProductForm mode="edit" values={productToFormValues(product)} categories={categoryOptions(options.categories, locale)} brands={brandOptions(options.brands, locale)} action={updateProductAction} />
         <VariantEditor productId={product.id} variants={product.variants.map(variantToFormValues)} canPrice={ctx.can('prices:write')} canStock={ctx.can('stock:write')} />
         <ImageManager productId={product.id} images={images} variantOptions={product.variants.map((v) => ({ value: v.id, label: v.sku }))} />

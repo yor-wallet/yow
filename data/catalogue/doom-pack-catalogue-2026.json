@@ -1,0 +1,1165 @@
+[
+  {
+    "id": "apple-iphone-14",
+    "brand": "Apple",
+    "series": "iPhone 14",
+    "model": "iPhone 14",
+    "year": 2022,
+    "colors": [
+      "Midnight",
+      "Starlight",
+      "Blue",
+      "Purple",
+      "Yellow",
+      "(PRODUCT)RED",
+      "Space Black",
+      "Silver",
+      "Gold",
+      "Deep Purple"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-14-plus",
+    "brand": "Apple",
+    "series": "iPhone 14",
+    "model": "iPhone 14 Plus",
+    "year": 2022,
+    "colors": [
+      "Midnight",
+      "Starlight",
+      "Blue",
+      "Purple",
+      "Yellow",
+      "(PRODUCT)RED",
+      "Space Black",
+      "Silver",
+      "Gold",
+      "Deep Purple"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-14-pro",
+    "brand": "Apple",
+    "series": "iPhone 14",
+    "model": "iPhone 14 Pro",
+    "year": 2022,
+    "colors": [
+      "Midnight",
+      "Starlight",
+      "Blue",
+      "Purple",
+      "Yellow",
+      "(PRODUCT)RED",
+      "Space Black",
+      "Silver",
+      "Gold",
+      "Deep Purple"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-14-pro-max",
+    "brand": "Apple",
+    "series": "iPhone 14",
+    "model": "iPhone 14 Pro Max",
+    "year": 2022,
+    "colors": [
+      "Midnight",
+      "Starlight",
+      "Blue",
+      "Purple",
+      "Yellow",
+      "(PRODUCT)RED",
+      "Space Black",
+      "Silver",
+      "Gold",
+      "Deep Purple"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-15",
+    "brand": "Apple",
+    "series": "iPhone 15",
+    "model": "iPhone 15",
+    "year": 2023,
+    "colors": [
+      "Black",
+      "Blue",
+      "Green",
+      "Yellow",
+      "Pink",
+      "Natural Titanium",
+      "Blue Titanium",
+      "White Titanium",
+      "Black Titanium"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-15-plus",
+    "brand": "Apple",
+    "series": "iPhone 15",
+    "model": "iPhone 15 Plus",
+    "year": 2023,
+    "colors": [
+      "Black",
+      "Blue",
+      "Green",
+      "Yellow",
+      "Pink",
+      "Natural Titanium",
+      "Blue Titanium",
+      "White Titanium",
+      "Black Titanium"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-15-pro",
+    "brand": "Apple",
+    "series": "iPhone 15",
+    "model": "iPhone 15 Pro",
+    "year": 2023,
+    "colors": [
+      "Black",
+      "Blue",
+      "Green",
+      "Yellow",
+      "Pink",
+      "Natural Titanium",
+      "Blue Titanium",
+      "White Titanium",
+      "Black Titanium"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-15-pro-max",
+    "brand": "Apple",
+    "series": "iPhone 15",
+    "model": "iPhone 15 Pro Max",
+    "year": 2023,
+    "colors": [
+      "Black",
+      "Blue",
+      "Green",
+      "Yellow",
+      "Pink",
+      "Natural Titanium",
+      "Blue Titanium",
+      "White Titanium",
+      "Black Titanium"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-16",
+    "brand": "Apple",
+    "series": "iPhone 16",
+    "model": "iPhone 16",
+    "year": 2024,
+    "colors": [
+      "Black",
+      "White",
+      "Pink",
+      "Teal",
+      "Ultramarine",
+      "Black Titanium",
+      "White Titanium",
+      "Natural Titanium",
+      "Desert Titanium"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-16-plus",
+    "brand": "Apple",
+    "series": "iPhone 16",
+    "model": "iPhone 16 Plus",
+    "year": 2024,
+    "colors": [
+      "Black",
+      "White",
+      "Pink",
+      "Teal",
+      "Ultramarine",
+      "Black Titanium",
+      "White Titanium",
+      "Natural Titanium",
+      "Desert Titanium"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-16-pro",
+    "brand": "Apple",
+    "series": "iPhone 16",
+    "model": "iPhone 16 Pro",
+    "year": 2024,
+    "colors": [
+      "Black",
+      "White",
+      "Pink",
+      "Teal",
+      "Ultramarine",
+      "Black Titanium",
+      "White Titanium",
+      "Natural Titanium",
+      "Desert Titanium"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-16-pro-max",
+    "brand": "Apple",
+    "series": "iPhone 16",
+    "model": "iPhone 16 Pro Max",
+    "year": 2024,
+    "colors": [
+      "Black",
+      "White",
+      "Pink",
+      "Teal",
+      "Ultramarine",
+      "Black Titanium",
+      "White Titanium",
+      "Natural Titanium",
+      "Desert Titanium"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-17",
+    "brand": "Apple",
+    "series": "iPhone 17",
+    "model": "iPhone 17",
+    "year": 2025,
+    "colors": [
+      "Black",
+      "White",
+      "Lavender",
+      "Sage",
+      "Mist Blue",
+      "Cosmic Orange",
+      "Deep Blue",
+      "Silver"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-17-pro",
+    "brand": "Apple",
+    "series": "iPhone 17",
+    "model": "iPhone 17 Pro",
+    "year": 2025,
+    "colors": [
+      "Black",
+      "White",
+      "Lavender",
+      "Sage",
+      "Mist Blue",
+      "Cosmic Orange",
+      "Deep Blue",
+      "Silver"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-17-pro-max",
+    "brand": "Apple",
+    "series": "iPhone 17",
+    "model": "iPhone 17 Pro Max",
+    "year": 2025,
+    "colors": [
+      "Black",
+      "White",
+      "Lavender",
+      "Sage",
+      "Mist Blue",
+      "Cosmic Orange",
+      "Deep Blue",
+      "Silver"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-17e",
+    "brand": "Apple",
+    "series": "iPhone 17",
+    "model": "iPhone 17e",
+    "year": 2025,
+    "colors": [
+      "Black",
+      "White",
+      "Lavender",
+      "Sage",
+      "Mist Blue",
+      "Cosmic Orange",
+      "Deep Blue",
+      "Silver"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-air",
+    "brand": "Apple",
+    "series": "iPhone Air",
+    "model": "iPhone Air",
+    "year": 2025,
+    "colors": [
+      "Sky Blue",
+      "Light Gold",
+      "Cloud White",
+      "Space Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-16e",
+    "brand": "Apple",
+    "series": "iPhone 16e",
+    "model": "iPhone 16e",
+    "year": 2025,
+    "colors": [
+      "Black",
+      "White"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-18-pro",
+    "brand": "Apple",
+    "series": "iPhone 18",
+    "model": "iPhone 18 Pro",
+    "year": 2026,
+    "colors": [
+      "Burgundy",
+      "Glacier",
+      "Silver",
+      "Black",
+      "Star White",
+      "Night Sky"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-18-pro-max",
+    "brand": "Apple",
+    "series": "iPhone 18",
+    "model": "iPhone 18 Pro Max",
+    "year": 2026,
+    "colors": [
+      "Burgundy",
+      "Glacier",
+      "Silver",
+      "Black",
+      "Star White",
+      "Night Sky"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "apple-iphone-duo",
+    "brand": "Apple",
+    "series": "iPhone 18",
+    "model": "iPhone Duo",
+    "year": 2026,
+    "colors": [
+      "Burgundy",
+      "Glacier",
+      "Silver",
+      "Black",
+      "Star White",
+      "Night Sky"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.apple.com/iphone/compare/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s23",
+    "brand": "Samsung",
+    "series": "Galaxy S23",
+    "model": "Galaxy S23",
+    "year": 2023,
+    "colors": [
+      "Phantom Black",
+      "Cream",
+      "Green",
+      "Lavender",
+      "Graphite",
+      "Lime",
+      "Sky Blue",
+      "Red"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s23/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s23plus",
+    "brand": "Samsung",
+    "series": "Galaxy S23",
+    "model": "Galaxy S23+",
+    "year": 2023,
+    "colors": [
+      "Phantom Black",
+      "Cream",
+      "Green",
+      "Lavender",
+      "Graphite",
+      "Lime",
+      "Sky Blue",
+      "Red"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s23/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s23-ultra",
+    "brand": "Samsung",
+    "series": "Galaxy S23",
+    "model": "Galaxy S23 Ultra",
+    "year": 2023,
+    "colors": [
+      "Phantom Black",
+      "Cream",
+      "Green",
+      "Lavender",
+      "Graphite",
+      "Lime",
+      "Sky Blue",
+      "Red"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s23/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s24",
+    "brand": "Samsung",
+    "series": "Galaxy S24",
+    "model": "Galaxy S24",
+    "year": 2024,
+    "colors": [
+      "Cobalt Violet",
+      "Amber Yellow",
+      "Onyx Black",
+      "Marble Grey",
+      "Jade Green",
+      "Sapphire Blue",
+      "Sandstone Orange",
+      "Titanium variants"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s24/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s24plus",
+    "brand": "Samsung",
+    "series": "Galaxy S24",
+    "model": "Galaxy S24+",
+    "year": 2024,
+    "colors": [
+      "Cobalt Violet",
+      "Amber Yellow",
+      "Onyx Black",
+      "Marble Grey",
+      "Jade Green",
+      "Sapphire Blue",
+      "Sandstone Orange",
+      "Titanium variants"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s24/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s24-ultra",
+    "brand": "Samsung",
+    "series": "Galaxy S24",
+    "model": "Galaxy S24 Ultra",
+    "year": 2024,
+    "colors": [
+      "Cobalt Violet",
+      "Amber Yellow",
+      "Onyx Black",
+      "Marble Grey",
+      "Jade Green",
+      "Sapphire Blue",
+      "Sandstone Orange",
+      "Titanium variants"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s24/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s25",
+    "brand": "Samsung",
+    "series": "Galaxy S25",
+    "model": "Galaxy S25",
+    "year": 2025,
+    "colors": [
+      "Icy Blue",
+      "Navy",
+      "Silver Shadow",
+      "Blue Black",
+      "Coral Red",
+      "Pink Gold",
+      "Titanium variants"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s25/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s25plus",
+    "brand": "Samsung",
+    "series": "Galaxy S25",
+    "model": "Galaxy S25+",
+    "year": 2025,
+    "colors": [
+      "Icy Blue",
+      "Navy",
+      "Silver Shadow",
+      "Blue Black",
+      "Coral Red",
+      "Pink Gold",
+      "Titanium variants"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s25/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s25-ultra",
+    "brand": "Samsung",
+    "series": "Galaxy S25",
+    "model": "Galaxy S25 Ultra",
+    "year": 2025,
+    "colors": [
+      "Icy Blue",
+      "Navy",
+      "Silver Shadow",
+      "Blue Black",
+      "Coral Red",
+      "Pink Gold",
+      "Titanium variants"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s25/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s26",
+    "brand": "Samsung",
+    "series": "Galaxy S26",
+    "model": "Galaxy S26",
+    "year": 2026,
+    "colors": [
+      "Cobalt Violet",
+      "Sky Blue",
+      "Black",
+      "Silver Shadow",
+      "Pink Gold"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s26/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s26plus",
+    "brand": "Samsung",
+    "series": "Galaxy S26",
+    "model": "Galaxy S26+",
+    "year": 2026,
+    "colors": [
+      "Cobalt Violet",
+      "Sky Blue",
+      "Black",
+      "Silver Shadow",
+      "Pink Gold"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s26/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-s26-ultra",
+    "brand": "Samsung",
+    "series": "Galaxy S26",
+    "model": "Galaxy S26 Ultra",
+    "year": 2026,
+    "colors": [
+      "Cobalt Violet",
+      "Sky Blue",
+      "Black",
+      "Silver Shadow",
+      "Pink Gold"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-s26/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-z-fold5",
+    "brand": "Samsung",
+    "series": "Galaxy Z Fold",
+    "model": "Galaxy Z Fold5",
+    "year": 2023,
+    "colors": [
+      "Icy Blue",
+      "Phantom Black",
+      "Cream",
+      "Gray",
+      "Blue"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-z-fold5/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-z-fold6",
+    "brand": "Samsung",
+    "series": "Galaxy Z Fold",
+    "model": "Galaxy Z Fold6",
+    "year": 2024,
+    "colors": [
+      "Silver Shadow",
+      "Pink",
+      "Navy",
+      "Crafted Black",
+      "White"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-z-fold6/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "samsung-galaxy-z-fold7",
+    "brand": "Samsung",
+    "series": "Galaxy Z Fold",
+    "model": "Galaxy Z Fold7",
+    "year": 2025,
+    "colors": [
+      "Blue Shadow",
+      "Silver Shadow",
+      "Jet Black",
+      "Mint"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.samsung.com/ca/smartphones/galaxy-z-fold7/specs/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "oppo-find-x6-pro",
+    "brand": "OPPO",
+    "series": "Find X",
+    "model": "Find X6 Pro",
+    "year": 2023,
+    "colors": [
+      "Brown",
+      "Green",
+      "Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.oppo.com/en/smartphones/series-find-x/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "oppo-find-x7-ultra",
+    "brand": "OPPO",
+    "series": "Find X",
+    "model": "Find X7 Ultra",
+    "year": 2024,
+    "colors": [
+      "Ocean Blue",
+      "Sepia Brown",
+      "Tailored Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.oppo.com/en/smartphones/series-find-x/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "oppo-find-x8",
+    "brand": "OPPO",
+    "series": "Find X",
+    "model": "Find X8",
+    "year": 2024,
+    "colors": [
+      "Space Black",
+      "Shell Pink",
+      "Star Grey"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.oppo.com/en/smartphones/series-find-x/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "oppo-find-x8-pro",
+    "brand": "OPPO",
+    "series": "Find X",
+    "model": "Find X8 Pro",
+    "year": 2024,
+    "colors": [],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.oppo.com/en/smartphones/series-find-x/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "oppo-find-x9-pro",
+    "brand": "OPPO",
+    "series": "Find X",
+    "model": "Find X9 Pro",
+    "year": 2025,
+    "colors": [],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.oppo.com/en/smartphones/series-find-x/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic5-pro",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic5 Pro",
+    "year": 2023,
+    "colors": [],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic6-pro",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic6 Pro",
+    "year": 2024,
+    "colors": [
+      "Epi Green",
+      "Black",
+      "Cloud Purple"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic7-pro",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic7 Pro",
+    "year": 2025,
+    "colors": [
+      "Lunar Shadow Grey",
+      "Breeze Blue",
+      "Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic8-pro",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic8 Pro",
+    "year": 2025,
+    "colors": [
+      "Sunrise Gold",
+      "Sky Cyan",
+      "Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic-v3",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic V3",
+    "year": 2024,
+    "colors": [
+      "Green",
+      "Reddish Brown",
+      "Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic-v5",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic V5",
+    "year": 2025,
+    "colors": [
+      "Dawn Gold",
+      "Reddish Brown",
+      "Ivory White",
+      "Black"
+    ],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  },
+  {
+    "id": "honor-magic-v6",
+    "brand": "HONOR",
+    "series": "Magic",
+    "model": "Magic V6",
+    "year": 2026,
+    "colors": [],
+    "storage_gb": [],
+    "specs_status": "À valider sur fiche officielle exacte du modèle/région avant publication",
+    "source_officielle": "https://www.honor.com/global/phones/honor-magic-series/",
+    "price_omr": null,
+    "stock": null,
+    "images": [],
+    "published": false
+  }
+]

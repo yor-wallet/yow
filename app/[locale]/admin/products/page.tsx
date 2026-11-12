@@ -38,9 +38,14 @@ export default async function AdminProductsPage({ params, searchParams }: Props)
         subtitle={t('products.subtitle')}
         actions={
           canWrite ? (
-            <Link href="/admin/products/new" className={buttonClasses({ variant: 'primary' })} data-testid="new-product">
-              {t('products.new')}
-            </Link>
+            <>
+              <Link href="/admin/products/import" className={buttonClasses({ variant: 'outline' })} data-testid="import-catalogue">
+                {t('import.link')}
+              </Link>
+              <Link href="/admin/products/new" className={buttonClasses({ variant: 'primary' })} data-testid="new-product">
+                {t('products.new')}
+              </Link>
+            </>
           ) : null
         }
       />
