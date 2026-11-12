@@ -1,0 +1,8 @@
+DOOM — PACK CATALOGUE PREMIUM 2026
+
+48 fiches modèles candidates, catalogue JSON et CSV, 4 planches d'inspiration IA, prompt complet pour Claude.
+
+IMPORTANT : les planches IA sont des concepts visuels, NON des images fidèles individuelles des références. Les caractéristiques techniques détaillées, prix, stocks et disponibilité locale doivent être vérifiés modèle par modèle sur les fiches officielles avant publication.
+
+Fichier principal : instructions/PROMPT_CLAUDE_DOOM.md
+Catalogue : catalogue/produits.json
