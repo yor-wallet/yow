@@ -6,6 +6,8 @@ Marketplace électronique premium pour le **Sultanat d'Oman** — devise **OMR**
 > ⚠️ Projet en cours de construction. L'état réel de chaque module est indiqué dans
 > [docs/STATUS.md](docs/STATUS.md) une fois les modules livrés. Aucune fonctionnalité n'est
 > déclarée terminée sans implémentation et tests.
+>
+> **Reprise du travail** (autre compte ou autre session) : lire d'abord [docs/HANDOFF.md](docs/HANDOFF.md).
 
 ## Stack
 Next.js 15 (App Router) · React 19 · TypeScript strict · Tailwind CSS v4 · Motion · next-intl ·
