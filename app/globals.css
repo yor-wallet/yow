@@ -2,8 +2,13 @@
 
 /*
  * DOOM | دوم — design tokens (Tailwind v4).
- * The default Tailwind palette is REMOVED: only DOOM colours exist as utilities
- * (bg-night, text-cyan, …) plus semantic theme tokens (bg-bg, text-fg, …).
+ * Identity (owner's specification, November 2026): yellow #FEE225 + navy #0A1937 on a warm
+ * off-white #FDFAF6. Yellow is the primary action (navy text, 13.35:1); navy carries headings,
+ * prices, text, icons and the focus ring.
+ * The default Tailwind palette is REMOVED: only DOOM colours exist as utilities plus semantic
+ * theme tokens (bg-bg, text-fg, …). The historical utility names (blue, cyan, orange, amber,
+ * night) are kept so every component follows the palette without being rewritten: they now
+ * resolve to the navy / yellow / status colours of the current theme.
  * See docs/ARCHITECTURE.md → Design tokens.
  */
 
@@ -12,18 +17,14 @@
 
 @theme {
   --color-*: initial;
-  --color-night: #10052e;
-  --color-night-2: #190b45;
-  --color-blue: #087bff;
-  --color-cyan: #00d9ff;
-  --color-orange: #ff7900;
-  --color-amber: #ffae00;
+  --color-night: #0a1937; /* navy */
+  --color-night-2: #12254d;
+  --color-yellow: #fee225;
+  --color-yellow-hover: #f5d41c;
   --color-white: #ffffff;
-  --color-mist: #c9c5de; /* secondary text on dark */
-  --color-snow: #f7f9ff; /* light background */
-  --color-ink: #17152d; /* light text */
-  --color-success: #16a673;
-  --color-error: #e5484d;
+  --color-mist: #c5cddc; /* secondary text on navy */
+  --color-snow: #fdfaf6; /* store background */
+  --color-ink: #0a1937; /* text on light */
 
   --font-sans: var(--app-font-stack);
   --font-display: var(--app-display-stack);
@@ -35,17 +36,19 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1600px;
 
-  --radius-card: 1.25rem;
+  --radius-card: 1rem;
   --radius-pill: 999px;
 
-  --shadow-glow-blue: 0 0 0 1px rgb(8 123 255 / 0.28), 0 10px 34px -10px rgb(8 123 255 / 0.65);
-  --shadow-glow-cyan: 0 0 0 1px rgb(0 217 255 / 0.3), 0 10px 34px -10px rgb(0 217 255 / 0.6);
-  --shadow-glow-orange: 0 0 0 1px rgb(255 121 0 / 0.3), 0 10px 34px -10px rgb(255 121 0 / 0.6);
-  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 18px 40px -24px rgb(16 5 46 / 0.65);
-  --shadow-float: 0 24px 60px -20px rgb(16 5 46 / 0.75);
+  /* Quiet elevation only (the former neon glows are gone): a hairline ring + a short soft shadow. */
+  --shadow-glow-blue: 0 0 0 1px rgb(10 25 55 / 0.55), 0 6px 16px -10px rgb(10 25 55 / 0.35);
+  --shadow-glow-cyan: 0 0 0 1px rgb(10 25 55 / 0.3), 0 6px 16px -10px rgb(10 25 55 / 0.3);
+  --shadow-glow-orange: 0 0 0 1px rgb(10 25 55 / 0.55), 0 6px 14px -10px rgb(10 25 55 / 0.4);
+  --shadow-card: 0 1px 2px rgb(10 25 55 / 0.05), 0 10px 24px -18px rgb(10 25 55 / 0.28);
+  --shadow-float: 0 2px 6px rgb(10 25 55 / 0.06), 0 22px 44px -24px rgb(10 25 55 / 0.38);
 
-  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Entrance curve of the specification: cubic-bezier(.2,.7,.2,1). */
+  --ease-premium: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-snappy: cubic-bezier(0.2, 0.7, 0.2, 1);
 
   --animate-shimmer: doom-shimmer 1.6s linear infinite;
   --animate-fade-in: doom-fade-in var(--dur-nav) var(--ease-premium) both;
@@ -99,21 +102,29 @@
   --color-border-strong: var(--doom-border-strong);
   --color-accent: var(--doom-accent);
   --color-price: var(--doom-price);
-  --color-on-accent: #10052e;
+  --color-on-accent: #0a1937;
   --color-ring: var(--doom-ring);
+  /* Historical names → palette roles of the current theme. */
+  --color-blue: var(--doom-blue); /* selection, focus, links */
+  --color-cyan: var(--doom-cyan); /* accent on dark sections */
+  --color-orange: var(--doom-orange); /* attention */
+  --color-amber: var(--doom-amber); /* warning text */
+  --color-success: var(--doom-success);
+  --color-error: var(--doom-error);
 }
 
 :root {
   /* Motion durations (SPEC: buttons 100–180, nav 180–300, cards 200–350, banners 400–800 ms) */
-  --dur-btn: 140ms;
-  --dur-nav: 240ms;
-  --dur-card: 280ms;
-  --dur-banner: 600ms;
+  --dur-btn: 110ms; /* press feedback 80–120 ms */
+  --dur-nav: 200ms; /* page fade, drawers 150–240 ms */
+  --dur-card: 150ms; /* card hover 140–160 ms */
+  --dur-banner: 220ms; /* gallery / step transitions 160–220 ms */
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #087bff 0%, #00d9ff 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff7900 0%, #ffae00 100%);
-  --gradient-premium: linear-gradient(160deg, #10052e 0%, #190b45 55%, #087bff 140%);
+  /* "Gradients" are flat in this identity: the primary action is plain yellow, dark sections plain navy. */
+  --gradient-primary: linear-gradient(#fee225, #fee225);
+  --gradient-secondary: linear-gradient(#fee225, #fee225);
+  --gradient-premium: linear-gradient(160deg, #0a1937 0%, #12254d 100%);
 
   /* Safe areas & chrome sizes */
   --safe-top: env(safe-area-inset-top, 0px);
@@ -124,80 +135,95 @@
   --page-max: 1600px;
   --page-gutter: clamp(16px, 4vw, 40px);
 
-  --app-font-stack: var(--font-inter), var(--font-plex-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
-    'Noto Sans Arabic', Tahoma, sans-serif;
-  /* Futuristic display face (Exo 2) for headings, prices, HUD labels. */
-  --app-display-stack: var(--font-exo2), var(--font-alexandria), var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* IBM Plex Sans (Latin) + IBM Plex Sans Arabic, self-hosted WOFF2 400/500/600/700; fallback Tahoma, Arial. */
+  --app-font-stack: var(--font-plex-sans), var(--font-plex-arabic), Tahoma, Arial, sans-serif;
+  /* Headings use the same family (weight carries the hierarchy). */
+  --app-display-stack: var(--app-font-stack);
 
-  /* Holographic spectrum (DOOM palette only) */
-  --gradient-holo: conic-gradient(from var(--doom-angle), #087bff, #00d9ff, #ffae00, #ff7900, #087bff);
-  --gradient-hairline: linear-gradient(90deg, transparent 0%, #087bff 18%, #00d9ff 50%, #ff7900 82%, transparent 100%);
+  /* Former holographic borders / hairlines: now a plain rule in the border colour. */
+  --gradient-holo: linear-gradient(var(--doom-border-strong), var(--doom-border-strong));
+  --gradient-hairline: linear-gradient(90deg, transparent 0%, var(--doom-border-strong) 20%, var(--doom-border-strong) 80%, transparent 100%);
 }
 
 html[lang='ar'] {
-  --app-font-stack: var(--font-plex-arabic), var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Tahoma,
-    'Noto Sans Arabic', sans-serif;
-  /* Display: Arabic glyphs from Alexandria, Latin glyphs (DOOM, model names) from Exo 2. */
-  --app-display-stack: var(--font-alexandria), var(--font-exo2), var(--font-plex-arabic), ui-sans-serif, system-ui, Tahoma, sans-serif;
+  /* Arabic first; Latin glyphs (model names, codes, prices) fall through to IBM Plex Sans. */
+  --app-font-stack: var(--font-plex-arabic), var(--font-plex-sans), Tahoma, Arial, sans-serif;
 }
 
-/* Dark is the default theme */
+/* Dark theme (optional, chosen by the visitor): navy surfaces, yellow accent. */
 :root,
 [data-theme='dark'] {
   color-scheme: dark;
-  --doom-bg: #10052e;
-  --doom-bg-2: #190b45;
-  --doom-surface: #190b45;
-  --doom-surface-2: color-mix(in srgb, #190b45 88%, #c9c5de 12%);
+  --doom-bg: #0a1937;
+  --doom-bg-2: #12254d;
+  --doom-surface: #12254d;
+  --doom-surface-2: #1b3160;
   --doom-fg: #ffffff;
-  --doom-muted: #c9c5de;
-  --doom-border: rgb(201 197 222 / 0.14);
-  --doom-border-strong: rgb(201 197 222 / 0.3);
-  --doom-accent: #00d9ff;
-  --doom-price: #ff8a1f; /* orange prices: 6.9:1 on the dark surfaces */
-  --doom-ring: #00d9ff;
-  --doom-glass: rgb(25 11 69 / 0.62);
-  --doom-header: rgb(16 5 46 / 0.82);
-  --doom-overlay: rgb(16 5 46 / 0.72);
-  --doom-skeleton: rgb(201 197 222 / 0.08);
-  --doom-skeleton-hi: rgb(201 197 222 / 0.18);
-  --doom-page-glow: radial-gradient(1100px 520px at 85% -8%, rgb(8 123 255 / 0.2), transparent 62%),
-    radial-gradient(800px 420px at -8% 4%, rgb(255 121 0 / 0.08), transparent 60%);
-  --doom-grid-line: rgb(0 217 255 / 0.16);
-  --doom-circuit-opacity: 0.9;
-  --doom-aurora-a: rgb(8 123 255 / 0.38);
-  --doom-aurora-b: rgb(0 217 255 / 0.14);
-  --doom-aurora-c: rgb(255 121 0 / 0.12);
-  --doom-spot: rgb(0 217 255 / 0.12);
-  --doom-neon: 0 0 22px rgb(0 217 255 / 0.45), 0 0 2px rgb(0 217 255 / 0.6);
+  --doom-muted: #c5cddc;
+  --doom-border: rgb(255 255 255 / 0.16);
+  --doom-border-strong: #8e99b0;
+  --doom-accent: #fee225;
+  --doom-price: #ffffff;
+  --doom-ring: #fee225;
+  --doom-blue: #fee225;
+  --doom-cyan: #fee225;
+  --doom-orange: #ffd98a;
+  --doom-amber: #ffd98a;
+  --doom-success: #7ddcae;
+  --doom-success-bg: rgb(125 220 174 / 0.14);
+  --doom-warning-bg: rgb(255 217 138 / 0.14);
+  --doom-error: #ffa59b;
+  --doom-error-bg: rgb(255 165 155 / 0.14);
+  --doom-glass: rgb(18 37 77 / 0.92);
+  --doom-header: rgb(10 25 55 / 0.94);
+  --doom-overlay: rgb(4 10 24 / 0.72);
+  --doom-skeleton: rgb(255 255 255 / 0.08);
+  --doom-skeleton-hi: rgb(255 255 255 / 0.16);
+  --doom-page-glow: none;
+  --doom-grid-line: transparent;
+  --doom-circuit-opacity: 0;
+  --doom-aurora-a: transparent;
+  --doom-aurora-b: transparent;
+  --doom-aurora-c: transparent;
+  --doom-spot: rgb(254 226 37 / 0.06);
+  --doom-neon: none;
 }
 
+/* Light theme (default): the identity of the specification. */
 [data-theme='light'] {
   color-scheme: light;
-  --doom-bg: #f7f9ff;
+  --doom-bg: #fdfaf6;
   --doom-bg-2: #ffffff;
   --doom-surface: #ffffff;
-  --doom-surface-2: color-mix(in srgb, #f7f9ff 75%, #c9c5de 25%);
-  --doom-fg: #17152d;
-  --doom-muted: color-mix(in srgb, #17152d 70%, #f7f9ff 30%);
-  --doom-border: rgb(23 21 45 / 0.12);
-  --doom-border-strong: rgb(23 21 45 / 0.26);
-  --doom-accent: color-mix(in srgb, #087bff 72%, #10052e 28%); /* AA on light surfaces */
-  --doom-price: #c24e00; /* orange prices: 4.8:1 on white (the brand orange #ff7900 is only 2.9:1) */
-  --doom-ring: #087bff;
-  --doom-glass: rgb(255 255 255 / 0.74);
-  --doom-header: rgb(247 249 255 / 0.86);
-  --doom-overlay: rgb(16 5 46 / 0.55);
-  --doom-skeleton: rgb(23 21 45 / 0.06);
-  --doom-skeleton-hi: rgb(23 21 45 / 0.12);
-  --doom-page-glow: radial-gradient(1100px 520px at 85% -8%, rgb(8 123 255 / 0.1), transparent 62%),
-    radial-gradient(800px 420px at -8% 4%, rgb(255 174 0 / 0.08), transparent 60%);
-  --doom-grid-line: rgb(8 123 255 / 0.12);
-  --doom-circuit-opacity: 0.35;
-  --doom-aurora-a: rgb(8 123 255 / 0.14);
-  --doom-aurora-b: rgb(0 217 255 / 0.1);
-  --doom-aurora-c: rgb(255 174 0 / 0.1);
-  --doom-spot: rgb(8 123 255 / 0.08);
+  --doom-surface-2: #f4efe6;
+  --doom-fg: #0a1937;
+  --doom-muted: #475569; /* 7.2:1 on the store background */
+  --doom-border: rgb(10 25 55 / 0.14);
+  --doom-border-strong: #758097; /* field borders: 3.9:1 on white */
+  --doom-accent: #0a1937;
+  --doom-price: #0a1937;
+  --doom-ring: #0a1937;
+  --doom-blue: #0a1937;
+  --doom-cyan: #0a1937;
+  --doom-orange: #805000;
+  --doom-amber: #805000;
+  --doom-success: #137047;
+  --doom-success-bg: #e7f6ed;
+  --doom-warning-bg: #fff3cb;
+  --doom-error: #b42318;
+  --doom-error-bg: #fdecea;
+  --doom-glass: rgb(255 255 255 / 0.96);
+  --doom-header: rgb(253 250 246 / 0.96);
+  --doom-overlay: rgb(10 25 55 / 0.5);
+  --doom-skeleton: rgb(10 25 55 / 0.06);
+  --doom-skeleton-hi: rgb(10 25 55 / 0.12);
+  --doom-page-glow: none;
+  --doom-grid-line: transparent;
+  --doom-circuit-opacity: 0;
+  --doom-aurora-a: transparent;
+  --doom-aurora-b: transparent;
+  --doom-aurora-c: transparent;
+  --doom-spot: rgb(10 25 55 / 0.04);
   --doom-neon: none;
 }
 
@@ -261,13 +287,13 @@ html[lang='ar'] {
   }
 
   ::selection {
-    background: rgb(0 217 255 / 0.32);
+    background: rgb(254 226 37 / 0.55);
   }
 
   /* Thin futuristic scrollbars */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgb(0 217 255 / 0.35) transparent;
+    scrollbar-color: var(--doom-border-strong) transparent;
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -276,7 +302,7 @@ html[lang='ar'] {
   ::-webkit-scrollbar-thumb {
     border: 3px solid transparent;
     border-radius: 999px;
-    background: linear-gradient(180deg, #087bff, #00d9ff) border-box;
+    background: var(--doom-border-strong) border-box;
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-track {
@@ -289,6 +315,7 @@ html[lang='ar'] {
     font-family: var(--app-display-stack);
     text-wrap: balance;
     letter-spacing: -0.01em;
+    line-height: 1.4;
   }
 
   [dir='rtl'] h1,
@@ -304,33 +331,39 @@ html[lang='ar'] {
 
 /* ───────── Utilities ───────── */
 
+/* Primary action surface: yellow, navy content, a navy hairline so it separates from light backgrounds. */
 @utility bg-gradient-primary {
   background-image: var(--gradient-primary);
+  background-color: #fee225;
+  color: #0a1937;
+  box-shadow: inset 0 0 0 1px rgb(10 25 55 / 0.85);
+  &:where(a, button):hover {
+    background-image: linear-gradient(#f5d41c, #f5d41c);
+  }
 }
 @utility bg-gradient-secondary {
   background-image: var(--gradient-secondary);
+  background-color: #fee225;
+  color: #0a1937;
+  box-shadow: inset 0 0 0 1px rgb(10 25 55 / 0.85);
+  &:where(a, button):hover {
+    background-image: linear-gradient(#f5d41c, #f5d41c);
+  }
 }
 @utility bg-gradient-premium {
   background-image: var(--gradient-premium);
 }
 /* Phone header band. Horizontal only, so the band and the curved strip under it join without a seam. */
 @utility bg-band {
-  background-color: #10052e;
-  background-image: linear-gradient(90deg, #10052e 0%, #1f0e58 50%, #10052e 100%);
+  background-color: var(--doom-header);
 }
 
 /* Gradient text — large display text on dark surfaces only (contrast). */
 @utility text-gradient-primary {
-  background-image: var(--gradient-primary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--doom-accent);
 }
 @utility text-gradient-secondary {
-  background-image: var(--gradient-secondary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--doom-accent);
 }
 
 @utility glass {
@@ -417,7 +450,7 @@ html[lang='ar'] {
 /* Phone band: a soft shadow appears once the page has scrolled under it (scroll-driven, no JS). */
 @keyframes doom-band-shadow {
   to {
-    box-shadow: 0 10px 28px -12px rgb(16 5 46 / 0.75);
+    box-shadow: 0 6px 18px -12px rgb(10 25 55 / 0.45);
   }
 }
 @utility band-scroll-shadow {
@@ -455,8 +488,8 @@ html[lang='ar'] {
 .nav-progress-done {
   height: 100%;
   transform-origin: left center;
-  background: linear-gradient(90deg, #087bff, #00d9ff, #ff7900);
-  box-shadow: 0 0 10px rgb(0 217 255 / 0.6);
+  background: #0a1937;
+  box-shadow: 0 1px 0 #fee225;
 }
 [dir='rtl'] .nav-progress-run,
 [dir='rtl'] .nav-progress-done {
@@ -501,7 +534,7 @@ html[lang='ar'] {
   border-radius: 12px;
   padding: 10px 16px;
   background: var(--gradient-primary);
-  color: #10052e;
+  color: #0a1937;
   font-weight: 700;
   transition: transform var(--dur-btn) var(--ease-snappy);
 }
@@ -621,45 +654,21 @@ html[lang='ar'] {
   animation: doom-scan 7s var(--ease-premium) infinite;
 }
 
-/* Holographic animated border — always on. */
+/* Former holographic borders: a plain border in this identity (no animation). */
 @utility holo-border {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(var(--doom-surface), var(--doom-surface)) padding-box,
-    var(--gradient-holo) border-box;
-  animation: doom-holo-spin 6s linear infinite;
+  border: 1px solid var(--doom-border);
+  background-color: var(--doom-surface);
 }
-/* Holographic border that lights up on hover/focus-within only. */
 @utility holo-border-hover {
   &:hover,
   &:focus-within {
-    border-color: transparent;
-    background:
-      linear-gradient(var(--doom-surface), var(--doom-surface)) padding-box,
-      var(--gradient-holo) border-box;
-    animation: doom-holo-spin 4s linear infinite;
+    border-color: var(--doom-border-strong);
   }
 }
 
-/* Light sweep across the element on hover (uses ::after). */
+/* Former light sweep: no decorative animation on controls. */
 @utility sheen {
   position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
-    transform: translateX(-130%);
-    transition: transform 750ms var(--ease-premium);
-  }
-  &:hover::after,
-  &:focus-visible::after {
-    transform: translateX(130%);
-  }
 }
 
 /* Pointer-following light (uses ::before). Requires data-spotlight (SpotlightTracker sets --mx/--my). */
@@ -687,11 +696,9 @@ html[lang='ar'] {
 @utility neon {
   text-shadow: var(--doom-neon);
 }
+/* Former glowing tile: now a plain hairline ring. */
 @utility neon-box {
-  box-shadow:
-    0 0 0 1px rgb(0 217 255 / 0.35),
-    0 0 28px -4px rgb(0 217 255 / 0.55),
-    inset 0 0 18px -8px rgb(0 217 255 / 0.6);
+  box-shadow: 0 0 0 1px var(--doom-border);
 }
 
 @utility font-display {
@@ -707,18 +714,18 @@ html[lang='ar'] {
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--doom-accent);
+  color: var(--doom-muted);
+  /* A small yellow marker (decorative; no automatic animation). */
   &::before {
     content: '';
     width: 7px;
     height: 7px;
     flex: none;
-    border-radius: 999px;
-    background: currentColor;
-    box-shadow: 0 0 10px currentColor;
-    animation: doom-pulse-node 2.4s ease-in-out infinite;
+    border-radius: 2px;
+    background: #fee225;
+    box-shadow: 0 0 0 1px rgb(10 25 55 / 0.6);
   }
   &:where([lang='ar'], [lang='ar'] *) {
     letter-spacing: 0;
@@ -727,27 +734,16 @@ html[lang='ar'] {
   }
 }
 
-/* Circuit rule: line ending in nodes, like the logo's tagline rules. */
+/* Section rule: a plain hairline (the former circuit line with nodes). */
 @utility circuit-rule {
-  position: relative;
   height: 1px;
   min-width: 24px;
-  background: linear-gradient(90deg, rgb(0 217 255 / 0.7), rgb(8 123 255 / 0.25) 70%, transparent);
-  &:where([dir='rtl'], [dir='rtl'] *) {
-    background: linear-gradient(270deg, rgb(0 217 255 / 0.7), rgb(8 123 255 / 0.25) 70%, transparent);
-  }
-  &::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: -3px;
-    top: -3.5px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    border: 1.5px solid #00d9ff;
-    background: var(--doom-bg);
-    box-shadow: 0 0 8px rgb(0 217 255 / 0.7);
-  }
+  background: var(--doom-border);
+}
+
+/* The animated ambient scene (grid, aurora, circuit) is not part of the yellow & navy identity. */
+.doom-ambient {
+  display: none;
 }
 
 /* Respect reduced motion everywhere. */

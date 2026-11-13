@@ -9,6 +9,6 @@ import { useBackTarget } from './back-target';
 export function MobileHeaderStart() {
   const pathname = usePathname();
   const target = useBackTarget();
-  if (pathname === '/') return <LocaleSwitcher variant="sheet" className="text-white hover:bg-white/10" />;
-  return <BackButton fallbackHref={target ?? '/'} variant="icon" tone="onDark" />;
+  if (pathname === '/') return <LocaleSwitcher variant="sheet" />;
+  return <BackButton fallbackHref={target ?? '/'} variant="icon" />;
 }

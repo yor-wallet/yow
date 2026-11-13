@@ -122,7 +122,7 @@ export function PromoScene({
           <span style={i(2)} />
         </div>
         <svg viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="44" fill="rgb(16 5 46 / 0.55)" stroke="rgb(255 255 255 / 0.18)" strokeWidth="1.5" />
+          <circle cx="50" cy="50" r="44" fill="rgb(10 25 55 / 0.55)" stroke="rgb(255 255 255 / 0.18)" strokeWidth="1.5" />
           {Array.from({ length: 24 }, (_, n) => (
             <line
               key={n}
@@ -130,7 +130,7 @@ export function PromoScene({
               y1="9"
               x2="50"
               y2={n % 6 === 0 ? 15 : 12}
-              stroke={n % 6 === 0 ? '#00d9ff' : 'rgb(255 255 255 / 0.35)'}
+              stroke={n % 6 === 0 ? '#fee225' : 'rgb(255 255 255 / 0.35)'}
               strokeWidth={n % 6 === 0 ? 1.6 : 0.8}
               transform={`rotate(${n * 15} 50 50)`}
             />
@@ -149,8 +149,8 @@ export function PromoScene({
           />
           <defs>
             <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#087bff" />
-              <stop offset="1" stopColor="#00d9ff" />
+              <stop offset="0" stopColor="#27407a" />
+              <stop offset="1" stopColor="#fee225" />
             </linearGradient>
           </defs>
         </svg>

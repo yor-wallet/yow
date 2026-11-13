@@ -3,14 +3,16 @@ import { cn } from '@/lib/cn';
 
 export type BadgeVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error' | 'primary' | 'secondary';
 
+// Status colours of the specification: text + tinted ground (success #137047 on #E7F6ED, warning
+// #805000 on #FFF3CB, error #B42318 on #FDECEA); each badge also carries text, never colour alone.
 const variants: Record<BadgeVariant, string> = {
   neutral: 'bg-surface-2 text-fg border border-border',
-  info: 'border border-blue/40 bg-blue/12 text-accent',
-  success: 'bg-success text-on-accent',
-  warning: 'bg-amber text-on-accent',
-  error: 'bg-error text-on-accent',
-  primary: 'bg-gradient-primary text-on-accent',
-  secondary: 'bg-gradient-secondary text-on-accent',
+  info: 'border border-border-strong bg-surface-2 text-fg',
+  success: 'border border-success/30 bg-[var(--doom-success-bg)] text-success',
+  warning: 'border border-amber/30 bg-[var(--doom-warning-bg)] text-amber',
+  error: 'border border-error/30 bg-[var(--doom-error-bg)] text-error',
+  primary: 'border border-night/80 bg-yellow text-on-accent',
+  secondary: 'border border-night/80 bg-yellow text-on-accent',
 };
 
 export function Badge({ variant = 'neutral', className, ...rest }: HTMLAttributes<HTMLSpanElement> & { variant?: BadgeVariant }) {

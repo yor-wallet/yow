@@ -23,13 +23,13 @@
   filter: blur(40px);
   opacity: 0.7;
   background:
-    radial-gradient(circle at 30% 30%, rgb(0 217 255 / 0.9), transparent 62%),
-    radial-gradient(circle at 72% 72%, rgb(8 123 255 / 0.9), transparent 62%);
+    radial-gradient(circle at 30% 30%, rgb(254 226 37 / 0.9), transparent 62%),
+    radial-gradient(circle at 72% 72%, rgb(39 64 122 / 0.9), transparent 62%);
 }
 .warm .halo {
   background:
-    radial-gradient(circle at 30% 30%, rgb(255 174 0 / 0.85), transparent 62%),
-    radial-gradient(circle at 72% 72%, rgb(255 121 0 / 0.85), transparent 62%);
+    radial-gradient(circle at 30% 30%, rgb(254 226 37 / 0.85), transparent 62%),
+    radial-gradient(circle at 72% 72%, rgb(254 226 37 / 0.85), transparent 62%);
 }
 
 /* Holographic floor ring under each device */
@@ -41,10 +41,10 @@
   aspect-ratio: 4 / 1;
   transform: translateX(-50%) rotateX(72deg);
   border-radius: 50%;
-  border: 2px solid rgb(0 217 255 / 0.55);
+  border: 2px solid rgb(254 226 37 / 0.55);
   box-shadow:
-    0 0 24px rgb(0 217 255 / 0.5),
-    inset 0 0 24px rgb(0 217 255 / 0.35);
+    0 0 24px rgb(254 226 37 / 0.5),
+    inset 0 0 24px rgb(254 226 37 / 0.35);
 }
 .floor::after {
   content: '';
@@ -54,10 +54,10 @@
   border: 1px dashed rgb(255 255 255 / 0.35);
 }
 .warm .floor {
-  border-color: rgb(255 174 0 / 0.6);
+  border-color: rgb(254 226 37 / 0.6);
   box-shadow:
-    0 0 24px rgb(255 121 0 / 0.5),
-    inset 0 0 24px rgb(255 174 0 / 0.35);
+    0 0 24px rgb(254 226 37 / 0.5),
+    inset 0 0 24px rgb(254 226 37 / 0.35);
 }
 
 /* ───────── HUD callouts (specs, price) ───────── */
@@ -71,16 +71,16 @@
   position: absolute;
   max-width: 44%;
   padding: 0.35em 0.75em;
-  border: 1px solid rgb(0 217 255 / 0.45);
+  border: 1px solid rgb(254 226 37 / 0.45);
   border-radius: 0.6em;
-  background: rgb(16 5 46 / 0.62);
+  background: rgb(10 25 55 / 0.62);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #fff;
   font-size: clamp(0.68rem, 3.4cqi, 0.82rem);
   font-weight: 600;
   line-height: 1.3;
-  box-shadow: 0 0 18px -6px rgb(0 217 255 / 0.9);
+  box-shadow: 0 0 18px -6px rgb(254 226 37 / 0.9);
   overflow-wrap: anywhere;
 }
 .callout::before {
@@ -90,7 +90,7 @@
   inset-inline-start: -0.45em;
   width: 0.45em;
   height: 1px;
-  background: rgb(0 217 255 / 0.8);
+  background: rgb(254 226 37 / 0.8);
 }
 .callout:nth-child(1) {
   top: 10%;
@@ -110,11 +110,11 @@
   inset-inline-start: 2%;
   padding: 0.4em 0.85em;
   border-radius: 0.75em;
-  background: linear-gradient(135deg, #ff7900, #ffae00);
-  color: #10052e;
+  background: linear-gradient(135deg, #fee225, #fee225);
+  color: #0a1937;
   font-weight: 800;
   font-size: clamp(0.8rem, 4.4cqi, 1.05rem);
-  box-shadow: 0 10px 30px -10px rgb(255 121 0 / 0.9);
+  box-shadow: 0 10px 30px -10px rgb(254 226 37 / 0.9);
   unicode-bidi: isolate;
   white-space: nowrap;
 }
@@ -143,12 +143,12 @@
   position: absolute;
   inset: 0;
   border-radius: 15% / 7%;
-  background: linear-gradient(150deg, #3b2a8a 0%, #190b45 45%, #10052e 100%);
+  background: linear-gradient(150deg, #1b3160 0%, #12254d 45%, #0a1937 100%);
   border: 1px solid rgb(255 255 255 / 0.35);
   box-shadow:
-    -6px 0 0 -1px #241162,
+    -6px 0 0 -1px #12254d,
     0 40px 70px -26px rgb(0 0 0 / 0.85),
-    inset 0 0 0 2px rgb(0 217 255 / 0.18);
+    inset 0 0 0 2px rgb(254 226 37 / 0.18);
 }
 .phoneScreen {
   position: absolute;
@@ -161,13 +161,13 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 60% at 50% 0%, rgb(0 217 255 / 0.55), transparent 60%),
-    linear-gradient(170deg, #087bff 0%, #10052e 70%);
+    radial-gradient(120% 60% at 50% 0%, rgb(254 226 37 / 0.55), transparent 60%),
+    linear-gradient(170deg, #27407a 0%, #0a1937 70%);
 }
 .warm .screenGlow {
   background:
-    radial-gradient(120% 60% at 50% 0%, rgb(255 174 0 / 0.6), transparent 60%),
-    linear-gradient(170deg, #ff7900 0%, #10052e 70%);
+    radial-gradient(120% 60% at 50% 0%, rgb(254 226 37 / 0.6), transparent 60%),
+    linear-gradient(170deg, #fee225 0%, #0a1937 70%);
 }
 [data-play='true'] .screenGlow {
   animation: scLightUp 900ms 750ms ease-out both;
@@ -186,7 +186,7 @@
 .emblem {
   width: 46%;
   height: auto;
-  filter: drop-shadow(0 0 10px rgb(0 217 255 / 0.7));
+  filter: drop-shadow(0 0 10px rgb(254 226 37 / 0.7));
 }
 .screenTitle {
   font-size: clamp(0.55rem, 3.6cqi, 0.9rem);
@@ -256,7 +256,7 @@
   transform-origin: 50% 100%;
   transform: rotateX(-6deg);
   border-radius: 4% / 6%;
-  background: linear-gradient(160deg, #3b2a8a, #10052e 70%);
+  background: linear-gradient(160deg, #1b3160, #0a1937 70%);
   border: 1px solid rgb(255 255 255 / 0.3);
   box-shadow: 0 30px 60px -28px rgb(0 0 0 / 0.85);
   backface-visibility: visible;
@@ -270,8 +270,8 @@
   overflow: hidden;
   border-radius: 2.5% / 4%;
   background:
-    radial-gradient(90% 70% at 20% 0%, rgb(0 217 255 / 0.45), transparent 60%),
-    linear-gradient(160deg, #087bff -20%, #10052e 65%);
+    radial-gradient(90% 70% at 20% 0%, rgb(254 226 37 / 0.45), transparent 60%),
+    linear-gradient(160deg, #27407a -20%, #0a1937 65%);
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-content: center;
@@ -281,8 +281,8 @@
 }
 .warm .lidScreen {
   background:
-    radial-gradient(90% 70% at 20% 0%, rgb(255 174 0 / 0.5), transparent 60%),
-    linear-gradient(160deg, #ff7900 -20%, #10052e 65%);
+    radial-gradient(90% 70% at 20% 0%, rgb(254 226 37 / 0.5), transparent 60%),
+    linear-gradient(160deg, #fee225 -20%, #0a1937 65%);
 }
 .lidTitle {
   grid-column: 1 / -1;
@@ -319,7 +319,7 @@
   bottom: 9%;
   height: 8%;
   clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
-  background: linear-gradient(180deg, #5b4aa8 0%, #241162 60%, #10052e 100%);
+  background: linear-gradient(180deg, #27407a 0%, #12254d 60%, #0a1937 100%);
 }
 .deck::after {
   content: '';
@@ -329,7 +329,7 @@
   width: 16%;
   height: 34%;
   border-radius: 0 0 6px 6px;
-  background: rgb(16 5 46 / 0.6);
+  background: rgb(10 25 55 / 0.6);
 }
 
 /* ───────── EARBUDS ───────── */
@@ -350,7 +350,7 @@
   background: linear-gradient(160deg, #ffffff 0%, #c9c5de 70%, #8f88b8 100%);
   box-shadow:
     0 30px 50px -22px rgb(0 0 0 / 0.8),
-    inset 0 -6px 12px rgb(16 5 46 / 0.25);
+    inset 0 -6px 12px rgb(10 25 55 / 0.25);
 }
 .caseSlot {
   position: absolute;
@@ -359,7 +359,7 @@
   right: 18%;
   height: 18%;
   border-radius: 99px;
-  background: linear-gradient(180deg, #2b2160, #10052e);
+  background: linear-gradient(180deg, #12254d, #0a1937);
 }
 .led {
   position: absolute;
@@ -369,12 +369,12 @@
   aspect-ratio: 1;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: #00d9ff;
-  box-shadow: 0 0 10px 2px #00d9ff;
+  background: #fee225;
+  box-shadow: 0 0 10px 2px #fee225;
 }
 .warm .led {
-  background: #ffae00;
-  box-shadow: 0 0 10px 2px #ffae00;
+  background: #fee225;
+  box-shadow: 0 0 10px 2px #fee225;
 }
 .caseLid {
   position: absolute;
@@ -386,7 +386,7 @@
   transform: rotateX(-118deg);
   border-radius: 40% 40% 12% 12% / 70% 70% 20% 20%;
   background: linear-gradient(180deg, #ffffff 0%, #c9c5de 100%);
-  box-shadow: inset 0 4px 10px rgb(16 5 46 / 0.2);
+  box-shadow: inset 0 4px 10px rgb(10 25 55 / 0.2);
   backface-visibility: visible;
 }
 [data-play='true'] .caseLid {
@@ -449,7 +449,7 @@
   height: 1.35em;
   border-radius: 50%;
   border: 2px solid rgb(255 255 255 / 0.85);
-  box-shadow: 0 0 12px -2px rgb(0 217 255 / 0.9);
+  box-shadow: 0 0 12px -2px rgb(254 226 37 / 0.9);
 }
 [data-play='true'] .swatch {
   animation: scPop 460ms var(--ease-premium) both;
@@ -478,14 +478,14 @@
   padding-top: 0.6em;
   border-radius: 0.9em 0.9em 0.4em 0.4em;
   border: 1px solid rgb(255 255 255 / 0.3);
-  background: linear-gradient(180deg, rgb(255 174 0 / 0.55), rgb(255 121 0 / 0.15));
+  background: linear-gradient(180deg, rgb(254 226 37 / 0.55), rgb(254 226 37 / 0.15));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   color: #fff;
   font-weight: 800;
   font-size: clamp(0.8rem, 5cqi, 1.4rem);
   transform-origin: 50% 100%;
-  box-shadow: 0 0 24px -8px rgb(255 121 0 / 0.9);
+  box-shadow: 0 0 24px -8px rgb(254 226 37 / 0.9);
 }
 .flexCol small {
   font-size: 0.5em;
@@ -511,8 +511,8 @@
   inset-inline-end: 6%;
   font-size: clamp(1.4rem, 12cqi, 3.2rem);
   font-weight: 900;
-  color: #ffae00;
-  text-shadow: 0 0 22px rgb(255 121 0 / 0.9);
+  color: #fee225;
+  text-shadow: 0 0 22px rgb(254 226 37 / 0.9);
 }
 [data-play='true'] .zero {
   animation: scPop 600ms var(--ease-premium) 1100ms both;
@@ -546,7 +546,7 @@
   font-weight: 900;
   font-size: clamp(1.4rem, 12cqi, 3rem);
   line-height: 1;
-  text-shadow: 0 0 20px rgb(0 217 255 / 0.85);
+  text-shadow: 0 0 20px rgb(254 226 37 / 0.85);
 }
 .dialLabel small {
   margin-top: 0.3em;
@@ -568,14 +568,14 @@
   --i: 0;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, transparent, #00d9ff);
+  background: linear-gradient(90deg, transparent, #fee225);
 }
 .speed span:nth-child(2) {
   width: 70%;
   margin-inline-start: 30%;
 }
 :global([dir='rtl']) .speed span {
-  background: linear-gradient(270deg, transparent, #00d9ff);
+  background: linear-gradient(270deg, transparent, #fee225);
 }
 [data-play='true'] .speed span {
   animation: scDash 1200ms ease-in-out infinite;

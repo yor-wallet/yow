@@ -16,10 +16,10 @@ for (const locale of LOCALES) {
     await expect(header).toBeVisible();
     const logo = header.locator('img[alt="DOOM | دوم"]');
     await expect(logo).toBeVisible();
-    // The phone band is always violet (transparent logo); the desktop header follows the theme.
-    await expect(logo).toHaveAttribute('data-logo-surface', isDesktop(page) ? 'light' : 'dark');
+    // Light header on every form factor: the logo is shown as it is (no plate).
+    await expect(logo).toHaveAttribute('data-logo-surface', 'light');
     const box = await logo.boundingBox();
-    expect(box?.height).toBeCloseTo(isDesktop(page) ? 52 : 50, 0);
+    expect(box?.height).toBeCloseTo(isDesktop(page) ? 40 : 34, 0);
     expect(await logo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
 
     // Primary navigation per form factor.

@@ -12,13 +12,13 @@ const base =
   'active:scale-[0.98] disabled:pointer-events-none disabled:opacity-55 aria-disabled:pointer-events-none aria-disabled:opacity-55';
 
 const variants: Record<ButtonVariant, string> = {
-  // Dark ink on the gradients keeps AA contrast across the whole gradient.
-  primary: 'sheen bg-gradient-primary text-on-accent shadow-glow-blue hover:-translate-y-px hover:shadow-glow-cyan',
-  accent: 'sheen bg-gradient-secondary text-on-accent shadow-glow-orange hover:-translate-y-px hover:brightness-105',
-  secondary: 'gradient-border holo-border-hover text-fg hover:shadow-glow-blue',
+  // Primary action: yellow with navy text (13.35:1) and a navy hairline that separates it from light backgrounds.
+  primary: 'border border-night bg-yellow text-on-accent hover:bg-yellow-hover',
+  accent: 'border border-night bg-yellow text-on-accent hover:bg-yellow-hover',
+  secondary: 'border border-fg bg-surface text-fg hover:bg-surface-2',
   outline: 'border border-border-strong bg-transparent text-fg hover:bg-surface-2',
   ghost: 'bg-transparent text-fg hover:bg-surface-2',
-  danger: 'bg-error text-on-accent hover:brightness-110',
+  danger: 'border border-error bg-error text-white hover:brightness-110 dark:text-night',
 };
 
 const sizes: Record<ButtonSize, string> = {

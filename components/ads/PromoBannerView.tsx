@@ -15,9 +15,9 @@ import { trackCampaign, useCampaignImpression, useMotionPrefs, useVisibleRatio }
 import styles from './carousel.module.css';
 
 const BG = {
-  primary: 'bg-[linear-gradient(120deg,#10052E_0%,#0B2A6B_60%,#087BFF_150%)]',
-  secondary: 'bg-[linear-gradient(120deg,#10052E_0%,#3A1A5E_55%,#FF7900_170%)]',
-  premium: 'bg-[linear-gradient(140deg,#10052E_0%,#190B45_60%,#087BFF_160%)]',
+  primary: 'bg-[linear-gradient(120deg,#0a1937_0%,#12254d_60%,#27407a_150%)]',
+  secondary: 'bg-[linear-gradient(120deg,#0a1937_0%,#12254d_55%,#27407a_170%)]',
+  premium: 'bg-[linear-gradient(140deg,#0a1937_0%,#12254d_60%,#27407a_160%)]',
 } as const;
 
 /**

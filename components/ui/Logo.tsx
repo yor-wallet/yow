@@ -5,10 +5,10 @@ import { useTheme } from '@/components/layout/ThemeProvider';
 import { cn } from '@/lib/cn';
 
 /**
- * Official DOOM | دوم logo (neon wordmark, owner's choice of November 2026) — generated from
- * brand-src/doom-logo-official.png only. The `emblem` variant is its first letter, cropped.
- * Never recolour, redraw or stretch it. Transparent variants are for DARK surfaces;
- * on light surfaces the logo is shown on its violet plate (`*-light` assets).
+ * Official DOOM | دوم logo (yellow & navy, shopping-bag mark) — generated from
+ * brand-src/doom-logo-official.png only. Never recolour, redraw or stretch it.
+ * Light surfaces show the logo as it is; on dark surfaces the same logo sits on an off-white
+ * plate (the navy wordmark needs a light ground). The `emblem` variant is the bag mark alone.
  * Fixed width/height (aspect-ratio preserved) → zero layout shift.
  */
 
@@ -17,12 +17,12 @@ type Surface = 'auto' | 'dark' | 'light';
 
 const ASSETS = {
   horizontal: {
-    dark: { src: '/brand/doom-logo-horizontal-transparent-640.webp', w: 640, h: 403 },
-    light: { src: '/brand/doom-logo-horizontal-light-640.webp', w: 640, h: 420 },
+    light: { src: '/brand/doom-logo-horizontal-transparent-640.webp', w: 640, h: 181 },
+    dark: { src: '/brand/doom-logo-horizontal-dark-640.webp', w: 640, h: 210 },
   },
   emblem: {
+    light: { src: '/brand/doom-emblem-transparent-256.webp', w: 256, h: 256 },
     dark: { src: '/brand/doom-emblem-transparent-256.webp', w: 256, h: 256 },
-    light: { src: '/brand/doom-emblem-256.webp', w: 256, h: 256 },
   },
 } as const;
 

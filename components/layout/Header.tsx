@@ -38,7 +38,7 @@ export async function Header() {
       >
         <div className="page-container flex h-18 items-center gap-6">
           <Link href="/" aria-label={t('home')} className="shrink-0 rounded-lg transition-[filter] duration-(--dur-nav) hover:drop-shadow-[0_0_14px_rgb(0_217_255/0.45)]">
-            <Logo height={52} priority />
+            <Logo height={40} priority />
           </Link>
           <SearchBox className="max-w-2xl flex-1" />
           <nav aria-label={t('mainNavigation')} className="ms-auto flex items-center gap-0.5">

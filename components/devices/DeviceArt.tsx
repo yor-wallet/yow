@@ -91,13 +91,13 @@ export function DeviceArt({ art, title, className }: { art: DeviceArtSpec; title
         <stop offset="1" stopColor="#000" stopOpacity="0.22" />
       </linearGradient>
       <linearGradient id={g('screen')} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#10052e" />
-        <stop offset="0.55" stopColor="#190b45" />
-        <stop offset="1" stopColor="#087bff" stopOpacity="0.85" />
+        <stop offset="0" stopColor="#0a1937" />
+        <stop offset="0.55" stopColor="#12254d" />
+        <stop offset="1" stopColor="#27407a" stopOpacity="0.85" />
       </linearGradient>
       <radialGradient id={g('glow')} cx="0.5" cy="0.62" r="0.55">
-        <stop offset="0" stopColor="#00d9ff" stopOpacity="0.55" />
-        <stop offset="1" stopColor="#00d9ff" stopOpacity="0" />
+        <stop offset="0" stopColor="#fee225" stopOpacity="0.55" />
+        <stop offset="1" stopColor="#fee225" stopOpacity="0" />
       </radialGradient>
       <radialGradient id={g('shadow')} cx="0.5" cy="0.5" r="0.5">
         <stop offset="0" stopColor="#000" stopOpacity="0.28" />

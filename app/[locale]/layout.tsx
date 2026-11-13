@@ -8,7 +8,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getDirection, routing, type Locale } from '@/i18n/routing';
 import { THEME_COOKIE } from '@/lib/cookies';
 import { getHeaderCounts } from '@/lib/nav';
-import { alexandria, exo2, inter, plexArabic } from '../fonts';
+import { plexArabic, plexSans } from '../fonts';
 import { THEME_COLORS, ThemeProvider, type Theme } from '@/components/layout/ThemeProvider';
 import { ToastProvider } from '@/components/ui/Toast';
 import { Suspense } from 'react';
@@ -91,7 +91,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       dir={getDirection(locale)}
       data-theme={theme}
-      className={`${inter.variable} ${plexArabic.variable} ${exo2.variable} ${alexandria.variable}`}
+      className={`${plexSans.variable} ${plexArabic.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">

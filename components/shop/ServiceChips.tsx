@@ -10,7 +10,7 @@ import { Link } from '@/i18n/navigation';
 export function ServiceChips({ expressHours, standardHours }: { expressHours: number | null; standardHours: number | null }) {
   const t = useTranslations('home.chips');
   if (expressHours === null && standardHours === null) return null;
-  const chip = 'flex min-h-16 items-center gap-3 rounded-2xl border border-blue/25 bg-blue/10 px-4 py-2.5 transition-colors hover:bg-blue/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
+  const chip = 'flex min-h-16 items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-2.5 shadow-card transition-colors hover:border-border-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
   return (
     <ul className="grid grid-cols-2 gap-3" data-testid="service-chips">
       {standardHours !== null ? (

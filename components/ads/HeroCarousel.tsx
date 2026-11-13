@@ -19,9 +19,9 @@ export const HERO_INTERVAL_MS = 7000;
 const SWIPE_PX = 48;
 
 const THEME_BG: Record<CampaignTheme, string> = {
-  primary: 'bg-[linear-gradient(135deg,#10052E_0%,#0B2A6B_55%,#087BFF_140%)]',
-  secondary: 'bg-[linear-gradient(135deg,#10052E_0%,#3A1A5E_52%,#FF7900_165%)]',
-  premium: 'bg-[linear-gradient(160deg,#10052E_0%,#190B45_55%,#087BFF_150%)]',
+  primary: 'bg-[linear-gradient(135deg,#0a1937_0%,#12254d_55%,#27407a_140%)]',
+  secondary: 'bg-[linear-gradient(135deg,#0a1937_0%,#12254d_52%,#27407a_165%)]',
+  premium: 'bg-[linear-gradient(160deg,#0a1937_0%,#12254d_55%,#27407a_150%)]',
 };
 
 /**

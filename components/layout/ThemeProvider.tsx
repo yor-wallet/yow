@@ -5,7 +5,7 @@ import { ONE_YEAR_SECONDS, THEME_COOKIE } from '@/lib/cookies';
 
 export type Theme = 'dark' | 'light';
 
-export const THEME_COLORS: Record<Theme, string> = { dark: '#10052E', light: '#F7F9FF' };
+export const THEME_COLORS: Record<Theme, string> = { dark: '#0A1937', light: '#FDFAF6' };
 
 type ThemeContextValue = { theme: Theme; setTheme: (t: Theme) => void; toggle: () => void };
 
