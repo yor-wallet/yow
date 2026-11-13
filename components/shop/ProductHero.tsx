@@ -90,7 +90,12 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
   const canBuy = !!selected && purchasable(selected) && product.isSellable;
   const flexMonthly = flexMonthlyFrom(selected?.priceBaisa ?? null);
   const schedule = selected && selected.priceBaisa !== null && selected.priceBaisa > 0 ? computeSchedule(selected.priceBaisa, months) : null;
-  const activeImage = product.images.find((i) => i.variantId === selectedId)?.id ?? null;
+  // The image of the selected variant; else the image of another variant of the same colour
+  // (one studio image per finish serves all its capacities).
+  const activeImage =
+    product.images.find((i) => i.variantId === selectedId)?.id ??
+    (selected?.color ? product.images.find((i) => i.variantId && product.variants.find((v) => v.id === i.variantId)?.color === selected.color)?.id : undefined) ??
+    null;
   const art = resolveDeviceArt({
     brand: product.brand?.name ?? null,
     name: product.name,
@@ -142,7 +147,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
         {colors.length > 0 || capacities.length > 0 || labelOnly ? (
           <div className="flex items-center gap-3 lg:order-3 lg:flex-col lg:items-stretch lg:gap-5">
             {colors.length > 0 ? (
-              <fieldset className="min-w-0 shrink-0">
+              <fieldset className="min-w-0">
                 <legend className="mb-2 text-sm font-semibold max-lg:sr-only">
                   {t('variants.color')}
                   {selected?.color ? <Ltr className="ms-2 font-normal text-muted">{selected.color}</Ltr> : null}
@@ -185,7 +190,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
             ) : null}
 
             {capacities.length > 0 ? (
-              <fieldset className="min-w-0 max-lg:flex-1">
+              <fieldset className="min-w-0 max-lg:min-w-[8.5rem] max-lg:flex-1">
                 <legend className="mb-2 text-sm font-semibold max-lg:sr-only">{t('variants.capacity')}</legend>
                 <div className="relative lg:hidden">
                   <select
@@ -193,7 +198,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                     onChange={(e) => choose({ capacity: e.target.value })}
                     aria-label={t('variants.capacity')}
                     data-testid="capacity-select"
-                    className="h-12 w-full appearance-none rounded-pill border border-border-strong bg-surface ps-5 pe-11 text-base font-semibold text-fg focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/35"
+                    className="h-12 w-full appearance-none rounded-pill border border-border-strong bg-surface ps-4 pe-9 text-base font-semibold text-fg focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/35"
                   >
                     {selected?.capacity ? null : <option value="" disabled />}
                     {capacities.map((cap) => (
@@ -202,7 +207,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={18} aria-hidden="true" className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 text-fg" />
+                  <ChevronDown size={18} aria-hidden="true" className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-fg" />
                 </div>
                 <ul className="hidden flex-wrap gap-2 lg:flex">
                   {capacities.map((cap) => {

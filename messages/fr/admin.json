@@ -604,6 +604,20 @@
       "noVariants": "Aucune variante n'est créée : les couleurs et capacités du fichier ne sont que des candidats, gardés en notes à vérifier sur la page officielle.",
       "noPrices": "Aucun prix, stock, promotion ni photo n'est jamais défini par un import.",
       "idempotent": "Réimporter le même fichier ne crée aucun doublon et n'écrase jamais ce que vous avez modifié."
+    },
+    "packs": {
+      "title": "Packs prêts à importer",
+      "text": "Packs livrés avec le site : modèles, finitions, capacités et une photo studio par finition.",
+      "names": {
+        "iphone-visuals-2026": "iPhone 13 à 18 — modèles et photos studio"
+      },
+      "summary": "{models} modèles · {images} photos · vérifié par l'auteur du pack le {date}",
+      "start": "Importer ce pack",
+      "running": "Import en cours… {done} sur {total} ({model})",
+      "done": "Pack importé : {variants} variantes et {images} photos ajoutées. Tout est en brouillon, sans prix ni stock.",
+      "nothingNew": "Ce pack est déjà importé : rien de nouveau à ajouter.",
+      "failed": "L'import s'est arrêté. Vous pouvez le relancer : il reprend là où il s'est arrêté.",
+      "note": "Aucun prix ni stock n'est défini. Chaque produit reste en brouillon tant que vous n'avez pas saisi son prix, son stock et publié."
     }
   },
   "importNotes": {

@@ -604,6 +604,20 @@
       "noVariants": "No variant is created: the colours and capacities of the file are only candidates, kept as notes to verify on the official page.",
       "noPrices": "No price, stock, promotion or photo is ever set by an import.",
       "idempotent": "Importing the same file again creates no duplicate and never overwrites what you edited."
+    },
+    "packs": {
+      "title": "Ready-made packs",
+      "text": "Packs shipped with the site: models, finishes, capacities and one studio image per finish.",
+      "names": {
+        "iphone-visuals-2026": "iPhone 13 to 18 — models and studio images"
+      },
+      "summary": "{models} models · {images} images · checked by the pack author on {date}",
+      "start": "Import this pack",
+      "running": "Importing… {done} of {total} ({model})",
+      "done": "Pack imported: {variants} variants and {images} images added. Everything is a draft without price or stock.",
+      "nothingNew": "This pack is already imported: nothing new to add.",
+      "failed": "The import stopped. You can start it again: it resumes where it stopped.",
+      "note": "No price and no stock are set. Each product stays a draft until you price it, stock it and publish it."
     }
   },
   "importNotes": {

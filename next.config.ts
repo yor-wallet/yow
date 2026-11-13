@@ -79,6 +79,8 @@ const nextConfig: NextConfig = {
       return { protocol: u.protocol.replace(':', '') as 'https' | 'http', hostname: u.hostname, pathname: '/storage/v1/object/public/**' };
     }),
   },
+  // The catalogue packs (JSON + studio images) are read from disk by the admin import.
+  outputFileTracingIncludes: { '/[locale]/admin/products/import': ['./data/catalogue/**/*'] },
   experimental: {
     // KYC documents / campaign media are uploaded through server actions.
     serverActions: { bodySizeLimit: '12mb' },

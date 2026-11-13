@@ -8,6 +8,8 @@ import { buttonClasses } from '@/components/ui/Button';
 import { CatalogueImportForm } from '@/components/admin/CatalogueImportForm';
 import { VariantImport } from '@/components/admin/VariantImport';
 import { VerifiedCatalogueForm } from '@/components/admin/VerifiedCatalogueForm';
+import { VisualPackImport } from '@/components/admin/VisualPackImport';
+import { VISUAL_PACKS, visualPackSummary } from '@/lib/admin/visual-pack-import';
 import { AdminPageHeader, Section } from '@/components/admin/ui';
 import { applyImportAction, applyVerifiedCatalogueAction, previewImportAction } from './actions';
 
@@ -24,6 +26,7 @@ export default async function ImportCataloguePage({ params }: Props) {
   setRequestLocale(locale);
   await requireAdmin('catalog:write', '/admin/products/import');
   const [t, format, gaps] = await Promise.all([getTranslations('admin'), getFormatter(), catalogueGaps()]);
+  const packs = await Promise.all(VISUAL_PACKS.map((p) => visualPackSummary(p.key)));
   const rules = ['drafts', 'noVariants', 'noPrices', 'idempotent'] as const;
 
   return (
@@ -38,6 +41,16 @@ export default async function ImportCataloguePage({ params }: Props) {
       <div className="flex flex-col gap-6">
         <Section id="verified" title={t('verified.title')} description={t('verified.text')}>
           <VerifiedCatalogueForm action={applyVerifiedCatalogueAction} />
+        </Section>
+
+        <Section id="visual-packs" title={t('import.packs.title')} description={t('import.packs.text')}>
+          <ul className="flex flex-col gap-4">
+            {packs.map((p) => (
+              <li key={p.key}>
+                <VisualPackImport packKey={p.key} models={p.models} images={p.images} verifiedOn={p.verifiedOn} />
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">

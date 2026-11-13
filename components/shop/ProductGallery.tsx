@@ -115,7 +115,7 @@ export function ProductGallery({ images, activeId, name, art, artLabel }: { imag
             >
               <ChevronRight size={22} aria-hidden="true" className="flip-rtl" />
             </button>
-            <p className="pointer-events-none absolute bottom-2 end-3 rounded-pill bg-bg/80 px-2.5 py-0.5 text-xs font-medium tabular-nums backdrop-blur" aria-live="polite">
+            <p dir="ltr" className="pointer-events-none absolute bottom-2 end-3 rounded-pill bg-bg/80 px-2.5 py-0.5 text-xs font-medium tabular-nums backdrop-blur" aria-live="polite">
               {t('counter', { current: index + 1, total: count })}
             </p>
           </>
@@ -183,7 +183,7 @@ export function ProductGallery({ images, activeId, name, art, artLabel }: { imag
             <button type="button" onClick={() => setIndex((i) => (i - 1 + count) % count)} aria-label={t('previous')} className="grid size-11 place-items-center rounded-full border border-border-strong hover:bg-surface-2">
               <ChevronLeft size={22} aria-hidden="true" className="flip-rtl" />
             </button>
-            <p className="text-sm tabular-nums text-muted">{t('counter', { current: index + 1, total: count })}</p>
+            <p dir="ltr" className="text-sm tabular-nums text-muted">{t('counter', { current: index + 1, total: count })}</p>
             <button type="button" onClick={() => setIndex((i) => (i + 1) % count)} aria-label={t('next')} className="grid size-11 place-items-center rounded-full border border-border-strong hover:bg-surface-2">
               <ChevronRight size={22} aria-hidden="true" className="flip-rtl" />
             </button>

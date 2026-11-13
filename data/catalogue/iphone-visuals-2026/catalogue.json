@@ -1,0 +1,1283 @@
+{
+  "title": "DOOM — Visuels iPhone",
+  "verified_on": "2026-11-13",
+  "models_count": 26,
+  "variants_count": 111,
+  "sources": {
+    "models_and_colors": "https://support.apple.com/en-mide/108044",
+    "compare": "https://www.apple.com/iphone/compare/",
+    "iphone_18_pro": "https://www.apple.com/fr/iphone-18-pro/specs/"
+  },
+  "image_format": {
+    "png": {
+      "width": 1000,
+      "height": 1000
+    },
+    "webp": {
+      "width": 960,
+      "height": 960
+    }
+  },
+  "models": [
+    {
+      "id": "iphone-13",
+      "name": "iPhone 13",
+      "name_en": "iPhone 13",
+      "family": "13",
+      "year": 2021,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-13-product-red",
+          "color_fr": "(PRODUCT)RED",
+          "color_en": "(PRODUCT)RED",
+          "png": "images/png/iphone-13/iphone-13-product-red.png",
+          "webp": "images/webp/iphone-13/iphone-13-product-red.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-product-red?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-starlight",
+          "color_fr": "Lumière stellaire",
+          "color_en": "Starlight",
+          "png": "images/png/iphone-13/iphone-13-starlight.png",
+          "webp": "images/webp/iphone-13/iphone-13-starlight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-starlight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-midnight",
+          "color_fr": "Minuit",
+          "color_en": "Midnight",
+          "png": "images/png/iphone-13/iphone-13-midnight.png",
+          "webp": "images/webp/iphone-13/iphone-13-midnight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-midnight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-blue",
+          "color_fr": "Bleu",
+          "color_en": "Blue",
+          "png": "images/png/iphone-13/iphone-13-blue.png",
+          "webp": "images/webp/iphone-13/iphone-13-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-blue?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pink",
+          "color_fr": "Rose",
+          "color_en": "Pink",
+          "png": "images/png/iphone-13/iphone-13-pink.png",
+          "webp": "images/webp/iphone-13/iphone-13-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-pink?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-green",
+          "color_fr": "Vert",
+          "color_en": "Green",
+          "png": "images/png/iphone-13/iphone-13-green.png",
+          "webp": "images/webp/iphone-13/iphone-13-green.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-green?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-13-mini",
+      "name": "iPhone 13 mini",
+      "name_en": "iPhone 13 mini",
+      "family": "13",
+      "year": 2021,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-13-mini-product-red",
+          "color_fr": "(PRODUCT)RED",
+          "color_en": "(PRODUCT)RED",
+          "png": "images/png/iphone-13-mini/iphone-13-mini-product-red.png",
+          "webp": "images/webp/iphone-13-mini/iphone-13-mini-product-red.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-5-4inch-product-red?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-mini-starlight",
+          "color_fr": "Lumière stellaire",
+          "color_en": "Starlight",
+          "png": "images/png/iphone-13-mini/iphone-13-mini-starlight.png",
+          "webp": "images/webp/iphone-13-mini/iphone-13-mini-starlight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-5-4inch-starlight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-mini-midnight",
+          "color_fr": "Minuit",
+          "color_en": "Midnight",
+          "png": "images/png/iphone-13-mini/iphone-13-mini-midnight.png",
+          "webp": "images/webp/iphone-13-mini/iphone-13-mini-midnight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-5-4inch-midnight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-mini-blue",
+          "color_fr": "Bleu",
+          "color_en": "Blue",
+          "png": "images/png/iphone-13-mini/iphone-13-mini-blue.png",
+          "webp": "images/webp/iphone-13-mini/iphone-13-mini-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-5-4inch-blue?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-mini-pink",
+          "color_fr": "Rose",
+          "color_en": "Pink",
+          "png": "images/png/iphone-13-mini/iphone-13-mini-pink.png",
+          "webp": "images/webp/iphone-13-mini/iphone-13-mini-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-5-4inch-pink?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-mini-green",
+          "color_fr": "Vert",
+          "color_en": "Green",
+          "png": "images/png/iphone-13-mini/iphone-13-mini-green.png",
+          "webp": "images/webp/iphone-13-mini/iphone-13-mini-green.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-finish-select-202207-5-4inch-green?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-13-pro",
+      "name": "iPhone 13 Pro",
+      "name_en": "iPhone 13 Pro",
+      "family": "13",
+      "year": 2021,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-13-pro-graphite",
+          "color_fr": "Graphite",
+          "color_en": "Graphite",
+          "png": "images/png/iphone-13-pro/iphone-13-pro-graphite.png",
+          "webp": "images/webp/iphone-13-pro/iphone-13-pro-graphite.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-graphite-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-gold",
+          "color_fr": "Or",
+          "color_en": "Gold",
+          "png": "images/png/iphone-13-pro/iphone-13-pro-gold.png",
+          "webp": "images/webp/iphone-13-pro/iphone-13-pro-gold.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-gold-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-13-pro/iphone-13-pro-silver.png",
+          "webp": "images/webp/iphone-13-pro/iphone-13-pro-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-silver-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-sierra-blue",
+          "color_fr": "Bleu Sierra",
+          "color_en": "Sierra Blue",
+          "png": "images/png/iphone-13-pro/iphone-13-pro-sierra-blue.png",
+          "webp": "images/webp/iphone-13-pro/iphone-13-pro-sierra-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-blue-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-alpine-green",
+          "color_fr": "Vert alpin",
+          "color_en": "Alpine Green",
+          "png": "images/png/iphone-13-pro/iphone-13-pro-alpine-green.png",
+          "webp": "images/webp/iphone-13-pro/iphone-13-pro-alpine-green.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-green-select?wid=2200&hei=2600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-13-pro-max",
+      "name": "iPhone 13 Pro Max",
+      "name_en": "iPhone 13 Pro Max",
+      "family": "13",
+      "year": 2021,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-13-pro-max-graphite",
+          "color_fr": "Graphite",
+          "color_en": "Graphite",
+          "png": "images/png/iphone-13-pro-max/iphone-13-pro-max-graphite.png",
+          "webp": "images/webp/iphone-13-pro-max/iphone-13-pro-max-graphite.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-max-graphite-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-max-gold",
+          "color_fr": "Or",
+          "color_en": "Gold",
+          "png": "images/png/iphone-13-pro-max/iphone-13-pro-max-gold.png",
+          "webp": "images/webp/iphone-13-pro-max/iphone-13-pro-max-gold.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-max-gold-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-max-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-13-pro-max/iphone-13-pro-max-silver.png",
+          "webp": "images/webp/iphone-13-pro-max/iphone-13-pro-max-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-max-silver-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-max-sierra-blue",
+          "color_fr": "Bleu Sierra",
+          "color_en": "Sierra Blue",
+          "png": "images/png/iphone-13-pro-max/iphone-13-pro-max-sierra-blue.png",
+          "webp": "images/webp/iphone-13-pro-max/iphone-13-pro-max-sierra-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-max-blue-select?wid=2200&hei=2600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-13-pro-max-alpine-green",
+          "color_fr": "Vert alpin",
+          "color_en": "Alpine Green",
+          "png": "images/png/iphone-13-pro-max/iphone-13-pro-max-alpine-green.png",
+          "webp": "images/webp/iphone-13-pro-max/iphone-13-pro-max-alpine-green.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-13-pro-max-green-select?wid=2200&hei=2600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-14",
+      "name": "iPhone 14",
+      "name_en": "iPhone 14",
+      "family": "14",
+      "year": 2022,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-14-midnight",
+          "color_fr": "Minuit",
+          "color_en": "Midnight",
+          "png": "images/png/iphone-14/iphone-14-midnight.png",
+          "webp": "images/webp/iphone-14/iphone-14-midnight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-midnight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-starlight",
+          "color_fr": "Lumière stellaire",
+          "color_en": "Starlight",
+          "png": "images/png/iphone-14/iphone-14-starlight.png",
+          "webp": "images/webp/iphone-14/iphone-14-starlight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-starlight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-product-red",
+          "color_fr": "(PRODUCT)RED",
+          "color_en": "(PRODUCT)RED",
+          "png": "images/png/iphone-14/iphone-14-product-red.png",
+          "webp": "images/webp/iphone-14/iphone-14-product-red.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-product-red?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-blue",
+          "color_fr": "Bleu",
+          "color_en": "Blue",
+          "png": "images/png/iphone-14/iphone-14-blue.png",
+          "webp": "images/webp/iphone-14/iphone-14-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-purple",
+          "color_fr": "Mauve",
+          "color_en": "Purple",
+          "png": "images/png/iphone-14/iphone-14-purple.png",
+          "webp": "images/webp/iphone-14/iphone-14-purple.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-purple?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-yellow",
+          "color_fr": "Jaune",
+          "color_en": "Yellow",
+          "png": "images/png/iphone-14/iphone-14-yellow.png",
+          "webp": "images/webp/iphone-14/iphone-14-yellow.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-yellow?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-14-plus",
+      "name": "iPhone 14 Plus",
+      "name_en": "iPhone 14 Plus",
+      "family": "14",
+      "year": 2022,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-14-plus-midnight",
+          "color_fr": "Minuit",
+          "color_en": "Midnight",
+          "png": "images/png/iphone-14-plus/iphone-14-plus-midnight.png",
+          "webp": "images/webp/iphone-14-plus/iphone-14-plus-midnight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-midnight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-plus-starlight",
+          "color_fr": "Lumière stellaire",
+          "color_en": "Starlight",
+          "png": "images/png/iphone-14-plus/iphone-14-plus-starlight.png",
+          "webp": "images/webp/iphone-14-plus/iphone-14-plus-starlight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-starlight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-plus-product-red",
+          "color_fr": "(PRODUCT)RED",
+          "color_en": "(PRODUCT)RED",
+          "png": "images/png/iphone-14-plus/iphone-14-plus-product-red.png",
+          "webp": "images/webp/iphone-14-plus/iphone-14-plus-product-red.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-product-red?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-plus-blue",
+          "color_fr": "Bleu",
+          "color_en": "Blue",
+          "png": "images/png/iphone-14-plus/iphone-14-plus-blue.png",
+          "webp": "images/webp/iphone-14-plus/iphone-14-plus-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-blue?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-plus-purple",
+          "color_fr": "Mauve",
+          "color_en": "Purple",
+          "png": "images/png/iphone-14-plus/iphone-14-plus-purple.png",
+          "webp": "images/webp/iphone-14-plus/iphone-14-plus-purple.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-purple?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-plus-yellow",
+          "color_fr": "Jaune",
+          "color_en": "Yellow",
+          "png": "images/png/iphone-14-plus/iphone-14-plus-yellow.png",
+          "webp": "images/webp/iphone-14-plus/iphone-14-plus-yellow.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-yellow?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-14-pro",
+      "name": "iPhone 14 Pro",
+      "name_en": "iPhone 14 Pro",
+      "family": "14",
+      "year": 2022,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-14-pro-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-14-pro/iphone-14-pro-silver.png",
+          "webp": "images/webp/iphone-14-pro/iphone-14-pro-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-silver?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-pro-gold",
+          "color_fr": "Or",
+          "color_en": "Gold",
+          "png": "images/png/iphone-14-pro/iphone-14-pro-gold.png",
+          "webp": "images/webp/iphone-14-pro/iphone-14-pro-gold.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-gold?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-pro-space-black",
+          "color_fr": "Noir sidéral",
+          "color_en": "Space Black",
+          "png": "images/png/iphone-14-pro/iphone-14-pro-space-black.png",
+          "webp": "images/webp/iphone-14-pro/iphone-14-pro-space-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-spaceblack?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-pro-deep-purple",
+          "color_fr": "Violet intense",
+          "color_en": "Deep Purple",
+          "png": "images/png/iphone-14-pro/iphone-14-pro-deep-purple.png",
+          "webp": "images/webp/iphone-14-pro/iphone-14-pro-deep-purple.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-14-pro-max",
+      "name": "iPhone 14 Pro Max",
+      "name_en": "iPhone 14 Pro Max",
+      "family": "14",
+      "year": 2022,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-14-pro-max-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-14-pro-max/iphone-14-pro-max-silver.png",
+          "webp": "images/webp/iphone-14-pro-max/iphone-14-pro-max-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-silver?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-pro-max-gold",
+          "color_fr": "Or",
+          "color_en": "Gold",
+          "png": "images/png/iphone-14-pro-max/iphone-14-pro-max-gold.png",
+          "webp": "images/webp/iphone-14-pro-max/iphone-14-pro-max-gold.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-gold?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-pro-max-space-black",
+          "color_fr": "Noir sidéral",
+          "color_en": "Space Black",
+          "png": "images/png/iphone-14-pro-max/iphone-14-pro-max-space-black.png",
+          "webp": "images/webp/iphone-14-pro-max/iphone-14-pro-max-space-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-spaceblack?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-14-pro-max-deep-purple",
+          "color_fr": "Violet intense",
+          "color_en": "Deep Purple",
+          "png": "images/png/iphone-14-pro-max/iphone-14-pro-max-deep-purple.png",
+          "webp": "images/webp/iphone-14-pro-max/iphone-14-pro-max-deep-purple.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-15",
+      "name": "iPhone 15",
+      "name_en": "iPhone 15",
+      "family": "15",
+      "year": 2023,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-15-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-15/iphone-15-black.png",
+          "webp": "images/webp/iphone-15/iphone-15-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-blue",
+          "color_fr": "Bleu",
+          "color_en": "Blue",
+          "png": "images/png/iphone-15/iphone-15-blue.png",
+          "webp": "images/webp/iphone-15/iphone-15-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-green",
+          "color_fr": "Vert",
+          "color_en": "Green",
+          "png": "images/png/iphone-15/iphone-15-green.png",
+          "webp": "images/webp/iphone-15/iphone-15-green.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-green?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-yellow",
+          "color_fr": "Jaune",
+          "color_en": "Yellow",
+          "png": "images/png/iphone-15/iphone-15-yellow.png",
+          "webp": "images/webp/iphone-15/iphone-15-yellow.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-yellow?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pink",
+          "color_fr": "Rose",
+          "color_en": "Pink",
+          "png": "images/png/iphone-15/iphone-15-pink.png",
+          "webp": "images/webp/iphone-15/iphone-15-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-pink?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-15-plus",
+      "name": "iPhone 15 Plus",
+      "name_en": "iPhone 15 Plus",
+      "family": "15",
+      "year": 2023,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-15-plus-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-15-plus/iphone-15-plus-black.png",
+          "webp": "images/webp/iphone-15-plus/iphone-15-plus-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-black?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-plus-blue",
+          "color_fr": "Bleu",
+          "color_en": "Blue",
+          "png": "images/png/iphone-15-plus/iphone-15-plus-blue.png",
+          "webp": "images/webp/iphone-15-plus/iphone-15-plus-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-blue?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-plus-green",
+          "color_fr": "Vert",
+          "color_en": "Green",
+          "png": "images/png/iphone-15-plus/iphone-15-plus-green.png",
+          "webp": "images/webp/iphone-15-plus/iphone-15-plus-green.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-green?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-plus-yellow",
+          "color_fr": "Jaune",
+          "color_en": "Yellow",
+          "png": "images/png/iphone-15-plus/iphone-15-plus-yellow.png",
+          "webp": "images/webp/iphone-15-plus/iphone-15-plus-yellow.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-yellow?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-plus-pink",
+          "color_fr": "Rose",
+          "color_en": "Pink",
+          "png": "images/png/iphone-15-plus/iphone-15-plus-pink.png",
+          "webp": "images/webp/iphone-15-plus/iphone-15-plus-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-pink?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-15-pro",
+      "name": "iPhone 15 Pro",
+      "name_en": "iPhone 15 Pro",
+      "family": "15",
+      "year": 2023,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-15-pro-black-titanium",
+          "color_fr": "Titane noir",
+          "color_en": "Black Titanium",
+          "png": "images/png/iphone-15-pro/iphone-15-pro-black-titanium.png",
+          "webp": "images/webp/iphone-15-pro/iphone-15-pro-black-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pro-white-titanium",
+          "color_fr": "Titane blanc",
+          "color_en": "White Titanium",
+          "png": "images/png/iphone-15-pro/iphone-15-pro-white-titanium.png",
+          "webp": "images/webp/iphone-15-pro/iphone-15-pro-white-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-whitetitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pro-blue-titanium",
+          "color_fr": "Titane bleu",
+          "color_en": "Blue Titanium",
+          "png": "images/png/iphone-15-pro/iphone-15-pro-blue-titanium.png",
+          "webp": "images/webp/iphone-15-pro/iphone-15-pro-blue-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pro-natural-titanium",
+          "color_fr": "Titane naturel",
+          "color_en": "Natural Titanium",
+          "png": "images/png/iphone-15-pro/iphone-15-pro-natural-titanium.png",
+          "webp": "images/webp/iphone-15-pro/iphone-15-pro-natural-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-naturaltitanium?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-15-pro-max",
+      "name": "iPhone 15 Pro Max",
+      "name_en": "iPhone 15 Pro Max",
+      "family": "15",
+      "year": 2023,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-15-pro-max-black-titanium",
+          "color_fr": "Titane noir",
+          "color_en": "Black Titanium",
+          "png": "images/png/iphone-15-pro-max/iphone-15-pro-max-black-titanium.png",
+          "webp": "images/webp/iphone-15-pro-max/iphone-15-pro-max-black-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pro-max-white-titanium",
+          "color_fr": "Titane blanc",
+          "color_en": "White Titanium",
+          "png": "images/png/iphone-15-pro-max/iphone-15-pro-max-white-titanium.png",
+          "webp": "images/webp/iphone-15-pro-max/iphone-15-pro-max-white-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-whitetitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pro-max-blue-titanium",
+          "color_fr": "Titane bleu",
+          "color_en": "Blue Titanium",
+          "png": "images/png/iphone-15-pro-max/iphone-15-pro-max-blue-titanium.png",
+          "webp": "images/webp/iphone-15-pro-max/iphone-15-pro-max-blue-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-bluetitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-15-pro-max-natural-titanium",
+          "color_fr": "Titane naturel",
+          "color_en": "Natural Titanium",
+          "png": "images/png/iphone-15-pro-max/iphone-15-pro-max-natural-titanium.png",
+          "webp": "images/webp/iphone-15-pro-max/iphone-15-pro-max-natural-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-naturaltitanium?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-16",
+      "name": "iPhone 16",
+      "name_en": "iPhone 16",
+      "family": "16",
+      "year": 2024,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-16-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-16/iphone-16-black.png",
+          "webp": "images/webp/iphone-16/iphone-16-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-black?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-white",
+          "color_fr": "Blanc",
+          "color_en": "White",
+          "png": "images/png/iphone-16/iphone-16-white.png",
+          "webp": "images/webp/iphone-16/iphone-16-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-white?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pink",
+          "color_fr": "Rose",
+          "color_en": "Pink",
+          "png": "images/png/iphone-16/iphone-16-pink.png",
+          "webp": "images/webp/iphone-16/iphone-16-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-pink?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-teal",
+          "color_fr": "Sarcelle",
+          "color_en": "Teal",
+          "png": "images/png/iphone-16/iphone-16-teal.png",
+          "webp": "images/webp/iphone-16/iphone-16-teal.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-teal?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-ultramarine",
+          "color_fr": "Outremer",
+          "color_en": "Ultramarine",
+          "png": "images/png/iphone-16/iphone-16-ultramarine.png",
+          "webp": "images/webp/iphone-16/iphone-16-ultramarine.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-16-plus",
+      "name": "iPhone 16 Plus",
+      "name_en": "iPhone 16 Plus",
+      "family": "16",
+      "year": 2024,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-16-plus-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-16-plus/iphone-16-plus-black.png",
+          "webp": "images/webp/iphone-16-plus/iphone-16-plus-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-black?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-plus-white",
+          "color_fr": "Blanc",
+          "color_en": "White",
+          "png": "images/png/iphone-16-plus/iphone-16-plus-white.png",
+          "webp": "images/webp/iphone-16-plus/iphone-16-plus-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-white?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-plus-pink",
+          "color_fr": "Rose",
+          "color_en": "Pink",
+          "png": "images/png/iphone-16-plus/iphone-16-plus-pink.png",
+          "webp": "images/webp/iphone-16-plus/iphone-16-plus-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-pink?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-plus-teal",
+          "color_fr": "Sarcelle",
+          "color_en": "Teal",
+          "png": "images/png/iphone-16-plus/iphone-16-plus-teal.png",
+          "webp": "images/webp/iphone-16-plus/iphone-16-plus-teal.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-teal?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-plus-ultramarine",
+          "color_fr": "Outremer",
+          "color_en": "Ultramarine",
+          "png": "images/png/iphone-16-plus/iphone-16-plus-ultramarine.png",
+          "webp": "images/webp/iphone-16-plus/iphone-16-plus-ultramarine.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-ultramarine?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-16-pro",
+      "name": "iPhone 16 Pro",
+      "name_en": "iPhone 16 Pro",
+      "family": "16",
+      "year": 2024,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-16-pro-black-titanium",
+          "color_fr": "Titane noir",
+          "color_en": "Black Titanium",
+          "png": "images/png/iphone-16-pro/iphone-16-pro-black-titanium.png",
+          "webp": "images/webp/iphone-16-pro/iphone-16-pro-black-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pro-white-titanium",
+          "color_fr": "Titane blanc",
+          "color_en": "White Titanium",
+          "png": "images/png/iphone-16-pro/iphone-16-pro-white-titanium.png",
+          "webp": "images/webp/iphone-16-pro/iphone-16-pro-white-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-whitetitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pro-natural-titanium",
+          "color_fr": "Titane naturel",
+          "color_en": "Natural Titanium",
+          "png": "images/png/iphone-16-pro/iphone-16-pro-natural-titanium.png",
+          "webp": "images/webp/iphone-16-pro/iphone-16-pro-natural-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-naturaltitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pro-desert-titanium",
+          "color_fr": "Titane sable",
+          "color_en": "Desert Titanium",
+          "png": "images/png/iphone-16-pro/iphone-16-pro-desert-titanium.png",
+          "webp": "images/webp/iphone-16-pro/iphone-16-pro-desert-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-deserttitanium?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-16-pro-max",
+      "name": "iPhone 16 Pro Max",
+      "name_en": "iPhone 16 Pro Max",
+      "family": "16",
+      "year": 2024,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-16-pro-max-black-titanium",
+          "color_fr": "Titane noir",
+          "color_en": "Black Titanium",
+          "png": "images/png/iphone-16-pro-max/iphone-16-pro-max-black-titanium.png",
+          "webp": "images/webp/iphone-16-pro-max/iphone-16-pro-max-black-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pro-max-white-titanium",
+          "color_fr": "Titane blanc",
+          "color_en": "White Titanium",
+          "png": "images/png/iphone-16-pro-max/iphone-16-pro-max-white-titanium.png",
+          "webp": "images/webp/iphone-16-pro-max/iphone-16-pro-max-white-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-whitetitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pro-max-natural-titanium",
+          "color_fr": "Titane naturel",
+          "color_en": "Natural Titanium",
+          "png": "images/png/iphone-16-pro-max/iphone-16-pro-max-natural-titanium.png",
+          "webp": "images/webp/iphone-16-pro-max/iphone-16-pro-max-natural-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-naturaltitanium?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16-pro-max-desert-titanium",
+          "color_fr": "Titane sable",
+          "color_en": "Desert Titanium",
+          "png": "images/png/iphone-16-pro-max/iphone-16-pro-max-desert-titanium.png",
+          "webp": "images/webp/iphone-16-pro-max/iphone-16-pro-max-desert-titanium.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-deserttitanium?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-16e",
+      "name": "iPhone 16e",
+      "name_en": "iPhone 16e",
+      "family": "16",
+      "year": 2025,
+      "storage_fr": [
+        "128 Go",
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-16e-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-16e/iphone-16e-black.png",
+          "webp": "images/webp/iphone-16e/iphone-16e-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16e-finish-select-202502-black?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-16e-white",
+          "color_fr": "Blanc",
+          "color_en": "White",
+          "png": "images/png/iphone-16e/iphone-16e-white.png",
+          "webp": "images/webp/iphone-16e/iphone-16e-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-16e-finish-select-202502-white?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-17",
+      "name": "iPhone 17",
+      "name_en": "iPhone 17",
+      "family": "17",
+      "year": 2025,
+      "storage_fr": [
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-17-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-17/iphone-17-black.png",
+          "webp": "images/webp/iphone-17/iphone-17-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-finish-select-black-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-white",
+          "color_fr": "Blanc",
+          "color_en": "White",
+          "png": "images/png/iphone-17/iphone-17-white.png",
+          "webp": "images/webp/iphone-17/iphone-17-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-finish-select-white-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-mist-blue",
+          "color_fr": "Bleu brume",
+          "color_en": "Mist Blue",
+          "png": "images/png/iphone-17/iphone-17-mist-blue.png",
+          "webp": "images/webp/iphone-17/iphone-17-mist-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-finish-select-mistblue-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-sage",
+          "color_fr": "Sauge",
+          "color_en": "Sage",
+          "png": "images/png/iphone-17/iphone-17-sage.png",
+          "webp": "images/webp/iphone-17/iphone-17-sage.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-finish-select-sage-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-lavender",
+          "color_fr": "Lavande",
+          "color_en": "Lavender",
+          "png": "images/png/iphone-17/iphone-17-lavender.png",
+          "webp": "images/webp/iphone-17/iphone-17-lavender.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-finish-select-lavender-202509?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-17-pro",
+      "name": "iPhone 17 Pro",
+      "name_en": "iPhone 17 Pro",
+      "family": "17",
+      "year": 2025,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-17-pro-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-17-pro/iphone-17-pro-silver.png",
+          "webp": "images/webp/iphone-17-pro/iphone-17-pro-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-pro-finish-select-silver-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-pro-cosmic-orange",
+          "color_fr": "Orange cosmique",
+          "color_en": "Cosmic Orange",
+          "png": "images/png/iphone-17-pro/iphone-17-pro-cosmic-orange.png",
+          "webp": "images/webp/iphone-17-pro/iphone-17-pro-cosmic-orange.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-pro-finish-select-cosmicorange-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-pro-deep-blue",
+          "color_fr": "Bleu profond",
+          "color_en": "Deep Blue",
+          "png": "images/png/iphone-17-pro/iphone-17-pro-deep-blue.png",
+          "webp": "images/webp/iphone-17-pro/iphone-17-pro-deep-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-pro-finish-select-deepblue-202509?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-17-pro-max",
+      "name": "iPhone 17 Pro Max",
+      "name_en": "iPhone 17 Pro Max",
+      "family": "17",
+      "year": 2025,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To",
+        "2 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-17-pro-max-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-17-pro-max/iphone-17-pro-max-silver.png",
+          "webp": "images/webp/iphone-17-pro-max/iphone-17-pro-max-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-pro-max-finish-select-silver-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-pro-max-cosmic-orange",
+          "color_fr": "Orange cosmique",
+          "color_en": "Cosmic Orange",
+          "png": "images/png/iphone-17-pro-max/iphone-17-pro-max-cosmic-orange.png",
+          "webp": "images/webp/iphone-17-pro-max/iphone-17-pro-max-cosmic-orange.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-pro-max-finish-select-cosmicorange-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17-pro-max-deep-blue",
+          "color_fr": "Bleu profond",
+          "color_en": "Deep Blue",
+          "png": "images/png/iphone-17-pro-max/iphone-17-pro-max-deep-blue.png",
+          "webp": "images/webp/iphone-17-pro-max/iphone-17-pro-max-deep-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17-pro-max-finish-select-deepblue-202509?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-17e",
+      "name": "iPhone 17e",
+      "name_en": "iPhone 17e",
+      "family": "17",
+      "year": 2026,
+      "storage_fr": [
+        "256 Go",
+        "512 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-17e-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-17e/iphone-17e-black.png",
+          "webp": "images/webp/iphone-17e/iphone-17e-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17e-finish-select-black-202603?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17e-white",
+          "color_fr": "Blanc",
+          "color_en": "White",
+          "png": "images/png/iphone-17e/iphone-17e-white.png",
+          "webp": "images/webp/iphone-17e/iphone-17e-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17e-finish-select-white-202603?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-17e-soft-pink",
+          "color_fr": "Rose pastel",
+          "color_en": "Soft Pink",
+          "png": "images/png/iphone-17e/iphone-17e-soft-pink.png",
+          "webp": "images/webp/iphone-17e/iphone-17e-soft-pink.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-17e-finish-select-softpink-202603?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-18-pro",
+      "name": "iPhone 18 Pro",
+      "name_en": "iPhone 18 Pro",
+      "family": "18",
+      "year": 2026,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To",
+        "2 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-18-pro-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-18-pro/iphone-18-pro-black.png",
+          "webp": "images/webp/iphone-18-pro/iphone-18-pro-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-finish-select-black-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-18-pro-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-18-pro/iphone-18-pro-silver.png",
+          "webp": "images/webp/iphone-18-pro/iphone-18-pro-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-finish-select-silver-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-18-pro-glacier",
+          "color_fr": "Glacier",
+          "color_en": "Glacier",
+          "png": "images/png/iphone-18-pro/iphone-18-pro-glacier.png",
+          "webp": "images/webp/iphone-18-pro/iphone-18-pro-glacier.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-finish-select-glacier-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-18-pro-burgundy",
+          "color_fr": "Bordeaux",
+          "color_en": "Burgundy",
+          "png": "images/png/iphone-18-pro/iphone-18-pro-burgundy.png",
+          "webp": "images/webp/iphone-18-pro/iphone-18-pro-burgundy.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-finish-select-burgundy-202609?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-18-pro-max",
+      "name": "iPhone 18 Pro Max",
+      "name_en": "iPhone 18 Pro Max",
+      "family": "18",
+      "year": 2026,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To",
+        "2 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-18-pro-max-black",
+          "color_fr": "Noir",
+          "color_en": "Black",
+          "png": "images/png/iphone-18-pro-max/iphone-18-pro-max-black.png",
+          "webp": "images/webp/iphone-18-pro-max/iphone-18-pro-max-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-max-finish-select-black-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-18-pro-max-silver",
+          "color_fr": "Argent",
+          "color_en": "Silver",
+          "png": "images/png/iphone-18-pro-max/iphone-18-pro-max-silver.png",
+          "webp": "images/webp/iphone-18-pro-max/iphone-18-pro-max-silver.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-max-finish-select-silver-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-18-pro-max-glacier",
+          "color_fr": "Glacier",
+          "color_en": "Glacier",
+          "png": "images/png/iphone-18-pro-max/iphone-18-pro-max-glacier.png",
+          "webp": "images/webp/iphone-18-pro-max/iphone-18-pro-max-glacier.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-max-finish-select-glacier-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-18-pro-max-burgundy",
+          "color_fr": "Bordeaux",
+          "color_en": "Burgundy",
+          "png": "images/png/iphone-18-pro-max/iphone-18-pro-max-burgundy.png",
+          "webp": "images/webp/iphone-18-pro-max/iphone-18-pro-max-burgundy.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-18-pro-max-finish-select-burgundy-202609?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-se-3rd-gen",
+      "name": "iPhone SE (3e génération)",
+      "name_en": "iPhone SE (3rd generation)",
+      "family": "autres",
+      "year": 2022,
+      "storage_fr": [
+        "64 Go",
+        "128 Go",
+        "256 Go"
+      ],
+      "variants": [
+        {
+          "id": "iphone-se-3rd-gen-product-red",
+          "color_fr": "(PRODUCT)RED",
+          "color_en": "(PRODUCT)RED",
+          "png": "images/png/iphone-se-3rd-gen/iphone-se-3rd-gen-product-red.png",
+          "webp": "images/webp/iphone-se-3rd-gen/iphone-se-3rd-gen-product-red.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-se-finish-select-202207-product-red?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-se-3rd-gen-starlight",
+          "color_fr": "Lumière stellaire",
+          "color_en": "Starlight",
+          "png": "images/png/iphone-se-3rd-gen/iphone-se-3rd-gen-starlight.png",
+          "webp": "images/webp/iphone-se-3rd-gen/iphone-se-3rd-gen-starlight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-se-finish-select-202207-starlight?wid=3200&hei=1800&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-se-3rd-gen-midnight",
+          "color_fr": "Minuit",
+          "color_en": "Midnight",
+          "png": "images/png/iphone-se-3rd-gen/iphone-se-3rd-gen-midnight.png",
+          "webp": "images/webp/iphone-se-3rd-gen/iphone-se-3rd-gen-midnight.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-se-finish-select-202207-midnight?wid=3200&hei=1800&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-air",
+      "name": "iPhone Air",
+      "name_en": "iPhone Air",
+      "family": "autres",
+      "year": 2025,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-air-space-black",
+          "color_fr": "Noir sidéral",
+          "color_en": "Space Black",
+          "png": "images/png/iphone-air/iphone-air-space-black.png",
+          "webp": "images/webp/iphone-air/iphone-air-space-black.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-air-finish-select-spaceblack-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-air-cloud-white",
+          "color_fr": "Blanc nuage",
+          "color_en": "Cloud White",
+          "png": "images/png/iphone-air/iphone-air-cloud-white.png",
+          "webp": "images/webp/iphone-air/iphone-air-cloud-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-air-finish-select-cloudwhite-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-air-light-gold",
+          "color_fr": "Or clair",
+          "color_en": "Light Gold",
+          "png": "images/png/iphone-air/iphone-air-light-gold.png",
+          "webp": "images/webp/iphone-air/iphone-air-light-gold.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-air-finish-select-lightgold-202509?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-air-sky-blue",
+          "color_fr": "Bleu ciel",
+          "color_en": "Sky Blue",
+          "png": "images/png/iphone-air/iphone-air-sky-blue.png",
+          "webp": "images/webp/iphone-air/iphone-air-sky-blue.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-air-finish-select-skyblue-202509?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    },
+    {
+      "id": "iphone-duo",
+      "name": "iPhone Duo",
+      "name_en": "iPhone Duo",
+      "family": "autres",
+      "year": 2026,
+      "storage_fr": [
+        "256 Go",
+        "512 Go",
+        "1 To",
+        "2 To"
+      ],
+      "variants": [
+        {
+          "id": "iphone-duo-night-sky",
+          "color_fr": "Ciel nocturne",
+          "color_en": "Night Sky",
+          "png": "images/png/iphone-duo/iphone-duo-night-sky.png",
+          "webp": "images/webp/iphone-duo/iphone-duo-night-sky.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-duo-finish-select-night-sky-202609?wid=1600&hei=1600&fmt=png-alpha"
+        },
+        {
+          "id": "iphone-duo-star-white",
+          "color_fr": "Blanc étoilé",
+          "color_en": "Star White",
+          "png": "images/png/iphone-duo/iphone-duo-star-white.png",
+          "webp": "images/webp/iphone-duo/iphone-duo-star-white.webp",
+          "image_source": "https://as-images.apple.com/is/iphone-duo-finish-select-star-white-202609?wid=1600&hei=1600&fmt=png-alpha"
+        }
+      ]
+    }
+  ]
+}

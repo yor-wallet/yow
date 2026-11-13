@@ -8,6 +8,7 @@ import { importVerifiedCatalogue } from '@/lib/admin/catalogue-verified';
 import { applyVariantImport, previewVariantImport } from '@/lib/admin/variant-pricing';
 import { text } from '@/lib/admin/form';
 import { CATALOG_TAG } from '@/lib/catalog/cache';
+import { importVisualPackModel, VISUAL_PACKS, type VisualImportStep } from '@/lib/admin/visual-pack-import';
 
 const MAX_BYTES = 2 * 1024 * 1024;
 
@@ -74,4 +75,21 @@ export async function applyImportAction(_prev: ActionState, fd: FormData): Promi
   );
   if (state.status === 'success') revalidateTag(CATALOG_TAG);
   return state;
+}
+
+/**
+ * Import one model of a visual pack shipped with the code (called in a loop by the client, which
+ * shows the progress). Creates draft variants and images only: no price, no stock, nothing published.
+ */
+export async function importVisualPackStepAction(key: string, index: number): Promise<{ ok: true; step: VisualImportStep } | { ok: false; code: string }> {
+  try {
+    const actor = await currentActor();
+    const pack = VISUAL_PACKS.find((p) => p.key === key);
+    if (!pack || !Number.isInteger(index) || index < 0 || index > 500) return { ok: false, code: 'not_found' };
+    const step = await importVisualPackModel(actor, pack.key, index);
+    if (step.done >= step.total) revalidatePath('/', 'layout');
+    return { ok: true, step };
+  } catch (err) {
+    return { ok: false, code: errorState(err).code ?? 'generic' };
+  }
 }
