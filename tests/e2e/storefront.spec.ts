@@ -263,3 +263,55 @@ test.describe('navigation', () => {
     await expect(page).toHaveURL(/\/en\/category\/smartphones$/);
   });
 });
+
+test.describe('search suggestions', () => {
+  test.beforeEach(async ({ page }) => {
+    await useUniqueIp(page);
+  });
+
+  test('typing shows suggestions after a pause; keyboard picks one; Escape closes; stale answers are ignored', async ({ page }) => {
+    await gotoReady(page, '/en');
+    const input = page.locator('input[role="combobox"]:visible').first();
+    await input.click();
+    // A slow first answer must never overwrite the answer of the latest text.
+    let slowed = false;
+    await page.route('**/api/catalog/suggest**', async (route) => {
+      if (!slowed && route.request().url().includes('q=E2E+Alpha') === false && route.request().url().includes('q=E2E%20Al')) {
+        slowed = true;
+        await new Promise((r) => setTimeout(r, 900));
+      }
+      await route.continue();
+    });
+    await input.pressSequentially('E2E Al', { delay: 20 });
+    await input.pressSequentially('pha Phone', { delay: 20 });
+    const list = page.getByTestId('search-suggestions');
+    await expect(list).toBeVisible();
+    await expect(list.getByTestId('search-suggestion').first()).toContainText('E2E Alpha Phone');
+    await expect(input).toHaveAttribute('aria-expanded', 'true');
+
+    await input.press('ArrowDown');
+    await expect(list.getByRole('option').first()).toHaveAttribute('aria-selected', 'true');
+    await input.press('Escape');
+    await expect(list).toBeHidden();
+
+    await input.press('ArrowDown');
+    await expect(list).toBeVisible();
+    await input.press('Enter');
+    await expect(page).toHaveURL(/\/en\/product\/e2e-sf-alpha/);
+  });
+
+  test('a query with no match says so honestly; a one-letter query asks for nothing', async ({ page }) => {
+    await gotoReady(page, '/en');
+    const input = page.locator('input[role="combobox"]:visible').first();
+    let calls = 0;
+    await page.route('**/api/catalog/suggest**', (route) => {
+      calls++;
+      return route.continue();
+    });
+    await input.pressSequentially('z');
+    await page.waitForTimeout(500);
+    expect(calls).toBe(0);
+    await input.pressSequentially('zzqx nothing');
+    await expect(page.getByTestId('search-suggestions')).toContainText('No suggestion');
+  });
+});
