@@ -90,3 +90,5 @@ Voir `docs/ANDROID.md` (Capacitor Android/iOS et PWA).
 5. **Domaine** : ajouter le domaine, HTTPS automatique ; `APP_URL` doit être identique.
 6. Se connecter à `/ar/login` avec le compte `ADMIN_EMAIL`, **changer le mot de passe**, puis saisir zones de livraison, prix, stocks et photos (voir `docs/CATALOGUE_2026.md`).
 7. Appliquer la checklist de la section 6.
+
+> **Plan Vercel Hobby :** les tâches planifiées y sont limitées à une par jour, donc `vercel.json` les déclenche une fois par nuit. Les réservations de stock d'un paiement abandonné ne sont alors libérées qu'une fois par jour. Avant l'ouverture au public, passer au plan Pro et remettre `"*/5 * * * *"` pour `/api/cron/reservations` et `"7 * * * *"` pour `/api/cron/agents`.
