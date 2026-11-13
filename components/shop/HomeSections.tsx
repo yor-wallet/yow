@@ -28,6 +28,17 @@ export function StaticHero() {
     <div data-theme="dark" className="holo-border relative overflow-hidden rounded-[28px] bg-gradient-premium px-5 py-6 text-white shadow-float md:px-10 md:py-14 lg:px-14 lg:py-20">
       <div aria-hidden="true" className="pointer-events-none absolute -end-24 -top-24 size-80 rounded-full opacity-60 blur-3xl" style={{ background: 'radial-gradient(circle, rgb(0 217 255 / 0.55), transparent 65%)' }} />
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-28 -start-20 size-72 rounded-full opacity-50 blur-3xl" style={{ background: 'radial-gradient(circle, rgb(255 121 0 / 0.5), transparent 65%)' }} />
+      {/* Decorative device showcase (owner-supplied artwork; not a product photo). */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/decor/devices-showcase.webp"
+        alt=""
+        aria-hidden="true"
+        width={736}
+        height={350}
+        decoding="async"
+        className="pointer-events-none absolute -bottom-2 end-0 w-[78%] max-w-[40rem] opacity-55 md:w-[58%] md:opacity-95"
+      />
       <HudCorners className="m-4" size={16} />
       <div className="relative max-w-2xl">
         <span className="hud-label">{t('hero.eyebrow')}</span>

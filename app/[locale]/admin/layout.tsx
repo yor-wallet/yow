@@ -46,7 +46,7 @@ export default async function AdminLayout({ children, params }: Props) {
         >
           <AdminMenuButton groups={groups} email={session.user.email} />
           <Link href="/admin" className="flex min-h-11 items-center gap-2 font-bold" aria-label={t('shell.title')}>
-            <Logo height={32} />
+            <Logo height={40} />
             <span className="hidden sm:inline">{t('shell.title')}</span>
           </Link>
           <div className="ms-auto flex items-center gap-1">

@@ -7,7 +7,7 @@
  *   When a navigation fails (offline) the offline page is shown instead.
  * Bump VERSION to invalidate caches.
  */
-const VERSION = 'doom-v1';
+const VERSION = 'doom-v2'; // v2: new official logo (cached brand files must be refreshed)
 const STATIC_CACHE = `${VERSION}-static`;
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [

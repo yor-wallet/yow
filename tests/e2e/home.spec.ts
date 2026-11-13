@@ -19,7 +19,7 @@ for (const locale of LOCALES) {
     // The phone band is always violet (transparent logo); the desktop header follows the theme.
     await expect(logo).toHaveAttribute('data-logo-surface', isDesktop(page) ? 'light' : 'dark');
     const box = await logo.boundingBox();
-    expect(box?.height).toBeCloseTo(38, 0);
+    expect(box?.height).toBeCloseTo(isDesktop(page) ? 52 : 50, 0);
     expect(await logo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
 
     // Primary navigation per form factor.

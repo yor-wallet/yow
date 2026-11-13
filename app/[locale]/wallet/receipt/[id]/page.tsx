@@ -55,7 +55,7 @@ export default async function ReceiptPage({ params, searchParams }: Props) {
         </div>
         <article id="doom-receipt" className="mx-auto max-w-3xl rounded-card bg-white p-6 text-ink shadow-float sm:p-10" data-testid="receipt" data-theme="light">
           <header className="flex flex-wrap items-start justify-between gap-4 border-b border-ink/10 pb-6">
-            <Image src="/brand/doom-logo-horizontal-light-640.png" alt="DOOM | دوم" width={200} height={80} className="h-auto w-44" priority />
+            <Image src="/brand/doom-logo-horizontal-light-640.png" alt="DOOM | دوم" width={200} height={131} className="h-auto w-36" priority />
             <div className="text-end">
               <h2 className="text-2xl font-bold">{data.kind === 'order' ? t('orderTitle') : t('walletTitle')}</h2>
               <p className="mt-1 text-sm">

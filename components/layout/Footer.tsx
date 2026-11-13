@@ -26,7 +26,7 @@ export async function Footer() {
       <span aria-hidden="true" className="doom-hairline top-0" />
       <div className="page-container grid grid-cols-1 gap-10 py-12 md:grid-cols-2 lg:grid-cols-12">
         <section className="lg:col-span-4" aria-labelledby="footer-about">
-          <Logo surface="dark" height={44} />
+          <Logo surface="dark" height={72} />
           <h2 id="footer-about" className="mt-5 text-sm font-bold uppercase tracking-wider text-fg">
             {t('footer.about')}
           </h2>

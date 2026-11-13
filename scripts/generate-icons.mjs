@@ -1,11 +1,11 @@
 /**
  * DOOM | دوم — brand asset pipeline.
  *
- * Source of truth: brand-src/doom-logo-official.png (the validated official logo).
+ * Source of truth: brand-src/doom-logo-official.png — the neon "DOOM" wordmark chosen by the
+ * owner (November 2026; it replaced the earlier emblem + wordmark logo, kept in the Git history).
  * This script NEVER redraws or recolors the logo. It only:
- *   - crops regions of the original (emblem, wordmark),
- *   - re-arranges those original crops (horizontal lock-up),
- *   - removes the dark background (color-to-alpha against the measured background),
+ *   - crops regions of the original (the whole wordmark; its first letter as the small-size mark),
+ *   - removes the black background (colour-to-alpha against the measured background, glow kept),
  *   - resizes with preserved aspect ratio,
  *   - wraps rasters in SVG containers (an SVG with the embedded original raster).
  *
@@ -24,8 +24,10 @@ const SIZES = [32, 64, 128, 192, 256, 512, 1024];
 const BG = { r: 16, g: 5, b: 46 }; // #10052E violet nuit
 
 // Regions measured on the 1254×1254 official file.
-const EMBLEM = { left: 282, top: 20, width: 686, height: 686 };
-const WORDMARK = { left: 130, top: 700, width: 1010, height: 390 };
+// The wordmark with its two swooshes (bounding box of everything that is not background, plus a margin).
+const WORDMARK = { left: 92, top: 282, width: 1070, height: 674 };
+// Small-size mark: the first letter of the wordmark (a square crop of the original, never redrawn).
+const EMBLEM = { left: 84, top: 462, width: 304, height: 304 };
 
 await fs.mkdir(OUT, { recursive: true });
 await fs.mkdir(ICONS, { recursive: true });
@@ -65,7 +67,9 @@ async function backgroundField() {
 /** GIMP-style colour-to-alpha against a per-pixel background field. */
 async function transparentOriginal() {
   const { data, info } = await sharp(SRC).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-  const bg = await backgroundField();
+  // The official file sits on pure black (measured: 0–1 on every channel at the borders), so the
+  // background field is constant: a plain black matte keeps the letters solid and the glow soft.
+  const bg = Buffer.alloc(info.width * info.height * 3, 0);
   const out = Buffer.alloc(info.width * info.height * 4);
   for (let p = 0; p < info.width * info.height; p++) {
     const i = p * 3;
@@ -77,7 +81,7 @@ async function transparentOriginal() {
       if (ac > a) a = ac;
     }
     // Suppress compression noise of the background gradient (soft knee keeps glows).
-    const lo = 0.1, hi = 0.28;
+    const lo = 0.03, hi = 0.1;
     if (a <= lo) a = 0;
     else if (a < hi) { const t = (a - lo) / (hi - lo); a = hi * t * t * (3 - 2 * t); }
     const o = p * 4;
@@ -125,30 +129,17 @@ const emblemTransparent = await sharp(transparent).extract(EMBLEM).png().toBuffe
 await writeVariants('doom-emblem', emblemDark, { widths: [256, 512], title: 'DOOM' });
 await writeVariants('doom-emblem-transparent', emblemTransparent, { widths: [128, 256, 512], title: 'DOOM' });
 
-// 4. Wordmark (DOOM + دوم + tagline), transparent.
-const wordmark = await sharp(transparent).extract(WORDMARK).trim({ threshold: 1 }).png().toBuffer();
+// 4. Wordmark, transparent.
+const wordmark = await sharp(transparent).extract(WORDMARK).png().toBuffer();
 await writeVariants('doom-wordmark-transparent', wordmark, { widths: [512], title: 'DOOM | دوم' });
 
-// 5. Horizontal lock-up: original emblem crop + original wordmark crop, side by side.
-const H = 400;
-const emb = await sharp(emblemTransparent).resize({ height: H }).png().toBuffer();
-const wmResized = await sharp(wordmark).resize({ height: Math.round(H * 0.62) }).png().toBuffer();
-const wmMeta = await sharp(wmResized).metadata();
-const gap = 36;
-const horizontal = await sharp({
-  create: { width: H + gap + wmMeta.width, height: H, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
-})
-  .composite([
-    { input: emb, left: 0, top: 0 },
-    { input: wmResized, left: H + gap, top: Math.round((H - wmMeta.height) / 2) },
-  ])
-  .png()
-  .toBuffer();
+// 5. Horizontal logo = the wordmark itself (the official logo is already horizontal).
+const horizontal = wordmark;
 await writeVariants('doom-logo-horizontal-transparent', horizontal, { widths: [320, 640], title: 'DOOM | دوم' });
 
 // 6. Dark version = transparent lock-up on violet nuit. Light version = the same
-//    unaltered lock-up inside a violet-nuit badge (the white wordmark of the official
-//    logo must not be recoloured, so on light surfaces it sits on its brand plate).
+//    unaltered logo inside a violet-nuit badge (the neon glow of the official logo needs a
+//    dark ground, so on light surfaces it sits on its brand plate).
 async function onPlate(input, pad, radius) {
   const m = await sharp(input).metadata();
   const w = m.width + pad * 2;
@@ -159,7 +150,7 @@ async function onPlate(input, pad, radius) {
   return sharp(plate).composite([{ input, left: pad, top: pad }]).png().toBuffer();
 }
 await writeVariants('doom-logo-horizontal-dark', await sharp(horizontal).flatten({ background: BG }).png().toBuffer(), { widths: [640], title: 'DOOM | دوم' });
-await writeVariants('doom-logo-horizontal-light', await onPlate(horizontal, 28, 36), { widths: [640], title: 'DOOM | دوم' });
+await writeVariants('doom-logo-horizontal-light', await onPlate(horizontal, 40, 72), { widths: [640], title: 'DOOM | دوم' });
 await writeVariants('doom-logo-vertical-light', await onPlate(await sharp(trimmedTransparent).resize({ width: 900 }).png().toBuffer(), 60, 72), { widths: [512], title: 'DOOM | دوم' });
 
 // 7. App / PWA / Android icons from the emblem (square, original background).

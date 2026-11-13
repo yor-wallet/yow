@@ -19,7 +19,7 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
       >
         <main>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/doom-logo-horizontal-transparent-320.webp" width={240} height={89} alt="DOOM | دوم" />
+          <img src="/brand/doom-logo-horizontal-transparent-320.webp" width={240} height={151} alt="DOOM | دوم" />
           <h1 style={{ fontSize: 22, margin: '24px 0 8px' }}>حدث خطأ ما · Something went wrong</h1>
           <p style={{ color: '#C9C5DE', margin: '0 0 24px' }}>Une erreur s’est produite</p>
           <button

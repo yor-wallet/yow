@@ -108,7 +108,7 @@ export async function renderReceiptPdf(data: ReceiptData): Promise<Uint8Array> {
   const logoBytes = await loadLogo();
   if (logoBytes) {
     const logo = await doc.embedPng(logoBytes);
-    const w = 170;
+    const w = 110; // the wordmark is taller than the former lock-up: keep the header height
     const h = (logo.height / logo.width) * w;
     page.drawImage(logo, { x: ctx.left, y: ctx.y - h + 10, width: w, height: h });
   } else {

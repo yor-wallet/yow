@@ -13,6 +13,11 @@ export function AuthShell({ title, subtitle, children }: { title: string; subtit
           <div className="mb-3 hidden lg:block">
             <BackButton fallbackHref="/" variant="text" className="-ms-3" />
           </div>
+          {/* Decorative device showcase (owner-supplied artwork; not a product photo). */}
+          <div data-theme="dark" aria-hidden="true" className="relative mb-4 overflow-hidden rounded-[28px] bg-gradient-premium shadow-float">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/decor/devices-showcase.webp" alt="" width={736} height={350} decoding="async" className="mx-auto block w-full max-w-sm" />
+          </div>
           <div className="holo-border relative rounded-[28px] p-5 shadow-float sm:p-8">
             <HudCorners className="m-2" />
             {/* On mobile the sticky PageHeader carries the <h1>. */}

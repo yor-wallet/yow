@@ -5,7 +5,8 @@ import { useTheme } from '@/components/layout/ThemeProvider';
 import { cn } from '@/lib/cn';
 
 /**
- * Official DOOM | دوم logo — generated from brand-src/doom-logo-official.png only.
+ * Official DOOM | دوم logo (neon wordmark, owner's choice of November 2026) — generated from
+ * brand-src/doom-logo-official.png only. The `emblem` variant is its first letter, cropped.
  * Never recolour, redraw or stretch it. Transparent variants are for DARK surfaces;
  * on light surfaces the logo is shown on its violet plate (`*-light` assets).
  * Fixed width/height (aspect-ratio preserved) → zero layout shift.
@@ -16,8 +17,8 @@ type Surface = 'auto' | 'dark' | 'light';
 
 const ASSETS = {
   horizontal: {
-    dark: { src: '/brand/doom-logo-horizontal-transparent-640.webp', w: 640, h: 237 },
-    light: { src: '/brand/doom-logo-horizontal-light-640.webp', w: 640, h: 257 },
+    dark: { src: '/brand/doom-logo-horizontal-transparent-640.webp', w: 640, h: 403 },
+    light: { src: '/brand/doom-logo-horizontal-light-640.webp', w: 640, h: 420 },
   },
   emblem: {
     dark: { src: '/brand/doom-emblem-transparent-256.webp', w: 256, h: 256 },

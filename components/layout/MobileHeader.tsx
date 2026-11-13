@@ -26,7 +26,7 @@ export function MobileHeader({ counts, areaOptions, area }: { counts: HeaderCoun
             <MobileHeaderStart />
           </div>
           <Link href="/" aria-label={t('home')} className="rounded-lg">
-            <Logo height={38} surface="dark" priority />
+            <Logo height={50} surface="dark" priority />
           </Link>
           <div className="flex items-center justify-self-end">
             <ThemeToggle tone="onDark" />
