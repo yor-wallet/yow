@@ -55,11 +55,11 @@ Vitrine complète (accueil, catégories, recherche, fiche produit, panier, comma
 ## 6. Reste à faire
 
 **Cahier des charges du propriétaire** (`DOOM_Design_Implementation_AR.md`, remis en novembre 2026) :
-1. §1–§2 faits (palette, IBM Plex, logo, en-tête clair, mouvements). Reste : isoler avec `<bdi>` les noms d'appareils et codes dans le texte arabe (les prix le sont déjà via `Price`), vérifier les titres longs et le zoom de texte sur téléphone.
+1. §1–§2 faits (palette, IBM Plex, logo, en-tête clair, mouvements). Reste : isoler avec `<bdi>` les noms d'appareils dans les phrases arabes restantes (prix via `Price`, noms dans cartes / panier / comparateur faits), vérifier les titres longs et le zoom de texte sur téléphone.
 2. §3 : tiroirs du menu et du panier rapide (ouverture depuis le début du sens de lecture), recherche avec suggestions (~250 ms) et résultats obsolètes ignorés, fenêtres modales (titre, « Fermer », retour du focus).
 3. §4 performances : champs minimaux par carte, pagination en lots, fractionnement des bundles, images responsives, mesures **LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,10** avant/après.
 4. §5 moteur de nettoyage serveur : **fait** (`lib/maintenance/cleanup.ts`, `docs/MAINTENANCE.md`) — désactivé par défaut (`cleanup.enabled`), aperçu par `npm run maintenance:cleanup`. Reste : l'écran d'administration des réglages pour modifier les durées sans SQL.
-5. §6 **audit des boutons** : liste de tous les boutons, liens et icônes interactives avec leur chemin réel et leur résultat (succès / échec / chargement), états indisponibles motivés, nom accessible pour chaque icône.
+5. §6 **audit des boutons** : **fait pour le nom, la cible et la taille** — `scripts/audit-controls.mjs` (parcours de 132 pages × 15 138 contrôles : 0 sans nom, 0 lien mort ou cassé, cibles ≥ 44 px sauf exceptions WCAG 2.5.8 documentées) et garde-fou `tests/e2e/controls.spec.ts` (30 tests). Reste : vérifier à la main le résultat de chaque action (succès / échec / chargement) sur les pages connectées et les formulaires.
 6. §7 livrables : palette et police (fait : `docs/IDENTITY.md`), liste des boutons vérifiés, résultat de l'aperçu du nettoyage, mesures avant/après.
 
 **Administration** : écrans manquants — catégories, marques, promotions, remboursements, finance (portefeuilles, grand livre, paiements, cartes cadeaux, FLEX), clients, KYC, support, incidents de livraison, réglages du site, journal d'audit. Les entrées restent masquées du menu tant que l'écran n'existe pas (`BUILT_NAV_KEYS` dans `lib/admin/nav.ts`).

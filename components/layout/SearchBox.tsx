@@ -58,7 +58,7 @@ export function SearchBox({
         maxLength={120}
         className={cn(
           'block w-full min-w-0 border border-border bg-surface text-base text-fg placeholder:text-muted/80 transition-[border-color,box-shadow] duration-(--dur-btn) focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/35 [&::-webkit-search-cancel-button]:hidden',
-          variant === 'pill' ? 'h-13 rounded-2xl ps-16 pe-4 shadow-card' : 'h-11 rounded-xl ps-11 pe-24',
+          variant === 'pill' ? 'h-13 rounded-2xl ps-16 pe-4 shadow-card' : 'h-12 rounded-xl ps-11 pe-24',
         )}
       />
       {variant === 'pill' ? null : <Search size={18} aria-hidden="true" className="pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-muted" />}
@@ -67,7 +67,7 @@ export function SearchBox({
         aria-label={variant === 'pill' ? t('submit') : undefined}
         className={cn(
           'absolute bg-gradient-primary font-semibold text-on-accent transition-transform duration-(--dur-btn) active:scale-[0.98]',
-          variant === 'pill' ? 'inset-y-2 start-2 grid w-11 place-items-center rounded-xl' : 'inset-y-1 end-1 rounded-lg px-4 text-sm',
+          variant === 'pill' ? 'inset-y-1 start-1 grid w-11 place-items-center rounded-xl' : 'inset-y-0.5 end-0.5 min-w-11 rounded-lg px-4 text-sm',
         )}
       >
         {variant === 'pill' ? <Search size={20} aria-hidden="true" /> : t('submit')}

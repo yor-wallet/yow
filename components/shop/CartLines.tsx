@@ -74,10 +74,10 @@ function CartLine({ line }: { line: CartLineView }) {
             {line.brand ? <p className="truncate text-xs font-medium uppercase tracking-wide text-muted">{line.brand}</p> : null}
             <h3 className="line-clamp-2 text-sm font-semibold leading-snug sm:text-base">
               <Link href={productPath(line.slug)} className="underline-offset-4 hover:underline">
-                {line.name}
+                <bdi>{line.name}</bdi>
               </Link>
             </h3>
-            {line.variantLabel ? <p className="text-xs text-muted">{line.variantLabel}</p> : null}
+            {line.variantLabel ? <p className="text-xs text-muted"><bdi>{line.variantLabel}</bdi></p> : null}
           </div>
           <button
             type="button"

@@ -5,7 +5,7 @@ import { localize } from '@/lib/localized';
 import { Logo } from '@/components/ui/Logo';
 import { LocaleSwitcher } from './LocaleSwitcher';
 
-const linkClass = 'inline-flex min-h-11 items-center text-sm text-muted transition-colors duration-(--dur-btn) hover:text-fg';
+const linkClass = 'inline-flex min-h-11 min-w-11 items-center text-sm text-muted transition-colors duration-(--dur-btn) hover:text-fg';
 
 /**
  * Full footer. Always rendered on a dark surface (`data-theme="dark"` re-scopes the

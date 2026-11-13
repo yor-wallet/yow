@@ -74,7 +74,7 @@ export default async function ComparePage({ params }: Props) {
                           )}
                         </div>
                         <Link href={productPath(card.slug)} className="line-clamp-2 font-bold underline-offset-4 hover:underline">
-                          {card.name}
+                          <bdi>{card.name}</bdi>
                         </Link>
                         <CompareRemove productId={card.id} label={t('remove', { name: card.name })} variant="icon" />
                       </div>

@@ -112,7 +112,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, Omit<InputProps, 'type
             onClick={() => setVisible((v) => !v)}
             aria-label={visible ? hideLabel : showLabel}
             aria-pressed={visible}
-            className="grid size-10 place-items-center rounded-lg text-muted hover:text-fg"
+            className="grid size-11 place-items-center rounded-lg text-muted hover:text-fg"
           >
             {visible ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
           </button>

@@ -28,7 +28,7 @@ export function MobileHeader({ counts, areaOptions, area }: { counts: HeaderCoun
           <div className="flex items-center justify-self-start">
             <MobileHeaderStart />
           </div>
-          <Link href="/" aria-label={t('home')} className="rounded-lg">
+          <Link href="/" aria-label={t('home')} className="inline-flex min-h-11 items-center rounded-lg">
             <Logo height={34} priority />
           </Link>
           <div className="flex items-center justify-self-end">

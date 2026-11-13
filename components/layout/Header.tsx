@@ -14,7 +14,7 @@ import { LocaleSwitcher } from './LocaleSwitcher';
 import { MobileHeader } from './MobileHeader';
 
 const iconLink =
-  'relative inline-flex h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-fg transition-colors duration-(--dur-btn) hover:bg-surface-2';
+  'relative inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-semibold text-fg transition-colors duration-(--dur-btn) hover:bg-surface-2';
 
 /**
  * Global header. Desktop (lg+): sticky two-row header with logo, search, actions and
@@ -37,7 +37,7 @@ export async function Header() {
         data-testid="desktop-header"
       >
         <div className="page-container flex h-18 items-center gap-6">
-          <Link href="/" aria-label={t('home')} className="shrink-0 rounded-lg transition-[filter] duration-(--dur-nav) hover:drop-shadow-[0_0_14px_rgb(0_217_255/0.45)]">
+          <Link href="/" aria-label={t('home')} className="inline-flex min-h-11 shrink-0 items-center rounded-lg transition-[filter] duration-(--dur-nav) hover:drop-shadow-[0_0_14px_rgb(0_217_255/0.45)]">
             <Logo height={40} priority />
           </Link>
           <SearchBox className="max-w-2xl flex-1" />

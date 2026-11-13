@@ -129,7 +129,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
       <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
         <div className="min-w-0 lg:order-1">
           {product.brand ? (
-            <Link href={`/search?brand=${product.brand.slug}`} className="text-sm font-semibold uppercase tracking-wide text-accent underline-offset-4 hover:underline max-lg:hidden">
+            <Link href={`/search?brand=${product.brand.slug}`} className="inline-flex min-h-11 min-w-11 items-center text-sm font-semibold uppercase tracking-wide text-accent underline-offset-4 hover:underline max-lg:hidden">
               {product.brand.name}
             </Link>
           ) : null}
@@ -259,7 +259,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
             <dl className="mt-1 flex flex-col gap-1.5 pb-1 text-sm text-muted">
               {product.brand ? (
                 <div>
-                  <Link href={`/search?brand=${product.brand.slug}`} className="font-semibold text-accent underline-offset-4 hover:underline">
+                  <Link href={`/search?brand=${product.brand.slug}`} className="inline-flex min-h-11 min-w-11 items-center font-semibold text-accent underline-offset-4 hover:underline">
                     {product.brand.name}
                   </Link>
                 </div>

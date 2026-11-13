@@ -205,7 +205,7 @@ export function HeroCarousel({ slides }: { slides: CampaignSlide[] }) {
               <ChevronRight size={20} aria-hidden="true" className="flip-rtl" />
             </button>
           </div>
-          <ol className="pointer-events-auto flex min-w-0 items-center max-md:absolute max-md:inset-x-14 max-md:bottom-1.5 max-md:justify-center" data-scroll-x>
+          <ol className="pointer-events-auto flex min-w-0 items-center max-md:absolute max-md:inset-x-[3.25rem] max-md:bottom-1.5 max-md:justify-center" data-scroll-x>
             {slides.map((s, i) => (
               <li key={s.id}>
                 <button
@@ -214,7 +214,7 @@ export function HeroCarousel({ slides }: { slides: CampaignSlide[] }) {
                   aria-label={t('goTo', { index: i + 1, title: s.title })}
                   aria-current={i === index ? 'true' : undefined}
                   data-testid="carousel-dot"
-                  className="grid h-11 min-w-6 place-items-center px-0.5 focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:outline-ring sm:min-w-7 sm:px-1"
+                  className="grid h-11 min-w-10 place-items-center px-0.5 focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:outline-ring sm:min-w-7 sm:px-1"
                 >
                   <span className={styles.dot} data-current={i === index ? 'true' : 'false'}>
                     {i === index ? <span className={styles.dotFill} /> : null}
