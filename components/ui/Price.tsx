@@ -21,6 +21,7 @@ const sizes = {
 
 /**
  * Formats a baisa amount for the current locale (Latin digits, 3 decimals, OMR / ر.ع.).
+ * Amounts sit in <bdi> so a price inside Arabic text keeps its own reading order.
  * Works in server and client components.
  */
 export function Price({ baisa, compareAtBaisa, size = 'md', showSavings = false, className }: PriceProps) {
@@ -36,12 +37,12 @@ export function Price({ baisa, compareAtBaisa, size = 'md', showSavings = false,
   const hasCompare = typeof compareAtBaisa === 'number' && compareAtBaisa > baisa;
   return (
     <span className={cn('inline-flex flex-wrap items-baseline gap-x-2 gap-y-0.5', className)} data-price={baisa}>
-      <span className={cn('font-bold tabular-nums text-price [unicode-bidi:isolate]', sizes[size])}>{formatBaisa(baisa, locale)}</span>
+      <bdi className={cn('font-bold tabular-nums text-price', sizes[size])}>{formatBaisa(baisa, locale)}</bdi>
       {hasCompare ? (
         <>
           <span className="sr-only">{t('was', { price: formatBaisa(compareAtBaisa, locale) })}</span>
-          <s aria-hidden="true" className="text-sm tabular-nums text-muted [unicode-bidi:isolate]">
-            {formatBaisa(compareAtBaisa, locale)}
+          <s aria-hidden="true" className="text-sm tabular-nums text-muted">
+            <bdi>{formatBaisa(compareAtBaisa, locale)}</bdi>
           </s>
           {showSavings ? (
             <span className="text-xs font-semibold text-success">
