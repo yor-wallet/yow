@@ -16,7 +16,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "brand:icons": "node scripts/generate-icons.mjs",
     "agents:run": "tsx scripts/run-agents.ts",
-    "catalogue:import": "tsx scripts/import-verified-catalogue.ts"
+    "catalogue:import": "tsx scripts/import-verified-catalogue.ts",
+    "predeploy": "tsx scripts/predeploy-check.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

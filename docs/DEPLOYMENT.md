@@ -73,3 +73,20 @@ jamais un paiement.
 
 ## 8. Application mobile
 Voir `docs/ANDROID.md` (Capacitor Android/iOS et PWA).
+
+## 9. Première mise en ligne — marche à suivre précise
+
+> ⚠️ Le compte Vercel `yordigitalefinance` contient déjà un projet **`yor-wallet`** et le compte Supabase un projet **`yor-wallet`** (l'ancien prototype, `legacy/`). **Ne pas les réutiliser** : créer un projet Vercel `doom` et un projet Supabase `doom` distincts, pour ne pas écraser un site ou des données existants.
+
+1. **Supabase** : nouveau projet `doom` (région proche d'Oman), mot de passe fort. Créer deux buckets de stockage : `public` (public) et `private` (privé, sans politique de lecture).
+2. **Variables** : copier `.env.example` dans Vercel (Production). Renseigner au minimum `DATABASE_URL` (URL poolée), `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. Vérifier avant de déployer : `npm run predeploy` (avec les variables en local dans `.env.production.local`, non versionné).
+3. **Base** (depuis votre poste, avec l'URL **directe** de Supabase) :
+   ```bash
+   DATABASE_URL="<url directe>" npx prisma migrate deploy
+   DATABASE_URL="<url directe>" ADMIN_EMAIL="…" ADMIN_PASSWORD="…" npm run db:seed
+   DATABASE_URL="<url directe>" npm run catalogue:import -- --publish   # 36 modèles publiés « prix bientôt disponible »
+   ```
+4. **Vercel** : importer le dépôt `yor-wallet/yow`, branche de production, framework Next.js, Node 20+. `vercel.json` déclare déjà les crons.
+5. **Domaine** : ajouter le domaine, HTTPS automatique ; `APP_URL` doit être identique.
+6. Se connecter à `/ar/login` avec le compte `ADMIN_EMAIL`, **changer le mot de passe**, puis saisir zones de livraison, prix, stocks et photos (voir `docs/CATALOGUE_2026.md`).
+7. Appliquer la checklist de la section 6.
