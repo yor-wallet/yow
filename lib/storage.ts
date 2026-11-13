@@ -32,7 +32,11 @@ export interface StorageDriver {
   exists(bucket: Bucket, key: string): Promise<boolean>;
   /** Browser URL for a PUBLIC object. */
   publicUrl(key: string): string;
+  /** Every object under `prefix` (recursive) with its last-modified time. Optional: used by the maintenance sweep only. */
+  list?(bucket: Bucket, prefix: string): Promise<StoredObject[]>;
 }
+
+export type StoredObject = { key: string; updatedAt: Date };
 
 /** Keys: lowercase segments of [a-z0-9._-] separated by `/`; no traversal, no leading slash. */
 export function assertSafeKey(key: string): void {
@@ -179,6 +183,29 @@ export class LocalStorageDriver implements StorageDriver {
     assertSafeKey(key);
     return `/media/${key}`;
   }
+
+  async list(bucket: Bucket, prefix: string): Promise<StoredObject[]> {
+    const base = path.resolve(bucket === 'public' ? this.publicDir : this.privateDir);
+    const root = path.resolve(base, prefix);
+    if (root !== base && !root.startsWith(base + path.sep)) throw new Error('Path traversal blocked');
+    const out: StoredObject[] = [];
+    const walk = async (dir: string) => {
+      let entries;
+      try {
+        entries = await fs.readdir(dir, { withFileTypes: true });
+      } catch (e) {
+        if ((e as NodeJS.ErrnoException).code === 'ENOENT') return;
+        throw e;
+      }
+      for (const e of entries) {
+        const full = path.join(dir, e.name);
+        if (e.isDirectory()) await walk(full);
+        else if (e.isFile() && !e.name.endsWith('.tmp')) out.push({ key: path.relative(base, full).split(path.sep).join('/'), updatedAt: (await fs.stat(full)).mtime });
+      }
+    };
+    await walk(root);
+    return out;
+  }
 }
 
 // ───────────── Supabase driver ─────────────
@@ -236,6 +263,30 @@ export class SupabaseStorageDriver implements StorageDriver {
   publicUrl(key: string) {
     assertSafeKey(key);
     return `${this.url}/storage/v1/object/public/${encodeURIComponent(this.buckets.public)}/${key}`;
+  }
+
+  /** Recursive listing through the Storage list endpoint (one folder level per call, paged by 100). */
+  async list(bucket: Bucket, prefix: string): Promise<StoredObject[]> {
+    const out: StoredObject[] = [];
+    const folder = async (dir: string) => {
+      for (let offset = 0; ; offset += 100) {
+        const res = await fetch(`${this.url}/storage/v1/object/list/${encodeURIComponent(this.buckets[bucket])}`, {
+          method: 'POST',
+          headers: this.headers({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ prefix: dir, limit: 100, offset, sortBy: { column: 'name', order: 'asc' } }),
+        });
+        if (!res.ok) throw new Error(`Supabase list failed (${res.status})`);
+        const rows = (await res.json()) as { name: string; id: string | null; updated_at?: string; created_at?: string }[];
+        for (const r of rows) {
+          const key = dir ? `${dir.replace(/\/+$/, '')}/${r.name}` : r.name;
+          if (r.id === null) await folder(key);
+          else out.push({ key, updatedAt: new Date(r.updated_at ?? r.created_at ?? Date.now()) });
+        }
+        if (rows.length < 100) break;
+      }
+    };
+    await folder(prefix.replace(/\/+$/, ''));
+    return out;
   }
 }
 

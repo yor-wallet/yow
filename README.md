@@ -32,6 +32,7 @@ npm run dev                     # http://localhost:3000/ar
 | `npm run brand:icons` | Régénère toutes les déclinaisons du logo officiel |
 | `npm run catalogue:import` | Applique le catalogue vérifié 2026 (brouillons ; `-- --publish` pour publier les modèles vérifiés) |
 | `npm run agents:run` | Exécute les 15 agents IA (propositions à valider dans l'admin) |
+| `npm run maintenance:cleanup` | Aperçu du nettoyage des données temporaires (`-- --apply` pour l'exécuter) ; voir [docs/MAINTENANCE.md](docs/MAINTENANCE.md) |
 
 ## Règles du projet
 - Nom **DOOM | دوم**, logo officiel `brand-src/doom-logo-official.png` (jamais redessiné ni recoloré),

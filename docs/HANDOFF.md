@@ -58,7 +58,7 @@ Vitrine complète (accueil, catégories, recherche, fiche produit, panier, comma
 1. §1–§2 faits (palette, IBM Plex, logo, en-tête clair, mouvements). Reste : isoler avec `<bdi>` les noms d'appareils et codes dans le texte arabe (les prix le sont déjà via `Price`), vérifier les titres longs et le zoom de texte sur téléphone.
 2. §3 : tiroirs du menu et du panier rapide (ouverture depuis le début du sens de lecture), recherche avec suggestions (~250 ms) et résultats obsolètes ignorés, fenêtres modales (titre, « Fermer », retour du focus).
 3. §4 performances : champs minimaux par carte, pagination en lots, fractionnement des bundles, images responsives, mesures **LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,10** avant/après.
-4. §5 **moteur de nettoyage serveur** : tâche planifiée (cron), liste explicite des types purgeables (caches, envois incomplets, images dérivées orphelines, journaux de diagnostic), durées de rétention réglables, **aperçu des nombres d'abord**, lots, verrou anti-chevauchement, jamais commandes / paiements / clients / produits / stocks / paniers actifs / audit.
+4. §5 moteur de nettoyage serveur : **fait** (`lib/maintenance/cleanup.ts`, `docs/MAINTENANCE.md`) — désactivé par défaut (`cleanup.enabled`), aperçu par `npm run maintenance:cleanup`. Reste : l'écran d'administration des réglages pour modifier les durées sans SQL.
 5. §6 **audit des boutons** : liste de tous les boutons, liens et icônes interactives avec leur chemin réel et leur résultat (succès / échec / chargement), états indisponibles motivés, nom accessible pour chaque icône.
 6. §7 livrables : palette et police (fait : `docs/IDENTITY.md`), liste des boutons vérifiés, résultat de l'aperçu du nettoyage, mesures avant/après.
 

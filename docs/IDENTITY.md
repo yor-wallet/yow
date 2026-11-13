@@ -32,4 +32,4 @@ Contraste marine sur jaune : 13,35:1. Les anciens noms d'utilitaires (`blue`, `c
 - Effets décoratifs retirés : halos néon, bordures holographiques animées, scène d'ambiance. `prefers-reduced-motion` neutralise toutes les durées.
 
 ## Reste à faire du cahier des charges
-Isolation `<bdi>` : faite pour les noms de produits (`Ltr`) et les prix (`Price`). Reste : moteur de nettoyage serveur (aperçu, lots, verrou), liste vérifiée de tous les boutons, mesures LCP / INP / CLS avant-après.
+Isolation `<bdi>` : faite pour les noms de produits (`Ltr`) et les prix (`Price`). Reste : liste vérifiée de tous les boutons, mesures LCP / INP / CLS avant-après.
