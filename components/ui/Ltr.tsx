@@ -15,3 +15,11 @@ export function Ltr({ children, className }: { children: ReactNode; className?: 
 
 /** Same for plain strings (option labels, aria text): wraps in left-to-right marks. */
 export const ltr = (s: string): string => `‎${s}‎`;
+
+/**
+ * Mixed Arabic + technical text ("حتى 4.47 GHz", "256 GB · 512 GB"): isolates every number-with-unit as a
+ * left-to-right run (U+2066 … U+2069) so the unit stays on the right of its number inside RTL text.
+ */
+export function isolateUnits(s: string): string {
+  return s.replace(/(\d[\d.,]*(?:\s?[×x]\s?\d[\d.,]*)*\s?(?:GHz|GB|TB|MP|mm|mAh|Hz|px|ppi|W|h|g|m|MB)\b)/g, '\u2066$1\u2069');
+}

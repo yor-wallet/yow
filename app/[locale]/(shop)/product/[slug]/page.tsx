@@ -22,6 +22,7 @@ import { getUserProductFlags } from '@/lib/catalog/queries';
 import { getPreferredArea, listAreaOptions } from '@/lib/delivery/area';
 import { localize } from '@/lib/localized';
 import { Stars } from '@/components/shop/Stars';
+import { isolateUnits, Ltr } from '@/components/ui/Ltr';
 import { getFormatter } from 'next-intl/server';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -179,7 +180,7 @@ export default async function ProductPage({ params }: Props) {
             {product.specs.map((s, i) => (
               <div key={s.key} className={`grid grid-cols-1 gap-1 px-4 py-3 text-sm sm:grid-cols-[minmax(0,14rem)_1fr] sm:gap-4 ${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'}`}>
                 <dt className="font-semibold">{s.label}</dt>
-                <dd className="min-w-0 text-muted [overflow-wrap:anywhere]">{s.value}</dd>
+                <dd className="min-w-0 text-muted [overflow-wrap:anywhere]">{/[\u0600-\u06FF]/.test(s.value) ? isolateUnits(s.value) : <Ltr>{s.value}</Ltr>}</dd>
               </div>
             ))}
           </dl>
