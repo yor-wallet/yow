@@ -21,6 +21,7 @@ import { prisma } from '@/lib/db';
 import type { Actor } from '@/lib/admin/actor';
 import { importVerifiedCatalogue } from '@/lib/admin/catalogue-verified';
 
+const BATCH = 6;
 const SYSTEM_EMAIL = 'catalogue-import@system.doom.invalid';
 
 /** The system account: suspended (cannot sign in), random password nobody knows, CATALOG role during the run only. */
@@ -61,8 +62,14 @@ async function main() {
   if (!actor) throw new Error('No ADMIN/SUPERADMIN user found: run `npm run db:seed` with ADMIN_EMAIL / ADMIN_PASSWORD first, or pass --system.');
 
   try {
-    const res = await importVerifiedCatalogue(actor, { models: doc.models, publish });
-    console.log('[catalogue]', JSON.stringify(res));
+    // Small batches: each one is its own short transaction (and its own audit row), so the import
+    // also completes when the database is far from where the script runs.
+    const total: Record<string, number> = {};
+    for (let i = 0; i < doc.models.length; i += BATCH) {
+      const res = await importVerifiedCatalogue(actor, { models: doc.models.slice(i, i + BATCH), publish });
+      for (const [k, v] of Object.entries(res)) if (typeof v === 'number') total[k] = (total[k] ?? 0) + v;
+    }
+    console.log('[catalogue]', JSON.stringify(total));
   } finally {
     // The system account keeps no staff role once the import is over.
     if (args.includes('--system')) await prisma.user.update({ where: { id: actor.id }, data: { role: 'CUSTOMER' } });

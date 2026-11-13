@@ -225,31 +225,34 @@ export const importVerifiedCatalogue = defineMutation({
         const hexOf = new Map(m.colors.map((c) => [c.name.toLowerCase(), c.hex?.toLowerCase() ?? null]));
         const ordered = [...m.variants].sort((a, b) => a.storageGb - b.storageGb || m.colors.findIndex((c) => c.name === a.color) - m.colors.findIndex((c) => c.name === b.color));
         let sort = known.size;
+        const rows: Prisma.ProductVariantCreateManyInput[] = [];
         for (const v of ordered) {
           const sku = variantSku(m.id, v);
           if (known.has(sku)) continue;
           const label = capacityLabel(v.storageGb);
-          await tx.productVariant.create({
-            data: {
-              productId,
-              sku,
-              name: { ar: `${label} · ${v.color}`, en: `${label} · ${v.color}`, fr: `${label} · ${v.color}` },
-              color: v.color,
-              colorHex: hexOf.get(v.color.toLowerCase()) ?? null,
-              capacity: label,
-              storageGb: v.storageGb,
-              ramGb: v.ramGb ?? null,
-              mpn: v.mpn ?? null,
-              priceBaisa: null,
-              stock: 0,
-              isActive: true,
-              isDefault: known.size === 0 && sort === 0,
-              sort: sort++,
-            },
+          rows.push({
+            productId,
+            sku,
+            name: { ar: `${label} · ${v.color}`, en: `${label} · ${v.color}`, fr: `${label} · ${v.color}` },
+            color: v.color,
+            colorHex: hexOf.get(v.color.toLowerCase()) ?? null,
+            capacity: label,
+            storageGb: v.storageGb,
+            ramGb: v.ramGb ?? null,
+            mpn: v.mpn ?? null,
+            priceBaisa: null,
+            stock: 0,
+            isActive: true,
+            isDefault: known.size === 0 && sort === 0,
+            sort: sort++,
           });
           known.add(sku);
-          activeVariants++;
-          out.variantsCreated++;
+        }
+        // One statement per product: the import must stay fast when the database is far from the caller.
+        if (rows.length) {
+          await tx.productVariant.createMany({ data: rows });
+          activeVariants += rows.length;
+          out.variantsCreated += rows.length;
         }
       }
 

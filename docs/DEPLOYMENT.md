@@ -74,21 +74,33 @@ jamais un paiement.
 ## 8. Application mobile
 Voir `docs/ANDROID.md` (Capacitor Android/iOS et PWA).
 
-## 9. Première mise en ligne — marche à suivre précise
+## 9. Première mise en ligne — ce qui est en place
 
-> ⚠️ Le compte Vercel `yordigitalefinance` contient déjà un projet **`yor-wallet`** et le compte Supabase un projet **`yor-wallet`** (l'ancien prototype, `legacy/`). **Ne pas les réutiliser** : créer un projet Vercel `doom` et un projet Supabase `doom` distincts, pour ne pas écraser un site ou des données existants.
+> ⚠️ Le compte Vercel `yordigitalefinance` contient déjà un projet **`yor-wallet`** et le compte Supabase un projet **`yor-wallet`** (l'ancien prototype, `legacy/`). **Ne pas les réutiliser** : DOOM a ses propres projets `doom` sur Vercel et sur Supabase.
 
-1. **Supabase** : nouveau projet `doom` (région proche d'Oman), mot de passe fort. Créer deux buckets de stockage : `public` (public) et `private` (privé, sans politique de lecture).
-2. **Variables** : copier `.env.example` dans Vercel (Production). Renseigner au minimum `DATABASE_URL` (URL poolée), `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. Vérifier avant de déployer : `npm run predeploy` (avec les variables en local dans `.env.production.local`, non versionné).
-3. **Base** (depuis votre poste, avec l'URL **directe** de Supabase) :
-   ```bash
-   DATABASE_URL="<url directe>" npx prisma migrate deploy
-   DATABASE_URL="<url directe>" ADMIN_EMAIL="…" ADMIN_PASSWORD="…" npm run db:seed
-   DATABASE_URL="<url directe>" npm run catalogue:import -- --publish   # 36 modèles publiés « prix bientôt disponible »
-   ```
-4. **Vercel** : importer le dépôt `yor-wallet/yow`, branche de production, framework Next.js, Node 20+. `vercel.json` déclare déjà les crons.
-5. **Domaine** : ajouter le domaine, HTTPS automatique ; `APP_URL` doit être identique.
-6. Se connecter à `/ar/login` avec le compte `ADMIN_EMAIL`, **changer le mot de passe**, puis saisir zones de livraison, prix, stocks et photos (voir `docs/CATALOGUE_2026.md`).
-7. Appliquer la checklist de la section 6.
+**Build** — commande de build du projet Vercel : `npm run build:vercel` (`scripts/vercel-build.sh`). Elle est idempotente :
+1. `prisma migrate deploy` sur `DIRECT_URL` (connexion en mode session ; l'URL poolée ne peut pas migrer) ;
+2. si `RUN_SEED=1` : données de référence (catégories, marques, gouvernorats/wilayas, comptes du grand livre, zones **sans tarifs**) ;
+3. si `RUN_CATALOGUE_IMPORT=1` : catalogue vérifié 2026, publication des modèles entièrement vérifiés, **sans prix ni stock** (« prix bientôt disponible ») ; l'import est attribué à un compte système suspendu qui ne peut pas se connecter ;
+4. `next build`.
+
+Supprimer `RUN_SEED` et `RUN_CATALOGUE_IMPORT` une fois la première mise en ligne réussie.
+
+**Base de données** — l'application se connecte avec un rôle PostgreSQL dédié, `doom_app`, propriétaire des tables du schéma `public`. Les rôles `anon` et `authenticated` de Supabase n'ont **aucun** droit sur ces tables : l'API de données publique de Supabase ne peut donc rien lire (utilisateurs, sessions, KYC…). Ne pas recréer les tables avec le rôle `postgres`, dont les privilèges par défaut les exposeraient.
+- `DATABASE_URL` : pooler Supabase en mode transaction (port 6543, `?pgbouncer=true`) ;
+- `DIRECT_URL` : pooler en mode session (port 5432) — la connexion directe `db.<ref>.supabase.co` est en IPv6 seulement et n'est pas joignable depuis les builds Vercel.
+
+**Variables de production** — `DATABASE_URL`, `DIRECT_URL`, `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. Reste à saisir à la main dans Vercel : **`SUPABASE_SERVICE_ROLE_KEY`** (Supabase → Project Settings → API keys). Sans elle le site fonctionne, mais tout envoi de fichier (photos produits, pièces KYC, preuves de livraison) échoue.
+
+**Compte administrateur** — aucun compte n'est créé par le build. Créer un compte sur `/ar/register`, puis le promouvoir :
+```sql
+update "User" set role = 'SUPERADMIN' where email = '<votre e-mail>';
+```
+
+**Domaine** — ajouter le domaine dans Vercel, puis mettre `APP_URL` à la même valeur et redéployer.
+
+**Protection Vercel** — l'authentification Vercel ne protège que les déploiements de prévisualisation ; la production est publique.
+
+Ensuite : zones de livraison, prix, stocks et photos (voir `docs/CATALOGUE_2026.md`), puis la checklist de la section 6.
 
 > **Plan Vercel Hobby :** les tâches planifiées y sont limitées à une par jour, donc `vercel.json` les déclenche une fois par nuit. Les réservations de stock d'un paiement abandonné ne sont alors libérées qu'une fois par jour. Avant l'ouverture au public, passer au plan Pro et remettre `"*/5 * * * *"` pour `/api/cron/reservations` et `"7 * * * *"` pour `/api/cron/agents`.
