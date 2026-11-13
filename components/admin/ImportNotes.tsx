@@ -15,6 +15,15 @@ export async function ImportNotes({ meta }: { meta: ImportMeta }) {
         <AlertTriangle size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-amber" />
         {t('warning')}
       </p>
+      {meta.toVerify ? (
+        <div className="mb-4 rounded-xl border border-amber/40 p-3 text-sm" data-testid="import-to-verify">
+          <p className="font-semibold">{t('toVerify')}</p>
+          {/* Written by the pack's author (in French): keep its own language and direction. */}
+          <p lang="fr" dir="auto" className="mt-1">
+            {meta.toVerify}
+          </p>
+        </div>
+      ) : null}
       <dl className="grid gap-3 text-sm sm:grid-cols-2" data-testid="import-notes">
         <div>
           <dt className="text-muted">{t('batch')}</dt>

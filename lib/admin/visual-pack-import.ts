@@ -9,6 +9,7 @@ import { assertCan, AdminError, type Actor } from './actor';
 import { storeOptimisedImage } from './media';
 import type { ImportMeta } from './catalogue-import';
 import { capacityLabel, variantSku } from './catalogue-verified';
+import { CATEGORIES } from '@/prisma/seed-data';
 
 /**
  * Visual packs shipped with the code (data/catalogue/<key>): models with their finishes, the
@@ -21,6 +22,10 @@ import { capacityLabel, variantSku } from './catalogue-verified';
  * SKUs, capacity labels and `storageGb` follow the verified catalogue (lib/admin/catalogue-verified.ts),
  * so the two imports converge on the same variants whichever runs first.
  * One model per call, so a long import can be driven step by step with a progress bar.
+ *
+ * A model without capacities (watches, earbuds, speakers, or a phone whose colour × capacity matrix is
+ * not confirmed) gets NO variant: its photos are attached to the draft product itself, one per finish,
+ * and staff create the variants. A model may name its own brand and category (packs that span brands).
  */
 
 const slug = z
@@ -40,8 +45,12 @@ const packSchema = z.object({
       z.object({
         id: slug,
         name: z.string().trim().min(1).max(120),
-        year: z.number().int().min(2000).max(2100),
-        storage_fr: z.array(z.string().trim().min(2).max(12)).min(1).max(12),
+        year: z.number().int().min(2000).max(2100).nullable(),
+        storage_fr: z.array(z.string().trim().min(2).max(12)).max(12),
+        brand: z.object({ slug, name: z.string().trim().min(1).max(60) }).optional(),
+        category: slug.optional(),
+        /** What the pack's author could not confirm; shown to staff in the import notes. */
+        to_verify: z.string().trim().max(400).optional(),
         variants: z
           .array(
             z.object({
@@ -61,9 +70,44 @@ const packSchema = z.object({
 
 export type VisualPack = z.infer<typeof packSchema>;
 
+type PackDef = {
+  key: string;
+  /** Defaults for models that do not name their own brand / category. */
+  brand: { slug: string; name: string } | null;
+  categorySlug: string | null;
+  /** Who checked the finishes: the pack's author, or the owner who supplied the photos. */
+  origin: 'author' | 'owner';
+};
+
 /** Packs available to the admin import screen (key = folder under data/catalogue). */
-export const VISUAL_PACKS = [{ key: 'iphone-visuals-2026', brandSlug: 'apple', brandName: 'Apple', categorySlug: 'smartphones-apple' }] as const;
+export const VISUAL_PACKS = [
+  { key: 'iphone-visuals-2026', brand: { slug: 'apple', name: 'Apple' }, categorySlug: 'smartphones-apple', origin: 'author' },
+  { key: 'doom-photos-2026-11', brand: null, categorySlug: null, origin: 'owner' },
+] as const satisfies readonly PackDef[];
 export type VisualPackKey = (typeof VISUAL_PACKS)[number]['key'];
+
+/** Finds a category by slug, creating it (and its parent) from the seed definitions when the database predates them. */
+async function ensureCategory(categorySlug: string): Promise<string> {
+  const found = await prisma.category.findUnique({ where: { slug: categorySlug }, select: { id: true } });
+  if (found) return found.id;
+  const parentDef = CATEGORIES.find((c) => c.slug === categorySlug || c.children.some((ch) => ch.slug === categorySlug));
+  if (!parentDef) throw new AdminError('not_found', 'Category missing');
+  const parent = await prisma.category.upsert({
+    where: { slug: parentDef.slug },
+    update: {},
+    create: { slug: parentDef.slug, name: parentDef.name, icon: parentDef.icon, sort: CATEGORIES.indexOf(parentDef) },
+    select: { id: true },
+  });
+  if (parentDef.slug === categorySlug) return parent.id;
+  const childDef = parentDef.children.find((ch) => ch.slug === categorySlug)!;
+  const child = await prisma.category.upsert({
+    where: { slug: childDef.slug },
+    update: {},
+    create: { slug: childDef.slug, name: childDef.name, icon: childDef.icon, sort: parentDef.children.indexOf(childDef), parentId: parent.id },
+    select: { id: true },
+  });
+  return child.id;
+}
 
 const packDir = (key: VisualPackKey) => path.join(process.cwd(), 'data', 'catalogue', key);
 
@@ -72,9 +116,10 @@ export async function loadVisualPack(key: VisualPackKey): Promise<VisualPack> {
   return packSchema.parse(JSON.parse(raw.replace(/^﻿/, '')));
 }
 
-export async function visualPackSummary(key: VisualPackKey): Promise<{ key: VisualPackKey; models: number; images: number; verifiedOn: string }> {
+export async function visualPackSummary(key: VisualPackKey): Promise<{ key: VisualPackKey; models: number; images: number; verifiedOn: string; origin: 'author' | 'owner' }> {
   const pack = await loadVisualPack(key);
-  return { key, models: pack.models.length, images: pack.models.reduce((n, m) => n + m.variants.length, 0), verifiedOn: pack.verified_on };
+  const origin = VISUAL_PACKS.find((p) => p.key === key)!.origin;
+  return { key, models: pack.models.length, images: pack.models.reduce((n, m) => n + m.variants.length, 0), verifiedOn: pack.verified_on, origin };
 }
 
 /** "128 Go" / "1 To" / "256 GB" → capacity in GB (128 / 1024 / 256); null when it is not a capacity. */
@@ -138,12 +183,15 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
   const parsed = model.storage_fr.map(capacityGb);
   if (parsed.some((c) => c === null)) throw new AdminError('validation', `Bad capacity in ${model.id}`);
   const capacities = (parsed as number[]).sort((a, b) => a - b);
+  const brandDef = model.brand ?? def.brand;
+  const categorySlug = model.category ?? def.categorySlug;
+  if (!brandDef || !categorySlug) throw new AdminError('validation', `Brand or category missing for ${model.id}`);
 
-  const category = await prisma.category.findUnique({ where: { slug: def.categorySlug }, select: { id: true } });
-  if (!category) throw new AdminError('not_found', 'Category missing');
-  const brand = await prisma.brand.upsert({ where: { slug: def.brandSlug }, update: {}, create: { slug: def.brandSlug, name: def.brandName }, select: { id: true } });
+  const categoryId = await ensureCategory(categorySlug);
+  const brand = await prisma.brand.upsert({ where: { slug: brandDef.slug }, update: {}, create: { slug: brandDef.slug, name: brandDef.name }, select: { id: true } });
 
-  const productSlug = `${def.brandSlug}-${model.id}`;
+  const productSlug = `${brandDef.slug}-${model.id}`;
+  const checkedBy = def.origin === 'owner' ? `supplied by the owner on ${pack.verified_on}; names not checked by us` : `checked by its author on ${pack.verified_on}`;
   const meta: ImportMeta = {
     batch: key,
     externalId: model.id,
@@ -151,7 +199,11 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     year: model.year,
     candidateColors: model.variants.map((v) => v.color_en),
     candidateStorageGb: capacities,
-    specsStatus: `Finishes and capacities as listed in the pack (checked by its author on ${pack.verified_on}). Prices, stock and local availability are still to be set.`,
+    specsStatus:
+      `Finishes${capacities.length ? ' and capacities' : ''} as listed in the pack (${checkedBy}).` +
+      (capacities.length ? '' : ' No variant created: staff create them.') +
+      ' Prices, stock and local availability are still to be set.',
+    toVerify: model.to_verify ?? null,
     sourceUrl: pack.sources.compare ?? pack.sources.models_and_colors ?? null,
     importedAt: new Date().toISOString(),
   };
@@ -164,7 +216,7 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
         slug: productSlug,
         sku: `IMP-${productSlug.toUpperCase()}`.slice(0, 64),
         brandId: brand.id,
-        categoryId: category.id,
+        categoryId,
         model: model.name,
         name: { ar: model.name, en: model.name, fr: model.name },
         status: 'DRAFT',
@@ -188,6 +240,21 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     const file = path.resolve(root, finish.webp);
     if (!file.startsWith(root + path.sep)) throw new AdminError('validation', 'Bad image path');
     const buf = await fs.readFile(file);
+    const alt = `${model.name} — ${finish.color_en}`;
+
+    if (capacities.length === 0) {
+      // Photos only: one product image per finish, recognised by its alt text on a re-run.
+      const already = await prisma.productImage.count({ where: { productId: product.id, alt: { path: ['en'], equals: alt } } });
+      if (already === 0) {
+        const stored = await storeOptimisedImage(buf, `products/${product.id}`, { maxWidth: 960 });
+        const last = await prisma.productImage.aggregate({ where: { productId: product.id }, _max: { sort: true } });
+        await prisma.productImage.create({
+          data: { productId: product.id, variantId: null, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
+        });
+        imagesCreated++;
+      }
+      continue;
+    }
     const skus = capacities.map((storageGb) => variantSku(productSlug, { color: finish.color_en, storageGb }));
     const existing = await prisma.productVariant.findMany({ where: { sku: { in: skus } }, select: { id: true, sku: true, productId: true, colorHex: true } });
     if (existing.some((v) => v.productId !== product.id)) throw new AdminError('validation', `SKU of ${finish.id} belongs to another product`);
@@ -229,7 +296,6 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     if (already === 0) {
       const stored = await storeOptimisedImage(buf, `products/${product.id}`, { maxWidth: 960 });
       const last = await prisma.productImage.aggregate({ where: { productId: product.id }, _max: { sort: true } });
-      const alt = `${model.name} — ${finish.color_en}`;
       await prisma.productImage.create({
         data: { productId: product.id, variantId: variantIds[0]!, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
       });

@@ -58,6 +58,8 @@ export type ImportMeta = {
   specsStatus: string;
   sourceUrl: string | null;
   importedAt: string;
+  /** What the pack's author could not confirm (owner's photo pack), shown to staff as is. */
+  toVerify?: string | null;
 };
 
 export function readImportMeta(value: unknown): ImportMeta | null {
@@ -74,6 +76,7 @@ export function readImportMeta(value: unknown): ImportMeta | null {
     specsStatus: typeof v.specsStatus === 'string' ? v.specsStatus : '',
     sourceUrl: typeof v.sourceUrl === 'string' && /^https?:\/\//i.test(v.sourceUrl) ? v.sourceUrl : null,
     importedAt: typeof v.importedAt === 'string' ? v.importedAt : '',
+    toVerify: typeof v.toVerify === 'string' && v.toVerify.trim() ? v.toVerify : null,
   };
 }
 

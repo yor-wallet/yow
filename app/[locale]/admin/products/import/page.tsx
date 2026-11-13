@@ -47,7 +47,7 @@ export default async function ImportCataloguePage({ params }: Props) {
           <ul className="flex flex-col gap-4">
             {packs.map((p) => (
               <li key={p.key}>
-                <VisualPackImport packKey={p.key} models={p.models} images={p.images} verifiedOn={p.verifiedOn} />
+                <VisualPackImport packKey={p.key} models={p.models} images={p.images} verifiedOn={p.verifiedOn} origin={p.origin} />
               </li>
             ))}
           </ul>

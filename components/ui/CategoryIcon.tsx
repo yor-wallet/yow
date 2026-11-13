@@ -13,6 +13,8 @@ import {
   Shield,
   Smartphone,
   Speaker,
+  Tablet,
+  Watch,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -31,6 +33,8 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   cpu: Cpu,
   bluetooth: Bluetooth,
   speaker: Speaker,
+  tablet: Tablet,
+  watch: Watch,
 };
 
 export function CategoryIcon({ name, size = 20, className }: { name: string | null | undefined; size?: number; className?: string }) {

@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/Button';
 import { importVisualPackStepAction } from '@/app/[locale]/admin/products/import/actions';
+import type { VisualPackKey } from '@/lib/admin/visual-pack-import';
 
 type Phase = { kind: 'idle' } | { kind: 'running'; done: number; model: string } | { kind: 'done'; variants: number; images: number } | { kind: 'failed' };
 
@@ -13,7 +14,19 @@ type Phase = { kind: 'idle' } | { kind: 'running'; done: number; model: string }
  * Imports a pack shipped with the site, one model per request (each one optimises several images),
  * with a progress bar. Safe to start again: models already imported add nothing.
  */
-export function VisualPackImport({ packKey, models, images, verifiedOn }: { packKey: 'iphone-visuals-2026'; models: number; images: number; verifiedOn: string }) {
+export function VisualPackImport({
+  packKey,
+  models,
+  images,
+  verifiedOn,
+  origin,
+}: {
+  packKey: VisualPackKey;
+  models: number;
+  images: number;
+  verifiedOn: string;
+  origin: 'author' | 'owner';
+}) {
   const t = useTranslations('admin.import.packs');
   const router = useRouter();
   const [phase, setPhase] = useState<Phase>({ kind: 'idle' });
@@ -42,7 +55,7 @@ export function VisualPackImport({ packKey, models, images, verifiedOn }: { pack
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="font-semibold">{t(`names.${packKey}`)}</p>
-          <p className="text-sm text-muted">{t('summary', { models, images, date: verifiedOn })}</p>
+          <p className="text-sm text-muted">{t(origin === 'owner' ? 'summaryOwner' : 'summary', { models, images, date: verifiedOn })}</p>
         </div>
         <Button type="button" variant="primary" size="sm" onClick={run} loading={running} disabled={running} leadingIcon={<ImageDown size={18} aria-hidden="true" />} data-testid="visual-pack-start">
           {t('start')}

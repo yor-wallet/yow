@@ -609,9 +609,11 @@
       "title": "Ready-made packs",
       "text": "Packs shipped with the site: models, finishes, capacities and one studio image per finish.",
       "names": {
-        "iphone-visuals-2026": "iPhone 13 to 18 — models and studio images"
+        "iphone-visuals-2026": "iPhone 13 to 18 — models and studio images",
+        "doom-photos-2026-11": "Owner's photos — watches, AirPods, iPad, HUAWEI, HONOR, Galaxy, JBL"
       },
       "summary": "{models} models · {images} images · checked by the pack author on {date}",
+      "summaryOwner": "{models} models · {images} photos · supplied by the owner on {date} (names to verify)",
       "start": "Import this pack",
       "running": "Importing… {done} of {total} ({model})",
       "done": "Pack imported: {variants} variants and {images} images added. Everything is a draft without price or stock.",
@@ -628,7 +630,8 @@
     "storage": "Candidate capacities",
     "colors": "Candidate colours",
     "source": "Official source to check",
-    "unknown": "To confirm"
+    "unknown": "To confirm",
+    "toVerify": "To check before publishing"
   },
   "pricing": {
     "gridTitle": "Prices and stock",

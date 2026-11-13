@@ -609,9 +609,11 @@
       "title": "Packs prêts à importer",
       "text": "Packs livrés avec le site : modèles, finitions, capacités et une photo studio par finition.",
       "names": {
-        "iphone-visuals-2026": "iPhone 13 à 18 — modèles et photos studio"
+        "iphone-visuals-2026": "iPhone 13 à 18 — modèles et photos studio",
+        "doom-photos-2026-11": "Photos du propriétaire — montres, AirPods, iPad, HUAWEI, HONOR, Galaxy, JBL"
       },
       "summary": "{models} modèles · {images} photos · vérifié par l'auteur du pack le {date}",
+      "summaryOwner": "{models} modèles · {images} photos · fournies par le propriétaire le {date} (noms à vérifier)",
       "start": "Importer ce pack",
       "running": "Import en cours… {done} sur {total} ({model})",
       "done": "Pack importé : {variants} variantes et {images} photos ajoutées. Tout est en brouillon, sans prix ni stock.",
@@ -628,7 +630,8 @@
     "storage": "Capacités candidates",
     "colors": "Couleurs candidates",
     "source": "Source officielle à consulter",
-    "unknown": "À confirmer"
+    "unknown": "À confirmer",
+    "toVerify": "Points à vérifier avant publication"
   },
   "pricing": {
     "gridTitle": "Prix et stock",

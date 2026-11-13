@@ -69,6 +69,19 @@ export const CATEGORIES: CategorySeed[] = [
       { slug: 'gaming-accessories', icon: 'gamepad-2', name: { ar: 'إكسسوارات الألعاب', en: 'Gaming accessories', fr: 'Accessoires gaming' } },
     ],
   },
+  // Added with the owner's photo pack (November 2026): watches and tablets had no shelf yet.
+  {
+    slug: 'tablets',
+    icon: 'tablet',
+    name: { ar: 'الأجهزة اللوحية', en: 'Tablets', fr: 'Tablettes' },
+    children: [{ slug: 'ipad', icon: 'tablet', name: { ar: 'آيباد', en: 'iPad', fr: 'iPad' } }],
+  },
+  {
+    slug: 'wearables',
+    icon: 'watch',
+    name: { ar: 'الساعات الذكية', en: 'Smartwatches', fr: 'Montres connectées' },
+    children: [{ slug: 'apple-watch', icon: 'watch', name: { ar: 'ساعة أبل', en: 'Apple Watch', fr: 'Apple Watch' } }],
+  },
 ];
 
 export const BRANDS: { slug: string; name: string; nameAr: string; featured?: boolean }[] = [
