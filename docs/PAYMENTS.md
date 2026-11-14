@@ -89,9 +89,14 @@ Sécurités déjà en place : codes de cartes chiffrés, empreinte pour refuser 
 | Prestataire crypto | `lib/payments/adapters/crypto.ts` |
 | Tests | `tests/unit/payments-settings.test.ts`, `tests/e2e/admin.spec.ts` |
 
-## 8. Reste à décider / à faire
+## 8. Décisions du propriétaire (14/11/2026) et reste à faire
 
-- Choix du **prestataire crypto agréé** et des actifs acceptés (le code accepte BTC, ETH, USDT, USDC).
-- **Vente de cartes cadeaux** payée en crypto : fournisseur de codes, produits numériques, règle par catégorie.
-- Commission éventuelle sur l'achat de cartes cadeaux (non définie).
+**Décidé**
+- Commission d'échange sur les cartes cadeaux déposées par les clients : **8 %** (en service, réglable).
+- Vérification d'identité pour les cartes cadeaux : **non** (réglage `giftcard.requireKyc` laissé éteint). Peut être activé à tout moment depuis l'écran si des fraudes apparaissent.
+- Commission sur l'**achat** de cartes cadeaux (quand cette vente existera) : **5 %**. Aucun réglage n'a été créé pour l'instant : un réglage sans effet serait un faux réglage. On l'ajoutera avec la fonction de vente.
+
+**À faire**
+- Choisir le **prestataire crypto agréé** (une entreprise qui encaisse la crypto du client et nous verse l'équivalent en OMR) et signer son contrat ; il fournit les 4 valeurs `CRYPTO_*` à saisir dans Vercel. Le code accepte BTC, ETH, USDT, USDC.
+- **Vente de cartes cadeaux** payée en crypto : fournisseur de codes, produits numériques, règle « moyens de paiement par catégorie », commission de 5 %.
 - Tableau de bord finance (cartes à vérifier, commissions perçues) : écran d'administration « Finance » encore à construire.
