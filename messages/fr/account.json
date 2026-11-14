@@ -123,7 +123,11 @@
       "saving": "Enregistrement…",
       "cancel": "Annuler",
       "saved": "Adresse enregistrée",
-      "draftRestored": "Nous avons restauré les informations que vous aviez commencé à saisir."
+      "draftRestored": "Nous avons restauré les informations que vous aviez commencé à saisir.",
+      "neighborhood": "Quartier",
+      "neighborhoodPlaceholder": "Choisissez un quartier",
+      "neighborhoodOther": "Autre — je le saisis",
+      "areaOther": "Nom du quartier"
     },
     "errors": {
       "wilaya_mismatch": "Cette wilaya n'appartient pas au gouvernorat sélectionné.",
@@ -131,7 +135,8 @@
       "not_found": "Cette adresse n'existe plus.",
       "unauthenticated": "Votre session a expiré. Veuillez vous reconnecter.",
       "location_invalid": "Cette position n'est pas valide.",
-      "generic": "L'adresse n'a pas pu être enregistrée. Veuillez réessayer."
+      "generic": "L'adresse n'a pas pu être enregistrée. Veuillez réessayer.",
+      "neighborhood_mismatch": "Ce quartier n'appartient pas à la wilaya choisie."
     }
   },
   "notifications": {

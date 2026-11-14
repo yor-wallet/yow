@@ -12,14 +12,14 @@ test.describe('Back button', () => {
   });
 
   test('uses real history after in-app navigation', async ({ page }) => {
-    await gotoReady(page, '/fr');
-    await page.getByTestId('site-footer').locator('a[href="/fr/legal/privacy"]').click();
-    await expect(page).toHaveURL(/\/fr\/legal\/privacy$/);
+    await gotoReady(page, '/en');
+    await page.getByTestId('site-footer').locator('a[href="/en/legal/privacy"]').click();
+    await expect(page).toHaveURL(/\/en\/legal\/privacy$/);
     await backButton(page).click();
-    await expect(page).toHaveURL(/\/fr$/);
+    await expect(page).toHaveURL(/\/en$/);
     // Browser forward still works (real history, no hash hacks).
     await page.goForward();
-    await expect(page).toHaveURL(/\/fr\/legal\/privacy$/);
+    await expect(page).toHaveURL(/\/en\/legal\/privacy$/);
   });
 
   test('back arrow is mirrored in RTL', async ({ page }) => {

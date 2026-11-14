@@ -148,6 +148,8 @@ export const addressInputSchema = z.object({
   phone: omanPhoneSchema,
   governorateId: idSchema,
   wilayaId: idSchema,
+  /** Picked from the wilaya's list; the server then writes `area` from its Arabic and English names. */
+  neighborhoodId: idSchema.optional(),
   area: z.string().trim().min(2, 'required').max(120, 'too_long'),
   street: z.string().trim().max(120, 'too_long').optional(),
   building: z.string().trim().min(1, 'required').max(120, 'too_long'),

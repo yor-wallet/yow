@@ -85,6 +85,13 @@ const nextConfig: NextConfig = {
     // KYC documents / campaign media are uploaded through server actions.
     serverActions: { bodySizeLimit: '12mb' },
   },
+  // French is no longer offered (Arabic + English only): old /fr links land on the English page.
+  async redirects() {
+    return [
+      { source: '/fr', destination: '/en', permanent: false },
+      { source: '/fr/:path*', destination: '/en/:path*', permanent: false },
+    ];
+  },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },

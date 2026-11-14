@@ -33,6 +33,7 @@ export const addressSchema = addressInputSchema
     instructions: optionalText(500),
     lat: optionalNumber,
     lng: optionalNumber,
+    neighborhoodId: z.preprocess((v) => (v === '' || v === null || v === undefined ? undefined : v), z.string().min(1).max(64).optional()),
   })
   .superRefine((v, ctx) => {
     const hasLat = v.lat !== undefined;
@@ -49,7 +50,7 @@ export type AddressFormInput = z.input<typeof addressSchema>;
 export type AddressData = z.output<typeof addressSchema>;
 
 export class AddressError extends Error {
-  constructor(public readonly code: 'not_found' | 'wilaya_mismatch' | 'limit_reached') {
+  constructor(public readonly code: 'not_found' | 'wilaya_mismatch' | 'neighborhood_mismatch' | 'limit_reached') {
     super(code);
     this.name = 'AddressError';
   }
@@ -84,6 +85,23 @@ async function assertWilaya(data: AddressData, db: Db) {
   if (!w || w.governorateId !== data.governorateId) throw new AddressError('wilaya_mismatch');
 }
 
+/** "المعبيلة الجنوبية · Al Mabelah South": readable by the customer, the courier and staff in either language. */
+export function neighborhoodLabel(name: unknown): string {
+  const n = (name ?? {}) as { ar?: string; en?: string };
+  return [n.ar, n.en].filter((v, i, all) => !!v && all.indexOf(v) === i).join(' · ');
+}
+
+/**
+ * A neighbourhood picked from the list must belong to the wilaya; `area` is then written from the
+ * reference names (never from the client), so the snapshot kept on orders is always the official one.
+ */
+async function resolveArea(data: AddressData, db: Db): Promise<{ neighborhoodId: string | null; area: string }> {
+  if (!data.neighborhoodId) return { neighborhoodId: null, area: data.area };
+  const n = await db.neighborhood.findUnique({ where: { id: data.neighborhoodId }, select: { wilayaId: true, name: true } });
+  if (!n || n.wilayaId !== data.wilayaId) throw new AddressError('neighborhood_mismatch');
+  return { neighborhoodId: data.neighborhoodId, area: neighborhoodLabel(n.name) };
+}
+
 function toRow(data: AddressData) {
   return {
     label: data.label ?? null,
@@ -105,11 +123,12 @@ export async function createAddress(userId: string, input: unknown): Promise<Add
   const data = addressSchema.parse(input);
   return prisma.$transaction(async (tx) => {
     await assertWilaya(data, tx);
+    const place = await resolveArea(data, tx);
     const count = await tx.address.count({ where: { userId, deletedAt: null } });
     if (count >= MAX_ADDRESSES_PER_USER) throw new AddressError('limit_reached');
     const makeDefault = data.isDefault === true || count === 0;
     if (makeDefault) await tx.address.updateMany({ where: { userId, isDefault: true }, data: { isDefault: false } });
-    return tx.address.create({ data: { userId, ...toRow(data), isDefault: makeDefault }, include: withGeo });
+    return tx.address.create({ data: { userId, ...toRow(data), ...place, isDefault: makeDefault }, include: withGeo });
   });
 }
 
@@ -119,11 +138,12 @@ export async function updateAddress(userId: string, id: string, input: unknown):
     const existing = await tx.address.findFirst({ where: { id, userId, deletedAt: null } });
     if (!existing) throw new AddressError('not_found');
     await assertWilaya(data, tx);
+    const place = await resolveArea(data, tx);
     const makeDefault = data.isDefault === true || existing.isDefault;
     if (data.isDefault === true && !existing.isDefault) {
       await tx.address.updateMany({ where: { userId, isDefault: true }, data: { isDefault: false } });
     }
-    return tx.address.update({ where: { id }, data: { ...toRow(data), isDefault: makeDefault }, include: withGeo });
+    return tx.address.update({ where: { id }, data: { ...toRow(data), ...place, isDefault: makeDefault }, include: withGeo });
   });
 }
 

@@ -41,6 +41,7 @@ export default async function EditAddressPage({ params }: Props) {
               phone: address.phone,
               governorateId: address.governorateId,
               wilayaId: address.wilayaId,
+              neighborhoodId: address.neighborhoodId ?? undefined,
               area: address.area,
               building: address.building,
               street: address.street ?? '',

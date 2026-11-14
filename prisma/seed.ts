@@ -7,6 +7,7 @@
 import { PrismaClient, type LedgerAccountType } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { BRANDS, CAMPAIGNS, CATEGORIES, GOVERNORATES, LEDGER_SYSTEM_ACCOUNTS } from './seed-data';
+import { NEIGHBORHOODS } from './neighborhoods';
 
 // Load .env when run directly with tsx (existing env vars take precedence).
 try {
@@ -41,6 +42,22 @@ async function seedBrands() {
       update: { name: b.name, nameAr: b.nameAr, isFeatured: !!b.featured, sort: i },
       create: { slug: b.slug, name: b.name, nameAr: b.nameAr, isFeatured: !!b.featured, sort: i },
     });
+  }
+}
+
+/** Neighbourhoods of the main wilayas (idempotent; names are refreshed, nothing is deleted). */
+async function seedNeighborhoods() {
+  for (const [wilayaSlug, list] of Object.entries(NEIGHBORHOODS)) {
+    const wilaya = await prisma.wilaya.findUnique({ where: { slug: wilayaSlug }, select: { id: true } });
+    if (!wilaya) continue;
+    for (const [i, n] of list.entries()) {
+      const name = { ar: n.ar, en: n.en, fr: n.en };
+      await prisma.neighborhood.upsert({
+        where: { wilayaId_slug: { wilayaId: wilaya.id, slug: n.slug } },
+        update: { name, sort: i },
+        create: { wilayaId: wilaya.id, slug: n.slug, name, sort: i },
+      });
+    }
   }
 }
 
@@ -137,6 +154,7 @@ async function main() {
   await seedCategories();
   await seedBrands();
   await seedGeography();
+  await seedNeighborhoods();
   await seedLedger();
   await seedCampaigns();
   await seedSuperadmin();

@@ -209,9 +209,9 @@ test.describe('product page and cart', () => {
   });
 
   test('unknown product gives a localized 404', async ({ page }) => {
-    const res = await page.goto('/fr/product/no-such-product');
+    const res = await page.goto('/en/product/no-such-product');
     expect(res?.status()).toBe(404);
-    await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   });
 
   test('compare: visitors are sent to sign in; the comparison page explains itself when signed out', async ({ page }) => {

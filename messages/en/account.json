@@ -123,7 +123,11 @@
       "saving": "Saving…",
       "cancel": "Cancel",
       "saved": "Address saved",
-      "draftRestored": "We restored the details you had started to enter."
+      "draftRestored": "We restored the details you had started to enter.",
+      "neighborhood": "Neighbourhood",
+      "neighborhoodPlaceholder": "Choose a neighbourhood",
+      "neighborhoodOther": "Other — I will type it",
+      "areaOther": "Neighbourhood name"
     },
     "errors": {
       "wilaya_mismatch": "This wilaya does not belong to the selected governorate.",
@@ -131,7 +135,8 @@
       "not_found": "This address no longer exists.",
       "unauthenticated": "Your session has expired. Please sign in again.",
       "location_invalid": "This location is invalid.",
-      "generic": "The address could not be saved. Please try again."
+      "generic": "The address could not be saved. Please try again.",
+      "neighborhood_mismatch": "This neighbourhood does not belong to the selected wilaya."
     }
   },
   "notifications": {

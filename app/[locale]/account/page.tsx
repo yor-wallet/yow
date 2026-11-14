@@ -128,7 +128,7 @@ export default async function AccountPage({ params }: Props) {
                 </div>
                 <div>
                   <dt className="text-muted">{t('profile.language')}</dt>
-                  <dd className="font-medium">{LOCALE_LABELS[user.locale]}</dd>
+                  <dd className="font-medium">{user.locale === 'ar' ? LOCALE_LABELS.ar : LOCALE_LABELS.en}</dd>
                 </div>
                 <div>
                   <dt className="flex items-center gap-1.5 text-muted">

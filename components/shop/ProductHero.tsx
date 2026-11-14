@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useTransition } from 'react';
-import { CalendarDays, Check, ChevronDown, Minus, Plus, ShieldCheck, ShoppingCart, Truck, Wallet, Zap } from 'lucide-react';
+import { Check, ChevronDown, Minus, Plus, ShieldCheck, ShoppingCart, Truck, Wallet, Zap } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/Badge';
@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/Button';
 import { Price } from '@/components/ui/Price';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/cn';
-import { computeSchedule, FLEX_MONTHS, flexMonthlyFrom, type FlexMonths } from '@/lib/catalog/flex-preview';
+import { flexMonthlyFrom } from '@/lib/catalog/flex-preview';
+import { FlexPlanner } from './FlexPlanner';
 import type { ProductDetail, VariantView } from '@/lib/catalog/queries';
 import { MAX_QTY_PER_LINE } from '@/lib/catalog/stock';
 import { formatBaisa } from '@/lib/money';
@@ -59,7 +60,6 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
   );
   const [selectedId, setSelectedId] = useState<string | null>(initial?.id ?? null);
   const [qty, setQty] = useState(1);
-  const [months, setMonths] = useState<FlexMonths>(6);
   const selected = product.variants.find((v) => v.id === selectedId) ?? null;
 
   const colors = useMemo(() => [...new Map(product.variants.filter((v) => v.color).map((v) => [v.color!, v.colorHex] as const)).entries()], [product.variants]);
@@ -87,7 +87,6 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
   const maxQty = selected ? Math.max(1, Math.min(selected.available, MAX_QTY_PER_LINE)) : 1;
   const canBuy = !!selected && purchasable(selected) && product.isSellable;
   const flexMonthly = flexMonthlyFrom(selected?.priceBaisa ?? null);
-  const schedule = selected && selected.priceBaisa !== null && selected.priceBaisa > 0 ? computeSchedule(selected.priceBaisa, months) : null;
   // The image of the selected variant; else the image of another variant of the same colour
   // (one studio image per finish serves all its capacities).
   const activeImage =
@@ -116,7 +115,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10" data-testid="product-hero">
-      <ProductGallery images={product.images} activeId={activeImage} name={product.name} />
+      <ProductGallery images={product.images} activeId={activeImage} name={product.name} colorKey={selected?.color ?? null} colorHex={selected?.colorHex ?? null} />
 
       <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
         <div className="min-w-0 lg:order-1">
@@ -142,7 +141,11 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
               <fieldset className="min-w-0">
                 <legend className="mb-2 text-sm font-semibold max-lg:sr-only">
                   {t('variants.color')}
-                  {selected?.color ? <Ltr className="ms-2 font-normal text-muted">{selected.color}</Ltr> : null}
+                  {selected?.color ? (
+                    <Ltr key={selected.color} className="doom-label-swap ms-2 font-normal text-muted">
+                      {selected.color}
+                    </Ltr>
+                  ) : null}
                 </legend>
                 <ul className="flex flex-wrap gap-1 lg:gap-2">
                   {colors.map(([color, hex]) => {
@@ -164,12 +167,13 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                         >
                           {hex ? (
                             <span
+                              key={on ? `on-${color}` : `off-${color}`}
                               aria-hidden="true"
                               className={cn(
-                                'size-8 rounded-full border border-border-strong lg:size-4',
-                                on && 'max-lg:outline max-lg:outline-2 max-lg:outline-offset-2 max-lg:outline-blue',
+                                'size-8 rounded-full border border-border-strong transition-[outline-color] lg:size-4',
+                                on && 'doom-swatch-pop doom-swatch-ring max-lg:outline max-lg:outline-2 max-lg:outline-offset-2 max-lg:outline-blue',
                               )}
-                              style={{ backgroundColor: hex }}
+                              style={{ backgroundColor: hex, ['--swatch' as string]: hex }}
                             />
                           ) : null}
                           <Ltr className={cn(hex && 'max-lg:sr-only')}>{color}</Ltr>
@@ -293,50 +297,8 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
           </div>
         </div>
 
-        {/* DOOM FLEX: instalment preview for the selected price (computed, illustrative, 0% and no fees). */}
-        {schedule ? (
-          <section aria-labelledby="flex-options-title" className="rounded-card border border-blue/20 bg-blue/8 p-4 lg:order-5" data-testid="flex-options">
-            <div className="flex items-start gap-2.5">
-              <CalendarDays size={22} aria-hidden="true" className="mt-0.5 shrink-0 text-fg" />
-              <div className="min-w-0">
-                <h2 id="flex-options-title" className="text-base font-bold leading-tight">
-                  {t('flex.optionsTitle')}
-                </h2>
-                <p className="text-sm font-medium text-accent">{t('flex.noFees')}</p>
-              </div>
-            </div>
-            <ul className="mt-3 grid grid-cols-3 gap-2">
-              {FLEX_MONTHS.map((m) => (
-                <li key={m} className="min-w-0">
-                  <button
-                    type="button"
-                    onClick={() => setMonths(m)}
-                    aria-pressed={months === m}
-                    data-testid={`flex-months-${m}`}
-                    className={cn(
-                      'min-h-11 w-full rounded-pill border px-2 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
-                      months === m ? 'border-blue bg-blue text-white' : 'border-border-strong bg-surface text-fg hover:bg-surface-2',
-                    )}
-                  >
-                    {t('flex.months', { count: m })}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3 text-sm" aria-live="polite">
-              <span className="font-bold tabular-nums [unicode-bidi:isolate]" data-testid="flex-monthly">
-                {t('flex.perMonth', { amount: formatBaisa(schedule.monthlyBaisa, locale) })}
-              </span>
-              <span className="text-muted"> × {schedule.months}</span>
-            </p>
-            <p className="mt-1 text-xs text-muted">
-              {t('flex.note')}{' '}
-              <Link href="/flex" className="font-semibold text-accent underline-offset-4 hover:underline">
-                {t('flex.cta')}
-              </Link>
-            </p>
-          </section>
-        ) : null}
+        {/* DOOM FLEX: animated instalment planner for the selected price (0 % interest, no fees). */}
+        {selected && selected.priceBaisa !== null && selected.priceBaisa >= 12 ? <FlexPlanner priceBaisa={selected.priceBaisa} className="lg:order-5" /> : null}
 
         {/* Delivery to the shopper's area: only what the configured zone promises. */}
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 rounded-2xl bg-surface-2 px-3 py-1 lg:order-6" data-testid="product-deliver">

@@ -384,38 +384,56 @@ model Governorate {
 }
 
 model Wilaya {
-  id            String      @id @default(cuid())
+  id            String         @id @default(cuid())
   governorateId String
-  slug          String      @unique
+  slug          String         @unique
   name          Json // LocalizedText
-  sort          Int         @default(0)
-  governorate   Governorate @relation(fields: [governorateId], references: [id], onDelete: Cascade)
+  sort          Int            @default(0)
+  governorate   Governorate    @relation(fields: [governorateId], references: [id], onDelete: Cascade)
   addresses     Address[]
+  neighborhoods Neighborhood[]
 
   @@index([governorateId])
 }
 
+/// Neighbourhood (حي) of a wilaya: reference data for the address form. Names in Arabic and English.
+model Neighborhood {
+  id        String    @id @default(cuid())
+  wilayaId  String
+  slug      String // unique inside its wilaya
+  name      Json // LocalizedText
+  sort      Int       @default(0)
+  wilaya    Wilaya    @relation(fields: [wilayaId], references: [id], onDelete: Cascade)
+  addresses Address[]
+
+  @@unique([wilayaId, slug])
+  @@index([wilayaId, sort])
+}
+
 model Address {
-  id            String      @id @default(cuid())
-  userId        String
-  label         String?
-  recipientName String
-  phone         String // E.164 +968
-  governorateId String
-  wilayaId      String
-  area          String
-  street        String?
-  building      String
-  lat           Float?
-  lng           Float?
-  instructions  String?
-  isDefault     Boolean     @default(false)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  deletedAt     DateTime?
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  governorate   Governorate @relation(fields: [governorateId], references: [id])
-  wilaya        Wilaya      @relation(fields: [wilayaId], references: [id])
+  id             String        @id @default(cuid())
+  userId         String
+  label          String?
+  recipientName  String
+  phone          String // E.164 +968
+  governorateId  String
+  wilayaId       String
+  /// Chosen from the list when the wilaya has one; `area` then holds its Arabic and English names.
+  neighborhoodId String?
+  area           String
+  street         String?
+  building       String
+  lat            Float?
+  lng            Float?
+  instructions   String?
+  isDefault      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  governorate    Governorate   @relation(fields: [governorateId], references: [id])
+  wilaya         Wilaya        @relation(fields: [wilayaId], references: [id])
+  neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id], onDelete: SetNull)
 
   @@index([userId])
 }

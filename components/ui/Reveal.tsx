@@ -10,7 +10,7 @@ const QUERY = '(prefers-reduced-motion: reduce)';
  * first client render matches the server HTML exactly; React then re-renders with the real value
  * (no hydration mismatch, no element stuck at `opacity: 0`).
  */
-function usePrefersReducedMotion(): boolean {
+export function usePrefersReducedMotion(): boolean {
   return useSyncExternalStore(
     (onChange) => {
       const mq = window.matchMedia(QUERY);

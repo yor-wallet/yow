@@ -30,7 +30,7 @@ async function readTheme(): Promise<Theme> {
   return (await cookies()).get(THEME_COOKIE)?.value === 'dark' ? 'dark' : 'light';
 }
 
-const OG_LOCALE: Record<Locale, string> = { ar: 'ar_OM', en: 'en_US', fr: 'fr_FR' };
+const OG_LOCALE: Record<Locale, string> = { ar: 'ar_OM', en: 'en_US' };
 
 export async function generateViewport(): Promise<Viewport> {
   const theme = await readTheme();

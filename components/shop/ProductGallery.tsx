@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ChevronLeft, ChevronRight, ImageOff, ZoomIn } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@/components/ui/Modal';
@@ -14,9 +14,31 @@ import { ShopImage } from './ShopImage';
  * zoom dialog (click/tap the image; Back closes it). `activeId` lets the parent jump to the image
  * of the selected variant. All images keep their intrinsic ratio box, so nothing shifts on load.
  */
-export function ProductGallery({ images, activeId, name }: { images: ImageView[]; activeId?: string | null; name: string }) {
+export function ProductGallery({
+  images,
+  activeId,
+  name,
+  colorKey,
+  colorHex,
+}: {
+  images: ImageView[];
+  activeId?: string | null;
+  name: string;
+  /** Selected colour: changing it plays the colour-change animation (halo bloom + photo settling in). */
+  colorKey?: string | null;
+  colorHex?: string | null;
+}) {
   const t = useTranslations('product.gallery');
   const [index, setIndex] = useState(0);
+  // Bumped on every colour change after the first render; keys the animated elements so they replay.
+  const [colorTick, setColorTick] = useState(0);
+  const firstColor = useRef(colorKey);
+  useEffect(() => {
+    if (colorKey === firstColor.current) return;
+    firstColor.current = colorKey;
+    setColorTick((n) => n + 1);
+  }, [colorKey]);
+  const halo = colorHex ? ({ '--halo': colorHex } as CSSProperties) : undefined;
   const [zoomed, setZoomed] = useState(false);
   const viewport = useRef<HTMLDivElement>(null);
   const zoomModal = useHistoryModal('product-zoom');
@@ -63,6 +85,7 @@ export function ProductGallery({ images, activeId, name }: { images: ImageView[]
   return (
     <div className="flex flex-col gap-3" data-testid="product-gallery" role="group" aria-roledescription="carousel" aria-label={t('label')}>
       <div className="relative overflow-hidden rounded-card border border-border bg-surface">
+        <span key={`halo-${colorTick}`} aria-hidden="true" data-bloom={colorTick > 0 ? '' : undefined} className="doom-color-halo pointer-events-none absolute inset-0" style={halo} data-testid="color-halo" />
         <div
           ref={viewport}
           onScroll={onScroll}
@@ -77,7 +100,9 @@ export function ProductGallery({ images, activeId, name }: { images: ImageView[]
               aria-label={`${img.alt} — ${t('counter', { current: i + 1, total: count })}`}
               className="relative grid aspect-square w-full shrink-0 cursor-zoom-in snap-center place-items-center focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ring"
             >
-              <ShopImage src={img.src} width={img.width} height={img.height} alt={img.alt} sizes="(min-width: 1024px) 45vw, 100vw" priority={i === 0} className="size-full object-contain p-4" />
+              <span key={i === index ? `settle-${colorTick}` : 'still'} className={cn('relative block size-full', colorTick > 0 && i === index && 'doom-color-settle')}>
+                <ShopImage src={img.src} width={img.width} height={img.height} alt={img.alt} sizes="(min-width: 1024px) 45vw, 100vw" priority={i === 0} className="size-full object-contain p-4" />
+              </span>
             </button>
           ))}
         </div>

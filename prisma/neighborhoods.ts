@@ -1,0 +1,126 @@
+/**
+ * Neighbourhoods (الأحياء) of the main wilayas, in Arabic and English — reference data for the
+ * address form: governorate → wilaya → neighbourhood (e.g. Muscat → As Seeb → Al Mabelah).
+ * Keys are the wilaya slugs of `GOVERNORATES` (`<governorate code>-<wilaya slug>`).
+ * Wilayas without a list keep the free-text "area" field; every list also offers "Other".
+ * Only well-established place names are listed; nothing here carries a price or a delivery promise.
+ */
+export type NeighborhoodSeed = { slug: string; ar: string; en: string };
+
+export const NEIGHBORHOODS: Record<string, NeighborhoodSeed[]> = {
+  // ───────── Muscat governorate ─────────
+  'ma-as-seeb': [
+    { slug: 'al-mabelah-north', ar: 'المعبيلة الشمالية', en: 'Al Mabelah North' },
+    { slug: 'al-mabelah-south', ar: 'المعبيلة الجنوبية', en: 'Al Mabelah South' },
+    { slug: 'al-khoudh', ar: 'الخوض', en: 'Al Khoudh' },
+    { slug: 'al-hail-north', ar: 'الحيل الشمالية', en: 'Al Hail North' },
+    { slug: 'al-hail-south', ar: 'الحيل الجنوبية', en: 'Al Hail South' },
+    { slug: 'al-mawaleh-north', ar: 'الموالح الشمالية', en: 'Al Mawaleh North' },
+    { slug: 'al-mawaleh-south', ar: 'الموالح الجنوبية', en: 'Al Mawaleh South' },
+    { slug: 'seeb-souq', ar: 'سوق السيب', en: 'Seeb Souq' },
+    { slug: 'sur-al-hadid', ar: 'سور آل حديد', en: 'Sur Al Hadid' },
+    { slug: 'al-sharadi', ar: 'الشرادي', en: 'Al Sharadi' },
+    { slug: 'wadi-al-lawami', ar: 'وادي اللوامي', en: 'Wadi Al Lawami' },
+    { slug: 'wadi-al-bahayis', ar: 'وادي البحائص', en: 'Wadi Al Bahayis' },
+    { slug: 'al-manumah', ar: 'المنومة', en: 'Al Manumah' },
+    { slug: 'al-rusayl', ar: 'الرسيل', en: 'Al Rusayl' },
+    { slug: 'al-jifnain', ar: 'الجفنين', en: 'Al Jifnain' },
+    { slug: 'al-mouj', ar: 'الموج', en: 'Al Mouj' },
+  ],
+  'ma-bawshar': [
+    { slug: 'al-khuwair', ar: 'الخوير', en: 'Al Khuwair' },
+    { slug: 'al-ghubrah-north', ar: 'الغبرة الشمالية', en: 'Al Ghubrah North' },
+    { slug: 'al-ghubrah-south', ar: 'الغبرة الجنوبية', en: 'Al Ghubrah South' },
+    { slug: 'al-azaiba', ar: 'العذيبة', en: 'Al Azaiba' },
+    { slug: 'ghala', ar: 'غلا', en: 'Ghala' },
+    { slug: 'bawshar-town', ar: 'بوشر', en: 'Bawshar' },
+    { slug: 'al-ansab', ar: 'الأنصب', en: 'Al Ansab' },
+    { slug: 'al-misfah', ar: 'المسفاة', en: 'Al Misfah' },
+    { slug: 'madinat-sultan-qaboos', ar: 'مدينة السلطان قابوس', en: 'Madinat Sultan Qaboos' },
+    { slug: 'al-sarooj', ar: 'الصاروج', en: 'Al Sarooj' },
+    { slug: 'shatti-al-qurum', ar: 'شاطئ القرم', en: 'Shatti Al Qurum' },
+  ],
+  'ma-muttrah': [
+    { slug: 'ruwi', ar: 'روي', en: 'Ruwi' },
+    { slug: 'al-wadi-al-kabir', ar: 'الوادي الكبير', en: 'Al Wadi Al Kabir' },
+    { slug: 'darsait', ar: 'دارسيت', en: 'Darsait' },
+    { slug: 'al-wattayah', ar: 'الوطية', en: 'Al Wattayah' },
+    { slug: 'al-qurum', ar: 'القرم', en: 'Al Qurum' },
+    { slug: 'muttrah-town', ar: 'مطرح', en: 'Muttrah' },
+    { slug: 'al-hamriyah', ar: 'الحمرية', en: 'Al Hamriyah' },
+    { slug: 'mina-al-fahal', ar: 'ميناء الفحل', en: 'Mina Al Fahal' },
+  ],
+  'ma-muscat': [
+    { slug: 'old-muscat', ar: 'مسقط القديمة', en: 'Old Muscat' },
+    { slug: 'sidab', ar: 'سداب', en: 'Sidab' },
+    { slug: 'al-bustan', ar: 'البستان', en: 'Al Bustan' },
+    { slug: 'qantab', ar: 'قنتب', en: 'Qantab' },
+    { slug: 'yiti', ar: 'يتي', en: 'Yiti' },
+  ],
+  'ma-al-amerat': [
+    { slug: 'al-amerat-town', ar: 'العامرات', en: 'Al Amerat' },
+    { slug: 'madinat-al-nahdah', ar: 'مدينة النهضة', en: 'Madinat Al Nahdah' },
+    { slug: 'al-hajir', ar: 'الحاجر', en: 'Al Hajir' },
+    { slug: 'al-mahaj', ar: 'المحج', en: 'Al Mahaj' },
+    { slug: 'jahloot', ar: 'جحلوت', en: 'Jahloot' },
+    { slug: 'wadi-hattat', ar: 'وادي حطاط', en: 'Wadi Hattat' },
+  ],
+  'ma-qurayyat': [
+    { slug: 'qurayyat-town', ar: 'قريات', en: 'Qurayyat' },
+    { slug: 'dhabab', ar: 'ضباب', en: 'Dhabab' },
+    { slug: 'fins', ar: 'فنس', en: 'Fins' },
+    { slug: 'daghmar', ar: 'دغمر', en: 'Daghmar' },
+    { slug: 'hayl-al-ghaf', ar: 'حيل الغاف', en: 'Hayl Al Ghaf' },
+  ],
+  // ───────── Main cities of the other governorates ─────────
+  'zu-salalah': [
+    { slug: 'salalah-al-wusta', ar: 'صلالة الوسطى', en: 'Salalah Al Wusta' },
+    { slug: 'salalah-al-gharbiyah', ar: 'صلالة الغربية', en: 'Salalah Al Gharbiyah' },
+    { slug: 'salalah-al-sharqiyah', ar: 'صلالة الشرقية', en: 'Salalah Al Sharqiyah' },
+    { slug: 'al-saada', ar: 'السعادة', en: 'Al Saada' },
+    { slug: 'awqad', ar: 'عوقد', en: 'Awqad' },
+    { slug: 'al-dahariz', ar: 'الدهاريز', en: 'Al Dahariz' },
+    { slug: 'al-haffa', ar: 'الحافة', en: 'Al Haffa' },
+    { slug: 'al-qouf', ar: 'القوف', en: 'Al Qouf' },
+    { slug: 'raysut', ar: 'ريسوت', en: 'Raysut' },
+    { slug: 'itin', ar: 'إتين', en: 'Itin' },
+  ],
+  'bs-sohar': [
+    { slug: 'falaj-al-qabail', ar: 'فلج القبائل', en: 'Falaj Al Qabail' },
+    { slug: 'al-hambar', ar: 'الهمبار', en: 'Al Hambar' },
+    { slug: 'al-tareef', ar: 'الطريف', en: 'Al Tareef' },
+    { slug: 'sallan', ar: 'صلان', en: 'Sallan' },
+    { slug: 'al-waqibah', ar: 'الوقيبة', en: 'Al Waqibah' },
+    { slug: 'al-multaqa', ar: 'الملتقى', en: 'Al Multaqa' },
+    { slug: 'al-awhi', ar: 'العوهي', en: 'Al Awhi' },
+    { slug: 'majis', ar: 'مجيس', en: 'Majis' },
+    { slug: 'al-hujrah', ar: 'الحجرة', en: 'Al Hujrah' },
+    { slug: 'ghail-al-shibool', ar: 'غيل الشبول', en: 'Ghail Al Shibool' },
+  ],
+  'da-nizwa': [
+    { slug: 'nizwa-centre', ar: 'مركز نزوى', en: 'Nizwa Centre' },
+    { slug: 'firq', ar: 'فرق', en: 'Firq' },
+    { slug: 'birkat-al-mouz', ar: 'بركة الموز', en: 'Birkat Al Mouz' },
+    { slug: 'tanuf', ar: 'تنوف', en: 'Tanuf' },
+    { slug: 'marfa-daris', ar: 'مرفع دارس', en: 'Marfa Daris' },
+    { slug: 'karsha', ar: 'كرشا', en: 'Karsha' },
+    { slug: 'hay-al-turath', ar: 'حي التراث', en: 'Hay Al Turath' },
+  ],
+  'sj-sur': [
+    { slug: 'bilad-sur', ar: 'بلاد صور', en: 'Bilad Sur' },
+    { slug: 'al-aija', ar: 'العيجة', en: 'Al Aija' },
+    { slug: 'sukaikrah', ar: 'سكيكرة', en: 'Sukaikrah' },
+    { slug: 'ras-al-hadd', ar: 'رأس الحد', en: 'Ras Al Hadd' },
+    { slug: 'qalhat', ar: 'قلهات', en: 'Qalhat' },
+    { slug: 'tiwi', ar: 'طيوي', en: 'Tiwi' },
+  ],
+  'bj-barka': [
+    { slug: 'barka-town', ar: 'بركاء', en: 'Barka' },
+    { slug: 'al-sawadi', ar: 'السوادي', en: 'Al Sawadi' },
+    { slug: 'al-rumais', ar: 'الرميس', en: 'Al Rumais' },
+    { slug: 'al-nuaman', ar: 'النعمان', en: 'Al Nuaman' },
+    { slug: 'al-fulaij', ar: 'الفليج', en: 'Al Fulaij' },
+    { slug: 'al-haradi', ar: 'الهرادي', en: 'Al Haradi' },
+    { slug: 'al-sumhan', ar: 'الصومحان', en: 'Al Sumhan' },
+  ],
+};

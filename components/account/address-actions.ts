@@ -29,7 +29,7 @@ export type SavedAddress = {
 
 export type SaveAddressResult =
   | { ok: true; address: SavedAddress }
-  | { ok: false; error: 'unauthenticated' | 'not_found' | 'wilaya_mismatch' | 'limit_reached' | 'validation' | 'generic'; fieldErrors?: FieldErrors };
+  | { ok: false; error: 'unauthenticated' | 'not_found' | 'wilaya_mismatch' | 'neighborhood_mismatch' | 'limit_reached' | 'validation' | 'generic'; fieldErrors?: FieldErrors };
 
 function toSaved(a: AddressWithGeo): SavedAddress {
   return {
@@ -71,6 +71,7 @@ export async function saveAddressAction(input: { id?: string; data: Record<strin
   } catch (err) {
     if (err instanceof ZodError) return { ok: false, error: 'validation', fieldErrors: fieldErrorsOf(err) };
     if (err instanceof AddressError) {
+      if (err.code === 'neighborhood_mismatch') return { ok: false, error: 'neighborhood_mismatch', fieldErrors: { neighborhoodId: ['neighborhood_mismatch'] } };
       return err.code === 'wilaya_mismatch'
         ? { ok: false, error: 'wilaya_mismatch', fieldErrors: { wilayaId: ['wilaya_mismatch'] } }
         : { ok: false, error: err.code };

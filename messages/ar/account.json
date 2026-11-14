@@ -123,7 +123,11 @@
       "saving": "جارٍ الحفظ…",
       "cancel": "إلغاء",
       "saved": "تم حفظ العنوان",
-      "draftRestored": "استعدنا البيانات التي بدأت بإدخالها."
+      "draftRestored": "استعدنا البيانات التي بدأت بإدخالها.",
+      "neighborhood": "الحي",
+      "neighborhoodPlaceholder": "اختر الحي",
+      "neighborhoodOther": "حي آخر — سأكتبه",
+      "areaOther": "اسم الحي"
     },
     "errors": {
       "wilaya_mismatch": "هذه الولاية لا تتبع المحافظة المختارة.",
@@ -131,7 +135,8 @@
       "not_found": "هذا العنوان لم يعد موجودًا.",
       "unauthenticated": "انتهت جلستك. يُرجى تسجيل الدخول مرة أخرى.",
       "location_invalid": "هذا الموقع غير صالح.",
-      "generic": "تعذّر حفظ العنوان. يُرجى المحاولة مرة أخرى."
+      "generic": "تعذّر حفظ العنوان. يُرجى المحاولة مرة أخرى.",
+      "neighborhood_mismatch": "هذا الحي لا يتبع الولاية المختارة."
     }
   },
   "notifications": {

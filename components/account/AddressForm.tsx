@@ -24,6 +24,8 @@ export type AddressFormValues = {
   phone: string; // 8 local digits
   governorateId: string;
   wilayaId: string;
+  /** Id from the wilaya's list, `OTHER` for a typed name, '' while nothing is chosen. */
+  neighborhoodId: string;
   area: string;
   building: string;
   street: string;
@@ -62,6 +64,7 @@ const EMPTY: AddressFormValues = {
   phone: '',
   governorateId: '',
   wilayaId: '',
+  neighborhoodId: '',
   area: '',
   building: '',
   street: '',
@@ -70,6 +73,9 @@ const EMPTY: AddressFormValues = {
   lat: null,
   lng: null,
 };
+
+/** Select value for "my neighbourhood is not in the list": the area is then typed by hand. */
+const OTHER = 'OTHER';
 
 /** `+96891234567` → `91234567`. */
 function localDigits(phone: string | null | undefined): string {
@@ -124,6 +130,8 @@ export function AddressForm({
             phone: localDigits(address.phone),
             governorateId: address.governorateId ?? '',
             wilayaId: address.wilayaId ?? '',
+            // An address saved with a typed area (or before the lists existed) opens on "Other".
+            neighborhoodId: address.neighborhoodId ?? (address.area ? OTHER : ''),
             area: address.area ?? '',
             building: address.building ?? '',
             street: address.street ?? '',
@@ -180,6 +188,10 @@ export function AddressForm({
 
   const governorate = governorates.find((g) => g.id === values.governorateId);
   const wilayas = governorate?.wilayas ?? [];
+  const neighborhoods = wilayas.find((w) => w.id === values.wilayaId)?.neighborhoods ?? [];
+  const listed = neighborhoods.find((n) => n.id === values.neighborhoodId);
+  // Typed by hand when the wilaya has no list, or when "Other" is chosen.
+  const typedArea = neighborhoods.length === 0 || values.neighborhoodId === OTHER;
 
   const err = (field: string): string | undefined => {
     const code = fieldErrors[field]?.[0];
@@ -254,7 +266,8 @@ export function AddressForm({
       phone: values.phone,
       governorateId: values.governorateId,
       wilayaId: values.wilayaId,
-      area: values.area,
+      // A listed neighbourhood is sent by id (the server writes its official names); otherwise the typed name.
+      ...(listed ? { neighborhoodId: listed.id, area: localize(listed.name, locale) } : { area: typedArea ? values.area : '' }),
       building: values.building,
       street: values.street,
       instructions: values.instructions,
@@ -344,6 +357,7 @@ export function AddressForm({
         onChange={(e) => {
           set('governorateId', e.target.value);
           set('wilayaId', '');
+          set('neighborhoodId', '');
         }}
         error={err('governorateId')}
       >
@@ -362,7 +376,10 @@ export function AddressForm({
         hint={!governorate ? t('wilayaFirst') : undefined}
         value={values.wilayaId}
         placeholder={t('wilayaPlaceholder')}
-        onChange={(e) => set('wilayaId', e.target.value)}
+        onChange={(e) => {
+          set('wilayaId', e.target.value);
+          set('neighborhoodId', '');
+        }}
         error={err('wilayaId')}
       >
         {wilayas.map((w) => (
@@ -371,16 +388,38 @@ export function AddressForm({
           </option>
         ))}
       </Select>
-      <Input
-        id={`${formId}-area`}
-        name="area"
-        label={t('area')}
-        autoComplete="address-level3"
-        required
-        value={values.area}
-        onChange={(e) => set('area', e.target.value)}
-        error={err('area')}
-      />
+      {neighborhoods.length > 0 ? (
+        <Select
+          id={`${formId}-neighborhoodId`}
+          name="neighborhoodId"
+          label={t('neighborhood')}
+          required
+          value={values.neighborhoodId}
+          placeholder={t('neighborhoodPlaceholder')}
+          onChange={(e) => set('neighborhoodId', e.target.value)}
+          error={err('neighborhoodId') ?? (typedArea ? undefined : err('area'))}
+          data-testid="address-neighborhood"
+        >
+          {neighborhoods.map((n) => (
+            <option key={n.id} value={n.id}>
+              {localize(n.name, locale)}
+            </option>
+          ))}
+          <option value={OTHER}>{t('neighborhoodOther')}</option>
+        </Select>
+      ) : null}
+      {typedArea ? (
+        <Input
+          id={`${formId}-area`}
+          name="area"
+          label={neighborhoods.length > 0 ? t('areaOther') : t('area')}
+          autoComplete="address-level3"
+          required
+          value={values.area}
+          onChange={(e) => set('area', e.target.value)}
+          error={err('area')}
+        />
+      ) : null}
       <Input
         id={`${formId}-building`}
         name="building"

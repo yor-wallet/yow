@@ -1,6 +1,6 @@
 import { expect, type Page, type TestInfo } from '@playwright/test';
 
-export const LOCALES = ['ar', 'en', 'fr'] as const;
+export const LOCALES = ['ar', 'en'] as const;
 
 /**
  * Asserts the page has no horizontal overflow:

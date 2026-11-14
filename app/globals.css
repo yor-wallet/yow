@@ -752,6 +752,56 @@ html[lang='ar'] {
   display: none;
 }
 
+/* Colour change on the product page (owner's request: "an animation when a colour is chosen").
+   The illustration repaints smoothly, the colour halo blooms behind the device, the new photo settles in,
+   and the chosen swatch pops. All of it is skipped under reduced motion (durations collapse below). */
+[data-device-art] :is(rect, circle, ellipse, path, stop) {
+  transition: fill 0.45s var(--ease-premium), stop-color 0.45s var(--ease-premium);
+}
+.doom-color-halo {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--halo, transparent) 38%, transparent), transparent 72%);
+  transition: background 0.5s var(--ease-premium);
+}
+@keyframes doom-halo-bloom {
+  0% { opacity: 0; transform: scale(0.55); }
+  55% { opacity: 1; }
+  100% { opacity: 1; transform: scale(1); }
+}
+.doom-color-halo[data-bloom] {
+  animation: doom-halo-bloom 0.6s var(--ease-premium) both;
+}
+@keyframes doom-color-settle {
+  0% { opacity: 0.25; transform: scale(0.92) rotate(-2deg); filter: blur(6px) saturate(0.6); }
+  60% { opacity: 1; filter: blur(0) saturate(1.05); }
+  100% { opacity: 1; transform: none; filter: none; }
+}
+.doom-color-settle {
+  animation: doom-color-settle 0.55s var(--ease-premium) both;
+}
+@keyframes doom-swatch-pop {
+  0% { transform: scale(0.82); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+.doom-swatch-pop {
+  animation: doom-swatch-pop 0.38s var(--ease-premium) both;
+}
+@keyframes doom-swatch-ring {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--swatch, #0a1937) 55%, transparent); }
+  to { box-shadow: 0 0 0 14px transparent; }
+}
+.doom-swatch-ring {
+  animation: doom-swatch-ring 0.7s ease-out both;
+}
+@keyframes doom-label-swap {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.doom-label-swap {
+  display: inline-block;
+  animation: doom-label-swap 0.28s var(--ease-premium) both;
+}
+
 /* Respect reduced motion everywhere. */
 @media (prefers-reduced-motion: reduce) {
   :root {

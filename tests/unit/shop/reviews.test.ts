@@ -82,7 +82,7 @@ describe('submitReview', () => {
 
   it('trims the text and drops an empty title', async () => {
     const { user, product } = await buyer(true);
-    await submitReview(user.id, product.id, { rating: 3, title: '   ', text: '   Works as expected, thanks.   ' }, 'fr');
+    await submitReview(user.id, product.id, { rating: 3, title: '   ', text: '   Works as expected, thanks.   ' }, 'en');
     const row = await prisma.review.findFirstOrThrow({ where: { userId: user.id, productId: product.id } });
     expect(row.title).toBeNull();
     expect(row.text).toBe('Works as expected, thanks.');

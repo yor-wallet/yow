@@ -119,6 +119,34 @@ test.describe('checkout', () => {
   });
 });
 
+test.describe('address book', () => {
+  test('governorate → wilaya → neighbourhood: the list follows the wilaya, "Other" lets the customer type it', async ({ page }, testInfo) => {
+    const user = await createCustomer(uniqueUser(testInfo));
+    await signIn(page, user.email, user.password);
+    await gotoReady(page, '/en/account/addresses/new');
+    const form = page.getByTestId('address-form');
+    await form.locator('select[name="governorateId"]').selectOption({ label: 'Muscat' });
+    await form.locator('select[name="wilayaId"]').selectOption({ label: 'As Seeb' });
+    const hood = form.locator('select[name="neighborhoodId"]');
+    await expect(hood).toBeVisible();
+    await expect(form.locator('input[name="area"]')).toHaveCount(0);
+    await hood.selectOption({ label: 'Al Mabelah South' });
+    await form.locator('input[name="building"]').fill('Villa 12');
+    await page.getByTestId('address-submit').click();
+    await expect(page).toHaveURL(/\/en\/account\/addresses$/);
+    await expect(page.getByText('Al Mabelah South').first()).toBeVisible();
+
+    // "Other": the free-text field comes back.
+    await gotoReady(page, '/ar/account/addresses/new');
+    const ar = page.getByTestId('address-form');
+    await ar.locator('select[name="governorateId"]').selectOption({ label: 'مسقط' });
+    await ar.locator('select[name="wilayaId"]').selectOption({ label: 'السيب' });
+    await ar.locator('select[name="neighborhoodId"]').selectOption('OTHER');
+    await expect(ar.locator('input[name="area"]')).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+});
+
 test.describe('orders', () => {
   test('an unpaid order keeps its stock reserved, can be paid later, and shows the reason when it cannot', async ({ page }, testInfo) => {
     const product = await createCheckoutProduct(testInfo);

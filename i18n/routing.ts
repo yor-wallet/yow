@@ -1,7 +1,8 @@
 import { defineRouting } from 'next-intl/routing';
 import { LOCALE_COOKIE, ONE_YEAR_SECONDS } from '@/lib/cookies';
 
-export const locales = ['ar', 'en', 'fr'] as const;
+/** Two languages offered to shoppers (owner's decision, November 2026): Arabic and English. Old /fr links redirect to English (next.config.ts). */
+export const locales = ['ar', 'en'] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'ar';
 
@@ -23,7 +24,7 @@ export function getDirection(locale: string): 'rtl' | 'ltr' {
 }
 
 /** Native language names for the locale switcher. */
-export const LOCALE_LABELS: Record<Locale, string> = { ar: 'العربية', en: 'English', fr: 'Français' };
+export const LOCALE_LABELS: Record<Locale, string> = { ar: 'العربية', en: 'English' };
 
 /** Narrow a route param to a supported locale (falls back to the default). */
 export function asLocale(value: string | undefined | null): Locale {

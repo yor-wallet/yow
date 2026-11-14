@@ -78,14 +78,14 @@ test('theme toggle persists (cookie) and renders server-side without flash', asy
 });
 
 test('secondary pages have no horizontal overflow', async ({ page }) => {
-  for (const path of ['/ar/login', '/en/register', '/fr/legal/privacy', '/ar/legal/terms', '/en/this-page-does-not-exist']) {
+  for (const path of ['/ar/login', '/en/register', '/en/legal/privacy', '/ar/legal/terms', '/en/this-page-does-not-exist']) {
     await page.goto(path);
     await expectNoHorizontalOverflow(page);
   }
 });
 
 test('unknown pages render the branded 404 with a back button', async ({ page }) => {
-  const res = await page.goto('/fr/nope-nope');
+  const res = await page.goto('/en/nope-nope');
   expect(res?.status()).toBe(404);
   await expect(page.getByTestId('not-found')).toBeVisible();
   await expect(page.getByTestId('not-found').getByTestId('back-button')).toBeVisible();

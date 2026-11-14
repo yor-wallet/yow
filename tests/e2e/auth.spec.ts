@@ -67,7 +67,7 @@ test.describe('authentication', () => {
 
   test('shows translated validation and credential errors', async ({ page }, testInfo) => {
     await useUniqueIp(page);
-    await gotoReady(page, '/fr/register');
+    await gotoReady(page, '/en/register');
     const form = page.getByTestId('register-form');
     await form.locator('input[name="fullName"]').fill('A');
     await form.locator('input[name="email"]').fill('not-an-email');
@@ -76,9 +76,9 @@ test.describe('authentication', () => {
     await form.locator('input[name="confirmPassword"]').fill('different');
     await form.locator('button[type="submit"]').click();
     await expect(page.getByTestId('form-error')).toBeVisible();
-    await expect(form).toContainText('Saisissez une adresse e-mail valide.');
-    await expect(form).toContainText('Saisissez un numéro omanais valide (8 chiffres).');
-    await expect(form).toContainText('Vous devez accepter les conditions pour continuer.');
+    await expect(form).toContainText("Enter a valid email address.");
+    await expect(form).toContainText("Enter a valid Omani number (8 digits).");
+    await expect(form).toContainText('You must accept the terms to continue.');
     // Non-sensitive values are kept, passwords are not.
     await expect(form.locator('input[name="email"]')).toHaveValue('not-an-email');
     await expect(form.locator('input[name="password"]')).toHaveValue('');
