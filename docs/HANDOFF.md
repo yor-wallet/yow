@@ -52,6 +52,13 @@ npx playwright test --project=iphone-se --project=ipad-mini --project=desktop --
 
 Vitrine complète (accueil, catégories, recherche, fiche produit, panier, commande, commandes, favoris, comparateur, avis, produits associés), refonte téléphone selon la maquette du propriétaire, identité jaune/marine (novembre 2026), portefeuille / paiements / FLEX / compte / KYC / espace livreur (autre session), administration (produits, commandes avec préparation et livreurs, avis, zones et tarifs, campagnes, agents IA, **import de catalogue** : catalogue vérifié, pack de visuels iPhone, pack de photos du propriétaire, import CSV prix/stock). Tous les imports créent des **brouillons sans prix ni stock**. Les photos s'appliquent avec `npm run catalogue:photos` (aucun dessin d'illustration n'est affiché : le propriétaire n'en veut pas).
 
+## 5 bis. Mise en production du 14/11/2026 (session « Opus 5.5 », sur ordre du propriétaire)
+
+- **Déploiement** : les déploiements Git échouent (`git_info_fail` / limite de l'API GitHub chez Vercel). Contournement utilisé : déploiement par fichiers (`package.json` + `vercel.json` dont `installCommand` télécharge l'archive du commit sur `codeload.github.com` puis `npm ci`). Déployé : `f9f95be` (`dpl_D5AvRTin7yo2XGAYz4mpcmfRovLn`), avec `RUN_SEED=1 RUN_CATALOGUE_IMPORT=1` dans la commande de construction de ce seul déploiement (variables du projet inchangées, toujours à `0`).
+- **Production** : migration `20261113180000_neighborhoods` appliquée ; 35 rayons (dont Tablettes et Montres connectées) ; 91 quartiers ; photos importées (126) ; compte du propriétaire promu `SUPERADMIN` à sa demande (procédure de `docs/DEPLOYMENT.md`).
+- **Prix** (ordre du propriétaire : prix du marché − 10 %) : `data/catalogue/market-prices-2026-11.json` (iSTYLE Oman, revendeur agréé Apple, relevé le 14/11/2026) appliqué aux variantes sans prix : 202 variantes, 20 produits (iPhone, AirPods Pro 3 / Pro 2, Apple Watch Ultra 2), une ligne d'audit par produit (`catalogue.prices.market`). Stock non touché : tout reste « épuisé » tant que le stock n'est pas saisi. Commande pour un autre environnement : `npm run catalogue:prices`.
+- **Non fait** : prix Samsung / HONOR / OPPO / HUAWEI / JBL (Sharaf DG, Extra et Lulu bloquent la lecture automatique ; les comparateurs se contredisent), matrices HONOR / OPPO, variantes des nouveaux appareils (montres, iPad, Pura, Fold), erreur d'hydratation React #418 intermittente vue en ligne avant ce déploiement (non reproduite ensuite).
+
 ## 6. Reste à faire
 
 **Cahier des charges du propriétaire** (`DOOM_Design_Implementation_AR.md`, remis en novembre 2026) :
