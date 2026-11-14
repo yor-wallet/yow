@@ -23,6 +23,8 @@
 
 **Tant que l'envoi d'e-mails n'est pas configuré**, rien n'est envoyé (jamais simulé) et la confirmation d'e-mail **n'est pas exigée** (sinon personne ne pourrait la faire) ; l'écran d'administration l'indique. Dès que `BREVO_API_KEY` et `MAIL_FROM` sont présents, la règle s'applique.
 
+**Garde-fou à la mise en ligne** : le build de production interroge Brevo (`scripts/check-email-provider.ts`). Si Brevo refuse la clé, la mise en ligne s'arrête et l'ancienne version reste en place : on ne peut donc pas publier une version qui exige la confirmation d'e-mail alors qu'aucun e-mail ne peut partir.
+
 Délivrabilité : un expéditeur sur une messagerie gratuite (Gmail, iCloud…) arrive souvent dans les indésirables. Pour de bons résultats, utiliser une adresse sur le domaine du site (ex. `noreply@<domaine>`) authentifiée dans Brevo (SPF, DKIM).
 
 ## 3. Où se trouve le code
@@ -30,6 +32,7 @@ Délivrabilité : un expéditeur sur une messagerie gratuite (Gmail, iCloud…) 
 | Sujet | Fichier |
 |---|---|
 | Envoi (Brevo), mise en page, échappement | `lib/email/index.ts` |
+| Contrôle du prestataire avant la mise en ligne | `lib/email/provider-check.ts`, `scripts/check-email-provider.ts`, `scripts/vercel-build.sh` |
 | Textes des e-mails (ar, en, fr) | `lib/email/templates.ts` |
 | Lien de confirmation, confirmation, renvoi | `lib/auth/email-verification.ts`, `app/[locale]/(auth)/verify-email/page.tsx`, `components/account/EmailConfirmCard.tsx` |
 | E-mails de vérification d'identité | `lib/kyc/emails.ts` |

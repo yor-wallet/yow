@@ -11,8 +11,14 @@
 #                               fatal: if it fails the photos can be applied later from the admin);
 #   4. builds the application.
 #
+# Before anything else: if e-mail sending is configured, the provider must accept the key. A refused
+# key stops the build here (nothing is migrated, the version online stays up) — otherwise customers
+# would have to confirm an e-mail that can never be sent. See scripts/check-email-provider.ts.
+#
 # Steps 2 and 3 are idempotent; remove the two variables once the first deployment has succeeded.
 set -euo pipefail
+
+npx tsx scripts/check-email-provider.ts
 
 MIGRATE_URL="${DIRECT_URL:-${DATABASE_URL:?DATABASE_URL is required}}"
 

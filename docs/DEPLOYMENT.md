@@ -82,6 +82,7 @@ Voir `docs/ANDROID.md` (Capacitor Android/iOS et PWA).
 > ⚠️ Le compte Vercel `yordigitalefinance` contient déjà un projet **`yor-wallet`** et le compte Supabase un projet **`yor-wallet`** (l'ancien prototype, `legacy/`). **Ne pas les réutiliser** : DOOM a ses propres projets `doom` sur Vercel et sur Supabase.
 
 **Build** — commande de build du projet Vercel : `npm run build:vercel` (`scripts/vercel-build.sh`). Elle est idempotente :
+0. **contrôle du prestataire d'e-mails** (`scripts/check-email-provider.ts`) : si `BREVO_API_KEY` et `MAIL_FROM` sont présents et que Brevo **refuse la clé** (clé révoquée, ou blocage des adresses IP inconnues), le build s'arrête avant toute migration et la version en ligne reste en place — sinon les clients devraient confirmer un e-mail qui ne peut pas partir. Prestataire injoignable ou expéditeur non listé : simple avertissement. Contournement d'urgence : `SKIP_EMAIL_PROVIDER_CHECK=1` ;
 1. `prisma migrate deploy` sur `DIRECT_URL` (connexion en mode session ; l'URL poolée ne peut pas migrer) ;
 2. si `RUN_SEED=1` : données de référence (catégories, marques, gouvernorats/wilayas, comptes du grand livre, zones **sans tarifs**) ;
 3. si `RUN_CATALOGUE_IMPORT=1` : catalogue vérifié 2026, publication des modèles entièrement vérifiés, **sans prix ni stock** (« prix bientôt disponible ») ; l'import est attribué à un compte système suspendu qui ne peut pas se connecter ;
@@ -93,7 +94,7 @@ Supprimer `RUN_SEED` et `RUN_CATALOGUE_IMPORT` une fois la première mise en lig
 - `DATABASE_URL` : pooler Supabase en mode transaction (port 6543, `?pgbouncer=true`) ;
 - `DIRECT_URL` : pooler en mode session (port 5432) — la connexion directe `db.<ref>.supabase.co` est en IPv6 seulement et n'est pas joignable depuis les builds Vercel.
 
-**Variables de production** — `DATABASE_URL`, `DIRECT_URL`, `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API keys ; clé secrète `sb_secret_…`) posée le 14/11/2026 ; sans elle le site fonctionne, mais tout envoi de fichier (photos produits, pièces KYC, preuves de livraison) échoue. `BREVO_API_KEY` (reçue le 14/11/2026) ne fonctionne que si le blocage des adresses IP inconnues est désactivé dans Brevo (Vercel n'a pas d'IP fixe).
+**Variables de production** — `DATABASE_URL`, `DIRECT_URL`, `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API keys ; clé secrète `sb_secret_…`) posée le 14/11/2026 ; sans elle le site fonctionne, mais tout envoi de fichier (photos produits, pièces KYC, preuves de livraison) échoue. `BREVO_API_KEY` est active depuis le 14/11/2026 ; elle ne fonctionne que si le blocage des adresses IP inconnues reste désactivé dans Brevo (Vercel n'a pas d'IP fixe) — le build le contrôle (étape 0 ci-dessus).
 
 **Compte administrateur** — aucun compte n'est créé par le build. Créer un compte sur `/ar/register`, puis le promouvoir :
 ```sql

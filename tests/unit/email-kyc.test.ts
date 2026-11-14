@@ -7,6 +7,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { prisma } from '@/lib/db';
 import { isEmailConfigured, sendEmail } from '@/lib/email';
+import { checkEmailProvider } from '@/lib/email/provider-check';
 import { kycDecisionMessage, verifyEmailMessage } from '@/lib/email/templates';
 import { confirmEmail, emailVerificationUrl, sendVerificationEmail } from '@/lib/auth/email-verification';
 import { signToken } from '@/lib/auth/tokens';
@@ -174,5 +175,63 @@ describe('identity verification e-mails', () => {
       expect(m.subject.length).toBeGreaterThan(5);
       expect(m.html).not.toContain('internal');
     }
+  });
+});
+
+describe('e-mail provider check (run by the production build)', () => {
+  /** Answers Brevo's /account and /senders with the given responses. */
+  function brevo(account: { status: number; body?: unknown } | Error, senders: { status: number; body?: unknown } = { status: 200, body: { senders: [{ email: 'Shop@example.test', active: true }] } }) {
+    const seen: { url: string; key: string }[] = [];
+    vi.stubGlobal('fetch', async (url: string, init: { headers: Record<string, string> }) => {
+      seen.push({ url, key: init.headers['api-key'] ?? '' });
+      const r = url.endsWith('/account') ? account : senders;
+      if (r instanceof Error) throw r;
+      return { status: r.status, json: async () => r.body ?? null };
+    });
+    return seen;
+  }
+
+  it('does nothing when e-mail sending is not configured', async () => {
+    const seen = brevo({ status: 200 });
+    expect((await checkEmailProvider()).level).toBe('skip');
+    expect(seen).toHaveLength(0);
+  });
+
+  it('passes when Brevo accepts the key and the sender is active', async () => {
+    mailOn();
+    const seen = brevo({ status: 200, body: { email: 'x' } });
+    expect(await checkEmailProvider()).toEqual({ level: 'ok', message: expect.stringContaining('accepts the key') });
+    expect(seen.map((c) => c.url)).toEqual(['https://api.brevo.com/v3/account', 'https://api.brevo.com/v3/senders']);
+    expect(seen.every((c) => c.key === 'test-key')).toBe(true);
+  });
+
+  it('fails when Brevo refuses the key, says why, and never prints the key', async () => {
+    mailOn();
+    brevo({ status: 401, body: { code: 'unauthorized', message: 'We have detected you are using an unrecognised IP address 203.0.113.9.' } });
+    const blocked = await checkEmailProvider();
+    expect(blocked.level).toBe('fail');
+    expect(blocked.message).toContain('unrecognised IP address 203.0.113.9');
+    expect(blocked.message).toContain('Authorised IPs');
+    expect(blocked.message).not.toContain('test-key');
+
+    brevo({ status: 401, body: { code: 'unauthorized', message: 'Key not found' } });
+    const revoked = await checkEmailProvider();
+    expect(revoked.level).toBe('fail');
+    expect(revoked.message).toContain('Create a new key');
+    expect(revoked.message).not.toContain('Authorised IPs');
+  });
+
+  it('only warns when it cannot be sure: provider unreachable, server error, sender not listed or not verified', async () => {
+    mailOn();
+    brevo(new Error('network down'));
+    expect((await checkEmailProvider()).level).toBe('warn');
+    brevo({ status: 503 });
+    expect((await checkEmailProvider()).level).toBe('warn');
+    brevo({ status: 200 }, { status: 200, body: { senders: [{ email: 'other@example.test', active: true }] } });
+    expect(await checkEmailProvider()).toEqual({ level: 'warn', message: expect.stringContaining('not one of the senders') });
+    brevo({ status: 200 }, { status: 200, body: { senders: [{ email: 'shop@example.test', active: false }] } });
+    expect(await checkEmailProvider()).toEqual({ level: 'warn', message: expect.stringContaining('not verified yet') });
+    brevo({ status: 200 }, { status: 500 });
+    expect((await checkEmailProvider()).level).toBe('ok');
   });
 });

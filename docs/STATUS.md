@@ -91,7 +91,9 @@ Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
 ### Confirmation du compte par e-mail et vérification d'identité par l'administrateur (14 novembre 2026)
 - ✅ E-mail de confirmation à l'inscription (lien signé 48 h lié à l'adresse), page `/verify-email`, renvoi depuis le compte ; la vérification d'identité attend un e-mail confirmé (règle active dès que l'envoi d'e-mails est configuré).
 - ✅ Chaque nouvelle demande d'identité → e-mail à tous les administrateurs (ADMIN, SUPERADMIN) avec un lien ; écran **Administration › Vérifications d'identité** (`/admin/kyc`) : file par statut, fiche, pièces via le visualiseur audité, Valider / Refuser / Demander des documents ; e-mail de décision au client.
-- ✅ Tests : 12 unitaires (envoi Brevo, échappement, liens, règle, destinataires, décisions) + e2e (3 appareils).
+- ✅ Tests : 14 unitaires (envoi Brevo, échappement, liens, règle, destinataires, décisions, contrôle du prestataire avant la mise en ligne) + e2e (3 appareils).
 - ✅ En ligne (14/11/2026) : `SUPABASE_SERVICE_ROLE_KEY` posée, les clients peuvent envoyer leurs pièces (essai réel d'envoi, relecture et suppression sur le stockage de production).
-- ⛔ E-mails : clé Brevo reçue mais pas encore active — Brevo bloque les adresses IP inconnues et Vercel n'a pas d'IP fixe ; le propriétaire doit désactiver ce blocage, puis redéployer. Voir `docs/KYC.md` et `docs/HANDOFF.md` (mise en ligne n° 5).
+- ✅ En ligne (14/11/2026) : e-mails activés (`BREVO_API_KEY`) — Brevo accepte la clé depuis Vercel (contrôlé pendant le build), un vrai e-mail d'essai envoyé par le code du site a été délivré ; la confirmation d'e-mail est maintenant exigée avant la vérification d'identité.
+- ✅ Garde-fou : le build de production s'arrête si Brevo refuse la clé (`scripts/check-email-provider.ts`, 4 tests unitaires) — on ne peut pas publier une version qui exige un e-mail impossible à envoyer.
+- ⚠️ Reste à vérifier par le propriétaire : une vraie inscription sur le site en ligne. Expéditeur iCloud : risque d'arrivée en indésirables ; prévoir une adresse sur le domaine du site, authentifiée dans Brevo. Le blocage des adresses IP inconnues doit rester désactivé dans Brevo.
 
