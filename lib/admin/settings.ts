@@ -12,7 +12,7 @@ import { emailSchema, normalizeOmanPhone } from '@/lib/validation';
 export type SettingKind = 'bps' | 'int' | 'baisa' | 'time' | 'text' | 'email' | 'phone';
 
 type Def<K extends SettingKind, V> = { kind: K; group: SettingGroup; default: V; min?: number; max?: number };
-export type SettingGroup = 'commerce' | 'pricing' | 'delivery' | 'compliance' | 'operations' | 'contact';
+export type SettingGroup = 'commerce' | 'pricing' | 'delivery' | 'compliance' | 'operations' | 'payments' | 'contact';
 
 export const SETTINGS = {
   'tax.vatBps': { kind: 'bps', group: 'commerce', default: 500, min: 0, max: 5000 } as Def<'bps', number>,
@@ -28,6 +28,23 @@ export const SETTINGS = {
   'kyc.retentionDays': { kind: 'int', group: 'compliance', default: null, min: 1, max: 3650 } as Def<'int', number | null>,
   'support.slaHours': { kind: 'int', group: 'operations', default: 24, min: 1, max: 720 } as Def<'int', number>,
   'payments.stuckPendingMinutes': { kind: 'int', group: 'operations', default: 30, min: 5, max: 10_080 } as Def<'int', number>,
+  // Payments (edited in Admin > Settings > Payments, see lib/admin/payment-settings.ts and docs/PAYMENTS.md).
+  // Crypto: a licensed processor must also be configured (env); these are the business rules on top of it.
+  'crypto.enabled': { kind: 'int', group: 'payments', default: 0, min: 0, max: 1 } as Def<'int', number>,
+  'crypto.forOrders': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
+  'crypto.forTopup': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
+  'crypto.requireKyc': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
+  'crypto.minPaymentBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 100_000_000 } as Def<'baisa', number | null>,
+  'crypto.maxPaymentBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 100_000_000 } as Def<'baisa', number | null>,
+  // Gift cards: verified by finance, then credited to the wallet minus the exchange commission.
+  'giftcard.enabled': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
+  'giftcard.feeBps': { kind: 'bps', group: 'payments', default: 800, min: 0, max: 5000 } as Def<'bps', number>,
+  'giftcard.requireKyc': { kind: 'int', group: 'payments', default: 0, min: 0, max: 1 } as Def<'int', number>,
+  'giftcard.maxOpen': { kind: 'int', group: 'payments', default: 5, min: 1, max: 50 } as Def<'int', number>,
+  // Wallet limits (null = the built-in default of lib/wallet/limits.ts).
+  'wallet.minTopUpBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 100_000_000 } as Def<'baisa', number | null>,
+  'wallet.maxTopUpBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 100_000_000 } as Def<'baisa', number | null>,
+  'wallet.maxBalanceBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 1_000_000_000 } as Def<'baisa', number | null>,
   // Maintenance sweep (lib/maintenance/cleanup.ts). Off by default: the schedule deletes nothing until it is switched on.
   'cleanup.enabled': { kind: 'int', group: 'operations', default: 0, min: 0, max: 1 } as Def<'int', number>,
   'cleanup.sessionsDays': { kind: 'int', group: 'operations', default: 30, min: 1, max: 3650 } as Def<'int', number>,
@@ -47,7 +64,7 @@ export type SettingValue<K extends SettingKey> = (typeof SETTINGS)[K]['default']
 export type SettingsMap = { [K in SettingKey]: SettingValue<K> };
 
 export const SETTING_KEYS = Object.keys(SETTINGS) as SettingKey[];
-export const SETTING_GROUPS: readonly SettingGroup[] = ['commerce', 'pricing', 'delivery', 'compliance', 'operations', 'contact'];
+export const SETTING_GROUPS: readonly SettingGroup[] = ['commerce', 'pricing', 'delivery', 'compliance', 'operations', 'payments', 'contact'];
 
 /** zod schema for a stored value of `key` (null clears to "not configured" when allowed). */
 export function settingValueSchema(key: SettingKey): z.ZodType<unknown> {

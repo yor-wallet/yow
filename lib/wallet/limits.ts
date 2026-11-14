@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma, type Db } from '@/lib/db';
+import { getSettings } from '@/lib/admin/settings';
 
 /**
  * Wallet policy limits (integer baisa). Defaults below; an admin can override them with
@@ -28,7 +29,14 @@ const limitsSchema = z
 export async function getWalletLimits(db: Db = prisma): Promise<WalletLimits> {
   const row = await db.setting.findUnique({ where: { key: WALLET_LIMITS_SETTING } }).catch(() => null);
   const parsed = row ? limitsSchema.safeParse(row.value) : null;
-  const merged = { ...DEFAULT_WALLET_LIMITS, ...(parsed?.success ? parsed.data : {}) };
+  const merged: WalletLimits = { ...DEFAULT_WALLET_LIMITS, ...(parsed?.success ? parsed.data : {}) };
+  // Admin > Settings > Payments (one value per limit) takes precedence over the older JSON setting.
+  const s = await getSettings(db).catch(() => null);
+  if (s) {
+    if (s['wallet.minTopUpBaisa'] !== null) merged.minTopUpBaisa = s['wallet.minTopUpBaisa'];
+    if (s['wallet.maxTopUpBaisa'] !== null) merged.maxTopUpBaisa = s['wallet.maxTopUpBaisa'];
+    if (s['wallet.maxBalanceBaisa'] !== null) merged.maxBalanceBaisa = s['wallet.maxBalanceBaisa'];
+  }
   if (merged.minTopUpBaisa > merged.maxTopUpBaisa) return DEFAULT_WALLET_LIMITS;
   return merged;
 }

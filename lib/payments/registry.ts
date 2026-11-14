@@ -1,5 +1,7 @@
 import { prisma, type Db } from '@/lib/db';
 import { getWalletLimits } from '@/lib/wallet/limits';
+import { getSettings } from '@/lib/admin/settings';
+import { methodPolicyReason } from './policy';
 import { thawaniAdapter } from './adapters/thawani';
 import { omantelAdapter, ooredooAdapter } from './adapters/carrier';
 import { cryptoAdapter } from './adapters/crypto';
@@ -70,6 +72,13 @@ export async function listPaymentMethods(context: PaymentContext, db: Db = prism
     wallet = w ? { status: w.status, balanceBaisa: w.ledgerAccount.balanceBaisa } : { status: 'ACTIVE', balanceBaisa: 0 };
   }
 
+  // Business rules from Admin > Settings > Payments (switches, KYC, bounds) for the methods they govern.
+  const settings = await getSettings(db);
+  const policy: Partial<Record<'CRYPTO' | 'GIFT_CARD', UnavailableReason | null>> = {};
+  for (const m of ['CRYPTO', 'GIFT_CARD'] as const) {
+    if (METHODS_BY_PURPOSE[purpose].includes(m)) policy[m] = await methodPolicyReason(m, { purpose, amountBaisa: amount, userId: context.userId }, db, settings);
+  }
+
   return METHODS_BY_PURPOSE[purpose].map((id) => {
     switch (id) {
       case 'WALLET': {
@@ -83,12 +92,14 @@ export async function listPaymentMethods(context: PaymentContext, db: Db = prism
         // then paid from the wallet balance.
         if (purpose !== 'TOPUP') return option(id, false, 'gift_card_via_wallet');
         if (!context.userId) return option(id, false, 'login_required');
+        if (policy.GIFT_CARD) return option(id, false, policy.GIFT_CARD);
         return option(id, true);
       case 'FLEX':
         return option(id, false, 'flex_apply_from_product');
       default: {
         const adapter = ADAPTERS[id as ExternalProviderId];
         if (!adapter.isConfigured()) return option(id, false, adapter.unavailableReason, adapter.minAmountBaisa);
+        if (id === 'CRYPTO' && policy.CRYPTO) return option(id, false, policy.CRYPTO, adapter.minAmountBaisa);
         if (purpose === 'TOPUP' && limits) {
           if (amount > 0 && amount < limits.minTopUpBaisa) return option(id, false, 'amount_below_minimum', adapter.minAmountBaisa);
           if (amount > limits.maxTopUpBaisa) return option(id, false, 'amount_above_maximum', adapter.minAmountBaisa);

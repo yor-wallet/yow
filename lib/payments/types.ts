@@ -26,7 +26,9 @@ export type UnavailableReason =
   | 'gift_card_via_wallet'
   | 'flex_apply_from_product'
   | 'amount_below_minimum'
-  | 'amount_above_maximum';
+  | 'amount_above_maximum'
+  | 'disabled_by_admin'
+  | 'kyc_required';
 
 export type PaymentMethodOption = {
   id: PaymentMethodId;

@@ -16,6 +16,7 @@ import {
   type SystemAccountCode,
 } from '@/lib/wallet/ledger';
 import { getAdapter } from './registry';
+import { assertMethodAllowed } from './policy';
 import { raisePaymentAlert } from './alerts';
 import { notifyMoney } from './notify';
 import { markOrderPaid } from './order-port';
@@ -79,6 +80,14 @@ const REF_PREFIX: Record<string, string> = {
   ADJUSTMENT: 'ADJ',
   REVERSAL: 'REV',
 };
+
+/** Commission recorded on a gift-card intent (integer baisa, strictly below the encashed value). */
+function commissionOf(metadata: unknown, amount: number): number {
+  const c = (metadata as { commissionBaisa?: unknown } | null)?.commissionBaisa;
+  if (c === undefined || c === null) return 0;
+  if (typeof c !== 'number' || !Number.isSafeInteger(c) || c < 0 || c >= amount) throw new MoneyError('ledger_integrity', 'Invalid commission on the payment intent');
+  return c;
+}
 
 export function ledgerReference(type: keyof typeof REF_PREFIX | string): string {
   return makeReference(REF_PREFIX[type] ?? 'TXN');
@@ -214,14 +223,19 @@ async function confirmInTx(tx: Prisma.TransactionClient, intentId: string, args:
       intent.provider === 'GIFT_CARD'
         ? await tx.giftCardSubmission.findFirst({ where: { paymentIntentId: intent.id }, select: { id: true } })
         : null;
+    // Gift cards: the exchange commission (decided and stored on the intent at verification) goes to
+    // platform revenue; the wallet receives the rest. One balanced transaction: -gross = +net +commission.
+    const commission = intent.provider === 'GIFT_CARD' ? commissionOf(intent.metadata, amount) : 0;
     const { transaction } = await postTransaction(tx, {
       ...base,
       reference: ledgerReference(type),
       type,
       giftCardSubmissionId: giftCard?.id ?? null,
+      ...(commission > 0 ? { metadata: { ...base.metadata, grossBaisa: amount, commissionBaisa: commission } } : {}),
       entries: [
         { accountId: sourceId, amountBaisa: -amount },
-        { accountId: await walletAccount(), amountBaisa: amount },
+        { accountId: await walletAccount(), amountBaisa: amount - commission },
+        ...(commission > 0 ? [{ accountId: await systemAccountId(tx, 'PLATFORM_REVENUE'), amountBaisa: commission }] : []),
       ],
     });
     ledgerTransactionId = transaction.id;
@@ -439,6 +453,7 @@ export async function startTopUp(
 
   const adapter = getAdapter(methodId);
   if (!adapter.isConfigured()) throw new MoneyError('method_unavailable', `${adapter.displayName} is not available`);
+  if (methodId === 'CRYPTO') await assertMethodAllowed('CRYPTO', { purpose: 'TOPUP', amountBaisa, userId });
   const limits = await getWalletLimits();
   if (amountBaisa < Math.max(limits.minTopUpBaisa, adapter.minAmountBaisa ?? 0)) {
     throw new MoneyError('amount_below_minimum', undefined, { minBaisa: Math.max(limits.minTopUpBaisa, adapter.minAmountBaisa ?? 0) });
@@ -527,6 +542,7 @@ export async function startOrderPayment(
   if (!isExternalProvider(methodId)) throw new MoneyError('method_unavailable', `${methodId} cannot pay an order directly`);
   const adapter = getAdapter(methodId);
   if (!adapter.isConfigured()) throw new MoneyError('method_unavailable', `${adapter.displayName} is not available`);
+  if (methodId === 'CRYPTO') await assertMethodAllowed('CRYPTO', { purpose: 'ORDER', amountBaisa: order.totalBaisa, userId });
   if (adapter.minAmountBaisa && order.totalBaisa < adapter.minAmountBaisa) throw new MoneyError('amount_below_minimum');
 
   const reusable = await prisma.paymentIntent.findFirst({

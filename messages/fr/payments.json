@@ -73,7 +73,9 @@
     "gift_card_via_wallet": "Ajoutez d'abord la carte cadeau à votre portefeuille, puis payez avec votre solde.",
     "flex_apply_from_product": "Démarrez une demande FLEX depuis la fiche produit.",
     "amount_below_minimum": "Le montant est inférieur au minimum de ce moyen de paiement.",
-    "amount_above_maximum": "Le montant dépasse le maximum de ce moyen de paiement."
+    "amount_above_maximum": "Le montant dépasse le maximum de ce moyen de paiement.",
+    "disabled_by_admin": "Temporairement indisponible.",
+    "kyc_required": "Vérifiez votre identité pour utiliser ce moyen de paiement."
   },
   "errors": {
     "invalid_input": "Certaines informations sont invalides.",
@@ -97,7 +99,7 @@
     "duplicate_code": "Ce code de carte cadeau a déjà été envoyé.",
     "invalid_image": "Utilisez une photo PNG, JPEG ou WebP de 8 Mo maximum.",
     "already_decided": "Une décision a déjà été enregistrée.",
-    "kyc_required": "Vérifiez votre identité pour utiliser DOOM FLEX.",
+    "kyc_required": "Vérifiez votre identité pour utiliser cette fonctionnalité.",
     "flex_not_eligible": "Ce plan DOOM FLEX ne peut pas être confirmé pour le moment.",
     "flex_invalid_state": "Cette demande DOOM FLEX ne peut pas être modifiée à ce stade.",
     "flex_active_limit": "Vous avez déjà le nombre maximal de plans DOOM FLEX en cours.",

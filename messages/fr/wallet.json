@@ -130,7 +130,9 @@
       "amount_invalid": "Saisissez la valeur faciale, par exemple 25 ou 25,50.",
       "amount_too_large": "Cette valeur est trop élevée.",
       "required": "Ce champ est obligatoire."
-    }
+    },
+    "fee": "Une commission d'échange de {percent} est retenue sur la valeur réellement encaissée.",
+    "paused": "Le rechargement par carte cadeau est temporairement indisponible."
   },
   "tx": {
     "metaTitle": "Opération",

@@ -341,7 +341,9 @@
       "file_invalid": "Ce fichier n'est pas une liste de catalogue valide.",
       "file_too_large": "Ce fichier est trop volumineux (2 Mo au maximum).",
       "duplicate_ids": "Le fichier contient deux fois le même identifiant de modèle.",
-      "category_missing": "La catégorie des smartphones est introuvable."
+      "category_missing": "La catégorie des smartphones est introuvable.",
+      "number_invalid": "Saisissez un nombre valide.",
+      "range_inverted": "Le maximum ne doit pas être inférieur au minimum."
     },
     "proposal_not_open": "Cette proposition a déjà été traitée.",
     "proposal_no_action": "Cette proposition ne comporte aucune action à appliquer.",
@@ -718,5 +720,86 @@
     "done": "{created} produit(s) créé(s), {updated} mis à jour.",
     "doneVariants": "{variants} variante(s) créée(s), {published} modèle(s) publié(s).",
     "doneDrafts": "{awaiting} brouillon(s) en attente de la vérification couleur × capacité, {unverified} modèle(s) sans page officielle."
+  },
+  "paymentSettings": {
+    "title": "Réglages des paiements",
+    "subtitle": "Cryptomonnaie, cartes cadeaux et plafonds du portefeuille. Les changements s'appliquent immédiatement et sont enregistrés dans le journal d'audit.",
+    "save": "Enregistrer",
+    "notYet": "La vente de cartes cadeaux (payées en crypto) n'est pas encore disponible : elle nécessite un fournisseur de codes de cartes cadeaux.",
+    "crypto": {
+      "title": "Cryptomonnaie",
+      "description": "Les clients paient en crypto via un prestataire de paiement agréé ; DOOM ne détient jamais de crypto. La valeur est créditée en OMR une fois confirmée par le prestataire.",
+      "processorOn": "Prestataire connecté",
+      "processorOff": "Aucun prestataire connecté",
+      "processorHint": "Aucun prestataire n’est connecté : le moyen reste indisponible pour les clients, quels que soient les réglages ci-dessous."
+    },
+    "giftcard": {
+      "title": "Cartes cadeaux",
+      "description": "Le client soumet une carte cadeau ; notre équipe financière vérifie la valeur réellement encaissée et crédite le portefeuille, commission d'échange déduite."
+    },
+    "wallet": {
+      "title": "Plafonds du portefeuille",
+      "description": "Minimum et maximum par recharge (carte, opérateur, crypto) et solde maximum d’un portefeuille. Respectez les règles de votre licence."
+    },
+    "fields": {
+      "crypto": {
+        "enabled": {
+          "label": "Accepter la cryptomonnaie",
+          "hint": "Interrupteur principal, désactivé par défaut. Vérifiez les règles applicables à votre licence avant de l’activer."
+        },
+        "forOrders": {
+          "label": "Payer les commandes en crypto",
+          "hint": "Permet de payer un téléphone, ou toute commande, ainsi."
+        },
+        "forTopup": {
+          "label": "Recharger le portefeuille en crypto",
+          "hint": "Le portefeuille reste en OMR."
+        },
+        "requireKyc": {
+          "label": "Exiger la vérification d’identité",
+          "hint": "Seuls les clients dont l’identité est vérifiée peuvent payer en crypto. Recommandé."
+        },
+        "minPaymentBaisa": {
+          "label": "Paiement minimum",
+          "hint": "Vide = minimum du prestataire."
+        },
+        "maxPaymentBaisa": {
+          "label": "Paiement maximum",
+          "hint": "Vide = pas de plafond propre."
+        }
+      },
+      "giftcard": {
+        "enabled": {
+          "label": "Accepter les cartes cadeaux",
+          "hint": "Désactivez pour suspendre les nouvelles demandes, par exemple lors d’une vague de fraude."
+        },
+        "feeBps": {
+          "label": "Commission d’échange",
+          "hint": "Pourcentage retenu sur la valeur encaissée. 8 % par défaut : une carte de 100 OMR crédite 92 OMR."
+        },
+        "requireKyc": {
+          "label": "Exiger la vérification d’identité",
+          "hint": "Fortement recommandé : les cartes cadeaux sont une voie de fraude courante."
+        },
+        "maxOpen": {
+          "label": "Cartes en attente par client",
+          "hint": "Limite anti-abus."
+        }
+      },
+      "wallet": {
+        "minTopUpBaisa": {
+          "label": "Recharge minimum",
+          "hint": "Vide = 1,000 OMR."
+        },
+        "maxTopUpBaisa": {
+          "label": "Recharge maximum",
+          "hint": "Vide = 500,000 OMR."
+        },
+        "maxBalanceBaisa": {
+          "label": "Solde maximum du portefeuille",
+          "hint": "Vide = 2 000,000 OMR."
+        }
+      }
+    }
   }
 }

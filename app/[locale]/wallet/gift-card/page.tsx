@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { BadgeCheck, Coins, Send } from 'lucide-react';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { asLocale } from '@/i18n/routing';
 import { requireUser } from '@/lib/auth';
+import { getSettings } from '@/lib/admin/settings';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { HudCorners } from '@/components/ui/HudCorners';
 import { GiftCardForm } from '@/components/wallet/GiftCardForm';
@@ -18,7 +19,8 @@ export default async function GiftCardPage({ params }: Props) {
   const locale = asLocale((await params).locale);
   setRequestLocale(locale);
   await requireUser({ next: '/wallet/gift-card' });
-  const t = await getTranslations('wallet.giftCard');
+  const [t, format, settings] = await Promise.all([getTranslations('wallet.giftCard'), getFormatter(), getSettings()]);
+  const feeBps = settings['giftcard.feeBps'];
   const steps = [
     { icon: Send, text: t('steps.submit') },
     { icon: BadgeCheck, text: t('steps.verify') },
@@ -42,8 +44,19 @@ export default async function GiftCardPage({ params }: Props) {
         <div className="relative min-w-0 rounded-card border border-border bg-surface p-5 shadow-card sm:p-7">
           <HudCorners />
           <span className="hud-label">{t('eyebrow')}</span>
+          {feeBps > 0 ? (
+            <p className="mt-3 rounded-xl border border-border bg-surface-2 p-3 text-sm" data-testid="giftcard-fee">
+              {t('fee', { percent: format.number(feeBps / 10_000, { style: 'percent', maximumFractionDigits: 2 }) })}
+            </p>
+          ) : null}
           <div className="mt-5">
-            <GiftCardForm />
+            {settings['giftcard.enabled'] ? (
+              <GiftCardForm />
+            ) : (
+              <p className="rounded-xl border border-dashed border-border-strong p-4 text-sm text-muted" data-testid="giftcard-paused">
+                {t('paused')}
+              </p>
+            )}
           </div>
         </div>
       </div>

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import type { GiftCardStatus, Role } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { logAudit } from '@/lib/audit';
+import { getSetting, getSettings } from '@/lib/admin/settings';
+import { assertMethodAllowed, giftCardCommissionBaisa } from './policy';
 import { can } from '@/lib/rbac';
 import { decryptBuffer, decryptString, encryptBuffer, encryptString, fingerprint } from '@/lib/crypto';
 import { buildKey, getStorage, sniffMime } from '@/lib/storage';
@@ -98,6 +100,9 @@ export async function submitGiftCard(input: {
     throw new MoneyError('invalid_input', 'Invalid gift card', { fieldErrors: parsed.error.flatten().fieldErrors });
   }
   const { brand, code, currency, value } = parsed.data;
+  // Settings (Admin > Settings > Payments): pause switch, KYC requirement, open-card limit.
+  await assertMethodAllowed('GIFT_CARD', { purpose: 'TOPUP', amountBaisa: 0, userId: input.userId });
+  const maxOpen = (await getSettings())['giftcard.maxOpen'];
   const declaredValue = parseMinorUnits(value, currency);
   if (declaredValue === null) throw new MoneyError('invalid_amount', 'Invalid face value', { fieldErrors: { value: ['amount_invalid'] } });
   if (declaredValue > 5_000 * 10 ** GIFT_CARD_CURRENCIES[currency]) {
@@ -119,7 +124,7 @@ export async function submitGiftCard(input: {
   }
 
   const open = await prisma.giftCardSubmission.count({ where: { userId: input.userId, status: { in: ['SUBMITTED', 'UNDER_REVIEW'] } } });
-  if (open >= MAX_OPEN_GIFT_CARDS) throw new MoneyError('invalid_input', 'Too many gift cards awaiting review', { reason: 'too_many_open' });
+  if (open >= maxOpen) throw new MoneyError('invalid_input', 'Too many gift cards awaiting review', { reason: 'too_many_open' });
 
   const id = newSubmissionId();
   let imageKey: string | null = null;
@@ -213,7 +218,9 @@ export async function reviewGiftCard(input: {
     const card = await tx.giftCardSubmission.findUniqueOrThrow({ where: { id: input.id } });
     if (card.status === 'VERIFIED') {
       if (input.decision === 'VERIFIED' && card.encashedValueBaisa === input.encashedValueBaisa) {
-        return { id: card.id, status: card.status, paymentIntentId: card.paymentIntentId, creditedBaisa: card.encashedValueBaisa, replayed: true };
+        const past = card.paymentIntentId ? await tx.paymentIntent.findUnique({ where: { id: card.paymentIntentId }, select: { metadata: true } }) : null;
+        const pastFee = Number((past?.metadata as { commissionBaisa?: unknown } | null)?.commissionBaisa ?? 0) || 0;
+        return { id: card.id, status: card.status, paymentIntentId: card.paymentIntentId, creditedBaisa: (card.encashedValueBaisa ?? 0) - pastFee, replayed: true };
       }
       throw new MoneyError('already_decided', 'Gift card already verified and credited');
     }
@@ -247,6 +254,9 @@ export async function reviewGiftCard(input: {
 
     // VERIFIED: the encashed value is credited through the single confirmation path.
     const value = input.encashedValueBaisa as number;
+    const feeBps = await getSetting('giftcard.feeBps', tx);
+    const commission = giftCardCommissionBaisa(value, feeBps);
+    const net = value - commission;
     const intent = await tx.paymentIntent.create({
       data: {
         userId: card.userId,
@@ -255,7 +265,7 @@ export async function reviewGiftCard(input: {
         amountBaisa: value,
         idempotencyKey: `giftcard:${card.id}`,
         status: 'PENDING',
-        metadata: { giftCardSubmissionId: card.id, brand: card.brand },
+        metadata: { giftCardSubmissionId: card.id, brand: card.brand, feeBps, commissionBaisa: commission },
       },
     });
     await tx.giftCardSubmission.update({
@@ -276,12 +286,12 @@ export async function reviewGiftCard(input: {
         entity: 'GiftCardSubmission',
         entityId: card.id,
         before,
-        after: { status: 'VERIFIED', encashedValueBaisa: value, declaredValue: card.declaredValue, declaredCurrency: card.declaredCurrency, paymentIntentId: intent.id },
+        after: { status: 'VERIFIED', encashedValueBaisa: value, feeBps, commissionBaisa: commission, creditedBaisa: net, declaredValue: card.declaredValue, declaredCurrency: card.declaredCurrency, paymentIntentId: intent.id },
       },
       tx,
     );
-    await notifyMoney(card.userId, 'giftCardVerified', { amountBaisa: value }, '/wallet', tx);
-    return { id: card.id, status: 'VERIFIED' as const, paymentIntentId: intent.id, creditedBaisa: value, replayed: false };
+    await notifyMoney(card.userId, 'giftCardVerified', { amountBaisa: net }, '/wallet', tx);
+    return { id: card.id, status: 'VERIFIED' as const, paymentIntentId: intent.id, creditedBaisa: net, replayed: false };
   });
   return result;
 }

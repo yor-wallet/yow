@@ -130,7 +130,9 @@
       "amount_invalid": "Enter the face value, for example 25 or 25.50.",
       "amount_too_large": "This value is too large.",
       "required": "This field is required."
-    }
+    },
+    "fee": "An exchange commission of {percent} is kept on the value actually encashed.",
+    "paused": "Gift card top-ups are temporarily unavailable."
   },
   "tx": {
     "metaTitle": "Transaction",

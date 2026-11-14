@@ -341,7 +341,9 @@
       "file_invalid": "This file is not a valid catalogue list.",
       "file_too_large": "This file is too large (2 MB at most).",
       "duplicate_ids": "The file contains the same model id twice.",
-      "category_missing": "The smartphones category is missing."
+      "category_missing": "The smartphones category is missing.",
+      "number_invalid": "Enter a valid number.",
+      "range_inverted": "The maximum must not be below the minimum."
     },
     "proposal_not_open": "This proposal was already decided.",
     "proposal_no_action": "This proposal has no action to apply.",
@@ -718,5 +720,86 @@
     "done": "{created} product(s) created, {updated} updated.",
     "doneVariants": "{variants} variant(s) created, {published} model(s) published.",
     "doneDrafts": "{awaiting} draft(s) waiting for the colour × capacity check, {unverified} model(s) without an official page."
+  },
+  "paymentSettings": {
+    "title": "Payments settings",
+    "subtitle": "Cryptocurrency, gift cards and wallet limits. Changes apply immediately and are recorded in the audit log.",
+    "save": "Save",
+    "notYet": "Selling gift cards (paid in crypto) is not available yet: it needs a gift card code supplier.",
+    "crypto": {
+      "title": "Cryptocurrency",
+      "description": "Customers pay in crypto through a licensed payment processor; DOOM never holds crypto. The value is credited in OMR once the processor confirms it.",
+      "processorOn": "Processor connected",
+      "processorOff": "No processor connected",
+      "processorHint": "No processor is connected: the method stays unavailable to customers whatever the settings below say."
+    },
+    "giftcard": {
+      "title": "Gift cards",
+      "description": "A customer submits a gift card; our finance team verifies the value actually encashed and credits the wallet minus the exchange commission."
+    },
+    "wallet": {
+      "title": "Wallet limits",
+      "description": "Minimum and maximum per top-up (card, carrier, crypto) and the maximum balance of a wallet. Follow the rules of your licence."
+    },
+    "fields": {
+      "crypto": {
+        "enabled": {
+          "label": "Accept cryptocurrency",
+          "hint": "Master switch, off by default. Check the rules that apply to your licence before switching it on."
+        },
+        "forOrders": {
+          "label": "Pay orders in crypto",
+          "hint": "Lets customers pay a phone, or any order, this way."
+        },
+        "forTopup": {
+          "label": "Top up the wallet in crypto",
+          "hint": "The wallet stays in OMR."
+        },
+        "requireKyc": {
+          "label": "Require identity verification",
+          "hint": "Only customers with a verified identity can pay in crypto. Recommended."
+        },
+        "minPaymentBaisa": {
+          "label": "Minimum payment",
+          "hint": "Empty = the processor's own minimum."
+        },
+        "maxPaymentBaisa": {
+          "label": "Maximum payment",
+          "hint": "Empty = no limit of its own."
+        }
+      },
+      "giftcard": {
+        "enabled": {
+          "label": "Accept gift cards",
+          "hint": "Switch off to pause new submissions, for example during a fraud wave."
+        },
+        "feeBps": {
+          "label": "Exchange commission",
+          "hint": "Percentage kept on the encashed value. 8% by default: a 100 OMR card credits 92 OMR."
+        },
+        "requireKyc": {
+          "label": "Require identity verification",
+          "hint": "Strongly recommended: gift cards are a common fraud route."
+        },
+        "maxOpen": {
+          "label": "Cards awaiting review per customer",
+          "hint": "Anti-abuse limit."
+        }
+      },
+      "wallet": {
+        "minTopUpBaisa": {
+          "label": "Minimum top-up",
+          "hint": "Empty = 1.000 OMR."
+        },
+        "maxTopUpBaisa": {
+          "label": "Maximum top-up",
+          "hint": "Empty = 500.000 OMR."
+        },
+        "maxBalanceBaisa": {
+          "label": "Maximum wallet balance",
+          "hint": "Empty = 2,000.000 OMR."
+        }
+      }
+    }
   }
 }

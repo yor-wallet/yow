@@ -75,3 +75,10 @@ Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
 - À l'accueil comme en liste, à pertinence égale les produits avec photo passent en premier.
 - Les dessins `DeviceArt` ne sont plus appelés par la carte, la galerie ni la fiche (`components/devices/*` et `lib/devices/art.ts` restent dans le dépôt, inutilisés).
 - **Photos livrées avec le site (sans clé de stockage)** : `public/photos/` (6,7 Mo, généré par `npm run catalogue:photos:build` à partir des packs) est servi par le site lui-même ; clé d'image `bundled/<pack>/<modèle>/<finition>.webp` (`lib/bundled-photo.ts`, `mediaUrl`). `npm run catalogue:photos -- --bundled` écrit seulement les lignes en base (aucun envoi) ; `scripts/vercel-build.sh` l'utilise avec `RUN_CATALOGUE_IMPORT=1`. Les photos ajoutées depuis l'administration restent dans le stockage Supabase (clé `SUPABASE_SERVICE_ROLE_KEY` nécessaire pour celles-là).
+
+### Réglages des paiements — crypto, cartes cadeaux, plafonds (14 novembre 2026)
+- ✅ **Écran `/admin/site/settings`** (droit `settings:write`) : trois sections (cryptomonnaie, cartes cadeaux, plafonds du portefeuille), valeurs par défaut sûres, validation, application immédiate, journal d'audit. Détail et ordre d'activation : `docs/PAYMENTS.md`.
+- ✅ **Commission d'échange sur les cartes cadeaux : 8 % par défaut** (`giftcard.feeBps`) : le portefeuille reçoit la valeur encaissée moins la commission, une seule écriture équilibrée (clearing −100 / portefeuille +92 / revenus +8), pourcentage et montants conservés. Page « Carte cadeau » : commission affichée avant l'envoi.
+- ✅ **Interrupteurs et règles** appliqués à l'affichage **et** côté serveur : crypto (global, commandes, recharges, identité vérifiée, bornes de montant), cartes cadeaux (pause, identité vérifiée, cartes en attente), plafonds du portefeuille.
+- ⛔ **Crypto toujours indisponible en ligne** : aucun prestataire agréé connecté (variables d'environnement) ; `crypto.enabled` est éteint par défaut. **Vente de cartes cadeaux en crypto : non construite** (fournisseur de codes requis). Cadre juridique à confirmer par le propriétaire avant toute activation.
+

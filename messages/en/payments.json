@@ -73,7 +73,9 @@
     "gift_card_via_wallet": "Add the gift card to your wallet first, then pay from your balance.",
     "flex_apply_from_product": "Start a FLEX application from the product page.",
     "amount_below_minimum": "The amount is below the minimum for this method.",
-    "amount_above_maximum": "The amount is above the maximum for this method."
+    "amount_above_maximum": "The amount is above the maximum for this method.",
+    "disabled_by_admin": "Temporarily unavailable.",
+    "kyc_required": "Verify your identity to use this method."
   },
   "errors": {
     "invalid_input": "Some of the information is invalid.",
@@ -97,7 +99,7 @@
     "duplicate_code": "This gift card code has already been submitted.",
     "invalid_image": "Use a PNG, JPEG or WebP photo of up to 8 MB.",
     "already_decided": "A decision was already recorded.",
-    "kyc_required": "Verify your identity to use DOOM FLEX.",
+    "kyc_required": "Verify your identity to use this feature.",
     "flex_not_eligible": "This DOOM FLEX plan cannot be confirmed right now.",
     "flex_invalid_state": "This DOOM FLEX application cannot be changed at this stage.",
     "flex_active_limit": "You already have the maximum number of open DOOM FLEX plans.",

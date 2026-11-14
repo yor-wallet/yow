@@ -236,6 +236,41 @@ test.describe('orders', () => {
     expect((await page.goto('/en/admin/orders/DM-0000-NOPE'))?.status()).toBe(404);
   });
 
+  test('payment settings: three sections, crypto honest about its processor, errors explained, hidden from other staff', async ({ page }, testInfo) => {
+    const staff = await createStaff(uniqueUser(testInfo), 'ADMIN');
+    await signIn(page, staff.email, staff.password, '/admin/site/settings');
+    await expect(page.getByTestId('admin-title')).toHaveText('Payments settings');
+    for (const id of ['crypto', 'giftcard', 'wallet']) await expect(page.getByTestId(`ps-section-${id}`)).toBeVisible();
+    await expect(page.getByTestId('crypto-processor')).toHaveText('No processor connected');
+    await expect(page.getByTestId('ps-not-yet')).toContainText('Selling gift cards');
+    await page.locator('html[data-hydrated="true"]').waitFor({ state: 'attached' });
+    await expectNoHorizontalOverflow(page);
+
+    // The default commission is 8%; an out-of-range value is explained and nothing is saved.
+    const fee = page.locator('input[name="giftcard.feeBps"]');
+    await expect(fee).toHaveValue('8');
+    await fee.fill('99');
+    await page.getByTestId('ps-form-giftcard-submit').click();
+    await expect(page.getByTestId('ps-section-giftcard')).toContainText('This value is out of range.');
+    await page.reload();
+    await expect(page.locator('input[name="giftcard.feeBps"]')).toHaveValue('8');
+
+    const catalog = await createStaff(uniqueUser(testInfo), 'CATALOG');
+    const other = await page.context().browser()!.newContext();
+    const otherPage = await other.newPage();
+    await otherPage.setExtraHTTPHeaders({ 'x-forwarded-for': `10.${Math.floor(Math.random() * 255)}.3.9` });
+    await signIn(otherPage, catalog.email, catalog.password, '/admin/products');
+    expect((await otherPage.goto('/en/admin/site/settings'))?.status()).toBe(404);
+    await other.close();
+  });
+
+  test('customers see the gift card commission before submitting a card', async ({ page }, testInfo) => {
+    const customer = await createCustomer(uniqueUser(testInfo));
+    await signIn(page, customer.email, customer.password, '/wallet/gift-card');
+    await expect(page.getByTestId('giftcard-fee')).toContainText('8%');
+    await expect(page.getByTestId('giftcard-paused')).toHaveCount(0);
+  });
+
   test('a catalogue manager (no orders permission) sees only the catalogue', async ({ page }, testInfo) => {
     const staff = await createStaff(uniqueUser(testInfo), 'CATALOG');
     await signIn(page, staff.email, staff.password, '/admin/products');

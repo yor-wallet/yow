@@ -91,5 +91,6 @@ Vitrine complète (accueil, catégories, recherche, fiche produit, panier, comma
 | Admin (cadre de mutations) | `lib/admin/mutation.ts`, `action.ts`, `guard.ts`, `components/admin/*` |
 | Tests | `tests/unit/*`, `tests/e2e/*` (helpers dans `tests/e2e/helpers.ts`) |
 | Déploiement | `docs/DEPLOYMENT.md`, `scripts/vercel-build.sh`, `scripts/predeploy-check.ts` |
+| Paiements, crypto, cartes cadeaux, commission, plafonds | `docs/PAYMENTS.md`, `lib/payments/*`, `lib/admin/payment-settings.ts`, `/admin/site/settings` |
 
 Ce fichier ne contient aucun souvenir personnel du propriétaire : seulement ce qui sert à reprendre ce chantier.
