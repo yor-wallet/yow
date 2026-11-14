@@ -51,8 +51,8 @@
       "description": "Charge the amount to your Omantel mobile bill."
     },
     "CRYPTO": {
-      "label": "Crypto-assets",
-      "description": "BTC, ETH, USDT or USDC through a licensed provider."
+      "label": "USDT (crypto)",
+      "description": "Send USDT on Tron, BNB Smart Chain or Ethereum — checked on the blockchain."
     },
     "FLEX": {
       "label": "DOOM FLEX",
@@ -160,6 +160,57 @@
       "flex": "View my FLEX plan",
       "retryTopUp": "Start a new top-up",
       "receipt": "View receipt"
+    }
+  },
+  "crypto": {
+    "title": "Pay with USDT",
+    "intro": "Send USDT from your own wallet to our address, then paste the transaction ID here. We check it on the blockchain.",
+    "amountLabel": "Amount to send",
+    "exactAmount": "Send exactly this amount, to the 4th decimal: it identifies your payment. If you send from an exchange, add the network fee on top so that we receive the full amount.",
+    "networkLabel": "Network",
+    "networks": {
+      "TRON": "Tron (TRC20)",
+      "BSC": "BNB Smart Chain (BEP20)",
+      "ETH": "Ethereum (ERC20)"
+    },
+    "networkHints": {
+      "TRON": "Lowest fees",
+      "BSC": "Low fees",
+      "ETH": "High fees"
+    },
+    "addressLabel": "Our address on {network}",
+    "onlyUsdt": "Send only USDT, and only on {network}. Any other coin or network is lost and cannot be recovered.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyAmount": "Copy the amount",
+    "copyAddress": "Copy the address",
+    "deadline": "Send the transfer before {time}.",
+    "expired": "The time to send this payment is over. If you sent it before the deadline, paste the transaction ID below. Otherwise do not send anything: start the payment again to get a new amount.",
+    "txLabel": "Transaction ID (hash)",
+    "txHint": "You find it in your wallet or exchange after sending.",
+    "verify": "Verify my payment",
+    "verifying": "Checking the blockchain…",
+    "found": "We found your transfer. Waiting for the network to confirm it ({confirmations}/{required}).",
+    "foundTron": "We found your transfer. Waiting for the network to finalise it.",
+    "viewTx": "View the transaction",
+    "errors": {
+      "invalid_input": "Check the transaction ID and the network, then try again.",
+      "not_found": "We could not find this payment.",
+      "not_payable": "This payment can no longer receive a transfer. Start a new payment.",
+      "network_unavailable": "This network is not available for this payment.",
+      "already_has_transfer": "A transfer is already attached to this payment. Wait for its confirmation.",
+      "tx_not_found": "We cannot see this transaction yet. Wait a minute and try again, and check that you chose the right network.",
+      "tx_failed": "This transaction failed on the blockchain.",
+      "wrong_recipient": "This transaction was not sent to our address on this network.",
+      "wrong_token": "This transaction did not send USDT. Only USDT is accepted.",
+      "wrong_amount": "The amount does not match: expected {expected} USDT, received {sent} USDT. Contact support with your transaction ID.",
+      "too_early": "This transaction was made before this payment was created, so it cannot be used for it.",
+      "too_late": "This transaction arrived after the time to pay had ended. Contact support with your transaction ID.",
+      "tx_already_used": "This transaction is already attached to another payment.",
+      "node_unavailable": "The blockchain is not answering right now. Try again in a minute.",
+      "rate_limited": "Too many attempts. Please wait a few minutes.",
+      "unauthenticated": "Please sign in again.",
+      "generic": "Something went wrong. Please try again."
     }
   }
 }

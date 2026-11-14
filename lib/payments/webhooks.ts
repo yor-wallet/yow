@@ -24,6 +24,7 @@ export async function handleProviderWebhook(slug: string, headers: Headers, rawB
   const adapter = getAdapterBySlug(slug);
   if (!adapter) return { status: 404, body: { ok: false, error: 'unknown_provider' } };
   if (Buffer.byteLength(rawBody, 'utf8') > MAX_BODY_BYTES) return { status: 413, body: { ok: false, error: 'payload_too_large' } };
+  if (adapter.webhooks === false) return { status: 404, body: { ok: false, error: 'no_webhooks' } };
   if (!adapter.isConfigured()) return { status: 503, body: { ok: false, error: 'provider_not_configured' } };
 
   let event;

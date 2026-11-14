@@ -74,6 +74,8 @@ export type CreatePaymentResult = {
   /** Provider-supplied instructions (carrier USSD/SMS approval, wallet address…). */
   instructions?: string;
   expiresAt?: Date;
+  /** Extra data stored on the intent's `metadata` (e.g. `crypto`: the amount and addresses shown to the customer). */
+  metadata?: Record<string, unknown>;
 };
 
 export type ProviderStatus = {
@@ -110,6 +112,10 @@ export interface ProviderAdapter {
   /** Throws `WebhookSignatureError` when a signature is present/required and invalid. */
   verifyWebhook(req: { headers: Headers; rawBody: string }): Promise<WebhookEvent>;
   fetchStatus(providerRef: string): Promise<ProviderStatus>;
+  /** Optional: status computed from the whole intent (needs more than the provider reference). Preferred by the core when present. */
+  fetchIntentStatus?(intent: import('@prisma/client').PaymentIntent): Promise<ProviderStatus>;
+  /** `false` = this provider never calls us back (nothing to verify at /api/webhooks/<slug>). */
+  readonly webhooks?: false;
   /** Optional provider refund (full amount). Throws `ProviderError` when unsupported. */
   refund?(args: { providerRef: string; amountBaisa: number; reason: string }): Promise<RefundResult>;
   supportsRefund?(): boolean;

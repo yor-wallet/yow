@@ -184,17 +184,17 @@ describe('business rules for crypto and gift cards', () => {
     await expect(assertMethodAllowed('CRYPTO', { ...base, userId: plain.id })).rejects.toMatchObject({ code: 'amount_above_maximum' });
   });
 
-  it('the checkout list shows the reason, and the method only once a processor is connected AND enabled', async () => {
+  it('the checkout list shows the reason, and the method only once an address is configured AND enabled', async () => {
     const user = await customer('VERIFIED');
-    const saved = { provider: process.env.CRYPTO_PROVIDER, url: process.env.CRYPTO_API_URL, key: process.env.CRYPTO_API_KEY, secret: process.env.CRYPTO_WEBHOOK_SECRET };
+    const keys = ['CRYPTO_ADDRESS_TRON', 'CRYPTO_ADDRESS_BSC', 'CRYPTO_ADDRESS_ETH'] as const;
+    const saved = Object.fromEntries(keys.map((k) => [k, process.env[k]]));
     const crypto = async () => (await listPaymentMethods({ purpose: 'ORDER', amountBaisa: 50_000, userId: user.id })).find((m) => m.id === 'CRYPTO')!;
     try {
-      delete process.env.CRYPTO_PROVIDER;
-      expect(await crypto()).toMatchObject({ available: false, reason: 'licensed_processor_required' });
-      process.env.CRYPTO_PROVIDER = 'test-processor';
-      process.env.CRYPTO_API_URL = 'https://processor.invalid';
-      process.env.CRYPTO_API_KEY = 'test-key';
-      process.env.CRYPTO_WEBHOOK_SECRET = 'test-secret';
+      for (const k of keys) delete process.env[k];
+      expect(await crypto()).toMatchObject({ available: false, reason: 'not_configured' });
+      process.env.CRYPTO_ADDRESS_BSC = '0x5aaeb6053F3E94C9b9A09f33669435E7Ef1BeAed'; // wrong checksum: ignored, never used
+      expect(await crypto()).toMatchObject({ available: false, reason: 'not_configured' });
+      process.env.CRYPTO_ADDRESS_BSC = '0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed';
       expect(await crypto()).toMatchObject({ available: false, reason: 'disabled_by_admin' });
       await setSetting('crypto.enabled', 1);
       expect(await crypto()).toMatchObject({ available: true });
@@ -202,9 +202,9 @@ describe('business rules for crypto and gift cards', () => {
       const gift = (await listPaymentMethods({ purpose: 'TOPUP', amountBaisa: 0, userId: user.id })).find((m) => m.id === 'GIFT_CARD')!;
       expect(gift).toMatchObject({ available: false, reason: 'disabled_by_admin' });
     } finally {
-      for (const [k, v] of [['CRYPTO_PROVIDER', saved.provider], ['CRYPTO_API_URL', saved.url], ['CRYPTO_API_KEY', saved.key], ['CRYPTO_WEBHOOK_SECRET', saved.secret]] as const) {
-        if (v === undefined) delete process.env[k];
-        else process.env[k] = v;
+      for (const k of keys) {
+        if (saved[k] === undefined) delete process.env[k];
+        else process.env[k] = saved[k];
       }
     }
   });

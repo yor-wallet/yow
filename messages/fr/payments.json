@@ -51,8 +51,8 @@
       "description": "Le montant est ajouté à votre facture mobile Omantel."
     },
     "CRYPTO": {
-      "label": "Cryptoactifs",
-      "description": "BTC, ETH, USDT ou USDC via un prestataire agréé."
+      "label": "USDT (crypto)",
+      "description": "Envoyez des USDT sur Tron, BNB Smart Chain ou Ethereum — vérifiés sur la blockchain."
     },
     "FLEX": {
       "label": "DOOM FLEX",
@@ -160,6 +160,57 @@
       "flex": "Voir mon plan FLEX",
       "retryTopUp": "Nouvelle recharge",
       "receipt": "Voir le reçu"
+    }
+  },
+  "crypto": {
+    "title": "Payer en USDT",
+    "intro": "Envoyez des USDT depuis votre propre portefeuille vers notre adresse, puis collez ici l’identifiant de la transaction. Nous le vérifions sur la blockchain.",
+    "amountLabel": "Montant à envoyer",
+    "exactAmount": "Envoyez exactement ce montant, jusqu’à la 4e décimale : il identifie votre paiement. Si vous envoyez depuis une plateforme d’échange, ajoutez les frais de réseau en plus pour que nous recevions le montant complet.",
+    "networkLabel": "Réseau",
+    "networks": {
+      "TRON": "Tron (TRC20)",
+      "BSC": "BNB Smart Chain (BEP20)",
+      "ETH": "Ethereum (ERC20)"
+    },
+    "networkHints": {
+      "TRON": "Frais les plus bas",
+      "BSC": "Frais faibles",
+      "ETH": "Frais élevés"
+    },
+    "addressLabel": "Notre adresse sur {network}",
+    "onlyUsdt": "Envoyez uniquement des USDT, et uniquement sur {network}. Toute autre monnaie ou tout autre réseau est perdu et irrécupérable.",
+    "copy": "Copier",
+    "copied": "Copié",
+    "copyAmount": "Copier le montant",
+    "copyAddress": "Copier l’adresse",
+    "deadline": "Envoyez le transfert avant {time}.",
+    "expired": "Le délai pour envoyer ce paiement est écoulé. Si vous l'avez envoyé avant la fin du délai, collez l'identifiant de transaction ci-dessous. Sinon, n'envoyez rien : relancez le paiement pour obtenir un nouveau montant.",
+    "txLabel": "Identifiant de transaction (hash)",
+    "txHint": "Vous le trouvez dans votre portefeuille ou votre plateforme après l’envoi.",
+    "verify": "Vérifier mon paiement",
+    "verifying": "Vérification sur la blockchain…",
+    "found": "Nous avons trouvé votre transfert. En attente de confirmation par le réseau ({confirmations}/{required}).",
+    "foundTron": "Nous avons trouvé votre transfert. En attente de sa finalisation par le réseau.",
+    "viewTx": "Voir la transaction",
+    "errors": {
+      "invalid_input": "Vérifiez l’identifiant de transaction et le réseau, puis réessayez.",
+      "not_found": "Nous n’avons pas trouvé ce paiement.",
+      "not_payable": "Ce paiement ne peut plus recevoir de transfert. Lancez un nouveau paiement.",
+      "network_unavailable": "Ce réseau n’est pas disponible pour ce paiement.",
+      "already_has_transfer": "Un transfert est déjà rattaché à ce paiement. Attendez sa confirmation.",
+      "tx_not_found": "Nous ne voyons pas encore cette transaction. Attendez une minute puis réessayez, et vérifiez que vous avez choisi le bon réseau.",
+      "tx_failed": "Cette transaction a échoué sur la blockchain.",
+      "wrong_recipient": "Cette transaction n’a pas été envoyée à notre adresse sur ce réseau.",
+      "wrong_token": "Cette transaction n’a pas envoyé d’USDT. Seul l’USDT est accepté.",
+      "wrong_amount": "Le montant ne correspond pas : attendu {expected} USDT, reçu {sent} USDT. Contactez le support avec votre identifiant de transaction.",
+      "too_early": "Cette transaction a été faite avant la création de ce paiement : elle ne peut pas servir pour lui.",
+      "too_late": "Cette transaction est arrivée après la fin du délai de paiement. Contactez le support avec votre identifiant de transaction.",
+      "tx_already_used": "Cette transaction est déjà rattachée à un autre paiement.",
+      "node_unavailable": "La blockchain ne répond pas pour le moment. Réessayez dans une minute.",
+      "rate_limited": "Trop de tentatives. Patientez quelques minutes.",
+      "unauthenticated": "Reconnectez-vous.",
+      "generic": "Une erreur est survenue. Réessayez."
     }
   }
 }

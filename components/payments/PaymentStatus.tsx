@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CheckCircle2, CircleAlert, ExternalLink, Loader2 } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn';
 import type { PaymentIntentView } from '@/lib/payments/core';
 import { buttonClasses } from '@/components/ui/Button';
 import { HudCorners } from '@/components/ui/HudCorners';
+import { CryptoPayPanel } from './CryptoPayPanel';
 import { Price } from '@/components/ui/Price';
 
 const PENDING = new Set(['CREATED', 'PENDING', 'REQUIRES_ACTION']);
@@ -24,7 +25,13 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
   const [view, setView] = useState(initial);
   const [checking, setChecking] = useState(false);
   const attempts = useRef(0);
+  const [nonce, setNonce] = useState(0);
   const pending = PENDING.has(view.status);
+  // After the customer submits a transaction id: look again right away instead of waiting for the next tick.
+  const checkNow = useCallback(() => {
+    attempts.current = 0;
+    setNonce((n) => n + 1);
+  }, []);
 
   useEffect(() => {
     if (!pending) return;
@@ -51,7 +58,7 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
       stop = true;
       clearTimeout(timer);
     };
-  }, [pending, view.id]);
+  }, [pending, view.id, nonce]);
 
   const provider = tp(`methods.${view.provider}.label`);
   const succeeded = view.status === 'SUCCEEDED';
@@ -92,6 +99,7 @@ export function PaymentStatus({ initial, cancelled }: { initial: PaymentIntentVi
 
       {cancelled && pending ? <p className="mt-4 rounded-xl border border-amber/40 bg-amber/10 p-3 text-sm">{t('cancelledNote')}</p> : null}
       {view.creditedToWallet ? <p className="mt-4 rounded-xl border border-cyan/40 bg-cyan/10 p-3 text-sm">{t('creditedToWallet')}</p> : null}
+      {pending && view.crypto ? <CryptoPayPanel view={view} onSubmitted={checkNow} /> : null}
       {pending && view.instructions ? (
         <div className="mt-4 rounded-xl border border-border bg-surface/60 p-3 text-sm">
           <p className="font-semibold">{t('instructions')}</p>

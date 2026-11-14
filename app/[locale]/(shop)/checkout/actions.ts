@@ -99,7 +99,8 @@ export async function placeOrderAction(raw: PlaceOrderInput): Promise<PlaceOrder
     } else if (result.status === 'succeeded') {
       next = { kind: 'internal', href: `/orders/${number}?paid=1` };
     } else if (result.status === 'pending') {
-      next = { kind: 'internal', href: `/orders/${number}?pay=pending` };
+      // Crypto has no provider page: the customer needs the address and the exact amount (the pay page).
+      next = { kind: 'internal', href: input.paymentMethod === 'CRYPTO' ? `/pay/${result.intentId}` : `/orders/${number}?pay=pending` };
     } else {
       next = { kind: 'internal', href: `/orders/${number}?pay=${encodeURIComponent(result.reason)}` };
     }

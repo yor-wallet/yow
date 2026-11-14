@@ -728,10 +728,16 @@
     "notYet": "La vente de cartes cadeaux (payées en crypto) n'est pas encore disponible : elle nécessite un fournisseur de codes de cartes cadeaux.",
     "crypto": {
       "title": "Cryptomonnaie",
-      "description": "Les clients paient en crypto via un prestataire de paiement agréé ; DOOM ne détient jamais de crypto. La valeur est créditée en OMR une fois confirmée par le prestataire.",
-      "processorOn": "Prestataire connecté",
-      "processorOff": "Aucun prestataire connecté",
-      "processorHint": "Aucun prestataire n’est connecté : le moyen reste indisponible pour les clients, quels que soient les réglages ci-dessous."
+      "description": "Les clients paient en USDT directement vers les adresses de portefeuille propres à DOOM (Tron, BNB Smart Chain, Ethereum). Le site ne connaît que les adresses publiques et vérifie chaque transfert sur la blockchain ; il ne détient jamais de clé.",
+      "addressesOn": "{count}/3 adresses configurées",
+      "addressesOff": "Aucune adresse configurée",
+      "addressesHint": "Aucune adresse de réception valide n'est configurée : le moyen reste indisponible pour les clients, quels que soient les réglages ci-dessous. Les adresses se règlent dans l'environnement d'hébergement (CRYPTO_ADDRESS_TRON, CRYPTO_ADDRESS_BSC, CRYPTO_ADDRESS_ETH) ; une adresse dont la somme de contrôle est fausse est ignorée.",
+      "networkOff": "Non configurée",
+      "networkNames": {
+        "TRON": "Tron (TRC20)",
+        "BSC": "BNB Smart Chain (BEP20)",
+        "ETH": "Ethereum (ERC20)"
+      }
     },
     "giftcard": {
       "title": "Cartes cadeaux",
@@ -761,7 +767,7 @@
         },
         "minPaymentBaisa": {
           "label": "Paiement minimum",
-          "hint": "Vide = minimum du prestataire."
+          "hint": "Vide = 1 OMR (minimum intégré)."
         },
         "maxPaymentBaisa": {
           "label": "Paiement maximum",

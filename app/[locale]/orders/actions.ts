@@ -53,7 +53,10 @@ export async function payOrderAction(raw: z.input<typeof paySchema>): Promise<Or
       if (!url) return { ok: false, error: 'provider_error' };
       target = { kind: 'external', url };
     } else {
-      target = { kind: 'internal', href: result.status === 'succeeded' ? `/orders/${number}?paid=1` : `/orders/${number}?pay=pending` };
+      target = {
+        kind: 'internal',
+        href: result.status === 'succeeded' ? `/orders/${number}?paid=1` : method === 'CRYPTO' ? `/pay/${result.intentId}` : `/orders/${number}?pay=pending`,
+      };
     }
   } catch (err) {
     unstable_rethrow(err);

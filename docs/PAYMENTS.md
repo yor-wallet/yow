@@ -5,30 +5,62 @@
 
 ## 1. Principe
 
-- Le **portefeuille** du client est **en OMR** (baisa entiers), tenu par un **grand livre à double entrée**. DOOM ne détient jamais de cryptomonnaie et n'en convertit jamais : la partie crypto est faite par un **prestataire de paiement agréé**, qui renvoie la **valeur réglée en OMR**.
-- Un paiement n'est **jamais** affiché comme confirmé sans confirmation réelle (prestataire vérifié, ou vérification par la finance pour les cartes cadeaux). Un moyen non configuré s'affiche **« indisponible »** avec la raison.
-- Les règles ci-dessous sont des **paramètres** (Administration › Réglages › **Paiements**, `/admin/site/settings`). Chaque enregistrement est contrôlé (droit `settings:write` : ADMIN et SUPERADMIN), validé, appliqué tout de suite et **inscrit au journal d'audit** (`settings.payments.update`, valeurs avant / après).
+- Le **portefeuille** du client est **en OMR** (baisa entiers), tenu par un **grand livre à double entrée**.
+- **Cryptomonnaie : USDT envoyé directement vers les adresses du propriétaire** (Tron / TRC20, BNB Smart Chain / BEP20, Ethereum / ERC20). Pas de prestataire intermédiaire. Le site ne connaît que les **adresses publiques** ; il ne détient et ne demande **jamais de clé privée** : les fonds arrivent dans le portefeuille du propriétaire, et le site ne fait que **lire la blockchain** pour vérifier chaque transfert.
+- Un paiement n'est **jamais** affiché comme confirmé sans confirmation réelle (transfert vérifié sur la blockchain et définitif, ou vérification par la finance pour les cartes cadeaux). Un moyen non configuré s'affiche **« indisponible »** avec la raison.
+- Les règles sont des **paramètres** (Administration › Réglages › **Paiements**, `/admin/site/settings`). Chaque enregistrement est contrôlé (droit `settings:write` : ADMIN et SUPERADMIN), validé, appliqué tout de suite et **inscrit au journal d'audit** (`settings.payments.update`, valeurs avant / après).
 
-## 2. Les trois demandes du propriétaire
+## 2. Les demandes du propriétaire
 
 | Demande | Ce que fait le site | État |
 |---|---|---|
-| **Payer un téléphone en cryptomonnaie** | Moyen `CRYPTO` au paiement de la commande : facture en OMR chez le prestataire agréé, le client paie en BTC / ETH / USDT / USDC sur la page du prestataire, la commande est payée **seulement** quand le prestataire confirme le règlement. | Code prêt. **Indisponible** tant qu'aucun prestataire n'est connecté (variables d'environnement) **et** que `crypto.enabled` = 1. |
-| **Recharger le portefeuille** (par crypto ou par échange de carte cadeau, **commission 8 %** sur la carte cadeau) | Recharge crypto : même prestataire, créditée en OMR. Carte cadeau : le client envoie le code (chiffré, doublons détectés) → la finance vérifie la **valeur réellement encaissée** → le portefeuille est crédité de cette valeur **moins la commission**. | Carte cadeau : **en service**, commission **8 %** par défaut (`giftcard.feeBps`). Crypto : comme ci-dessus. |
-| **Acheter des cartes cadeaux avec de la crypto** | — | **Pas encore possible** : il faut un fournisseur de codes de cartes cadeaux, des produits « carte cadeau » livrés par voie numérique et une règle « moyens de paiement par catégorie ». À construire quand le fournisseur est choisi. |
+| **Payer un téléphone (ou toute commande) en crypto** | Moyen `CRYPTO` : le client reçoit le **montant exact en USDT**, l'adresse du réseau choisi et une heure pour envoyer ; il colle l'identifiant de transaction ; le serveur le vérifie sur la blockchain ; la commande est payée quand le transfert est définitif. | Code prêt et testé. **Indisponible** tant qu'aucune adresse valide n'est configurée (variables d'environnement) **et** que `crypto.enabled` = 1. |
+| **Recharger le portefeuille** (par crypto ou par carte cadeau, **commission 8 %** sur la carte cadeau) | Crypto : même parcours, le portefeuille est crédité du montant demandé en OMR. Carte cadeau : le client envoie le code (chiffré, doublons détectés) → la finance vérifie la **valeur réellement encaissée** → crédit de cette valeur **moins la commission**. | Carte cadeau : **en service**, 8 % par défaut (`giftcard.feeBps`). Crypto : comme ci-dessus. |
+| **Acheter des cartes cadeaux avec de la crypto** | — | **Pas encore possible** : il faut un fournisseur de codes de cartes cadeaux, des produits numériques et une règle « moyens de paiement par catégorie ». Commission prévue : **5 %**. |
 
-Point d'attention : « échanger des cartes cadeaux **contre** de la crypto » n'est pas fait par DOOM — le portefeuille reste en OMR. Remettre de la crypto à un client (retrait, conversion) est une autre activité (conservation / échange), qui demande son propre prestataire et sa propre licence : **non construit**.
+Le portefeuille reste en OMR : « échanger une carte cadeau contre de la crypto » devient « la carte est créditée en OMR, moins 8 % ». Remettre de la crypto à un client (retrait, conversion) est une autre activité, **non construite**.
 
-## 3. Les paramètres (Administration › Réglages › Paiements)
+## 3. Le paiement en USDT, pas à pas
+
+1. Le client choisit **« USDT (crypto) »**. La page de paiement affiche le **montant exact** (ex. `910.0237 USDT`), le **réseau** (Tron, BNB Smart Chain, Ethereum), **notre adresse** et l'heure limite (**1 heure**).
+2. Il envoie depuis **son** portefeuille (le montant reçu doit être exact : s'il part d'une plateforme d'échange, il ajoute les frais de réseau en plus).
+3. Il colle l'**identifiant de la transaction** (hash). Le serveur lit la blockchain et vérifie **tout** :
+   - le jeton est l'**USDT officiel** du réseau (contrat Tether) ;
+   - le destinataire est **notre adresse** (celle affichée au client) ;
+   - le montant correspond **exactement** (4 décimales) ;
+   - la transaction date de la fenêtre de ce paiement (pas un ancien virement) ;
+   - elle est **définitive** : Tron = état irréversible (nœud « solidity »), BNB Smart Chain = 15 blocs, Ethereum = 12 blocs.
+4. Définitif → la commande est payée / le portefeuille crédité (même chaîne de confirmation que les autres moyens : grand livre, idempotence, audit). Pas encore définitif → le paiement attend (le client voit « 7/15 confirmations ») et la page se met à jour toute seule ; une tâche planifiée revérifie aussi.
+
+**Pourquoi un montant unique par paiement.** Tous les clients paient vers la même adresse : c'est le montant, à la 4e décimale, qui relie un transfert à **un seul** paiement. Il se compose des centimes de dollar du prix (arrondis **au centime supérieur**) plus un décalage de 0,0000 à 0,0099 USDT, différent pour chaque paiement ouvert du même prix. Conséquences : un transfert ne peut jamais servir à un autre paiement ; un client ne peut pas « réclamer » le virement d'un autre ; deux clients qui achètent le même téléphone au même moment n'ont pas le même montant. Un identifiant de transaction ne peut être rattaché **qu'une seule fois**, et seulement s'il correspond au paiement.
+
+**Taux.** 1 OMR = **2,6008 USD** (parité officielle du rial omanais) et 1 USDT = 1 USD : calcul exact, sans cours variable. Risque connu : si l'USDT décrochait du dollar, la boutique le subirait.
+
+**Si le transfert ne correspond pas** (autre montant, autre jeton, trop tard…) : le client voit la raison précise, **rien n'est crédité automatiquement**, et une **alerte finance** est créée (centre des alertes) avec le réseau, l'identifiant, le montant attendu et reçu, pour traitement à la main avec le client.
+
+**Sécurité de lecture.** Les réseaux EVM sont lus sur **trois nœuds publics indépendants, deux doivent concorder** (un nœud en panne, bloqué ou en retard ne change rien ; sans accord, on ne crédite pas et on réessaie). Tron est lu sur TronGrid.
+
+### Variables d'environnement (hébergement, jamais dans le code)
+| Variable | Rôle |
+|---|---|
+| `CRYPTO_ADDRESS_TRON` | Adresse de réception Tron (`T…`). Somme de contrôle vérifiée. |
+| `CRYPTO_ADDRESS_BSC` | Adresse de réception BNB Smart Chain (`0x…`). **Somme de contrôle EIP-55 obligatoire.** |
+| `CRYPTO_ADDRESS_ETH` | Adresse de réception Ethereum (`0x…`). **Somme de contrôle EIP-55 obligatoire.** |
+| `CRYPTO_TRONGRID_KEY` *(conseillé)* | Clé d'API gratuite TronGrid : sans elle, TronGrid limite le débit (réponses 429 → « réessayez »). |
+| `CRYPTO_RPC_BSC`, `CRYPTO_RPC_ETH`, `CRYPTO_TRONGRID_URL` *(facultatif)* | Nœuds personnalisés (https, séparés par des virgules). |
+
+Une adresse dont la somme de contrôle est fausse est **ignorée** (le réseau est désactivé) : l'argent n'est jamais envoyé vers une adresse mal recopiée. L'adresse affichée au client est **copiée dans le paiement** : changer l'adresse plus tard ne perturbe pas les paiements déjà ouverts. L'écran Réglages › Paiements montre les adresses actives sous forme abrégée (`0xcc77…8608`).
+
+## 4. Les paramètres (Administration › Réglages › Paiements)
 
 ### Cryptomonnaie
 | Paramètre | Clé | Défaut | Effet |
 |---|---|---|---|
-| Accepter la cryptomonnaie | `crypto.enabled` | **non** | Interrupteur principal. Même activé, le moyen reste indisponible sans prestataire connecté. |
+| Accepter la cryptomonnaie | `crypto.enabled` | **non** | Interrupteur principal. Même activé, le moyen reste indisponible sans adresse valide. |
 | Payer les commandes en crypto | `crypto.forOrders` | oui | Permet de payer un téléphone, ou toute commande, ainsi. |
 | Recharger le portefeuille en crypto | `crypto.forTopup` | oui | Le portefeuille reste en OMR. |
 | Exiger la vérification d'identité | `crypto.requireKyc` | **oui** | Seuls les clients dont l'identité est vérifiée (KYC `VERIFIED`) peuvent payer en crypto. |
-| Paiement minimum | `crypto.minPaymentBaisa` | vide = minimum du prestataire (1 OMR) | Montant plancher. |
+| Paiement minimum | `crypto.minPaymentBaisa` | vide = 1 OMR | Montant plancher. |
 | Paiement maximum | `crypto.maxPaymentBaisa` | vide = aucun plafond propre | Montant plafond. |
 
 ### Cartes cadeaux
@@ -36,7 +68,7 @@ Point d'attention : « échanger des cartes cadeaux **contre** de la crypto » n
 |---|---|---|---|
 | Accepter les cartes cadeaux | `giftcard.enabled` | oui | Éteindre suspend les nouvelles demandes (vague de fraude, par exemple). |
 | Commission d'échange | `giftcard.feeBps` | **8 %** | Retenue sur la valeur encaissée. 0 % = tout est crédité. Plage 0 – 50 %. |
-| Exiger la vérification d'identité | `giftcard.requireKyc` | non | **Fortement recommandé** d'activer : les cartes cadeaux sont une voie de fraude courante. |
+| Exiger la vérification d'identité | `giftcard.requireKyc` | non | Décision du propriétaire : **non**. Activable à tout moment si des fraudes apparaissent. |
 | Cartes en attente par client | `giftcard.maxOpen` | 5 | Limite anti-abus. |
 
 ### Plafonds du portefeuille
@@ -48,7 +80,7 @@ Point d'attention : « échanger des cartes cadeaux **contre** de la crypto » n
 
 Règles de saisie : pourcentages (ex. `8` ou `12,5`), montants en OMR (`1.500`), chiffres arabes acceptés ; **vide = valeur par défaut** ; un maximum ne peut pas être inférieur à un minimum. Une valeur invalide n'enregistre rien.
 
-## 4. La commission de 8 %, concrètement
+## 5. La commission de 8 % sur les cartes cadeaux, concrètement
 
 Carte de **100,000 OMR** vérifiée par la finance (valeur réellement encaissée) :
 
@@ -63,40 +95,46 @@ Carte de **100,000 OMR** vérifiée par la finance (valeur réellement encaissé
 - La notification au client indique le montant **réellement crédité**. La page « Carte cadeau » affiche la commission avant l'envoi.
 - Relancer la même vérification ne crédite rien de plus (clé d'idempotence).
 
-## 5. Ordre d'activation conseillé
+## 6. Ordre d'activation conseillé
 
-1. **Cadre juridique** : confirmer avec votre conseil les règles applicables à votre licence (cryptomonnaie, monnaie électronique, cartes cadeaux). Ce point n'a pas été vérifié par l'équipe technique.
-2. **Prestataire agréé** : contrat, puis variables d'environnement `CRYPTO_PROVIDER`, `CRYPTO_API_URL`, `CRYPTO_API_KEY`, `CRYPTO_WEBHOOK_SECRET` (dans Vercel, jamais dans le code). Le contrat d'API attendu est décrit dans `lib/payments/adapters/crypto.ts`.
-3. **Vérification d'identité obligatoire** (`crypto.requireKyc`, et `giftcard.requireKyc` conseillé).
+1. **Cadre juridique** : confirmer avec votre conseil les règles applicables à votre licence (réception de cryptomonnaie, monnaie électronique, cartes cadeaux). Ce point n'a pas été vérifié par l'équipe technique.
+2. **Adresses** : saisir `CRYPTO_ADDRESS_*` dans l'environnement d'hébergement (valeurs publiques ; vérifiées par somme de contrôle). Créer une clé gratuite TronGrid (`CRYPTO_TRONGRID_KEY`).
+3. **Vérification d'identité obligatoire** (`crypto.requireKyc`, déjà par défaut).
 4. **Plafonds** (`crypto.maxPaymentBaisa`, plafonds du portefeuille) fixés avant l'ouverture.
-5. Activer `crypto.enabled`, puis tester avec un petit montant réel.
+5. Activer `crypto.enabled`.
+6. **Test réel de bout en bout avec un petit montant** depuis un portefeuille à vous (le minimum est 1 OMR ≈ 2,61 USDT) : payer, coller l'identifiant, vérifier que la commande ou le portefeuille est crédité, et que les fonds sont bien arrivés dans votre portefeuille.
 
-Sécurités déjà en place : codes de cartes chiffrés, empreinte pour refuser les doublons, jamais de crédit sur un code ou une capture seuls, relecteur ≠ propriétaire de la carte, remboursements sur le portefeuille par défaut (pas de renvoi de crypto), alertes de paiement (montant différent, confirmation tardive, etc.).
+Sécurités déjà en place : adresses validées, USDT officiel uniquement, montant unique par paiement, transfert rattaché une seule fois, fenêtre de temps, nœuds indépendants, aucune clé privée sur le site ; codes de cartes chiffrés, empreinte contre les doublons, jamais de crédit sur un code ou une capture seuls, relecteur ≠ propriétaire de la carte, remboursements sur le portefeuille par défaut (pas de renvoi de crypto), alertes de paiement.
 
-## 6. Rapprochement et contrôle
+## 7. Rapprochement et contrôle
 
-`lib/wallet/reconcile.ts` (lecture seule, depuis le centre financier ou une tâche planifiée) vérifie : transactions équilibrées, somme globale nulle, soldes en cache = somme des écritures, aucun portefeuille négatif. À lancer après la première semaine de cartes cadeaux.
+`lib/wallet/reconcile.ts` (lecture seule, depuis le centre financier ou une tâche planifiée) vérifie : transactions équilibrées, somme globale nulle, soldes en cache = somme des écritures, aucun portefeuille négatif. À compléter par un contrôle **mensuel à la main** : le total des paiements USDT confirmés du site doit correspondre aux entrées de vos portefeuilles.
 
-## 7. Où se trouve le code
+## 8. Où se trouve le code
 
 | Sujet | Fichier |
 |---|---|
-| Clés et valeurs par défaut | `lib/admin/settings.ts` (groupe `payments`) |
+| Clés et valeurs par défaut des réglages | `lib/admin/settings.ts` (groupe `payments`) |
 | Écran et enregistrement (RBAC, validation, audit) | `lib/admin/payment-settings.ts`, `app/[locale]/admin/site/settings/*` |
 | Règles métier (affichage **et** contrôle serveur) | `lib/payments/policy.ts`, `lib/payments/registry.ts`, `lib/payments/core.ts` |
+| Paiement USDT : moyen de paiement | `lib/payments/adapters/crypto.ts`, `lib/payments/crypto-submit.ts`, `lib/payments/crypto-meta.ts` |
+| Paiement USDT : adresses, montants, lecture de la blockchain | `lib/payments/onchain/{address,networks,amount,verify}.ts` |
+| Page de paiement USDT | `components/payments/CryptoPayPanel.tsx`, `app/[locale]/pay/[intentId]/` |
 | Cartes cadeaux et commission | `lib/payments/giftcards.ts`, écriture au grand livre dans `lib/payments/core.ts` |
 | Plafonds du portefeuille | `lib/wallet/limits.ts` |
-| Prestataire crypto | `lib/payments/adapters/crypto.ts` |
-| Tests | `tests/unit/payments-settings.test.ts`, `tests/e2e/admin.spec.ts` |
+| Tests | `tests/unit/payments-settings.test.ts`, `tests/unit/onchain-crypto.test.ts`, `tests/e2e/crypto.spec.ts`, `tests/e2e/admin.spec.ts` |
 
-## 8. Décisions du propriétaire (14/11/2026) et reste à faire
+## 9. Décisions du propriétaire (14/11/2026) et reste à faire
 
 **Décidé**
+- Crypto : paiement **direct vers les adresses du propriétaire** (Tron TRC20, BNB Smart Chain BEP20, Ethereum ERC20), pas de prestataire.
 - Commission d'échange sur les cartes cadeaux déposées par les clients : **8 %** (en service, réglable).
-- Vérification d'identité pour les cartes cadeaux : **non** (réglage `giftcard.requireKyc` laissé éteint). Peut être activé à tout moment depuis l'écran si des fraudes apparaissent.
-- Commission sur l'**achat** de cartes cadeaux (quand cette vente existera) : **5 %**. Aucun réglage n'a été créé pour l'instant : un réglage sans effet serait un faux réglage. On l'ajoutera avec la fonction de vente.
+- Vérification d'identité pour les cartes cadeaux : **non** (`giftcard.requireKyc` éteint).
+- Commission sur l'**achat** de cartes cadeaux (quand cette vente existera) : **5 %** (aucun réglage créé : un réglage sans effet serait un faux réglage).
 
-**À faire**
-- Choisir le **prestataire crypto agréé** (une entreprise qui encaisse la crypto du client et nous verse l'équivalent en OMR) et signer son contrat ; il fournit les 4 valeurs `CRYPTO_*` à saisir dans Vercel. Le code accepte BTC, ETH, USDT, USDC.
-- **Vente de cartes cadeaux** payée en crypto : fournisseur de codes, produits numériques, règle « moyens de paiement par catégorie », commission de 5 %.
-- Tableau de bord finance (cartes à vérifier, commissions perçues) : écran d'administration « Finance » encore à construire.
+**À faire / limites connues**
+- **Monnaies acceptées : USDT uniquement.** ETH, BNB, TRX et USDC ne sont pas acceptés (cours variable entre l'envoi et la confirmation) ; ajout possible avec une source de prix.
+- **Détection automatique** des virements (sans que le client colle l'identifiant) : non faite ; le parcours actuel demande l'identifiant de transaction.
+- **Paiement différent du montant demandé** (frais retirés par la plateforme d'échange, montant arrondi…) : refusé et signalé à la finance, à traiter à la main.
+- **Vente de cartes cadeaux** payée en crypto : fournisseur de codes, produits numériques, règle par catégorie, commission de 5 %.
+- Tableau de bord finance (cartes à vérifier, commissions perçues, paiements USDT à rapprocher) : écran d'administration « Finance » encore à construire.

@@ -10,6 +10,7 @@ import { prisma } from '@/lib/db';
 import { createUser } from '@/lib/auth/service';
 import { addItem } from '@/lib/cart/store';
 import { placeOrder } from '@/lib/orders/place';
+import { expectedMicro, formatUsdt } from '@/lib/payments/onchain/amount';
 import { ensureWallet, getBalance, makeReference, postTransaction, systemAccountId, withLedgerTx } from '@/lib/wallet/ledger';
 
 type Task =
@@ -17,6 +18,7 @@ type Task =
   | { task: 'createStaff'; fullName: string; email: string; phone: string; password: string; role: 'SUPPORT' | 'LOGISTICS' | 'FINANCE' | 'CATALOG' | 'ADMIN' }
   | { task: 'fundWallet'; userId: string; amountBaisa: number }
   | { task: 'walletBalance'; userId: string }
+  | { task: 'createCryptoIntent'; userId: string }
   | { task: 'placeUnpaidOrder'; userId: string; variantSku: string; qty: number };
 
 async function run(t: Task): Promise<unknown> {
@@ -49,6 +51,38 @@ async function run(t: Task): Promise<unknown> {
         }),
       );
       return { ok: true };
+    }
+    case 'createCryptoIntent': {
+      // An open USDT payment as `startTopUp` would create it (test addresses are public test vectors).
+      const slot = Math.floor(Math.random() * 100);
+      const expected = expectedMicro(5_000, slot);
+      const id = `e2e-crypto-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+      const expiresAt = new Date(Date.now() + 3_600_000);
+      const intent = await prisma.paymentIntent.create({
+        data: {
+          userId: t.userId,
+          provider: 'CRYPTO',
+          purpose: 'TOPUP',
+          amountBaisa: 5_000,
+          idempotencyKey: id,
+          providerRef: `crypto:${id}`,
+          status: 'PENDING',
+          expiresAt,
+          metadata: {
+            crypto: {
+              token: 'USDT',
+              baseCents: 1_301,
+              slot,
+              expectedMicro: expected,
+              amountUsdt: formatUsdt(expected),
+              addresses: { TRON: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', BSC: '0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed', ETH: '0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359' },
+              paymentExpiresAt: expiresAt.toISOString(),
+            },
+          },
+        },
+        select: { id: true },
+      });
+      return { id: intent.id, amountUsdt: formatUsdt(expected) };
     }
     case 'walletBalance':
       return { balanceBaisa: (await getBalance(t.userId)).balanceBaisa };

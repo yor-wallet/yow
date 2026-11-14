@@ -728,10 +728,16 @@
     "notYet": "Selling gift cards (paid in crypto) is not available yet: it needs a gift card code supplier.",
     "crypto": {
       "title": "Cryptocurrency",
-      "description": "Customers pay in crypto through a licensed payment processor; DOOM never holds crypto. The value is credited in OMR once the processor confirms it.",
-      "processorOn": "Processor connected",
-      "processorOff": "No processor connected",
-      "processorHint": "No processor is connected: the method stays unavailable to customers whatever the settings below say."
+      "description": "Customers pay in USDT straight to DOOM's own wallet addresses (Tron, BNB Smart Chain, Ethereum). The site only knows the public addresses and checks every transfer on the blockchain; it never holds a key.",
+      "addressesOn": "{count}/3 addresses configured",
+      "addressesOff": "No address configured",
+      "addressesHint": "No valid receiving address is configured: the method stays unavailable to customers whatever the settings below say. The addresses are set in the hosting environment (CRYPTO_ADDRESS_TRON, CRYPTO_ADDRESS_BSC, CRYPTO_ADDRESS_ETH); an address with a wrong checksum is ignored.",
+      "networkOff": "Not configured",
+      "networkNames": {
+        "TRON": "Tron (TRC20)",
+        "BSC": "BNB Smart Chain (BEP20)",
+        "ETH": "Ethereum (ERC20)"
+      }
     },
     "giftcard": {
       "title": "Gift cards",
@@ -761,7 +767,7 @@
         },
         "minPaymentBaisa": {
           "label": "Minimum payment",
-          "hint": "Empty = the processor's own minimum."
+          "hint": "Empty = 1 OMR (built-in minimum)."
         },
         "maxPaymentBaisa": {
           "label": "Maximum payment",

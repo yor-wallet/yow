@@ -4,7 +4,7 @@ import { asLocale } from '@/i18n/routing';
 import { requireAdmin } from '@/lib/admin/guard';
 import { getSettings } from '@/lib/admin/settings';
 import { PAYMENT_SETTING_SECTIONS, toFormValue } from '@/lib/admin/payment-settings';
-import { cryptoAdapter } from '@/lib/payments/adapters/crypto';
+import { configuredNetworks, maskAddress, NETWORK_IDS } from '@/lib/payments/onchain/networks';
 import { AdminForm, FCheckbox, FInput, FMoney } from '@/components/admin/AdminForm';
 import { AdminPageHeader, StatusBadge } from '@/components/admin/ui';
 import { savePaymentSettingsAction } from './actions';
@@ -22,8 +22,8 @@ export default async function AdminPaymentSettingsPage({ params }: Props) {
   await requireAdmin('settings:write', '/admin/site/settings');
   const [tt, settings] = await Promise.all([getTranslations('admin.paymentSettings'), getSettings()]);
   // Section and field keys are dynamic (`crypto.enabled` → fields.crypto.enabled.label).
-  const t = tt as unknown as (key: string) => string;
-  const processorOn = cryptoAdapter.isConfigured();
+  const t = tt as unknown as (key: string, values?: Record<string, string | number>) => string;
+  const networks = configuredNetworks();
 
   return (
     <>
@@ -38,9 +38,24 @@ export default async function AdminPaymentSettingsPage({ params }: Props) {
                 </h2>
                 <p className="mt-1 max-w-prose text-sm text-muted">{t(`${section.id}.description`)}</p>
               </div>
-              {section.id === 'crypto' ? <StatusBadge status={processorOn ? 'ACTIVE' : 'DRAFT'} label={processorOn ? t('crypto.processorOn') : t('crypto.processorOff')} testId="crypto-processor" /> : null}
+              {section.id === 'crypto' ? <StatusBadge status={networks.length > 0 ? 'ACTIVE' : 'DRAFT'} label={networks.length > 0 ? t('crypto.addressesOn', { count: networks.length }) : t('crypto.addressesOff')} testId="crypto-processor" /> : null}
             </div>
-            {section.id === 'crypto' && !processorOn ? <p className="mt-3 rounded-xl border border-border bg-surface-2 p-3 text-sm text-muted">{t('crypto.processorHint')}</p> : null}
+            {section.id === 'crypto' ? (
+              <ul className="mt-3 grid gap-2 sm:grid-cols-3" data-testid="crypto-networks">
+                {NETWORK_IDS.map((id) => {
+                  const n = networks.find((x) => x.id === id);
+                  return (
+                    <li key={id} className="rounded-xl border border-border bg-surface-2 px-3 py-2 text-sm" data-state={n ? 'on' : 'off'} data-network={id}>
+                      <span className="block font-semibold">{t(`crypto.networkNames.${id}`)}</span>
+                      <code className="block break-all text-xs text-muted" dir="ltr">
+                        {n ? maskAddress(n.address) : t('crypto.networkOff')}
+                      </code>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : null}
+            {section.id === 'crypto' && networks.length === 0 ? <p className="mt-3 rounded-xl border border-border bg-surface-2 p-3 text-sm text-muted">{t('crypto.addressesHint')}</p> : null}
             <AdminForm action={savePaymentSettingsAction} hidden={{ section: section.id }} submitLabel={t('save')} testId={`ps-form-${section.id}`} className="mt-4 flex flex-col gap-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 {section.fields.map((f) => {

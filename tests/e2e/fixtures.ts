@@ -26,6 +26,11 @@ function task<T>(payload: Record<string, unknown>): T {
 
 export type Customer = { id: string; fullName: string; email: string; phone: string; password: string };
 
+/** An open USDT payment (test addresses) for a customer, as the top-up flow creates it. */
+export function createCryptoPayment(userId: string): { id: string; amountUsdt: string } {
+  return task<{ id: string; amountUsdt: string }>({ task: 'createCryptoIntent', userId });
+}
+
 export async function createCustomer(c: { fullName: string; email: string; phone: string; password: string }): Promise<Customer> {
   const { id } = task<{ id: string }>({ task: 'createUser', ...c });
   return { ...c, id };

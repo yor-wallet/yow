@@ -1,4 +1,10 @@
-import { formatOmrNumber, parseOmrToBaisa } from '@/lib/money';
+import { randomInt } from 'node:crypto';
+import type { PaymentIntent } from '@prisma/client';
+import { prisma } from '@/lib/db';
+import { OFFSET_SLOTS, baseCents, expectedMicro, formatUsdt } from '../onchain/amount';
+import { configuredNetworks, type NetworkId } from '../onchain/networks';
+import { verifyTransfer, type VerifyResult } from '../onchain/verify';
+import { readCryptoMeta, type CryptoCheck, type CryptoPaymentMeta } from '../crypto-meta';
 import {
   ProviderError,
   WebhookSignatureError,
@@ -8,132 +14,135 @@ import {
   type ProviderStatus,
   type WebhookEvent,
 } from '../types';
-import { bodyEventId, pick, providerFetch, safeJsonParse, str, verifyHmacHex } from '../util';
 
 /**
- * Crypto payments (BTC, ETH, USDT, USDC) through a LICENSED crypto payment processor using a
- * hosted-invoice model: the invoice is priced in OMR, the customer pays in crypto on the
- * processor's page, the processor converts and reports the settled OMR value.
- * DOOM never holds keys or custody, and credits ONLY the provider-confirmed settled OMR value.
+ * Cryptocurrency: USDT sent straight to the shop's own wallet addresses (Tron TRC20, BNB Smart Chain BEP20,
+ * Ethereum ERC20). No processor and no custody by the site: it only knows PUBLIC receiving addresses and
+ * reads the blockchain to prove a transfer (lib/payments/onchain). See docs/PAYMENTS.md.
  *
- * Env:
- *   CRYPTO_PROVIDER         processor name (shown to staff; required)
- *   CRYPTO_API_URL          processor API base URL
- *   CRYPTO_API_KEY          API key (`Authorization: Bearer …`)
- *   CRYPTO_WEBHOOK_SECRET   HMAC-SHA256 secret for notifications
+ * Flow: the customer gets the exact amount (unique per open payment) and the addresses → sends USDT from
+ * their own wallet → pastes the transaction id → the server verifies it on chain → once final, the order is
+ * paid / the wallet credited. Credit happens only for a transfer that matches THIS payment.
  *
- * Contract (map to the processor's API when contracting):
- *   POST {api}/v1/invoices        { reference, amount: "12.345", currency: "OMR", acceptedAssets, description,
- *                                   successUrl, cancelUrl, notificationUrl } → { id, hostedUrl, expiresAt? }
- *   GET  {api}/v1/invoices/{id}   → { id, reference, status: new|pending|confirming|settled|expired|invalid,
- *                                     settledAmount: "12.345", settledCurrency: "OMR", asset, network, txHash }
- *   Webhook header `X-Signature: sha256=<hex HMAC-SHA256(rawBody)>`, body { id|eventId, type, invoiceId }
+ * Env: CRYPTO_ADDRESS_TRON / CRYPTO_ADDRESS_BSC / CRYPTO_ADDRESS_ETH (see onchain/networks.ts).
  */
+export const CRYPTO_ASSETS = ['USDT'] as const;
+/** Time the customer has to SEND the transfer (the window a transfer must have been mined in). */
+export const PAYMENT_WINDOW_MS = 60 * 60_000;
+/** Time the payment stays open for the customer to GIVE the transaction id after that (a transfer sent in time is never lost). */
+export const CLAIM_WINDOW_MS = 24 * 60 * 60_000;
+/** Once a matching transfer is found, the payment stays open this long so it can reach finality. */
+export const BIND_EXTENSION_MS = 6 * 60 * 60_000;
+export const CLOCK_SKEW_MS = 5 * 60_000;
+/** A transfer mined a little after the window (slow blocks) still counts. */
+export const LATE_GRACE_MS = 30 * 60_000;
 
-export const CRYPTO_ASSETS = ['BTC', 'ETH', 'USDT', 'USDC'] as const;
-
-type Invoice = {
-  id?: string;
-  reference?: string;
-  status?: string;
-  hostedUrl?: string;
-  url?: string;
-  expiresAt?: string;
-  settledAmount?: string | number;
-  settledCurrency?: string;
-};
-
-function env() {
-  return {
-    provider: process.env.CRYPTO_PROVIDER?.trim() || '',
-    url: (process.env.CRYPTO_API_URL?.trim() || '').replace(/\/+$/, ''),
-    apiKey: process.env.CRYPTO_API_KEY?.trim() || '',
-    webhookSecret: process.env.CRYPTO_WEBHOOK_SECRET?.trim() || '',
-  };
+/** Persist the latest verification result for the pay page (atomic partial update of the JSON). */
+export async function saveCheck(intentId: string, check: CryptoCheck): Promise<void> {
+  await prisma.$executeRaw`UPDATE "PaymentIntent" SET "metadata" = jsonb_set("metadata", '{crypto,check}', ${JSON.stringify(check)}::jsonb, true) WHERE "id" = ${intentId} AND "metadata" ? 'crypto'`;
 }
 
-function requireEnv() {
-  const e = env();
-  if (!e.provider || !e.url || !e.apiKey || !e.webhookSecret) {
-    throw new ProviderError('crypto', 'not_configured', 'No licensed crypto processor is configured');
+export function checkOf(res: VerifyResult): CryptoCheck {
+  const base = { state: res.state, at: new Date().toISOString() };
+  switch (res.state) {
+    case 'pending':
+    case 'confirmed':
+      return { ...base, confirmations: res.confirmations, required: res.required, receivedMicro: res.receivedMicro };
+    case 'mismatch':
+      return { ...base, reason: res.reason, ...(res.receivedMicro !== undefined ? { receivedMicro: res.receivedMicro } : {}) };
+    default:
+      return base;
   }
-  return e;
 }
 
-export function mapCryptoStatus(raw: string | undefined): ProviderStatus['status'] {
-  const s = (raw ?? '').toLowerCase();
-  if (s === 'settled' || s === 'complete' || s === 'completed') return 'paid';
-  if (s === 'expired') return 'expired';
-  if (s === 'invalid' || s === 'failed' || s === 'refunded') return 'failed';
-  if (s === 'cancelled' || s === 'canceled') return 'cancelled';
-  return 'pending'; // new | pending | confirming | paid-but-unconfirmed
+/** Ask the chain about one transfer for this payment. */
+export async function checkTransfer(intent: Pick<PaymentIntent, 'createdAt'>, meta: CryptoPaymentMeta, network: NetworkId, hash: string): Promise<VerifyResult> {
+  const toAddress = meta.addresses[network];
+  if (!toAddress) return { state: 'mismatch', reason: 'wrong_recipient' };
+  return verifyTransfer({
+    network,
+    txHash: hash,
+    toAddress,
+    expectedMicro: meta.expectedMicro,
+    notBefore: new Date(intent.createdAt.getTime() - CLOCK_SKEW_MS),
+    notAfter: new Date(new Date(meta.paymentExpiresAt).getTime() + LATE_GRACE_MS),
+  });
 }
+
+const OPEN = ['CREATED', 'PENDING', 'REQUIRES_ACTION'] as const;
 
 export const cryptoAdapter: ProviderAdapter = {
   id: 'CRYPTO',
   slug: 'crypto',
-  displayName: 'Crypto (licensed processor)',
-  unavailableReason: 'licensed_processor_required',
+  displayName: 'Crypto (USDT)',
+  unavailableReason: 'not_configured',
   minAmountBaisa: 1_000,
+  webhooks: false,
 
   isConfigured() {
-    const e = env();
-    return !!(e.provider && e.url && e.apiKey && e.webhookSecret);
+    return configuredNetworks().length > 0;
   },
 
   async createPayment(input: ProviderPaymentInput): Promise<CreatePaymentResult> {
-    const e = requireEnv();
-    const { data } = await providerFetch<Invoice>('crypto', `${e.url}/v1/invoices`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${e.apiKey}`, 'Idempotency-Key': input.intentId },
-      body: {
-        reference: input.intentId,
-        amount: formatOmrNumber(input.amountBaisa, 'en').replace(/,/g, ''),
-        currency: 'OMR',
-        acceptedAssets: CRYPTO_ASSETS,
-        description: input.description.slice(0, 80),
-        successUrl: input.returnUrl,
-        cancelUrl: input.cancelUrl,
-        notificationUrl: input.webhookUrl,
+    const networks = configuredNetworks();
+    if (networks.length === 0) throw new ProviderError('crypto', 'not_configured', 'No receiving address is configured');
+    const cents = baseCents(input.amountBaisa);
+
+    // Pick an offset nobody else has open for the same price: one amount = one payment.
+    const open = await prisma.paymentIntent.findMany({
+      where: {
+        provider: 'CRYPTO',
+        status: { in: [...OPEN] },
+        id: { not: input.intentId },
+        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        metadata: { path: ['crypto', 'baseCents'], equals: cents },
       },
+      select: { metadata: true },
     });
-    const providerRef = str(data?.id);
-    const redirectUrl = str(data?.hostedUrl) ?? str(data?.url);
-    if (!providerRef || !redirectUrl) throw new ProviderError('crypto', 'api_error', 'Processor returned no invoice id / hosted URL');
-    const expiresAt = data?.expiresAt ? new Date(data.expiresAt) : undefined;
-    return { providerRef, redirectUrl, expiresAt: expiresAt && !Number.isNaN(expiresAt.getTime()) ? expiresAt : undefined };
+    // An amount is "taken" while a transfer could still arrive for it (its send window + grace) or once a transfer is bound.
+    const now = Date.now();
+    const taken = new Set<number>();
+    for (const i of open) {
+      const m = readCryptoMeta(i.metadata);
+      if (m && (m.tx || new Date(m.paymentExpiresAt).getTime() + LATE_GRACE_MS > now)) taken.add(m.slot);
+    }
+    const free = Array.from({ length: OFFSET_SLOTS }, (_, i) => i).filter((i) => !taken.has(i));
+    if (free.length === 0) throw new ProviderError('crypto', 'no_free_amount', 'Too many open payments for this amount');
+    const slot = free[randomInt(free.length)]!;
+
+    const expected = expectedMicro(input.amountBaisa, slot);
+    const sendUntil = new Date(Date.now() + PAYMENT_WINDOW_MS);
+    const expiresAt = new Date(sendUntil.getTime() + CLAIM_WINDOW_MS);
+    const meta: CryptoPaymentMeta = {
+      token: 'USDT',
+      baseCents: cents,
+      slot,
+      expectedMicro: expected,
+      amountUsdt: formatUsdt(expected),
+      addresses: Object.fromEntries(networks.map((n) => [n.id, n.address])),
+      paymentExpiresAt: sendUntil.toISOString(),
+    };
+    return { providerRef: `crypto:${input.intentId}`, expiresAt, metadata: { crypto: meta } };
+  },
+
+  /** The provider never calls us: the customer gives the transaction id and the server reads the chain. */
+  async verifyWebhook(): Promise<WebhookEvent> {
+    throw new WebhookSignatureError('crypto', 'Crypto payments have no webhooks');
   },
 
   async fetchStatus(providerRef: string): Promise<ProviderStatus> {
-    const e = requireEnv();
-    const { data } = await providerFetch<Invoice>('crypto', `${e.url}/v1/invoices/${encodeURIComponent(providerRef)}`, {
-      headers: { Authorization: `Bearer ${e.apiKey}` },
-    });
-    const status = mapCryptoStatus(data?.status);
-    const clientReference = data?.reference ?? null;
-    if (status !== 'paid') return { status, clientReference, raw: data };
-    // Credit only the provider-reported settled value in OMR.
-    if ((data?.settledCurrency ?? '').toUpperCase() !== 'OMR' || data?.settledAmount === undefined) {
-      return { status: 'pending', clientReference, raw: data };
-    }
-    const baisa = parseOmrToBaisa(String(data.settledAmount), 'en');
-    if (baisa === null || baisa <= 0) return { status: 'pending', clientReference, raw: data };
-    return { status: 'paid', amountBaisa: baisa, clientReference, raw: data };
+    const intent = await prisma.paymentIntent.findUnique({ where: { providerRef } });
+    return intent ? this.fetchIntentStatus!(intent) : { status: 'pending' };
   },
 
-  async verifyWebhook({ headers, rawBody }): Promise<WebhookEvent> {
-    const e = env();
-    if (!e.webhookSecret || !verifyHmacHex(e.webhookSecret, rawBody, headers.get('x-signature'))) {
-      throw new WebhookSignatureError('crypto');
-    }
-    const payload = safeJsonParse(rawBody);
-    const eventId = str(pick(payload, 'eventId')) ?? str(pick(payload, 'id')) ?? bodyEventId(rawBody);
-    return {
-      eventId: `crypto:${eventId}`,
-      type: str(pick(payload, 'type')),
-      providerRef: str(pick(payload, 'invoiceId')) ?? str(pick(payload, 'data', 'id')),
-      signatureVerified: true,
-      payload,
-    };
+  async fetchIntentStatus(intent: PaymentIntent): Promise<ProviderStatus> {
+    const meta = readCryptoMeta(intent.metadata);
+    if (!meta?.tx) return { status: 'pending' }; // nothing to check until the customer gives a transaction id
+    const res = await checkTransfer(intent, meta, meta.tx.network, meta.tx.hash);
+    await saveCheck(intent.id, checkOf(res)).catch(() => undefined);
+    // Only a final transfer that matches this payment pays it; everything else keeps waiting (or expires).
+    return res.state === 'confirmed' ? { status: 'paid', amountBaisa: intent.amountBaisa, raw: res } : { status: 'pending', raw: res };
   },
+
+  supportsRefund: () => false,
 };

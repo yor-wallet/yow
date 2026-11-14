@@ -16,6 +16,8 @@ import {
   type SystemAccountCode,
 } from '@/lib/wallet/ledger';
 import { getAdapter } from './registry';
+import { readCryptoMeta } from './crypto-meta';
+import { NETWORKS, NETWORK_IDS, type NetworkId } from './onchain/networks';
 import { assertMethodAllowed } from './policy';
 import { raisePaymentAlert } from './alerts';
 import { notifyMoney } from './notify';
@@ -406,7 +408,7 @@ async function launchExternal(
         providerRef: res.providerRef,
         redirectUrl: res.redirectUrl ?? null,
         expiresAt: res.expiresAt ?? new Date(Date.now() + DEFAULT_EXPIRY_MS),
-        metadata: { ...metaOf(intent), ...(res.instructions ? { instructions: res.instructions } : {}) } as Prisma.InputJsonValue,
+        metadata: { ...metaOf(intent), ...(res.metadata ?? {}), ...(res.instructions ? { instructions: res.instructions } : {}) } as Prisma.InputJsonValue,
       },
     });
     const updated = await prisma.paymentIntent.findUniqueOrThrow({ where: { id: intent.id } });
@@ -589,7 +591,7 @@ export async function refreshPaymentIntent(intentId: string, source = 'poll'): P
   }
   const adapter = getAdapter(intent.provider as ExternalProviderId);
   if (!adapter.isConfigured()) return intent;
-  const status = await adapter.fetchStatus(intent.providerRef);
+  const status = adapter.fetchIntentStatus ? await adapter.fetchIntentStatus(intent) : await adapter.fetchStatus(intent.providerRef);
   if (status.clientReference && status.clientReference !== intent.id) {
     await raisePaymentAlert({
       severity: 'HIGH',
@@ -629,7 +631,33 @@ export type PaymentIntentView = {
   instructions: string | null;
   creditedToWallet: boolean;
   ledgerTransactionId: string | null;
+  /** USDT payment instructions while a crypto payment is open (what to send, where, and the transfer's progress). */
+  crypto: CryptoPayView | null;
 };
+
+export type CryptoPayView = {
+  token: 'USDT';
+  amountUsdt: string;
+  networks: { id: NetworkId; standard: string; address: string }[];
+  /** End of the window to send the transfer. */
+  paymentExpiresAt: string;
+  tx: { network: NetworkId; hash: string } | null;
+  check: { state: string; confirmations: number | null; required: number | null; reason: string | null } | null;
+};
+
+function cryptoViewOf(metadata: unknown): CryptoPayView | null {
+  const c = readCryptoMeta(metadata);
+  if (!c) return null;
+  return {
+    token: c.token,
+    amountUsdt: c.amountUsdt,
+    // JSON objects come back from the database with their keys re-ordered: always show Tron (lowest fees) first.
+    networks: NETWORK_IDS.flatMap((id) => (c.addresses[id] ? [{ id, standard: NETWORKS[id].standard, address: c.addresses[id]! }] : [])),
+    paymentExpiresAt: c.paymentExpiresAt,
+    tx: c.tx ? { network: c.tx.network, hash: c.tx.hash } : null,
+    check: c.check ? { state: c.check.state, confirmations: c.check.confirmations ?? null, required: c.check.required ?? null, reason: c.check.reason ?? null } : null,
+  };
+}
 
 /** Safe status view for the customer (owner) or finance staff (`payments:read`). */
 export async function getPaymentIntentView(
@@ -666,6 +694,7 @@ export async function getPaymentIntentView(
     instructions: pending && typeof meta.instructions === 'string' ? meta.instructions : null,
     creditedToWallet: meta.creditedToWallet === true,
     ledgerTransactionId: intent.ledgerTransactions[0]?.id ?? null,
+    crypto: pending && intent.provider === 'CRYPTO' ? cryptoViewOf(intent.metadata) : null,
   };
 }
 

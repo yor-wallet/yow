@@ -241,7 +241,8 @@ test.describe('orders', () => {
     await signIn(page, staff.email, staff.password, '/admin/site/settings');
     await expect(page.getByTestId('admin-title')).toHaveText('Payments settings');
     for (const id of ['crypto', 'giftcard', 'wallet']) await expect(page.getByTestId(`ps-section-${id}`)).toBeVisible();
-    await expect(page.getByTestId('crypto-processor')).toHaveText('No processor connected');
+    await expect(page.getByTestId('crypto-processor')).toHaveText('No address configured');
+    await expect(page.getByTestId('crypto-networks').locator('li')).toHaveCount(3);
     await expect(page.getByTestId('ps-not-yet')).toContainText('Selling gift cards');
     await page.locator('html[data-hydrated="true"]').waitFor({ state: 'attached' });
     await expectNoHorizontalOverflow(page);
