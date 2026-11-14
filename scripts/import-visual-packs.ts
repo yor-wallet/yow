@@ -5,6 +5,7 @@
  *   npm run catalogue:photos                        # as the first SUPERADMIN (ADMIN_EMAIL)
  *   npm run catalogue:photos -- --publish           # also publish the models sold as shown (one finish, no size to choose)
  *   npm run catalogue:photos -- --publish --system  # unattended (first deployment)
+ *   npm run catalogue:photos -- --bundled           # no upload: reference the photos shipped in public/photos (no storage credentials needed)
  *
  * Idempotent: a photo already attached is never added twice. No price and no stock is ever written;
  * a published model without a price shows "price coming soon" and cannot be bought.
@@ -26,6 +27,7 @@ async function main() {
   const args = process.argv.slice(2);
   const publish = args.includes('--publish');
   const system = args.includes('--system');
+  const bundled = args.includes('--bundled');
   const actor: Actor | null = system ? await systemActor() : await staffActor();
   if (!actor) throw new Error('No ADMIN/SUPERADMIN user found: run `npm run db:seed` with ADMIN_EMAIL / ADMIN_PASSWORD first, or pass --system.');
 
@@ -34,7 +36,7 @@ async function main() {
     for (const def of VISUAL_PACKS) {
       const pack = await loadVisualPack(def.key);
       for (const [index, model] of pack.models.entries()) {
-        const step = await importVisualPackModel(actor, def.key, index);
+        const step = await importVisualPackModel(actor, def.key, index, { bundled });
         total.products += step.productCreated ? 1 : 0;
         total.variants += step.variantsCreated;
         total.images += step.imagesCreated;

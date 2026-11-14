@@ -12,13 +12,14 @@ import { ForbiddenError, type Actor } from '@/lib/admin/actor';
 import { readImportMeta } from '@/lib/admin/catalogue-import';
 import { importVisualPackModel, loadVisualPack, visualPackSummary } from '@/lib/admin/visual-pack-import';
 import { getProductDetail } from '@/lib/catalog/queries';
-import { getStorage } from '@/lib/storage';
+import { getStorage, mediaUrl } from '@/lib/storage';
 import { BRANDS, CATEGORIES } from '@/prisma/seed-data';
 import { cleanup, createUser } from './shop/fixtures';
 
 const KEY = 'doom-photos-2026-11' as const;
 const WATCH = 'apple-watch-series-11';
 const BUDS = 'apple-airpods-pro-2';
+const BUNDLE_BUDS = BUDS;
 let catalog: Actor;
 let support: Actor;
 let watchIndex: number;
@@ -137,5 +138,23 @@ describe('importing a model sold as shown', () => {
     const again = await importVisualPackModel(catalog, KEY, index);
     expect(again).toMatchObject({ productCreated: false, variantsCreated: 0, imagesCreated: 0 });
     expect(await prisma.productVariant.count({ where: { productId: p.id } })).toBe(1);
+  }, 120_000);
+});
+
+describe('importing with the photos shipped in the application', () => {
+  it('references public/photos without uploading anything, then serves them from the site itself', async () => {
+    const pack = await loadVisualPack(KEY);
+    const index = pack.models.findIndex((m) => m.id === 'airpods-pro-2');
+    await removeProduct(BUNDLE_BUDS);
+    const first = await importVisualPackModel(catalog, KEY, index, { bundled: true });
+    expect(first).toMatchObject({ productCreated: true, variantsCreated: 1, imagesCreated: 1 });
+    const p = await prisma.product.findUniqueOrThrow({ where: { slug: BUNDLE_BUDS }, include: { images: true } });
+    expect(p.images[0]!.key).toBe(`bundled/${KEY}/airpods-pro-2/airpods-pro-2-white.webp`);
+    expect(p.images[0]!.width).toBeGreaterThan(0);
+    expect(mediaUrl(p.images[0]!.key)).toBe(`/photos/${KEY}/airpods-pro-2/airpods-pro-2-white.webp`);
+    // The files the page asks for exist (main WebP + AVIF).
+    for (const f of ['airpods-pro-2-white.webp', 'airpods-pro-2-white.avif']) await expect(fs.access(path.join(process.cwd(), 'public/photos', KEY, 'airpods-pro-2', f))).resolves.toBeUndefined();
+    const again = await importVisualPackModel(catalog, KEY, index, { bundled: true });
+    expect(again).toMatchObject({ productCreated: false, variantsCreated: 0, imagesCreated: 0 });
   }, 120_000);
 });

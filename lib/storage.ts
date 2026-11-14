@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { randomToken } from './crypto';
+import { bundledPhotoPath, isBundledKey } from './bundled-photo';
 
 /**
  * File storage abstraction with two buckets:
@@ -308,5 +309,6 @@ export function __setStorageDriverForTests(d: StorageDriver | null) {
 
 /** Convenience: public URL for a stored key, or null. */
 export function mediaUrl(key: string | null | undefined): string | null {
-  return key ? getStorage().publicUrl(key) : null;
+  if (!key) return null;
+  return isBundledKey(key) ? bundledPhotoPath(key) : getStorage().publicUrl(key);
 }

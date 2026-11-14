@@ -1,3 +1,4 @@
+import { isBundledKey } from '@/lib/bundled-photo';
 import { buildKey, getStorage, sniffMime, type SniffedType } from '@/lib/storage';
 
 /**
@@ -128,6 +129,7 @@ export async function storeRawMedia(buf: Buffer, prefix: string, mime: SniffedTy
 
 /** Best-effort removal of an optimised image and its responsive siblings. */
 export async function deleteImageFamily(key: string): Promise<void> {
+  if (isBundledKey(key)) return; // shipped with the application: nothing in storage to remove
   const storage = getStorage();
   const keys = new Set<string>([key, sizedKey(key, null, 'avif')]);
   for (const w of [480, 828, 960, 1280]) {

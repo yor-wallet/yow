@@ -7,6 +7,7 @@ import { prisma } from '@/lib/db';
 import { logAudit } from '@/lib/audit';
 import { assertCan, AdminError, type Actor } from './actor';
 import { storeOptimisedImage } from './media';
+import { bundledPhotoKey } from '@/lib/bundled-photo';
 import type { ImportMeta } from './catalogue-import';
 import { capacityLabel, variantSku } from './catalogue-verified';
 import { CATEGORIES } from '@/prisma/seed-data';
@@ -175,7 +176,12 @@ export async function sampleSwatch(buf: Buffer): Promise<string | null> {
 
 export type VisualImportStep = { done: number; total: number; model: string; productId: string; variantsCreated: number; imagesCreated: number; productCreated: boolean };
 
-export async function importVisualPackModel(actor: Actor | null | undefined, key: VisualPackKey, index: number): Promise<VisualImportStep> {
+/**
+ * `bundled`: do not upload anything. The photos shipped with the application (public/photos, generated
+ * by scripts/build-bundled-photos.mjs and served by the site itself) are referenced by their key instead —
+ * for a deployment that has no storage credentials. The database rows are the same either way.
+ */
+export async function importVisualPackModel(actor: Actor | null | undefined, key: VisualPackKey, index: number, opts: { bundled?: boolean } = {}): Promise<VisualImportStep> {
   assertCan(actor, 'catalog:write');
   const def = VISUAL_PACKS.find((p) => p.key === key);
   if (!def) throw new AdminError('not_found', 'Unknown pack');
@@ -233,6 +239,18 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
   }
 
   const root = packDir(key);
+  const putImage = async (buf: Buffer, modelId: string, finishId: string): Promise<{ key: string; width: number; height: number }> => {
+    if (!opts.bundled) return storeOptimisedImage(buf, `products/${product!.id}`, { maxWidth: 960 });
+    const bundledKey = bundledPhotoKey(key, modelId, finishId);
+    const file = path.join(process.cwd(), 'public', 'photos', key, modelId, `${finishId}.webp`);
+    await fs.access(file).catch(() => {
+      throw new AdminError('validation', `Bundled photo missing: ${bundledKey} (run scripts/build-bundled-photos.mjs)`);
+    });
+    const { default: sharp } = await import('sharp');
+    const meta = await sharp(buf).metadata();
+    const width = Math.min(960, meta.width ?? 960);
+    return { key: bundledKey, width, height: Math.round(((meta.height ?? width) * width) / (meta.width ?? width)) };
+  };
   let variantsCreated = 0;
   let imagesCreated = 0;
   let sort = (await prisma.productVariant.aggregate({ where: { productId: product.id }, _max: { sort: true } }))._max.sort ?? -1;
@@ -248,7 +266,7 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
       // Photos only: one product image per finish, recognised by its alt text on a re-run.
       const already = await prisma.productImage.count({ where: { productId: product.id, alt: { path: ['en'], equals: alt } } });
       if (already === 0) {
-        const stored = await storeOptimisedImage(buf, `products/${product.id}`, { maxWidth: 960 });
+        const stored = await putImage(buf, model.id, finish.id);
         const last = await prisma.productImage.aggregate({ where: { productId: product.id }, _max: { sort: true } });
         await prisma.productImage.create({
           data: { productId: product.id, variantId: null, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
@@ -322,7 +340,7 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     // One image per finish, attached to its first variant (the storefront shows it for every capacity of the finish).
     const already = await prisma.productImage.count({ where: { productId: product.id, variantId: { in: variantIds } } });
     if (already === 0) {
-      const stored = await storeOptimisedImage(buf, `products/${product.id}`, { maxWidth: 960 });
+      const stored = await putImage(buf, model.id, finish.id);
       const last = await prisma.productImage.aggregate({ where: { productId: product.id }, _max: { sort: true } });
       await prisma.productImage.create({
         data: { productId: product.id, variantId: variantIds[0]!, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
