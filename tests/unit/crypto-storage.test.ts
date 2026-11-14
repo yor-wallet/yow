@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import {
   decryptBuffer,
   decryptString,
@@ -13,7 +13,7 @@ import {
   randomToken,
   sha256Hex,
 } from '@/lib/crypto';
-import { LocalStorageDriver, assertSafeKey, buildKey, sniffMime } from '@/lib/storage';
+import { LocalStorageDriver, SupabaseStorageDriver, assertSafeKey, buildKey, sniffMime, supabaseAuthHeaders } from '@/lib/storage';
 
 describe('AES-256-GCM', () => {
   it('round-trips buffers and strings', () => {
@@ -94,5 +94,51 @@ describe('storage', () => {
     expect(sniffMime(Buffer.from('0000ftypisom0000', 'ascii'))).toBe('video/mp4');
     expect(sniffMime(Buffer.from('{"v":"5.7","layers":[]}'))).toBe('application/json');
     expect(sniffMime(Buffer.from('<svg onload=alert(1)>'))).toBeNull();
+  });
+});
+
+describe('supabase storage driver', () => {
+  const env = (key: string) =>
+    ({ SUPABASE_URL: 'https://example.supabase.co/', SUPABASE_SERVICE_ROLE_KEY: key, SUPABASE_PRIVATE_BUCKET: 'private' }) as unknown as NodeJS.ProcessEnv;
+  const calls: { url: string; init: RequestInit }[] = [];
+  const stub = (...responses: Response[]) => {
+    calls.length = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string, init: RequestInit = {}) => {
+        calls.push({ url, init });
+        return responses.shift() ?? new Response('', { status: 500 });
+      }),
+    );
+  };
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('sends a new secret key on the apikey header only, a legacy JWT key on both', () => {
+    expect(supabaseAuthHeaders('sb_secret_abc')).toEqual({ apikey: 'sb_secret_abc' });
+    expect(supabaseAuthHeaders('eyJhbGciOi.x.y')).toEqual({ Authorization: 'Bearer eyJhbGciOi.x.y', apikey: 'eyJhbGciOi.x.y' });
+  });
+
+  it('uploads to the private bucket with the key on the apikey header', async () => {
+    stub(new Response('{}', { status: 200 }));
+    await new SupabaseStorageDriver(env('sb_secret_abc')).put('private', 'kyc/u1/a.bin', Buffer.from('x'), { contentType: 'application/octet-stream' });
+    expect(calls[0]!.url).toBe('https://example.supabase.co/storage/v1/object/private/kyc/u1/a.bin');
+    const h = calls[0]!.init.headers as Record<string, string>;
+    expect(h.apikey).toBe('sb_secret_abc');
+    expect(h.Authorization).toBeUndefined();
+    expect(h['x-upsert']).toBe('true');
+  });
+
+  it('a missing file reads as null, but a rejected call is an error, never "missing"', async () => {
+    const d = new SupabaseStorageDriver(env('sb_secret_abc'));
+    stub(new Response(JSON.stringify({ statusCode: '404', error: 'not_found', message: 'Object not found' }), { status: 400 }));
+    expect(await d.get('private', 'kyc/a.bin')).toBeNull();
+    stub(new Response('', { status: 404 }));
+    expect(await d.get('private', 'kyc/a.bin')).toBeNull();
+    stub(new Response(JSON.stringify({ statusCode: '403', error: 'Unauthorized', message: 'Invalid JWT' }), { status: 400 }));
+    await expect(d.get('private', 'kyc/a.bin')).rejects.toThrow(/download failed \(400\)/);
+    stub(new Response(JSON.stringify({ statusCode: '403', error: 'Unauthorized' }), { status: 400 }));
+    await expect(d.delete('private', 'kyc/a.bin')).rejects.toThrow(/delete failed/);
+    stub(new Response(JSON.stringify({ statusCode: '404', error: 'not_found' }), { status: 400 }));
+    await expect(d.delete('private', 'kyc/a.bin')).resolves.toBeUndefined();
   });
 });

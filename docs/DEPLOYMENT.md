@@ -19,7 +19,7 @@ privé). Toute plateforme Node 20+ avec PostgreSQL 15+ convient également.
    restauration avant l'ouverture.
 
 ## 2. Stockage
-- `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+- `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (nouvelle clé secrète `sb_secret_…` — envoyée dans l'en-tête `apikey` seulement, comme Supabase l'exige — ou ancienne clé `service_role`).
 - Bucket **public** (images produits, médias publicitaires) et bucket **privé** (documents KYC
   chiffrés, preuves de livraison). Le bucket privé ne doit avoir **aucune** politique de lecture
   publique : l'accès passe uniquement par les routes serveur autorisées et journalisées.

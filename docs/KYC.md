@@ -16,10 +16,10 @@
 
 | Variable | Rôle |
 |---|---|
-| `BREVO_API_KEY` | Clé d'API Brevo (Brevo → SMTP & API → API keys). **Secret** : à coller directement dans Vercel. |
+| `BREVO_API_KEY` | Clé d'API Brevo (Brevo → SMTP & API → API keys). **Secret** : à coller directement dans Vercel. **Attention** : si Brevo bloque les adresses IP inconnues (Brevo → Sécurité → Adresses IP autorisées), tout envoi depuis Vercel est refusé (`401 unrecognised IP address`) — Vercel n'a pas d'adresse IP fixe : il faut **désactiver ce blocage**. Ne pas mettre la clé dans un déploiement tant que le blocage est actif : la confirmation d'e-mail deviendrait exigée alors qu'aucun e-mail ne peut partir. |
 | `MAIL_FROM` | Adresse d'expédition — doit être un **expéditeur vérifié** dans Brevo. |
 | `MAIL_FROM_NAME` | Facultatif, défaut « DOOM \| دوم ». |
-| `SUPABASE_SERVICE_ROLE_KEY` | **Indispensable pour les pièces d'identité** (stockage privé). Sans elle, le client ne peut pas envoyer ses pièces. |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Indispensable pour les pièces d'identité** (stockage privé). Sans elle, le client ne peut pas envoyer ses pièces. Accepte la nouvelle clé secrète Supabase (`sb_secret_…`, envoyée dans l'en-tête `apikey` seulement) ou l'ancienne clé `service_role`. |
 
 **Tant que l'envoi d'e-mails n'est pas configuré**, rien n'est envoyé (jamais simulé) et la confirmation d'e-mail **n'est pas exigée** (sinon personne ne pourrait la faire) ; l'écran d'administration l'indique. Dès que `BREVO_API_KEY` et `MAIL_FROM` sont présents, la règle s'applique.
 

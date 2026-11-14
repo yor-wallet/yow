@@ -211,6 +211,32 @@ export class LocalStorageDriver implements StorageDriver {
 
 // ───────────── Supabase driver ─────────────
 
+/**
+ * Supabase server keys come in two formats: the legacy `service_role` key (a JWT) and the
+ * newer secret key (`sb_secret_…`, opaque). A new key must travel on the `apikey` header
+ * ONLY — also sending it as `Authorization: Bearer` makes the platform parse it as a JWT and
+ * reject the call ("Invalid JWT"). A legacy JWT key keeps both headers.
+ */
+export function supabaseAuthHeaders(key: string): Record<string, string> {
+  return key.startsWith('sb_') ? { apikey: key } : { Authorization: `Bearer ${key}`, apikey: key };
+}
+
+/**
+ * Supabase Storage answers a missing object with 404, or with 400 whose body says
+ * `statusCode: "404"` / `error: "not_found"`. Any other 400 (rejected key, bad JWT…) is a real
+ * failure and must not be mistaken for "no such file".
+ */
+async function isNotFound(res: Response): Promise<boolean> {
+  if (res.status !== 404 && res.status !== 400) return false;
+  const body = await res.text().catch(() => '');
+  try {
+    const j = JSON.parse(body) as { statusCode?: string | number; error?: string };
+    return String(j.statusCode) === '404' || /not.?found/i.test(String(j.error ?? ''));
+  } catch {
+    return res.status === 404;
+  }
+}
+
 export class SupabaseStorageDriver implements StorageDriver {
   readonly name = 'supabase';
   private readonly url: string;
@@ -232,7 +258,7 @@ export class SupabaseStorageDriver implements StorageDriver {
   }
 
   private headers(extra: Record<string, string> = {}) {
-    return { Authorization: `Bearer ${this.serviceKey}`, apikey: this.serviceKey, ...extra };
+    return { ...supabaseAuthHeaders(this.serviceKey), ...extra };
   }
 
   async put(bucket: Bucket, key: string, data: Buffer, opts?: { contentType?: string }) {
@@ -247,14 +273,16 @@ export class SupabaseStorageDriver implements StorageDriver {
 
   async get(bucket: Bucket, key: string) {
     const res = await fetch(this.objectUrl(bucket, key), { headers: this.headers(), cache: 'no-store' });
-    if (res.status === 404 || res.status === 400) return null;
-    if (!res.ok) throw new Error(`Supabase download failed (${res.status})`);
+    if (!res.ok) {
+      if (await isNotFound(res)) return null;
+      throw new Error(`Supabase download failed (${res.status})`);
+    }
     return Buffer.from(await res.arrayBuffer());
   }
 
   async delete(bucket: Bucket, key: string) {
     const res = await fetch(this.objectUrl(bucket, key), { method: 'DELETE', headers: this.headers() });
-    if (!res.ok && res.status !== 404 && res.status !== 400) throw new Error(`Supabase delete failed (${res.status})`);
+    if (!res.ok && !(await isNotFound(res))) throw new Error(`Supabase delete failed (${res.status})`);
   }
 
   async exists(bucket: Bucket, key: string) {
