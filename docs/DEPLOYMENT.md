@@ -39,6 +39,7 @@ Voir `.env.example` pour la liste complète. Indispensables en production :
 | Fournisseurs de paiement | laisser vides tant que les contrats ne sont pas signés → affichés « indisponibles » |
 | `CRYPTO_ADDRESS_TRON`, `CRYPTO_ADDRESS_BSC`, `CRYPTO_ADDRESS_ETH` | adresses **publiques** de réception USDT du propriétaire (jamais de clé privée) ; somme de contrôle vérifiée, adresse fausse = réseau ignoré. Voir `docs/PAYMENTS.md` |
 | `CRYPTO_TRONGRID_KEY` | clé gratuite TronGrid (conseillée : sans elle, limitation de débit) |
+| `BREVO_API_KEY`, `MAIL_FROM` (`MAIL_FROM_NAME`) | envoi des e-mails (confirmation du compte, vérification d'identité) par Brevo ; `MAIL_FROM` = expéditeur vérifié dans Brevo. Voir `docs/KYC.md` |
 
 ## 4. Vercel
 1. Importer le dépôt GitHub `yor-wallet/yow`, framework **Next.js**.

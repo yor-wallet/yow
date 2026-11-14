@@ -343,7 +343,9 @@
       "duplicate_ids": "The file contains the same model id twice.",
       "category_missing": "The smartphones category is missing.",
       "number_invalid": "Enter a valid number.",
-      "range_inverted": "The maximum must not be below the minimum."
+      "range_inverted": "The maximum must not be below the minimum.",
+      "kyc_notes_required": "Write a message to the customer (at least 3 characters).",
+      "kyc_docs_required": "Tick at least one document to ask for."
     },
     "proposal_not_open": "This proposal was already decided.",
     "proposal_no_action": "This proposal has no action to apply.",
@@ -355,7 +357,8 @@
       "courier_inactive": "This courier is not active.",
       "order_not_active": "This order is not in a deliverable state.",
       "forbidden": "You do not have permission to do this.",
-      "not_found": "This delivery no longer exists."
+      "not_found": "This delivery no longer exists.",
+      "not_reviewable": "This request was already decided."
     }
   },
   "filters": {
@@ -807,5 +810,53 @@
         }
       }
     }
+  },
+  "kyc": {
+    "title": "Identity verifications",
+    "subtitle": "Each new customer sends their documents; an administrator validates or refuses. Every document view is recorded.",
+    "detailTitle": "Identity verification",
+    "emailOff": "E-mails are not configured yet: administrators are not alerted by e-mail and customers are not asked to confirm their address. See docs/PAYMENTS.md.",
+    "tabsLabel": "Filter by status",
+    "empty": "Nothing here.",
+    "submittedAt": "Sent on {date}",
+    "status": {
+      "PENDING": "To review",
+      "DOCUMENTS_REQUESTED": "Documents requested",
+      "VERIFIED": "Validated",
+      "REJECTED": "Refused",
+      "UNVERIFIED": "Not verified"
+    },
+    "customer": "Customer",
+    "nameOnDocuments": "Name on the documents",
+    "accountName": "Name on the account",
+    "email": "E-mail",
+    "emailConfirmed": "Confirmed",
+    "emailNotConfirmed": "Not confirmed",
+    "phone": "Phone",
+    "accountSince": "Account created",
+    "submittedLabel": "Sent",
+    "reviewed": "Decision",
+    "documents": "Documents",
+    "noDocumentAccess": "Your role cannot open identity documents.",
+    "noDocuments": "No document.",
+    "auditNote": "Each opening of a document is recorded in the audit log. Links expire after 5 minutes: reload the page if needed.",
+    "doc": {
+      "ID_FRONT": "ID card — front",
+      "ID_BACK": "ID card — back",
+      "SELFIE": "Selfie"
+    },
+    "decision": "Decision",
+    "decisionLabel": "Decision",
+    "decide": {
+      "VERIFIED": "Validate the identity",
+      "REJECTED": "Refuse",
+      "DOCUMENTS_REQUESTED": "Ask for other documents"
+    },
+    "notes": "Message to the customer",
+    "notesHint": "Required to refuse or ask for documents (shown to the customer).",
+    "requestDocs": "Documents to send again",
+    "save": "Save the decision",
+    "noDecideRight": "Only an administrator can decide.",
+    "alreadyDecided": "A decision was already recorded."
   }
 }

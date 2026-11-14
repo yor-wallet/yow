@@ -11,6 +11,7 @@ import { createUser } from '@/lib/auth/service';
 import { addItem } from '@/lib/cart/store';
 import { placeOrder } from '@/lib/orders/place';
 import { expectedMicro, formatUsdt } from '@/lib/payments/onchain/amount';
+import { emailVerificationUrl } from '@/lib/auth/email-verification';
 import { ensureWallet, getBalance, makeReference, postTransaction, systemAccountId, withLedgerTx } from '@/lib/wallet/ledger';
 
 type Task =
@@ -19,6 +20,8 @@ type Task =
   | { task: 'fundWallet'; userId: string; amountBaisa: number }
   | { task: 'walletBalance'; userId: string }
   | { task: 'createCryptoIntent'; userId: string }
+  | { task: 'createKycSubmission'; userId: string; fullName: string }
+  | { task: 'emailVerifyUrl'; userId: string }
   | { task: 'placeUnpaidOrder'; userId: string; variantSku: string; qty: number };
 
 async function run(t: Task): Promise<unknown> {
@@ -83,6 +86,17 @@ async function run(t: Task): Promise<unknown> {
         select: { id: true },
       });
       return { id: intent.id, amountUsdt: formatUsdt(expected) };
+    }
+    case 'createKycSubmission': {
+      // A request waiting for review (no document: the decision screen does not need one).
+      const sub = await prisma.kycSubmission.create({ data: { userId: t.userId, fullName: t.fullName, status: 'PENDING' }, select: { id: true } });
+      await prisma.user.update({ where: { id: t.userId }, data: { kycStatus: 'PENDING' } });
+      return { id: sub.id };
+    }
+    case 'emailVerifyUrl': {
+      const user = await prisma.user.findUniqueOrThrow({ where: { id: t.userId }, select: { id: true, email: true, locale: true } });
+      const url = new URL(await emailVerificationUrl({ ...user, locale: 'en' }));
+      return { path: `${url.pathname.replace(/^\/en/, '')}${url.search}` };
     }
     case 'walletBalance':
       return { balanceBaisa: (await getBalance(t.userId)).balanceBaisa };

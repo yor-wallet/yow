@@ -113,6 +113,20 @@
     "consent_required": "Veuillez confirmer la déclaration pour continuer.",
     "name_too_short": "Saisissez votre nom complet.",
     "rate_limited": "Trop de tentatives. Veuillez réessayer plus tard.",
-    "generic": "Vos documents n'ont pas pu être envoyés. Veuillez réessayer."
+    "generic": "Vos documents n'ont pas pu être envoyés. Veuillez réessayer.",
+    "email_unverified": "Confirmez d’abord votre adresse e-mail : ouvrez le lien que nous vous avons envoyé."
+  },
+  "emailConfirm": {
+    "title": "Confirmez votre adresse e-mail",
+    "text": "Nous avons envoyé un lien de confirmation à cette adresse. Ouvrez-le pour activer votre compte ; vous pourrez ensuite vérifier votre identité.",
+    "resend": "Renvoyer le lien",
+    "result": {
+      "sent": "Envoyé. Regardez votre boîte de réception (et les indésirables).",
+      "rate_limited": "Trop de demandes. Réessayez dans une heure.",
+      "already_verified": "Votre e-mail est déjà confirmé. Rechargez la page.",
+      "not_configured": "Les e-mails ne peuvent pas être envoyés pour le moment. Réessayez plus tard.",
+      "generic": "L’e-mail n’a pas pu être envoyé. Réessayez.",
+      "unauthenticated": "Reconnectez-vous."
+    }
   }
 }

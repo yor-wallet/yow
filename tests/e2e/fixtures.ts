@@ -26,6 +26,16 @@ function task<T>(payload: Record<string, unknown>): T {
 
 export type Customer = { id: string; fullName: string; email: string; phone: string; password: string };
 
+/** An identity verification waiting for review (no document). */
+export function createKycRequest(userId: string, fullName: string): { id: string } {
+  return task<{ id: string }>({ task: 'createKycSubmission', userId, fullName });
+}
+
+/** The locale-less path of a valid e-mail confirmation link for a user. */
+export function emailVerifyPath(userId: string): string {
+  return task<{ path: string }>({ task: 'emailVerifyUrl', userId }).path;
+}
+
 /** An open USDT payment (test addresses) for a customer, as the top-up flow creates it. */
 export function createCryptoPayment(userId: string): { id: string; amountUsdt: string } {
   return task<{ id: string; amountUsdt: string }>({ task: 'createCryptoIntent', userId });

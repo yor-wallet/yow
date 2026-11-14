@@ -343,7 +343,9 @@
       "duplicate_ids": "Le fichier contient deux fois le même identifiant de modèle.",
       "category_missing": "La catégorie des smartphones est introuvable.",
       "number_invalid": "Saisissez un nombre valide.",
-      "range_inverted": "Le maximum ne doit pas être inférieur au minimum."
+      "range_inverted": "Le maximum ne doit pas être inférieur au minimum.",
+      "kyc_notes_required": "Écrivez un message au client (au moins 3 caractères).",
+      "kyc_docs_required": "Cochez au moins un document à demander."
     },
     "proposal_not_open": "Cette proposition a déjà été traitée.",
     "proposal_no_action": "Cette proposition ne comporte aucune action à appliquer.",
@@ -355,7 +357,8 @@
       "courier_inactive": "Ce livreur n'est pas actif.",
       "order_not_active": "Cette commande n'est pas dans un état livrable.",
       "forbidden": "Vous n'avez pas la permission de faire cela.",
-      "not_found": "Cette livraison n'existe plus."
+      "not_found": "Cette livraison n'existe plus.",
+      "not_reviewable": "Cette demande a déjà été tranchée."
     }
   },
   "filters": {
@@ -807,5 +810,53 @@
         }
       }
     }
+  },
+  "kyc": {
+    "title": "Vérifications d’identité",
+    "subtitle": "Chaque nouveau client envoie ses pièces ; un administrateur valide ou refuse. Chaque consultation de pièce est enregistrée.",
+    "detailTitle": "Vérification d’identité",
+    "emailOff": "L’envoi d’e-mails n’est pas encore configuré : les administrateurs ne sont pas prévenus par e-mail et les clients ne confirment pas leur adresse. Voir docs/PAYMENTS.md.",
+    "tabsLabel": "Filtrer par statut",
+    "empty": "Rien ici.",
+    "submittedAt": "Envoyée le {date}",
+    "status": {
+      "PENDING": "À examiner",
+      "DOCUMENTS_REQUESTED": "Documents demandés",
+      "VERIFIED": "Validée",
+      "REJECTED": "Refusée",
+      "UNVERIFIED": "Non vérifiée"
+    },
+    "customer": "Client",
+    "nameOnDocuments": "Nom sur les pièces",
+    "accountName": "Nom du compte",
+    "email": "E-mail",
+    "emailConfirmed": "Confirmé",
+    "emailNotConfirmed": "Non confirmé",
+    "phone": "Téléphone",
+    "accountSince": "Compte créé le",
+    "submittedLabel": "Envoyée le",
+    "reviewed": "Décision",
+    "documents": "Pièces",
+    "noDocumentAccess": "Votre rôle ne permet pas d’ouvrir les pièces d’identité.",
+    "noDocuments": "Aucune pièce.",
+    "auditNote": "Chaque ouverture de pièce est enregistrée dans le journal d’audit. Les liens expirent au bout de 5 minutes : rechargez la page si besoin.",
+    "doc": {
+      "ID_FRONT": "Carte d’identité — recto",
+      "ID_BACK": "Carte d’identité — verso",
+      "SELFIE": "Selfie"
+    },
+    "decision": "Décision",
+    "decisionLabel": "Décision",
+    "decide": {
+      "VERIFIED": "Valider l’identité",
+      "REJECTED": "Refuser",
+      "DOCUMENTS_REQUESTED": "Demander d’autres documents"
+    },
+    "notes": "Message au client",
+    "notesHint": "Obligatoire pour refuser ou demander des documents (montré au client).",
+    "requestDocs": "Documents à renvoyer",
+    "save": "Enregistrer la décision",
+    "noDecideRight": "Seul un administrateur peut décider.",
+    "alreadyDecided": "Une décision a déjà été enregistrée."
   }
 }

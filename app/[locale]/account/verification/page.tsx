@@ -15,6 +15,9 @@ import { IconTile, type IconTileTone } from '@/components/account/IconTile';
 import { buttonClasses } from '@/components/ui/Button';
 import { KycStatusBadge } from '@/components/delivery/StatusBadges';
 import { KycFlow } from '@/components/account/KycFlow';
+import { EmailConfirmCard } from '@/components/account/EmailConfirmCard';
+import { prisma } from '@/lib/db';
+import { emailConfirmationRequired } from '@/lib/auth/email-verification';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -49,10 +52,13 @@ export default async function VerificationPage({ params }: Props) {
     getKycOverview(user.id),
     getDefaultAddress(user.id),
   ]);
+  const account = await prisma.user.findUnique({ where: { id: user.id }, select: { email: true, emailVerifiedAt: true } });
+  // The account is confirmed by e-mail first; identity verification comes after.
+  const needsEmail = !!account && !account.emailVerifiedAt && emailConfirmationRequired();
   const status = overview.status;
   const sub = overview.submission;
   const Icon = STATUS_ICON[status];
-  const showFlow = status === 'UNVERIFIED' || status === 'REJECTED' || status === 'DOCUMENTS_REQUESTED';
+  const showFlow = !needsEmail && (status === 'UNVERIFIED' || status === 'REJECTED' || status === 'DOCUMENTS_REQUESTED');
   const required: KycDocumentType[] =
     status === 'DOCUMENTS_REQUESTED' && sub?.requestedDocs.length ? sub.requestedDocs : [...KYC_DOCUMENT_TYPES];
   const addressLine = address
@@ -64,6 +70,7 @@ export default async function VerificationPage({ params }: Props) {
       <PageHeader title={t('title')} subtitle={t('subtitle')} fallbackHref="/account" />
       <div className="page-container mt-5 grid grid-cols-1 gap-5 lg:mt-6 lg:grid-cols-12">
         <div className="flex min-w-0 flex-col gap-5 lg:col-span-8">
+          {needsEmail && account ? <EmailConfirmCard email={account.email} /> : null}
           <Card tone={status === 'VERIFIED' ? 'holo' : 'surface'} className="relative" data-testid="kyc-status" data-status={status}>
             <HudCorners size={12} className={status === 'REJECTED' ? 'text-error/70' : status === 'DOCUMENTS_REQUESTED' ? 'text-amber/70' : undefined} />
             <span className="hud-label mb-3">{t('title')}</span>

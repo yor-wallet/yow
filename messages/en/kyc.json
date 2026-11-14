@@ -113,6 +113,20 @@
     "consent_required": "Please confirm the statement to continue.",
     "name_too_short": "Enter your full name.",
     "rate_limited": "Too many attempts. Please try again later.",
-    "generic": "Your documents could not be sent. Please try again."
+    "generic": "Your documents could not be sent. Please try again.",
+    "email_unverified": "Confirm your e-mail address first: open the link we sent you."
+  },
+  "emailConfirm": {
+    "title": "Confirm your e-mail address",
+    "text": "We sent a confirmation link to this address. Open it to activate your account, then you can verify your identity.",
+    "resend": "Send the link again",
+    "result": {
+      "sent": "Sent. Check your inbox (and the spam folder).",
+      "rate_limited": "Too many requests. Try again in an hour.",
+      "already_verified": "Your e-mail is already confirmed. Reload the page.",
+      "not_configured": "E-mails cannot be sent right now. Please try again later.",
+      "generic": "The e-mail could not be sent. Please try again.",
+      "unauthenticated": "Please sign in again."
+    }
   }
 }

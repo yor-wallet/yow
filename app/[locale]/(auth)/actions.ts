@@ -2,6 +2,7 @@
 
 import { getLocale } from 'next-intl/server';
 import { redirect } from '@/i18n/navigation';
+import { sendVerificationEmail } from '@/lib/auth/email-verification';
 import { login, logout, register, type AuthErrorCode } from '@/lib/auth';
 import { mergeAnonymousCartFromCookie } from '@/lib/cart';
 import { formDataToObject, safeRedirectPath, type FieldErrors } from '@/lib/validation';
@@ -72,6 +73,8 @@ export async function registerAction(_prev: AuthFormState, formData: FormData): 
     return { status: 'error', error: res.error, fieldErrors: res.fieldErrors, retryAfterSec: res.retryAfterSec, values };
   }
   await mergeAnonymousCartFromCookie(res.user.id);
+  // Account confirmation by e-mail (best effort: a mail problem never blocks the registration).
+  await sendVerificationEmail(res.user.id);
   redirect({ href: nextPath(formData.get('next'), '/account'), locale });
   return { status: 'idle' };
 }

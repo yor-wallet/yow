@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import { emailConfirmationRequired } from '@/lib/auth/email-verification';
 import type { KycDocumentType, KycStatus, Prisma, Role } from '@prisma/client';
 import { prisma } from '../db';
 import { can } from '../rbac';
@@ -40,7 +41,8 @@ export type KycErrorCode =
   | 'not_reviewable'
   | 'notes_required'
   | 'requested_docs_required'
-  | 'integrity_failed';
+  | 'integrity_failed'
+  | 'email_unverified';
 
 export class KycError extends Error {
   constructor(
@@ -78,9 +80,11 @@ export async function submitKyc(input: {
   const { fullName } = kycBasicSchema.parse({ fullName: input.fullName });
   const user = await prisma.user.findUnique({
     where: { id: input.userId },
-    select: { id: true, role: true, phone: true, kycStatus: true, addresses: { where: { deletedAt: null }, select: { id: true }, take: 1 } },
+    select: { id: true, role: true, phone: true, kycStatus: true, emailVerifiedAt: true, addresses: { where: { deletedAt: null }, select: { id: true }, take: 1 } },
   });
   if (!user) throw new KycError('not_found');
+  // Account confirmed by e-mail first (only enforced once e-mails can actually be sent).
+  if (!user.emailVerifiedAt && emailConfirmationRequired()) throw new KycError('email_unverified');
   if (user.kycStatus === 'VERIFIED') throw new KycError('already_verified');
   if (user.kycStatus === 'PENDING') throw new KycError('already_pending');
   if (!user.phone) throw new KycError('phone_required');

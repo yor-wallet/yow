@@ -88,3 +88,9 @@ Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
 - ✅ Tests : 36 unitaires dédiés (adresses, montants, formes de réponses des trois réseaux, quorum, parcours complet jusqu'au crédit du portefeuille) + e2e de la page (3 appareils, arabe RTL).
 - ⛔ Pas encore en ligne ; pas encore testé avec un vrai paiement. USDT uniquement ; détection automatique sans identifiant et vente de cartes cadeaux non faites (voir `docs/PAYMENTS.md` §9).
 
+### Confirmation du compte par e-mail et vérification d'identité par l'administrateur (14 novembre 2026)
+- ✅ E-mail de confirmation à l'inscription (lien signé 48 h lié à l'adresse), page `/verify-email`, renvoi depuis le compte ; la vérification d'identité attend un e-mail confirmé (règle active dès que l'envoi d'e-mails est configuré).
+- ✅ Chaque nouvelle demande d'identité → e-mail à tous les administrateurs (ADMIN, SUPERADMIN) avec un lien ; écran **Administration › Vérifications d'identité** (`/admin/kyc`) : file par statut, fiche, pièces via le visualiseur audité, Valider / Refuser / Demander des documents ; e-mail de décision au client.
+- ✅ Tests : 12 unitaires (envoi Brevo, échappement, liens, règle, destinataires, décisions) + e2e (3 appareils).
+- ⛔ En ligne il faut encore : `BREVO_API_KEY` + `MAIL_FROM` (envoi), et `SUPABASE_SERVICE_ROLE_KEY` (sans elle les clients ne peuvent pas envoyer leurs pièces). Voir `docs/KYC.md`.
+

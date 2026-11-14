@@ -95,5 +95,6 @@ Vitrine complète (accueil, catégories, recherche, fiche produit, panier, comma
 | Tests | `tests/unit/*`, `tests/e2e/*` (helpers dans `tests/e2e/helpers.ts`) |
 | Déploiement | `docs/DEPLOYMENT.md`, `scripts/vercel-build.sh`, `scripts/predeploy-check.ts` |
 | Paiements, crypto, cartes cadeaux, commission, plafonds | `docs/PAYMENTS.md`, `lib/payments/*`, `lib/admin/payment-settings.ts`, `/admin/site/settings` |
+| Confirmation du compte par e-mail, vérification d'identité par l'administrateur | `docs/KYC.md`, `lib/email/*`, `lib/auth/email-verification.ts`, `lib/kyc/*`, `/admin/kyc` |
 
 Ce fichier ne contient aucun souvenir personnel du propriétaire : seulement ce qui sert à reprendre ce chantier.

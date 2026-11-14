@@ -10,6 +10,8 @@ import { sha256Hex } from '@/lib/crypto';
 import { IdempotencyError, withIdempotency } from '@/lib/idempotency';
 import { idempotencyKeySchema } from '@/lib/validation';
 import { KYC_DOCUMENT_TYPES, KYC_MAX_BYTES, KycError, submitKyc, type KycErrorCode } from '@/lib/kyc';
+import { notifyAdminsOfKycSubmission } from '@/lib/kyc/emails';
+import { sendVerificationEmail } from '@/lib/auth/email-verification';
 
 export type KycSubmitResult =
   | { ok: true }
@@ -41,7 +43,7 @@ export async function submitKycAction(fd: FormData): Promise<KycSubmitResult> {
 
   try {
     const meta = await getRequestMeta();
-    await withIdempotency(
+    const done = await withIdempotency(
       {
         scope: 'kyc.submit',
         key: key.data,
@@ -53,6 +55,8 @@ export async function submitKycAction(fd: FormData): Promise<KycSubmitResult> {
         return { submissionId: s.id };
       },
     );
+    // Every administrator who can decide gets an e-mail to validate or refuse (best effort).
+    if (!done.replayed) await notifyAdminsOfKycSubmission(done.result.submissionId);
     revalidatePath('/[locale]/account', 'layout');
     return { ok: true };
   } catch (err) {
@@ -62,4 +66,16 @@ export async function submitKycAction(fd: FormData): Promise<KycSubmitResult> {
     console.error('[kyc] submit failed', err);
     return { ok: false, error: 'generic' };
   }
+}
+
+/** Send the account-confirmation e-mail again (rate-limited). */
+export async function resendVerificationEmailAction(): Promise<{ ok: true } | { ok: false; error: 'unauthenticated' | 'rate_limited' | 'already_verified' | 'not_configured' | 'generic' }> {
+  const session = await getSession();
+  if (!session) return { ok: false, error: 'unauthenticated' };
+  const rl = await rateLimit(`email-verify:resend:${session.user.id}`, 3, 60 * 60 * 1000);
+  if (!rl.ok) return { ok: false, error: 'rate_limited' };
+  const res = await sendVerificationEmail(session.user.id);
+  if (res.ok) return { ok: true };
+  if (res.skipped) return { ok: false, error: 'not_configured' };
+  return { ok: false, error: res.error === 'already_verified' ? 'already_verified' : 'generic' };
 }
