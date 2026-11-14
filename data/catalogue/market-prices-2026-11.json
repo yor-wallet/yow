@@ -1,0 +1,428 @@
+{
+  "title": "DOOM — prix du marché à Oman et prix DOOM (−10 %)",
+  "rule": "Demande du propriétaire (14/11/2026) : prix DOOM = prix du marché − 10 %, arrondi au 0,100 OMR inférieur. Le prix du marché est le prix public TTC du revendeur agréé, relevé le jour indiqué. Aucun « prix barré » n’est affiché : le prix du marché sert seulement de référence.",
+  "retrievedAt": "2026-11-14",
+  "discountPercent": 10,
+  "sources": {
+    "istyle": {
+      "name": "iSTYLE Oman — revendeur agréé Apple (Apple Premium Partner)",
+      "url": "https://istyle.om",
+      "method": "Catalogue public de la boutique en ligne (prix TTC en OMR, par modèle, capacité et couleur)."
+    }
+  },
+  "notPriced": [
+    {
+      "products": "iPhone 13 mini, iPhone 13 Pro, iPhone 14 Plus, iPhone 14 Pro, iPhone 14 Pro Max, iPhone 15 Pro, iPhone 15 Pro Max",
+      "reason": "Plus vendus par le revendeur agréé : aucun prix de marché fiable relevé."
+    },
+    {
+      "products": "iPhone 13 (256 / 512 Go), iPhone 14 (512 Go)",
+      "reason": "Capacité absente chez le revendeur agréé."
+    },
+    {
+      "products": "iPhone 16e 512 Go",
+      "reason": "Prix relevé (199,000 OMR) inférieur à celui du 256 Go : liquidation probable, écarté."
+    },
+    {
+      "products": "Samsung, HONOR, OPPO, HUAWEI, JBL",
+      "reason": "Les grands revendeurs omanais bloquent la lecture automatique de leurs prix et les comparateurs se contredisent (de 298 à 550 OMR pour le même modèle) : relevé à faire sur une source fiable."
+    },
+    {
+      "products": "AirPods Max (gris sidéral)",
+      "reason": "Ancienne version (Lightning) plus vendue ; la version USB-C n’existe pas dans cette couleur."
+    }
+  ],
+  "items": [
+    {
+      "productSlug": "apple-iphone-13",
+      "storageGb": 128,
+      "marketBaisa": 239000,
+      "priceBaisa": 215100,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(167860, 1), (239000, 1)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-14",
+      "storageGb": 128,
+      "marketBaisa": 289000,
+      "priceBaisa": 260100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-14",
+      "storageGb": 256,
+      "marketBaisa": 339000,
+      "priceBaisa": 305100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-15",
+      "storageGb": 128,
+      "marketBaisa": 295000,
+      "priceBaisa": 265500,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(210000, 1), (295000, 4)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-15",
+      "storageGb": 256,
+      "marketBaisa": 329000,
+      "priceBaisa": 296100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-15",
+      "storageGb": 512,
+      "marketBaisa": 428000,
+      "priceBaisa": 385200,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(280000, 1), (428000, 4)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-15-plus",
+      "storageGb": 128,
+      "marketBaisa": 329000,
+      "priceBaisa": 296100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-15-plus",
+      "storageGb": 256,
+      "marketBaisa": 379000,
+      "priceBaisa": 341100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-15-plus",
+      "storageGb": 512,
+      "marketBaisa": 478000,
+      "priceBaisa": 430200,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16",
+      "storageGb": 128,
+      "marketBaisa": 315000,
+      "priceBaisa": 283500,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16",
+      "storageGb": 256,
+      "marketBaisa": 355010,
+      "priceBaisa": 319500,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16",
+      "storageGb": 512,
+      "marketBaisa": 451000,
+      "priceBaisa": 405900,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16-plus",
+      "storageGb": 128,
+      "marketBaisa": 335000,
+      "priceBaisa": 301500,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(335000, 3), (359000, 2)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-16-plus",
+      "storageGb": 256,
+      "marketBaisa": 405000,
+      "priceBaisa": 364500,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(375000, 1), (405000, 4)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-16-plus",
+      "storageGb": 512,
+      "marketBaisa": 504000,
+      "priceBaisa": 453600,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(460010, 1), (504000, 4)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-16-pro",
+      "storageGb": 128,
+      "marketBaisa": 390000,
+      "priceBaisa": 351000,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16-pro",
+      "storageGb": 256,
+      "marketBaisa": 454000,
+      "priceBaisa": 408600,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16-pro",
+      "storageGb": 512,
+      "marketBaisa": 549000,
+      "priceBaisa": 494100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16-pro",
+      "storageGb": 1024,
+      "marketBaisa": 600000,
+      "priceBaisa": 540000,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(459000, 2), (600000, 2)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-16-pro-max",
+      "storageGb": 256,
+      "marketBaisa": 470000,
+      "priceBaisa": 423000,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(470000, 3), (499000, 1)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-16-pro-max",
+      "storageGb": 512,
+      "marketBaisa": 560000,
+      "priceBaisa": 504000,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16-pro-max",
+      "storageGb": 1024,
+      "marketBaisa": 645000,
+      "priceBaisa": 580500,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(539000, 1), (645000, 2), (679000, 1)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-16e",
+      "storageGb": 128,
+      "marketBaisa": 248000,
+      "priceBaisa": 223200,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-16e",
+      "storageGb": 256,
+      "marketBaisa": 250010,
+      "priceBaisa": 225000,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17",
+      "storageGb": 256,
+      "marketBaisa": 385000,
+      "priceBaisa": 346500,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17",
+      "storageGb": 512,
+      "marketBaisa": 485000,
+      "priceBaisa": 436500,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro",
+      "storageGb": 256,
+      "marketBaisa": 459010,
+      "priceBaisa": 413100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro",
+      "storageGb": 512,
+      "marketBaisa": 549000,
+      "priceBaisa": 494100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro",
+      "storageGb": 1024,
+      "marketBaisa": 639010,
+      "priceBaisa": 575100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro-max",
+      "storageGb": 256,
+      "marketBaisa": 499000,
+      "priceBaisa": 449100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro-max",
+      "storageGb": 512,
+      "marketBaisa": 590010,
+      "priceBaisa": 531000,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro-max",
+      "storageGb": 1024,
+      "marketBaisa": 690010,
+      "priceBaisa": 621000,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17-pro-max",
+      "storageGb": 2048,
+      "marketBaisa": 949000,
+      "priceBaisa": 854100,
+      "source": "istyle",
+      "note": "Prix différents selon la couleur : [(919000, 1), (949000, 2)]; prix le plus fréquent retenu (à égalité, le plus élevé)."
+    },
+    {
+      "productSlug": "apple-iphone-17e",
+      "storageGb": 256,
+      "marketBaisa": 299000,
+      "priceBaisa": 269100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-17e",
+      "storageGb": 512,
+      "marketBaisa": 399000,
+      "priceBaisa": 359100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-18-pro",
+      "storageGb": 256,
+      "marketBaisa": 569000,
+      "priceBaisa": 512100,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro",
+      "storageGb": 512,
+      "marketBaisa": 663000,
+      "priceBaisa": 596700,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro",
+      "storageGb": 1024,
+      "marketBaisa": 853000,
+      "priceBaisa": 767700,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro",
+      "storageGb": 2048,
+      "marketBaisa": 1135000,
+      "priceBaisa": 1021500,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro-max",
+      "storageGb": 256,
+      "marketBaisa": 611000,
+      "priceBaisa": 549900,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro-max",
+      "storageGb": 512,
+      "marketBaisa": 709000,
+      "priceBaisa": 638100,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro-max",
+      "storageGb": 1024,
+      "marketBaisa": 895000,
+      "priceBaisa": 805500,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-18-pro-max",
+      "storageGb": 2048,
+      "marketBaisa": 1175000,
+      "priceBaisa": 1057500,
+      "source": "istyle",
+      "note": "Vendu chez iSTYLE avec la coque transparente Apple MagSafe (26,000 OMR, prix affiché séparément) : prix du pack moins la coque."
+    },
+    {
+      "productSlug": "apple-iphone-air",
+      "storageGb": 256,
+      "marketBaisa": 399000,
+      "priceBaisa": 359100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-air",
+      "storageGb": 512,
+      "marketBaisa": 499000,
+      "priceBaisa": 449100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-air",
+      "storageGb": 1024,
+      "marketBaisa": 599000,
+      "priceBaisa": 539100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-duo",
+      "storageGb": 256,
+      "marketBaisa": 949000,
+      "priceBaisa": 854100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-duo",
+      "storageGb": 512,
+      "marketBaisa": 1039000,
+      "priceBaisa": 935100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-duo",
+      "storageGb": 1024,
+      "marketBaisa": 1229000,
+      "priceBaisa": 1106100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-iphone-duo",
+      "storageGb": 2048,
+      "marketBaisa": 1509000,
+      "priceBaisa": 1358100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-airpods-pro-3",
+      "storageGb": null,
+      "marketBaisa": 89000,
+      "priceBaisa": 80100,
+      "source": "istyle"
+    },
+    {
+      "productSlug": "apple-airpods-pro-2",
+      "storageGb": null,
+      "marketBaisa": 79910,
+      "priceBaisa": 71900,
+      "source": "istyle",
+      "note": "Dernier prix affiché par iSTYLE (produit plus en stock chez eux)."
+    },
+    {
+      "productSlug": "apple-watch-ultra-2",
+      "storageGb": null,
+      "marketBaisa": 270000,
+      "priceBaisa": 243000,
+      "source": "istyle",
+      "note": "Prix iSTYLE de l'Apple Watch Ultra 2 GPS + Cellular 49 mm titane naturel avec bracelet Océan (même prix pour toutes les couleurs de bracelet Océan)."
+    }
+  ]
+}
