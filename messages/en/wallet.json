@@ -114,7 +114,7 @@
     "value": "Face value",
     "valueHint": "As printed on the card. The credited amount is the value actually encashed, which can be lower.",
     "photo": "Photo of the card (optional)",
-    "photoHint": "PNG, JPEG or WebP, up to 8 MB. Stored encrypted.",
+    "photoHint": "PNG, JPEG or WebP. The photo is reduced on your phone before it is sent, then stored encrypted.",
     "consent": "I own this card and understand that my wallet is credited only after verification, with the value actually encashed.",
     "consentRequired": "Confirm this statement to continue.",
     "submit": "Submit for verification",
@@ -132,7 +132,10 @@
       "required": "This field is required."
     },
     "fee": "An exchange commission of {percent} is kept on the value actually encashed.",
-    "paused": "Gift card top-ups are temporarily unavailable."
+    "paused": "Gift card top-ups are temporarily unavailable.",
+    "photoPreparing": "Preparing the photo…",
+    "photoUnreadable": "This photo could not be read. Choose a PNG, JPEG or WebP image.",
+    "photoTooLarge": "This photo is too large. Choose a smaller image."
   },
   "tx": {
     "metaTitle": "Transaction",

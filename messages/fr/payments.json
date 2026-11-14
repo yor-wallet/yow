@@ -212,5 +212,10 @@
       "unauthenticated": "Reconnectez-vous.",
       "generic": "Une erreur est survenue. Réessayez."
     }
+  },
+  "kycNotice": {
+    "title": "Vérifiez votre identité pour payer en crypto",
+    "text": "Envoyez une photo de votre pièce d’identité et un selfie. Dès que notre équipe les a validés, le paiement en crypto est débloqué pour votre compte.",
+    "cta": "Vérifier mon identité"
   }
 }

@@ -11,6 +11,7 @@ import type { PaymentMethodOption } from '@/lib/payments/types';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { topUpAction } from '@/app/[locale]/wallet/actions';
+import { KycRequiredNotice } from '@/components/payments/KycRequiredNotice';
 
 const ICONS: Record<string, LucideIcon> = { CARD: CreditCard, OOREDOO: Smartphone, OMANTEL: Smartphone, CRYPTO: Coins, GIFT_CARD: Gift };
 const QUICK_OMR = [5, 10, 20, 50];
@@ -65,9 +66,11 @@ export function TopUpForm({ methods, minBaisa, maxBaisa }: { methods: PaymentMet
   };
 
   const giftCard = methods.find((m) => m.id === 'GIFT_CARD');
+  const kycLocked = methods.some((m) => !m.available && m.reason === 'kyc_required');
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-6" data-testid="topup-form" noValidate>
+      {kycLocked ? <KycRequiredNotice /> : null}
       <div className="grid grid-cols-1 gap-3">
         <Input
           id={amountId}

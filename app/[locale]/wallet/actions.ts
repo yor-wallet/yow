@@ -12,6 +12,7 @@ import { asLocale } from '@/i18n/routing';
 import { isMoneyError } from '@/lib/wallet/errors';
 import { startTopUp } from '@/lib/payments/core';
 import { submitGiftCard } from '@/lib/payments/giftcards';
+import { notifyStaffOfGiftCard } from '@/lib/payments/giftcard-emails';
 import { isExternalProvider } from '@/lib/payments/types';
 
 export type TopUpActionResult =
@@ -91,6 +92,7 @@ export async function submitGiftCardAction(_prev: GiftCardFormState, formData: F
       data: { brand: values.brand as 'APPLE', code: String(formData.get('code') ?? ''), currency: values.currency as 'OMR', value: values.value },
       photo: buffer,
     });
+    if (!res.replayed) await notifyStaffOfGiftCard(res.id);
     revalidatePath('/[locale]/wallet', 'page');
     return { status: 'success', id: res.id };
   } catch (err) {

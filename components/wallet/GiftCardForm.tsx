@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useRef } from 'react';
+import { useActionState, useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { CheckCircle2, CircleAlert, ShieldCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -10,16 +10,48 @@ import { SubmitButton } from '@/components/ui/SubmitButton';
 import { buttonClasses } from '@/components/ui/Button';
 import { HudCorners } from '@/components/ui/HudCorners';
 import { submitGiftCardAction, type GiftCardFormState } from '@/app/[locale]/wallet/actions';
+import { prepareImage } from '@/components/delivery/compress-image';
 import { StatusBadge } from './StatusBadge';
 
 const BRANDS = ['APPLE', 'GOOGLE_PLAY', 'PLAYSTATION', 'XBOX', 'STEAM', 'NINTENDO', 'AMAZON', 'NETFLIX', 'RAZER_GOLD', 'OTHER'] as const;
 const CURRENCIES = ['OMR', 'USD', 'EUR', 'GBP', 'AED', 'SAR'] as const;
+/** Below the host's request limit (4.5 MB) with room for the other fields. */
+const MAX_PHOTO_BYTES = 3_500_000;
 
 export function GiftCardForm() {
   const t = useTranslations('wallet.giftCard');
   const tp = useTranslations('payments');
   const [state, action] = useActionState<GiftCardFormState, FormData>(submitGiftCardAction, { status: 'idle' });
   const successRef = useRef<HTMLDivElement>(null);
+  const [photoState, setPhotoState] = useState<'idle' | 'preparing' | 'unreadable' | 'too_large'>('idle');
+
+  /**
+   * Phone photos are often heavier than what the host accepts in one request (4.5 MB). The photo is
+   * downscaled and re-encoded on the device (which also strips its location data) and swapped into the
+   * field, so the normal form submission sends the light version.
+   */
+  const onPhoto = async (e: ChangeEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const file = input.files?.[0];
+    if (!file) return setPhotoState('idle');
+    setPhotoState('preparing');
+    try {
+      const prepared = await prepareImage(file, { maxDimension: 2000, maxOutputBytes: MAX_PHOTO_BYTES });
+      URL.revokeObjectURL(prepared.url);
+      const dt = new DataTransfer();
+      dt.items.add(new File([prepared.blob], 'gift-card.jpg', { type: 'image/jpeg' }));
+      input.files = dt.files;
+      setPhotoState('idle');
+    } catch (err) {
+      const code = err instanceof Error ? err.message : '';
+      // No canvas / DataTransfer on this browser: keep the original when it is light enough to be sent.
+      if (code !== 'too_large' && code !== 'image_unreadable' && code !== 'heic_unsupported' && code !== 'unsupported_type' && file.size <= MAX_PHOTO_BYTES) {
+        return setPhotoState('idle');
+      }
+      input.value = '';
+      setPhotoState(code === 'too_large' || file.size > MAX_PHOTO_BYTES ? 'too_large' : 'unreadable');
+    }
+  };
 
   useEffect(() => {
     if (state.status === 'success') successRef.current?.focus();
@@ -105,7 +137,16 @@ export function GiftCardForm() {
           required
         />
       </div>
-      <Input name="photo" type="file" label={t('photo')} hint={t('photoHint')} error={fieldError('photo')} accept="image/png,image/jpeg,image/webp" className="file:me-3 file:rounded-lg file:border-0 file:bg-surface-2 file:px-3 file:py-1.5 file:text-sm file:text-fg" />
+      <Input
+        name="photo"
+        type="file"
+        label={t('photo')}
+        hint={photoState === 'preparing' ? t('photoPreparing') : t('photoHint')}
+        error={photoState === 'unreadable' ? t('photoUnreadable') : photoState === 'too_large' ? t('photoTooLarge') : fieldError('photo')}
+        accept="image/png,image/jpeg,image/webp"
+        onChange={onPhoto}
+        data-testid="giftcard-photo"
+        className="file:me-3 file:rounded-lg file:border-0 file:bg-surface-2 file:px-3 file:py-1.5 file:text-sm file:text-fg" />
       <Checkbox name="consent" label={t('consent')} error={fieldError('consent')} required />
 
       {formError ? (
@@ -115,7 +156,7 @@ export function GiftCardForm() {
         </p>
       ) : null}
 
-      <SubmitButton variant="accent" size="lg" fullWidth className="min-h-14" loadingLabel={t('submitting')} data-testid="giftcard-submit" leadingIcon={<ShieldCheck size={18} aria-hidden="true" />}>
+      <SubmitButton variant="accent" size="lg" fullWidth className="min-h-14" loadingLabel={t('submitting')} data-testid="giftcard-submit" disabled={photoState === 'preparing'} leadingIcon={<ShieldCheck size={18} aria-hidden="true" />}>
         {t('submit')}
       </SubmitButton>
     </form>

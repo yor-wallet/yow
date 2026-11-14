@@ -7,13 +7,12 @@ import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import { formatBaisa } from '@/lib/money';
 import { payOrderAction } from '@/app/[locale]/orders/actions';
+import { KycRequiredNotice } from '@/components/payments/KycRequiredNotice';
 import type { CheckoutMethod } from './CheckoutForm';
 
 const ORDERABLE = ['WALLET', 'CARD', 'OOREDOO', 'OMANTEL', 'CRYPTO'] as const;
 type Orderable = (typeof ORDERABLE)[number];
 const isOrderable = (id: string): id is Orderable => (ORDERABLE as readonly string[]).includes(id);
-const REASONS = new Set(['not_configured', 'carrier_agreement_required', 'licensed_processor_required', 'login_required', 'insufficient_balance', 'wallet_frozen', 'gift_card_via_wallet', 'flex_apply_from_product', 'amount_below_minimum', 'amount_above_maximum']);
-const ERRORS = new Set(['invalid_input', 'invalid_amount', 'amount_below_minimum', 'amount_above_maximum', 'method_unavailable', 'idempotency_key_reused', 'idempotency_conflict', 'insufficient_balance', 'wallet_frozen', 'not_found', 'forbidden', 'order_not_payable', 'order_already_paid', 'provider_unavailable', 'provider_error']);
 
 /** Pay (or retry paying) an unpaid order. One idempotency key per (order, method): retries and double taps never pay twice. */
 export function PayOrderPanel({ number, totalBaisa, methods, expiresAt }: { number: string; totalBaisa: number; methods: CheckoutMethod[]; expiresAt: string }) {
@@ -84,15 +83,16 @@ export function PayOrderPanel({ number, totalBaisa, methods, expiresAt }: { numb
                   {t(`methods.${m.id as Orderable}.label`)}
                   {on ? <Check size={18} aria-hidden="true" className="text-accent" /> : null}
                 </span>
-                <span className="text-sm text-muted">{m.available ? t(`methods.${m.id as Orderable}.description`) : m.reason && REASONS.has(m.reason) ? t(`reasons.${m.reason as 'not_configured'}`) : t('reasons.not_configured')}</span>
+                <span className="text-sm text-muted">{m.available ? t(`methods.${m.id as Orderable}.description`) : m.reason && t.has(`reasons.${m.reason}` as never) ? t(`reasons.${m.reason as 'not_configured'}`) : t('reasons.not_configured')}</span>
               </button>
             </li>
           );
         })}
       </ul>
+      {methods.some((m) => isOrderable(m.id) && !m.available && m.reason === 'kyc_required') ? <KycRequiredNotice /> : null}
       {error ? (
         <p role="alert" className="text-sm font-medium text-error" data-testid="pay-error">
-          {ERRORS.has(error) ? t(`errors.${error as 'not_found'}`) : t('errors.generic')}
+          {t.has(`errors.${error}` as never) ? t(`errors.${error as 'not_found'}`) : t('errors.generic')}
         </p>
       ) : null}
       <Button type="button" size="lg" disabled={!chosen} loading={pending} loadingLabel={t('pay.paying')} onClick={pay} data-testid="pay-button">

@@ -114,7 +114,7 @@
     "value": "Valeur faciale",
     "valueHint": "Telle qu'imprimée sur la carte. Le montant crédité est la valeur réellement encaissée, qui peut être inférieure.",
     "photo": "Photo de la carte (facultatif)",
-    "photoHint": "PNG, JPEG ou WebP, 8 Mo maximum. Stockée chiffrée.",
+    "photoHint": "PNG, JPEG ou WebP. La photo est réduite sur votre téléphone avant l’envoi, puis stockée chiffrée.",
     "consent": "Je suis propriétaire de cette carte et je comprends que mon portefeuille n'est crédité qu'après vérification, de la valeur réellement encaissée.",
     "consentRequired": "Confirmez cette déclaration pour continuer.",
     "submit": "Envoyer pour vérification",
@@ -132,7 +132,10 @@
       "required": "Ce champ est obligatoire."
     },
     "fee": "Une commission d'échange de {percent} est retenue sur la valeur réellement encaissée.",
-    "paused": "Le rechargement par carte cadeau est temporairement indisponible."
+    "paused": "Le rechargement par carte cadeau est temporairement indisponible.",
+    "photoPreparing": "Préparation de la photo…",
+    "photoUnreadable": "Cette photo est illisible. Choisissez une image PNG, JPEG ou WebP.",
+    "photoTooLarge": "Cette photo est trop lourde. Choisissez une image plus petite."
   },
   "tx": {
     "metaTitle": "Opération",

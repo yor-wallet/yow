@@ -359,6 +359,13 @@
       "forbidden": "Vous n'avez pas la permission de faire cela.",
       "not_found": "Cette livraison n'existe plus.",
       "not_reviewable": "Cette demande a déjà été tranchée."
+    },
+    "giftcard": {
+      "self_review": "Vous ne pouvez pas traiter une carte envoyée depuis votre propre compte.",
+      "already_decided": "Une décision a déjà été enregistrée pour cette carte.",
+      "invalid_amount": "Saisissez la valeur réellement encaissée (supérieure à 0, 5 000 OMR au plus).",
+      "not_found": "Cette carte cadeau n’existe plus.",
+      "forbidden": "Vous n’avez pas le droit de traiter les cartes cadeaux."
     }
   },
   "filters": {
@@ -857,6 +864,62 @@
     "requestDocs": "Documents à renvoyer",
     "save": "Enregistrer la décision",
     "noDecideRight": "Seul un administrateur peut décider.",
+    "alreadyDecided": "Une décision a déjà été enregistrée."
+  },
+  "giftCards": {
+    "title": "Cartes cadeaux",
+    "subtitle": "Les clients envoient une carte cadeau ; vous la contrôlez et l’encaissez, puis vous la validez : la valeur réellement encaissée est ajoutée à leur portefeuille, moins la commission d’échange. Chaque affichage d’un code ou d’une photo est enregistré.",
+    "detailTitle": "Carte cadeau",
+    "emailOff": "Les e-mails ne sont pas encore configurés : l’équipe n’est pas alertée par e-mail à l’arrivée d’une carte.",
+    "tabsLabel": "Filtrer par statut",
+    "empty": "Rien ici.",
+    "sentAt": "Envoyée le {date}",
+    "otherBrand": "Autre marque",
+    "status": {
+      "SUBMITTED": "À vérifier",
+      "UNDER_REVIEW": "En cours de vérification",
+      "VERIFIED": "Vérifiée et créditée",
+      "REJECTED": "Refusée"
+    },
+    "card": "Carte",
+    "brand": "Marque",
+    "declaredValue": "Valeur déclarée par le client",
+    "codeEnding": "Fin du code",
+    "sentLabel": "Envoyée",
+    "customer": "Client",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "identity": "Identité",
+    "accountSince": "Compte créé",
+    "photo": "Photo de la carte",
+    "photoAlt": "Photo de la carte {brand} envoyée par le client",
+    "noPhoto": "Le client n’a pas joint de photo.",
+    "photoAudit": "Chaque ouverture de la photo est enregistrée dans le journal d’audit.",
+    "revealCode": "Afficher le code de la carte",
+    "revealing": "Ouverture…",
+    "hideCode": "Masquer",
+    "copy": "Copier",
+    "copied": "Copié",
+    "revealError": "Le code n’a pas pu être affiché. Rechargez la page et réessayez.",
+    "codeAudit": "Chaque affichage du code est enregistré dans le journal d’audit.",
+    "decision": "Décision",
+    "decisionLabel": "Décision",
+    "decide": {
+      "VERIFIED": "Valider et créditer le portefeuille",
+      "REJECTED": "Refuser la carte",
+      "UNDER_REVIEW": "Marquer « en cours de vérification »"
+    },
+    "encashedValue": "Valeur réellement encaissée",
+    "encashedHint": "Obligatoire pour valider. Ce montant est ajouté au portefeuille du client.",
+    "encashedHintFee": "Obligatoire pour valider. Le portefeuille reçoit ce montant moins la commission d’échange de {percent}.",
+    "commission": "Commission d’échange retenue",
+    "credited": "Ajouté au portefeuille",
+    "reviewed": "Décision",
+    "notes": "Note",
+    "notesHint": "Obligatoire pour refuser (conservée au dossier).",
+    "save": "Enregistrer la décision",
+    "ownCard": "Cette carte a été envoyée depuis votre propre compte : un autre membre de l’équipe doit la traiter.",
     "alreadyDecided": "Une décision a déjà été enregistrée."
   }
 }

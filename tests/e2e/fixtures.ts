@@ -31,6 +31,11 @@ export function createKycRequest(userId: string, fullName: string): { id: string
   return task<{ id: string }>({ task: 'createKycSubmission', userId, fullName });
 }
 
+/** A gift card sent by a customer (real submission: validated and encrypted), waiting for the finance team. */
+export function createGiftCard(userId: string, code: string, value = '100'): { id: string } {
+  return task<{ id: string }>({ task: 'createGiftCard', userId, code, value });
+}
+
 /** The locale-less path of a valid e-mail confirmation link for a user. */
 export function emailVerifyPath(userId: string): string {
   return task<{ path: string }>({ task: 'emailVerifyUrl', userId }).path;

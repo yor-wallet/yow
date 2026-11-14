@@ -13,6 +13,7 @@ import { useHistoryModal } from '@/components/ui/useHistoryModal';
 import { Price } from '@/components/ui/Price';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
+import { KycRequiredNotice } from '@/components/payments/KycRequiredNotice';
 import { formatBaisa } from '@/lib/money';
 import type { GovernorateOption } from '@/lib/delivery/geo';
 import { placeOrderAction, type CheckoutErrorKey } from '@/app/[locale]/(shop)/checkout/actions';
@@ -54,7 +55,6 @@ type OrderableMethod = (typeof ORDERABLE)[number];
 const isOrderable = (id: Method): id is OrderableMethod => (ORDERABLE as readonly string[]).includes(id);
 /** Reasons (quote.reasons.*) the delivery namespace can translate. */
 const DELIVERY_REASONS = new Set(['invalid_input', 'zone_not_found', 'zone_inactive', 'not_configured', 'express_not_offered', 'not_express_eligible', 'parcel_unknown', 'capacity_full', 'capacity_not_configured', 'after_cutoff']);
-const PAYMENT_REASONS = new Set(['not_configured', 'carrier_agreement_required', 'licensed_processor_required', 'login_required', 'insufficient_balance', 'wallet_frozen', 'gift_card_via_wallet', 'flex_apply_from_product', 'amount_below_minimum', 'amount_above_maximum']);
 
 /** One idempotency key per (cart contents, address, delivery, promo, method): reused on retry / Back / double-click. */
 function useIdempotencyKey(signature: string): string {
@@ -160,7 +160,7 @@ export function CheckoutForm({
   const reasonText = (kind: 'delivery' | 'payment', reason?: string | null) => {
     if (!reason) return null;
     if (kind === 'delivery') return DELIVERY_REASONS.has(reason) ? td(`quote.reasons.${reason as 'invalid_input'}`) : td('quote.reasons.not_configured');
-    return PAYMENT_REASONS.has(reason) ? tp(`reasons.${reason as 'not_configured'}`) : tp('reasons.not_configured');
+    return tp.has(`reasons.${reason}` as never) ? tp(`reasons.${reason as 'not_configured'}`) : tp('reasons.not_configured');
   };
 
   return (
@@ -330,6 +330,7 @@ export function CheckoutForm({
                 })}
             </ul>
           )}
+          {methods.some((m) => isOrderable(m.id) && !m.available && m.reason === 'kyc_required') ? <KycRequiredNotice className="mt-3" /> : null}
         </Section>
 
         <Section icon={<AlertCircle size={20} aria-hidden="true" />} title={t('steps.notes')} id="co-notes">

@@ -12,6 +12,7 @@ import { addItem } from '@/lib/cart/store';
 import { placeOrder } from '@/lib/orders/place';
 import { expectedMicro, formatUsdt } from '@/lib/payments/onchain/amount';
 import { emailVerificationUrl } from '@/lib/auth/email-verification';
+import { submitGiftCard } from '@/lib/payments/giftcards';
 import { ensureWallet, getBalance, makeReference, postTransaction, systemAccountId, withLedgerTx } from '@/lib/wallet/ledger';
 
 type Task =
@@ -21,6 +22,7 @@ type Task =
   | { task: 'walletBalance'; userId: string }
   | { task: 'createCryptoIntent'; userId: string }
   | { task: 'createKycSubmission'; userId: string; fullName: string }
+  | { task: 'createGiftCard'; userId: string; code: string; value: string }
   | { task: 'emailVerifyUrl'; userId: string }
   | { task: 'placeUnpaidOrder'; userId: string; variantSku: string; qty: number };
 
@@ -92,6 +94,11 @@ async function run(t: Task): Promise<unknown> {
       const sub = await prisma.kycSubmission.create({ data: { userId: t.userId, fullName: t.fullName, status: 'PENDING' }, select: { id: true } });
       await prisma.user.update({ where: { id: t.userId }, data: { kycStatus: 'PENDING' } });
       return { id: sub.id };
+    }
+    case 'createGiftCard': {
+      // Through the real submission (validation, encryption, duplicate check), like the customer's form.
+      const res = await submitGiftCard({ userId: t.userId, data: { brand: 'APPLE', code: t.code, currency: 'OMR', value: t.value } });
+      return { id: res.id };
     }
     case 'emailVerifyUrl': {
       const user = await prisma.user.findUniqueOrThrow({ where: { id: t.userId }, select: { id: true, email: true, locale: true } });

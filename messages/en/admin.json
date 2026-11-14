@@ -359,6 +359,13 @@
       "forbidden": "You do not have permission to do this.",
       "not_found": "This delivery no longer exists.",
       "not_reviewable": "This request was already decided."
+    },
+    "giftcard": {
+      "self_review": "You cannot handle a card sent from your own account.",
+      "already_decided": "A decision was already recorded for this card.",
+      "invalid_amount": "Enter the value actually encashed (above 0, at most 5,000 OMR).",
+      "not_found": "This gift card no longer exists.",
+      "forbidden": "You do not have permission to handle gift cards."
     }
   },
   "filters": {
@@ -857,6 +864,62 @@
     "requestDocs": "Documents to send again",
     "save": "Save the decision",
     "noDecideRight": "Only an administrator can decide.",
+    "alreadyDecided": "A decision was already recorded."
+  },
+  "giftCards": {
+    "title": "Gift cards",
+    "subtitle": "Customers send a gift card; you check and encash it, then verify it: the value actually encashed is added to their wallet, minus the exchange commission. Every view of a code or photo is recorded.",
+    "detailTitle": "Gift card",
+    "emailOff": "E-mails are not configured yet: the team is not alerted by e-mail when a card arrives.",
+    "tabsLabel": "Filter by status",
+    "empty": "Nothing here.",
+    "sentAt": "Sent on {date}",
+    "otherBrand": "Other brand",
+    "status": {
+      "SUBMITTED": "To verify",
+      "UNDER_REVIEW": "Being verified",
+      "VERIFIED": "Verified and credited",
+      "REJECTED": "Refused"
+    },
+    "card": "Card",
+    "brand": "Brand",
+    "declaredValue": "Value declared by the customer",
+    "codeEnding": "Code ending",
+    "sentLabel": "Sent",
+    "customer": "Customer",
+    "name": "Name",
+    "email": "E-mail",
+    "phone": "Phone",
+    "identity": "Identity",
+    "accountSince": "Account created",
+    "photo": "Photo of the card",
+    "photoAlt": "Photo of the {brand} card sent by the customer",
+    "noPhoto": "The customer did not attach a photo.",
+    "photoAudit": "Each opening of the photo is recorded in the audit log.",
+    "revealCode": "Show the card code",
+    "revealing": "Opening…",
+    "hideCode": "Hide",
+    "copy": "Copy",
+    "copied": "Copied",
+    "revealError": "The code could not be shown. Reload the page and try again.",
+    "codeAudit": "Each display of the code is recorded in the audit log.",
+    "decision": "Decision",
+    "decisionLabel": "Decision",
+    "decide": {
+      "VERIFIED": "Verify and credit the wallet",
+      "REJECTED": "Refuse the card",
+      "UNDER_REVIEW": "Mark as being verified"
+    },
+    "encashedValue": "Value actually encashed",
+    "encashedHint": "Required to verify. This amount is added to the customer’s wallet.",
+    "encashedHintFee": "Required to verify. The wallet receives this amount minus the {percent} exchange commission.",
+    "commission": "Exchange commission kept",
+    "credited": "Added to the wallet",
+    "reviewed": "Decision",
+    "notes": "Note",
+    "notesHint": "Required to refuse (kept in the file).",
+    "save": "Save the decision",
+    "ownCard": "This card was sent from your own account: another member of the team must handle it.",
     "alreadyDecided": "A decision was already recorded."
   }
 }

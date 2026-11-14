@@ -212,5 +212,10 @@
       "unauthenticated": "Please sign in again.",
       "generic": "Something went wrong. Please try again."
     }
+  },
+  "kycNotice": {
+    "title": "Verify your identity to pay with crypto",
+    "text": "Send a photo of your ID and a selfie. As soon as our team has validated them, crypto payment is unlocked for your account.",
+    "cta": "Verify my identity"
   }
 }
