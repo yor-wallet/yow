@@ -53,6 +53,7 @@
   --animate-shimmer: doom-shimmer 1.6s linear infinite;
   --animate-fade-in: doom-fade-in var(--dur-nav) var(--ease-premium) both;
   --animate-slide-up: doom-slide-up var(--dur-card) var(--ease-premium) both;
+  --animate-drawer-in: doom-drawer-in var(--dur-nav) var(--ease-premium) both;
   --animate-sheet-in: doom-sheet-in var(--dur-nav) var(--ease-premium) both;
   --animate-modal-in: doom-modal-in var(--dur-nav) var(--ease-premium) both;
   --animate-toast-in: doom-toast-in var(--dur-nav) var(--ease-premium) both;
@@ -69,6 +70,11 @@
   @keyframes doom-slide-up {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: none; }
+  }
+  /* Drawer: enters from the start side (the logical start flips with the direction). */
+  @keyframes doom-drawer-in {
+    from { transform: translateX(-100%); }
+    to { transform: none; }
   }
   @keyframes doom-sheet-in {
     from { transform: translateY(100%); }
@@ -766,5 +772,18 @@ html[lang='ar'] {
   [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* In right-to-left pages the start side is the right: the drawer slides in from there. */
+[dir='rtl'] .animate-drawer-in {
+  animation-name: doom-drawer-in-rtl;
+}
+@keyframes doom-drawer-in-rtl {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
   }
 }

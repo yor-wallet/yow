@@ -97,8 +97,8 @@ async function auditPage(ctx, locale, path, device) {
       const where = `${c.tag}${c.testid ? `[${c.testid}]` : ''} "${c.name || c.href || ''}"`;
       if (!c.name) entry.issues.push({ kind: 'no-name', where, href: c.href });
       if (c.tag === 'a' && (!c.href || c.href === '#' || /^javascript:/i.test(c.href))) entry.issues.push({ kind: 'dead-link', where, href: c.href });
-      // Known exception: the 7 slide dots of the home carousel are 40 × 44 (seven 44 px dots do not fit a 390 px banner; the carousel is also swipeable and has previous / next buttons from 430 px).
-      const carouselDot = /^عرض الشريحة|^Show slide|^Afficher la diapositive/.test(c.name) && c.w >= 28 && c.h >= 44;
+      // Known exception: the 7 slide dots of the home carousel are 24–40 × 44 (WCAG 2.5.8 minimum 24) (seven 44 px dots do not fit a 390 px banner; the carousel is also swipeable and has previous / next buttons from 430 px).
+      const carouselDot = /^عرض الشريحة|^Show slide|^Afficher la diapositive/.test(c.name) && c.w >= 24 && c.h >= 44;
       if (c.visible && !c.disabled && !c.exempt && !carouselDot && (c.w < 44 || c.h < 44) && !(c.tag === 'a' && c.h >= 24 && c.w >= 44)) entry.issues.push({ kind: 'small-target', where: `${where} ${c.w}×${c.h}`, href: c.href });
     }
     const hrefs = [...new Set(controls.filter((c) => c.tag === 'a' && c.href && !/^(#|mailto:|tel:|javascript:|https?:\/\/(?!localhost))/i.test(c.href)).map((c) => c.href.split('#')[0]))];

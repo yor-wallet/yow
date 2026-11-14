@@ -1,4 +1,4 @@
-import { Bell, BadgePercent, ShoppingCart, UserRound, Wallet, LayoutDashboard } from 'lucide-react';
+import { Bell, BadgePercent, UserRound, Wallet, LayoutDashboard } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getSession } from '@/lib/auth/session';
@@ -12,6 +12,7 @@ import { MegaMenu } from './MegaMenu';
 import { ThemeToggle } from './ThemeToggle';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { MobileHeader } from './MobileHeader';
+import { QuickCart } from './QuickCart';
 
 const iconLink =
   'relative inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-semibold text-fg transition-colors duration-(--dur-btn) hover:bg-surface-2';
@@ -69,10 +70,7 @@ export async function Header() {
               <span className="hidden xl:inline">{counts.signedIn ? t('account') : t('login')}</span>
               <span className="sr-only xl:hidden">{counts.signedIn ? t('account') : t('login')}</span>
             </Link>
-            <Link href="/cart" className={iconLink} aria-label={t('cartCount', { count: counts.cart })} data-testid="header-cart">
-              <ShoppingCart size={20} aria-hidden="true" />
-              <CountBubble count={counts.cart} className="top-0.5 end-0.5" />
-            </Link>
+            <QuickCart count={counts.cart} className={iconLink} />
             <span aria-hidden="true" className="mx-1 h-6 w-px bg-border" />
             <ThemeToggle />
             <LocaleSwitcher />

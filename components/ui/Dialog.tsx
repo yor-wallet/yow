@@ -54,7 +54,7 @@ export function DialogFrame({
   hideTitle,
   className,
   variant,
-}: DialogProps & { variant: 'modal' | 'sheet' }) {
+}: DialogProps & { variant: 'modal' | 'sheet' | 'drawer' }) {
   const t = useTranslations('common.actions');
   const [mounted, setMounted] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -116,11 +116,12 @@ export function DialogFrame({
   if (!mounted || !open) return null;
 
   const isSheet = variant === 'sheet';
+  const isDrawer = variant === 'drawer';
 
   return createPortal(
     <div
-      className={cn('fixed inset-0 z-[80] flex justify-center', isSheet ? 'items-end' : 'items-center p-4 sm:p-6')}
-      style={isSheet ? undefined : { paddingTop: 'max(1rem, var(--safe-top))', paddingBottom: 'max(1rem, var(--safe-bottom))' }}
+      className={cn('fixed inset-0 z-[80] flex', isDrawer ? 'items-stretch justify-start' : cn('justify-center', isSheet ? 'items-end' : 'items-center p-4 sm:p-6'))}
+      style={isSheet || isDrawer ? undefined : { paddingTop: 'max(1rem, var(--safe-top))', paddingBottom: 'max(1rem, var(--safe-bottom))' }}
     >
       <div
         aria-hidden="true"
@@ -137,9 +138,11 @@ export function DialogFrame({
         tabIndex={-1}
         className={cn(
           'relative flex w-full flex-col overflow-hidden border border-border bg-surface text-fg shadow-float outline-none',
-          isSheet
-            ? 'max-h-[calc(100dvh-var(--safe-top)-24px)] max-w-2xl animate-sheet-in rounded-t-3xl'
-            : 'max-h-full max-w-lg animate-modal-in rounded-card',
+          isDrawer
+            ? 'h-full max-w-md animate-drawer-in rounded-none border-y-0 border-s-0'
+            : isSheet
+              ? 'max-h-[calc(100dvh-var(--safe-top)-24px)] max-w-2xl animate-sheet-in rounded-t-3xl'
+              : 'max-h-full max-w-lg animate-modal-in rounded-card',
           className,
         )}
       >

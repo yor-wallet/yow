@@ -51,5 +51,15 @@
     "title": "Moyen de paiement",
     "hint": "Vous choisissez le moyen de paiement à l'étape suivante. Un paiement n'est confirmé qu'une fois réellement reçu.",
     "unavailable": "Indisponible"
+  },
+  "quick": {
+    "open": "Panier rapide",
+    "title": "Votre panier",
+    "empty": "Votre panier est vide.",
+    "viewCart": "Voir le panier complet",
+    "checkout": "Continuer vers le paiement",
+    "loading": "Chargement de votre panier…",
+    "error": "Votre panier n'a pas pu être chargé.",
+    "retry": "Réessayer"
   }
 }

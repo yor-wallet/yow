@@ -315,3 +315,43 @@ test.describe('search suggestions', () => {
     await expect(page.getByTestId('search-suggestions')).toContainText('No suggestion');
   });
 });
+
+test.describe('quick cart drawer (desktop header)', () => {
+  test.beforeEach(async ({ page }) => {
+    test.skip(!isDesktop(page), 'the drawer lives in the desktop header; phones use the cart page');
+    await useUniqueIp(page);
+  });
+
+  test('opens from the header, edits quantities from the server data, closes with Escape and returns the focus', async ({ page }) => {
+    await gotoReady(page, alpha);
+    await pickCapacity(page, '256GB');
+    await page.getByTestId('add-to-cart').click();
+    await expect(page.getByText('Added to cart').first()).toBeVisible();
+
+    const opener = page.getByTestId('header-cart');
+    await opener.click();
+    const dialog = page.getByRole('dialog', { name: 'Your cart' });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByTestId('quick-cart-line')).toHaveCount(1);
+    await expect(dialog.getByTestId('quick-cart-line')).toContainText('E2E Alpha Phone');
+    await expect(dialog).toContainText('130.000');
+
+    await dialog.getByRole('button', { name: /Increase quantity of E2E Alpha Phone/ }).click();
+    await expect(dialog.getByTestId('quick-cart-line').locator('output')).toHaveText('2');
+    await expect(dialog).toContainText('260.000');
+
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(opener).toBeFocused();
+
+    await opener.click();
+    await dialog.getByTestId('quick-cart-open-cart').click();
+    await expect(page).toHaveURL(/\/en\/cart$/);
+  });
+
+  test('an empty cart says so', async ({ page }) => {
+    await gotoReady(page, '/en');
+    await page.getByTestId('header-cart').click();
+    await expect(page.getByTestId('quick-cart-empty')).toBeVisible();
+  });
+});

@@ -52,7 +52,7 @@ for (const path of PAGES) {
         const parent = el.parentElement;
         const stretched = el.tagName === 'A' && getComputedStyle(el, '::after').position === 'absolute';
         const inSentence = el.tagName === 'A' && !!parent && ['P', 'LABEL', 'SPAN', 'LI', 'DD'].includes(parent.tagName) && (parent.innerText || '').trim().length > ((el as HTMLElement).innerText || '').trim().length + 6;
-        const dot = /^(عرض الشريحة|Show slide|Afficher la diapositive)/.test(name) && r.width >= 28 && r.height >= 44;
+        const dot = /^(عرض الشريحة|Show slide|Afficher la diapositive)/.test(name) && r.width >= 24 && r.height >= 44;
         if ((Math.round(r.width) < 44 || Math.round(r.height) < 44) && !stretched && !inSentence && !dot) out.push({ kind: 'small-target', what: `${what} ${Math.round(r.width)}×${Math.round(r.height)}` });
       }
       return out;

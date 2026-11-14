@@ -51,5 +51,15 @@
     "title": "Payment method",
     "hint": "You choose how to pay at the next step. A payment is confirmed only when it is really received.",
     "unavailable": "Unavailable"
+  },
+  "quick": {
+    "open": "Quick cart",
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "viewCart": "View full cart",
+    "checkout": "Continue to payment",
+    "loading": "Loading your cart…",
+    "error": "Your cart could not be loaded.",
+    "retry": "Try again"
   }
 }

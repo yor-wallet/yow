@@ -1,0 +1,63 @@
+{
+  "base": "http://localhost:3000",
+  "at": "2026-11-14T01:22:49.313Z",
+  "runs": 3,
+  "results": [
+    {
+      "device": "phone",
+      "page": "home",
+      "lcpMs": 1176,
+      "cls": 0.007,
+      "inpMs": 256
+    },
+    {
+      "device": "phone",
+      "page": "category",
+      "lcpMs": 1000,
+      "cls": 0.001,
+      "inpMs": 104
+    },
+    {
+      "device": "phone",
+      "page": "product",
+      "lcpMs": 1300,
+      "cls": 0.04,
+      "inpMs": 112
+    },
+    {
+      "device": "phone",
+      "page": "cart",
+      "lcpMs": 936,
+      "cls": 0.005,
+      "inpMs": 80
+    },
+    {
+      "device": "desktop",
+      "page": "home",
+      "lcpMs": 836,
+      "cls": 0.001,
+      "inpMs": 168
+    },
+    {
+      "device": "desktop",
+      "page": "category",
+      "lcpMs": 476,
+      "cls": 0.001,
+      "inpMs": 72
+    },
+    {
+      "device": "desktop",
+      "page": "product",
+      "lcpMs": 548,
+      "cls": 0.001,
+      "inpMs": 80
+    },
+    {
+      "device": "desktop",
+      "page": "cart",
+      "lcpMs": 460,
+      "cls": 0.002,
+      "inpMs": 64
+    }
+  ]
+}
