@@ -18,7 +18,6 @@ import { DeliverTo, type AreaChoice } from '@/components/layout/DeliverTo';
 import { cartErrorKey, FavoriteButton, ShareButton } from './ProductCardActions';
 import { ProductGallery } from './ProductGallery';
 import { Ltr, ltr } from '@/components/ui/Ltr';
-import { resolveDeviceArt } from '@/lib/devices/art';
 
 /** "256 GB" / "1 TB" → comparable number of GB (unknown formats sort last, keeping input order). */
 function capacityRank(value: string): number {
@@ -48,7 +47,6 @@ export type HeroDelivery = {
 
 export function ProductHero({ product, favorite, delivery }: { product: ProductDetail; favorite: boolean; delivery: HeroDelivery }) {
   const t = useTranslations('product');
-  const tg = useTranslations('product.gallery');
   const tc = useTranslations('catalog');
   const locale = useLocale();
   const router = useRouter();
@@ -96,13 +94,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
     product.images.find((i) => i.variantId === selectedId)?.id ??
     (selected?.color ? product.images.find((i) => i.variantId && product.variants.find((v) => v.id === i.variantId)?.color === selected.color)?.id : undefined) ??
     null;
-  const art = resolveDeviceArt({
-    brand: product.brand?.name ?? null,
-    name: product.name,
-    categorySlug: product.category.slug,
-    rootCategorySlug: product.category.parent?.slug ?? product.category.slug,
-    colorHex: selected?.colorHex ?? null,
-  });
+  const hasPrice = !!selected && selected.priceBaisa !== null;
 
   const addToCart = (then?: 'checkout') =>
     start(async () => {
@@ -124,7 +116,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10" data-testid="product-hero">
-      <ProductGallery images={product.images} activeId={activeImage} name={product.name} art={art} artLabel={`${tg('illustration')} — ${product.name}${selected?.color ? `, ${selected.color}` : ''}`} />
+      <ProductGallery images={product.images} activeId={activeImage} name={product.name} />
 
       <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
         <div className="min-w-0 lg:order-1">
@@ -250,7 +242,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
         ) : null}
 
         {/* Price (+ the collapsible details on phones). */}
-        <div className="flex items-start justify-between gap-3 lg:order-2">
+        <div className={cn('flex items-start justify-between gap-3 lg:order-2', !hasPrice && 'max-lg:flex-col max-lg:items-stretch')}>
           <details className="group min-w-0 flex-1 lg:hidden" data-testid="product-details">
             <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-base font-semibold [&::-webkit-details-marker]:hidden">
               {t('details')}
@@ -274,7 +266,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
             </dl>
           </details>
 
-          <div className="flex min-w-0 flex-col gap-2 max-lg:items-end" data-testid="product-price">
+          <div className={cn('flex min-w-0 flex-col gap-2', hasPrice ? 'max-lg:items-end' : 'max-lg:items-start')} data-testid="product-price">
             {selected && selected.priceBaisa !== null ? (
               <Price baisa={selected.priceBaisa} compareAtBaisa={selected.compareAtBaisa} size="xl" showSavings />
             ) : (

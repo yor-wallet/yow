@@ -18,6 +18,7 @@ import { cleanup, createUser } from './shop/fixtures';
 
 const KEY = 'doom-photos-2026-11' as const;
 const WATCH = 'apple-watch-series-11';
+const BUDS = 'apple-airpods-pro-2';
 let catalog: Actor;
 let support: Actor;
 let watchIndex: number;
@@ -47,6 +48,7 @@ beforeAll(async () => {
   const pack = await loadVisualPack(KEY);
   watchIndex = pack.models.findIndex((m) => m.id === 'watch-series-11');
   await removeProduct(WATCH);
+  await removeProduct(BUDS);
   // Simulate a database seeded before the watch shelf existed (only when nothing else uses it).
   const shelf = await prisma.category.findUnique({ where: { slug: 'apple-watch' }, select: { id: true, _count: { select: { products: true } } } });
   if (shelf && shelf._count.products === 0) await prisma.category.delete({ where: { id: shelf.id } });
@@ -56,6 +58,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await removeProduct(WATCH);
+  await removeProduct(BUDS);
   for (const slug of createdCategories) {
     const c = await prisma.category.findUnique({ where: { slug }, select: { id: true, _count: { select: { products: true, children: true } } } });
     if (c && c._count.products === 0 && c._count.children === 0) await prisma.category.delete({ where: { id: c.id } });
@@ -65,13 +68,15 @@ afterAll(async () => {
 });
 
 describe('the owner photo pack', () => {
-  it('is well-formed: 10 models, 11 photos, every file exists, brands and shelves are known', async () => {
-    expect(await visualPackSummary(KEY)).toMatchObject({ models: 10, images: 11, origin: 'owner' });
+  it('is well-formed: 14 models, 15 photos, every file exists, brands and shelves are known', async () => {
+    expect(await visualPackSummary(KEY)).toMatchObject({ models: 14, images: 15, origin: 'owner' });
     const pack = await loadVisualPack(KEY);
     const root = path.join(process.cwd(), 'data/catalogue', KEY);
     const shelves = new Set(CATEGORIES.flatMap((c) => [c.slug, ...c.children.map((ch) => ch.slug)]));
     for (const m of pack.models) {
       expect(m.storage_fr, m.id).toEqual([]);
+      // A model sold as shown has exactly one finish; the others (sizes, bands) are for staff to define.
+      if (m.single_variant) expect(m.variants, m.id).toHaveLength(1);
       expect(BRANDS.some((b) => b.slug === m.brand?.slug), m.id).toBe(true);
       expect(shelves.has(m.category ?? ''), m.id).toBe(true);
       expect(m.to_verify, m.id).toBeTruthy();
@@ -94,7 +99,7 @@ describe('importing a photo-only model', () => {
     const first = await importVisualPackModel(catalog, KEY, watchIndex);
     if (!hadShelf) createdCategories.push('apple-watch');
     if (!hadParent) createdCategories.push('wearables');
-    expect(first).toMatchObject({ productCreated: true, variantsCreated: 0, imagesCreated: 2, total: 10 });
+    expect(first).toMatchObject({ productCreated: true, variantsCreated: 0, imagesCreated: 2, total: 14 });
 
     const p = await prisma.product.findUniqueOrThrow({ where: { slug: WATCH }, include: { variants: true, images: true, brand: true, category: { include: { parent: true } } } });
     expect(p.status).toBe('DRAFT');
@@ -114,5 +119,23 @@ describe('importing a photo-only model', () => {
     expect(again).toMatchObject({ productCreated: false, variantsCreated: 0, imagesCreated: 0 });
     expect(await prisma.productImage.count({ where: { productId: p.id } })).toBe(2);
     expect(await prisma.auditLog.count({ where: { action: 'catalogue.visuals.import', entityId: p.id } })).toBe(1);
+  }, 120_000);
+});
+
+describe('importing a model sold as shown', () => {
+  it('creates its single variant without price or stock, attaches the photo to it, and never twice', async () => {
+    const pack = await loadVisualPack(KEY);
+    const index = pack.models.findIndex((m) => m.id === 'airpods-pro-2');
+    const first = await importVisualPackModel(catalog, KEY, index);
+    expect(first).toMatchObject({ productCreated: true, variantsCreated: 1, imagesCreated: 1 });
+    const p = await prisma.product.findUniqueOrThrow({ where: { slug: BUDS }, include: { variants: true, images: true } });
+    expect(p.status).toBe('DRAFT');
+    expect(p.variants).toHaveLength(1);
+    expect(p.variants[0]).toMatchObject({ priceBaisa: null, stock: 0, isDefault: true });
+    expect(p.images).toHaveLength(1);
+    expect(p.images[0]!.variantId).toBe(p.variants[0]!.id);
+    const again = await importVisualPackModel(catalog, KEY, index);
+    expect(again).toMatchObject({ productCreated: false, variantsCreated: 0, imagesCreated: 0 });
+    expect(await prisma.productVariant.count({ where: { productId: p.id } })).toBe(1);
   }, 120_000);
 });

@@ -59,7 +59,7 @@ Modèles de données et prévisions de paiement (3/6/12 mois, dernière échéan
 ### Catalogue 2026 — ✅ (faits vérifiés) · ⛔ (prix, stocks, photos)
 Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
 - 46 modèles sur 48 vérifiés sur les pages officielles Apple / Samsung / HONOR / OPPO ; 420 variantes réelles (Apple, Samsung) créées **sans prix ni stock** ; HONOR et OPPO en brouillon (combinaisons à confirmer) ; 2 modèles OPPO à vérifier.
-- Boutique : filtres série et année, catégorie OPPO, caractéristiques officielles en 3 langues, illustrations vectorielles légendées tant qu'aucune photo n'existe, « prix bientôt disponible ».
+- Boutique : filtres série et année, catégorie OPPO, caractéristiques officielles en 3 langues, **plus aucune illustration dessinée** : la boutique n'affiche que les vraies photos (carte sans photo = pictogramme neutre, fiche = « Photos bientôt disponibles »), « prix bientôt disponible ».
 - Administration : grille prix/coût/stock par produit, export/import CSV avec simulation, compteurs « sans prix / sans photo », bouton « Appliquer le catalogue vérifié ».
 - ⛔ À saisir par l'équipe : prix, stocks, photos officielles, garanties, disponibilité locale.
 
@@ -69,3 +69,8 @@ Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
 - Passerelles à contrat (carte, Ooredoo, Omantel, cryptomonnaie, partenaire FLEX) : adaptateurs réels, inactifs sans configuration.
 - Le code des routes liées par l'en-tête et le pied de page mais non écrites répond encore par la page 404 localisée (`/wallet`, `/flex`, `/account/*`).
 - Les images envoyées par l'administration passent par une action serveur (limite 12 Mo dans `next.config.ts`) ; sur un hébergement qui plafonne le corps des requêtes plus bas (ex. 4,5 Mo), prévoir un envoi direct vers le stockage.
+
+### Photos produits sur la boutique (14 novembre 2026)
+- Les photos du propriétaire sont appliquées par **`npm run catalogue:photos`** (`-- --publish` publie les modèles vendus tels quels : AirPods Pro 2 / Pro 3 / Max, Watch Ultra 2, JBL Boombox 4 — sans prix ni stock, donc « prix bientôt disponible »). `scripts/vercel-build.sh` l'enchaîne avec `RUN_CATALOGUE_IMPORT=1` (jamais bloquant). Le pack du propriétaire compte maintenant 14 modèles / 15 photos (ajouts : Galaxy S25 Ultra, AirPods Max, AirPods Pro 2, Watch Ultra 2). L'enceinte Sony verte est gardée de côté (modèle exact non précisé).
+- À l'accueil comme en liste, à pertinence égale les produits avec photo passent en premier.
+- Les dessins `DeviceArt` ne sont plus appelés par la carte, la galerie ni la fiche (`components/devices/*` et `lib/devices/art.ts` restent dans le dépôt, inutilisés).

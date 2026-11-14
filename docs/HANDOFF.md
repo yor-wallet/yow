@@ -50,7 +50,7 @@ npx playwright test --project=iphone-se --project=ipad-mini --project=desktop --
 
 ## 5. Ce qui est livré (résumé ; détail dans `docs/STATUS.md`)
 
-Vitrine complète (accueil, catégories, recherche, fiche produit, panier, commande, commandes, favoris, comparateur, avis, produits associés), refonte téléphone selon la maquette du propriétaire, identité jaune/marine (novembre 2026), portefeuille / paiements / FLEX / compte / KYC / espace livreur (autre session), administration (produits, commandes avec préparation et livreurs, avis, zones et tarifs, campagnes, agents IA, **import de catalogue** : catalogue vérifié, pack de visuels iPhone, pack de photos du propriétaire, import CSV prix/stock). Tous les imports créent des **brouillons sans prix ni stock**.
+Vitrine complète (accueil, catégories, recherche, fiche produit, panier, commande, commandes, favoris, comparateur, avis, produits associés), refonte téléphone selon la maquette du propriétaire, identité jaune/marine (novembre 2026), portefeuille / paiements / FLEX / compte / KYC / espace livreur (autre session), administration (produits, commandes avec préparation et livreurs, avis, zones et tarifs, campagnes, agents IA, **import de catalogue** : catalogue vérifié, pack de visuels iPhone, pack de photos du propriétaire, import CSV prix/stock). Tous les imports créent des **brouillons sans prix ni stock**. Les photos s'appliquent avec `npm run catalogue:photos` (aucun dessin d'illustration n'est affiché : le propriétaire n'en veut pas).
 
 ## 6. Reste à faire
 

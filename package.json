@@ -18,6 +18,7 @@
     "brand:icons": "node scripts/generate-icons.mjs",
     "agents:run": "tsx scripts/run-agents.ts",
     "catalogue:import": "tsx scripts/import-verified-catalogue.ts",
+    "catalogue:photos": "tsx -r ./scripts/allow-server-only.cjs scripts/import-visual-packs.ts",
     "maintenance:cleanup": "tsx scripts/run-cleanup.ts",
     "predeploy": "tsx scripts/predeploy-check.ts"
   },

@@ -70,7 +70,7 @@ test.describe('admin access', () => {
     await expect(page.locator('[data-testid="visual-pack"][data-pack="iphone-visuals-2026"]')).toBeVisible();
     const owner = page.locator('[data-testid="visual-pack"][data-pack="doom-photos-2026-11"]');
     await expect(owner).toContainText("Owner's photos");
-    await expect(owner).toContainText('10 models · 11 photos');
+    await expect(owner).toContainText('14 models · 15 photos');
     await expect(owner).toContainText('names to verify');
     await gotoReady(page, '/ar/admin/products/import');
     await expectNoHorizontalOverflow(page);

@@ -60,7 +60,8 @@ function sortExpr(sort: SortKey, search: ParsedQuery | null): { expr: Prisma.Sql
       return { expr: Prisma.sql`COALESCE(v.min_price, -1)::bigint`, dir: 'DESC' };
     case 'relevance':
     default: {
-      const base = Prisma.sql`(CASE WHEN COALESCE(v.available, 0) > 0 THEN 8 ELSE 0 END + CASE WHEN p."isFeatured" THEN 4 ELSE 0 END + CASE WHEN p."isRecommended" THEN 2 ELSE 0 END)`;
+      // Lowest weight: between otherwise equal products, the ones with a real photo come first.
+      const base = Prisma.sql`(CASE WHEN COALESCE(v.available, 0) > 0 THEN 8 ELSE 0 END + CASE WHEN p."isFeatured" THEN 4 ELSE 0 END + CASE WHEN p."isRecommended" THEN 2 ELSE 0 END + CASE WHEN EXISTS (SELECT 1 FROM "ProductImage" pi WHERE pi."productId" = p.id) THEN 1 ELSE 0 END)`;
       if (search && search.tokens.length) {
         const whole = `%${escapeLike(search.text)}%`;
         const prefix = `${escapeLike(search.text)}%`;

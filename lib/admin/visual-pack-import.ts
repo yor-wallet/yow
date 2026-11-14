@@ -51,6 +51,8 @@ const packSchema = z.object({
         category: slug.optional(),
         /** What the pack's author could not confirm; shown to staff in the import notes. */
         to_verify: z.string().trim().max(400).optional(),
+        /** A model sold as shown (no size or capacity to choose): one variant per finish, without price or stock. */
+        single_variant: z.boolean().optional(),
         variants: z
           .array(
             z.object({
@@ -201,7 +203,7 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     candidateStorageGb: capacities,
     specsStatus:
       `Finishes${capacities.length ? ' and capacities' : ''} as listed in the pack (${checkedBy}).` +
-      (capacities.length ? '' : ' No variant created: staff create them.') +
+      (capacities.length ? '' : model.single_variant ? ' One variant per finish, without price.' : ' No variant created: staff create them.') +
       ' Prices, stock and local availability are still to be set.',
     toVerify: model.to_verify ?? null,
     sourceUrl: pack.sources.compare ?? pack.sources.models_and_colors ?? null,
@@ -252,6 +254,32 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
           data: { productId: product.id, variantId: null, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
         });
         imagesCreated++;
+      }
+      if (model.single_variant) {
+        // Sold as shown: the finish is the only choice, so the variant can exist before staff price it.
+        const sku = `${productSlug}-${finish.id}`.toUpperCase().slice(0, 60);
+        let variant = await prisma.productVariant.findUnique({ where: { sku }, select: { id: true, productId: true } });
+        if (variant && variant.productId !== product.id) throw new AdminError('validation', `SKU of ${finish.id} belongs to another product`);
+        if (!variant) {
+          variant = await prisma.productVariant.create({
+            data: {
+              productId: product.id,
+              sku,
+              name: { ar: finish.color_en, en: finish.color_en, fr: finish.color_en },
+              color: finish.color_en,
+              colorHex: await sampleSwatch(buf),
+              priceBaisa: null,
+              stock: 0,
+              isActive: true,
+              isDefault: !hasDefault,
+              sort: ++sort,
+            },
+            select: { id: true, productId: true },
+          });
+          hasDefault = true;
+          variantsCreated++;
+        }
+        await prisma.productImage.updateMany({ where: { productId: product.id, variantId: null, alt: { path: ['en'], equals: alt } }, data: { variantId: variant.id } });
       }
       continue;
     }

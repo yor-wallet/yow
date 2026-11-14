@@ -1,136 +1,327 @@
 {
   "title": "DOOM — Photos produits fournies par le propriétaire",
-  "verified_on": "2026-11-13",
+  "verified_on": "2026-11-14",
   "sources": {},
-  "image_format": { "webp": { "max_width": 960, "note": "Recadrage sur le produit et fond blanc uniquement (aucune retouche du produit). Originaux dans originals/." } },
+  "image_format": {
+    "webp": {
+      "max_width": 960,
+      "note": "Recadrage sur le produit et fond blanc uniquement (aucune retouche du produit). Originaux dans originals/."
+    }
+  },
   "excluded": [
-    { "file": "Unknown_3.jpeg", "reason": "iPhone 15 Bleu : la photo studio officielle Apple est déjà dans le pack iphone-visuals-2026." },
-    { "file": "Unknown_2.jpeg", "reason": "iPhone 15 Pro Max Titane naturel : photo officielle Apple déjà dans le pack iphone-visuals-2026." },
-    { "file": "iPhone_17_Pro_Max_256_GB_Cosmic_Orange.jpeg", "reason": "iPhone 17 Pro Max Orange cosmique : photo officielle Apple déjà dans le pack iphone-visuals-2026." },
-    { "file": "iPhone_17_Mist_Blue___The_Color_of_2026__.jpeg", "reason": "Filigrane gsmarena.com ; photo officielle Apple de l'iPhone 17 Bleu brume déjà dans le pack iphone-visuals-2026." },
-    { "file": "IPhone_18_pro_max.jpeg", "reason": "Filigrane GSMArena (rendu d'un site tiers) ; photo officielle de l'iPhone 18 Pro Max déjà dans le pack iphone-visuals-2026." }
+    {
+      "file": "Unknown_3.jpeg",
+      "reason": "iPhone 15 Bleu : la photo studio officielle Apple est déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "Unknown_2.jpeg",
+      "reason": "iPhone 15 Pro Max Titane naturel : photo officielle Apple déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "iPhone_17_Pro_Max_256_GB_Cosmic_Orange.jpeg",
+      "reason": "iPhone 17 Pro Max Orange cosmique : photo officielle Apple déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "iPhone_17_Mist_Blue___The_Color_of_2026__.jpeg",
+      "reason": "Filigrane gsmarena.com ; photo officielle Apple de l'iPhone 17 Bleu brume déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "IPhone_18_pro_max.jpeg",
+      "reason": "Filigrane GSMArena (rendu d'un site tiers) ; photo officielle de l'iPhone 18 Pro Max déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "Enceinte Sony verte",
+      "reason": "Modèle exact non précisé par le propriétaire : photo gardée de côté jusqu'à confirmation du nom du produit."
+    },
+    {
+      "file": "iPhone 14 Plus Lumière stellaire",
+      "reason": "Photo officielle Apple déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "iPhone 17 Pro Max Argent",
+      "reason": "Photo officielle Apple déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "Apple Watch Ultra (trois bracelets)",
+      "reason": "Même montre que watch-ultra-natural-titanium, déjà dans ce pack."
+    }
   ],
   "models": [
     {
       "id": "watch-series-11",
       "name": "Apple Watch Series 11",
       "year": 2025,
-      "brand": { "slug": "apple", "name": "Apple" },
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
       "category": "apple-watch",
       "storage_fr": [],
       "to_verify": "Tailles de boîtier (42 / 46 mm), bracelets et version GPS ou Cellular à définir avant de créer les variantes.",
       "variants": [
-        { "id": "watch-series-11-silver-aluminium", "color_en": "Silver Aluminium", "webp": "images/webp/watch-series-11/watch-series-11-silver-aluminium.webp" },
-        { "id": "watch-series-11-jet-black", "color_en": "Jet Black Aluminium", "webp": "images/webp/watch-series-11/watch-series-11-jet-black.webp" }
+        {
+          "id": "watch-series-11-silver-aluminium",
+          "color_en": "Silver Aluminium",
+          "webp": "images/webp/watch-series-11/watch-series-11-silver-aluminium.webp"
+        },
+        {
+          "id": "watch-series-11-jet-black",
+          "color_en": "Jet Black Aluminium",
+          "webp": "images/webp/watch-series-11/watch-series-11-jet-black.webp"
+        }
       ]
     },
     {
       "id": "watch-ultra",
       "name": "Apple Watch Ultra",
       "year": null,
-      "brand": { "slug": "apple", "name": "Apple" },
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
       "category": "apple-watch",
       "storage_fr": [],
       "to_verify": "Génération (Ultra, Ultra 2 ou Ultra 3) non indiquée par la photo. La photo montre trois bracelets Océan (blanc, minuit, orange).",
       "variants": [
-        { "id": "watch-ultra-natural-titanium", "color_en": "Natural Titanium", "webp": "images/webp/watch-ultra/watch-ultra-natural-titanium.webp" }
+        {
+          "id": "watch-ultra-natural-titanium",
+          "color_en": "Natural Titanium",
+          "webp": "images/webp/watch-ultra/watch-ultra-natural-titanium.webp"
+        }
       ]
     },
     {
       "id": "airpods-pro-3",
       "name": "AirPods Pro 3",
       "year": 2025,
-      "brand": { "slug": "apple", "name": "Apple" },
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
       "category": "airpods",
       "storage_fr": [],
       "to_verify": "La photo ressemble au boîtier des AirPods Pro 2 : à confirmer avant publication.",
       "variants": [
-        { "id": "airpods-pro-3-white", "color_en": "White", "webp": "images/webp/airpods-pro-3/airpods-pro-3-white.webp" }
-      ]
+        {
+          "id": "airpods-pro-3-white",
+          "color_en": "White",
+          "webp": "images/webp/airpods-pro-3/airpods-pro-3-white.webp"
+        }
+      ],
+      "single_variant": true
     },
     {
       "id": "ipad-air",
       "name": "iPad Air",
       "year": null,
-      "brand": { "slug": "apple", "name": "Apple" },
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
       "category": "ipad",
       "storage_fr": [],
       "to_verify": "Génération, puce, taille d'écran et capacités non indiquées : le violet existe sur plusieurs générations.",
       "variants": [
-        { "id": "ipad-air-purple", "color_en": "Purple", "webp": "images/webp/ipad-air/ipad-air-purple.webp" }
+        {
+          "id": "ipad-air-purple",
+          "color_en": "Purple",
+          "webp": "images/webp/ipad-air/ipad-air-purple.webp"
+        }
       ]
     },
     {
       "id": "ipad-mini",
       "name": "iPad mini",
       "year": null,
-      "brand": { "slug": "apple", "name": "Apple" },
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
       "category": "ipad",
       "storage_fr": [],
       "to_verify": "La photo montre quatre finitions dont le rose, propre à l'iPad mini de 6e génération ; l'iPad mini actuel (A17 Pro) n'existe pas en rose. Génération à confirmer.",
       "variants": [
-        { "id": "ipad-mini-all-finishes", "color_en": "Space Gray, Pink, Purple, Starlight", "webp": "images/webp/ipad-mini/ipad-mini-all-finishes.webp" }
+        {
+          "id": "ipad-mini-all-finishes",
+          "color_en": "Space Gray, Pink, Purple, Starlight",
+          "webp": "images/webp/ipad-mini/ipad-mini-all-finishes.webp"
+        }
       ]
     },
     {
       "id": "pura-70",
       "name": "HUAWEI Pura 70",
       "year": 2024,
-      "brand": { "slug": "huawei", "name": "Huawei" },
+      "brand": {
+        "slug": "huawei",
+        "name": "Huawei"
+      },
       "category": "smartphones-huawei",
       "storage_fr": [],
       "to_verify": "Capacités et disponibilité locale à définir avant de créer les variantes.",
       "variants": [
-        { "id": "pura-70-white", "color_en": "White", "webp": "images/webp/pura-70/pura-70-white.webp" }
+        {
+          "id": "pura-70-white",
+          "color_en": "White",
+          "webp": "images/webp/pura-70/pura-70-white.webp"
+        }
       ]
     },
     {
       "id": "pura-90s-pro-max",
       "name": "HUAWEI Pura 90s Pro Max",
       "year": null,
-      "brand": { "slug": "huawei", "name": "Huawei" },
+      "brand": {
+        "slug": "huawei",
+        "name": "Huawei"
+      },
       "category": "smartphones-huawei",
       "storage_fr": [],
       "to_verify": "Nom repris du nom de fichier fourni, non vérifié sur le site officiel de Huawei : confirmer le nom exact du modèle avant publication.",
       "variants": [
-        { "id": "pura-90s-pro-max-gradient", "color_en": "Blue-orange gradient", "webp": "images/webp/pura-90s-pro-max/pura-90s-pro-max-gradient.webp" }
+        {
+          "id": "pura-90s-pro-max-gradient",
+          "color_en": "Blue-orange gradient",
+          "webp": "images/webp/pura-90s-pro-max/pura-90s-pro-max-gradient.webp"
+        }
       ]
     },
     {
       "id": "galaxy-z-fold8-ultra",
       "name": "Galaxy Z Fold8 Ultra",
       "year": null,
-      "brand": { "slug": "samsung", "name": "Samsung" },
+      "brand": {
+        "slug": "samsung",
+        "name": "Samsung"
+      },
       "category": "smartphones-samsung",
       "storage_fr": [],
       "to_verify": "Nom repris du nom de fichier fourni, non vérifié sur le site officiel de Samsung. La photo ressemble au Galaxy Z Fold6 : à confirmer avant publication.",
       "variants": [
-        { "id": "galaxy-z-fold8-ultra-graphite", "color_en": "Graphite", "webp": "images/webp/galaxy-z-fold8-ultra/galaxy-z-fold8-ultra-graphite.webp" }
+        {
+          "id": "galaxy-z-fold8-ultra-graphite",
+          "color_en": "Graphite",
+          "webp": "images/webp/galaxy-z-fold8-ultra/galaxy-z-fold8-ultra-graphite.webp"
+        }
       ]
     },
     {
       "id": "magic8-pro",
       "name": "HONOR Magic8 Pro",
       "year": 2025,
-      "brand": { "slug": "honor", "name": "HONOR" },
+      "brand": {
+        "slug": "honor",
+        "name": "HONOR"
+      },
       "category": "smartphones-honor",
       "storage_fr": [],
       "to_verify": "Combinaisons couleur × capacité à confirmer (voir le catalogue vérifié) avant de créer les variantes.",
       "variants": [
-        { "id": "magic8-pro-sunrise-gold", "color_en": "Sunrise Gold", "webp": "images/webp/magic8-pro/magic8-pro-sunrise-gold.webp" }
+        {
+          "id": "magic8-pro-sunrise-gold",
+          "color_en": "Sunrise Gold",
+          "webp": "images/webp/magic8-pro/magic8-pro-sunrise-gold.webp"
+        }
       ]
     },
     {
       "id": "boombox-4",
       "name": "JBL Boombox 4",
       "year": null,
-      "brand": { "slug": "jbl", "name": "JBL" },
+      "brand": {
+        "slug": "jbl",
+        "name": "JBL"
+      },
       "category": "speakers",
       "storage_fr": [],
       "to_verify": "Fiche technique et disponibilité locale à saisir.",
       "variants": [
-        { "id": "boombox-4-black", "color_en": "Black", "webp": "images/webp/boombox-4/boombox-4-black.webp" }
+        {
+          "id": "boombox-4-black",
+          "color_en": "Black",
+          "webp": "images/webp/boombox-4/boombox-4-black.webp"
+        }
+      ],
+      "single_variant": true
+    },
+    {
+      "id": "galaxy-s25-ultra",
+      "name": "Galaxy S25 Ultra",
+      "year": 2025,
+      "brand": {
+        "slug": "samsung",
+        "name": "Samsung"
+      },
+      "category": "smartphones-samsung",
+      "storage_fr": [],
+      "to_verify": "Photo de la finition Titanium Silverblue ; capacités, prix et stock à saisir.",
+      "variants": [
+        {
+          "id": "galaxy-s25-ultra-titanium-silverblue",
+          "color_en": "Titanium Silverblue",
+          "webp": "images/webp/galaxy-s25-ultra/galaxy-s25-ultra-titanium-silverblue.webp"
+        }
       ]
+    },
+    {
+      "id": "airpods-max",
+      "name": "AirPods Max",
+      "year": null,
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
+      "category": "headphones",
+      "storage_fr": [],
+      "to_verify": "Génération (Lightning ou USB-C) et disponibilité locale à confirmer.",
+      "variants": [
+        {
+          "id": "airpods-max-space-grey",
+          "color_en": "Space Grey",
+          "webp": "images/webp/airpods-max/airpods-max-space-grey.webp"
+        }
+      ],
+      "single_variant": true
+    },
+    {
+      "id": "watch-ultra-2",
+      "name": "Apple Watch Ultra 2",
+      "year": null,
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
+      "category": "apple-watch",
+      "storage_fr": [],
+      "to_verify": "Bracelets disponibles, prix et stock à saisir.",
+      "variants": [
+        {
+          "id": "watch-ultra-2-white-ocean-band",
+          "color_en": "Natural Titanium, White Ocean Band",
+          "webp": "images/webp/watch-ultra-2/watch-ultra-2-white-ocean-band.webp"
+        }
+      ],
+      "single_variant": true
+    },
+    {
+      "id": "airpods-pro-2",
+      "name": "AirPods Pro 2",
+      "year": null,
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
+      "category": "airpods",
+      "storage_fr": [],
+      "to_verify": "Boîtier (Lightning ou USB-C) et disponibilité locale à confirmer.",
+      "variants": [
+        {
+          "id": "airpods-pro-2-white",
+          "color_en": "White",
+          "webp": "images/webp/airpods-pro-2/airpods-pro-2-white.webp"
+        }
+      ],
+      "single_variant": true
     }
   ]
 }
