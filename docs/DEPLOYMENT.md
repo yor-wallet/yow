@@ -93,7 +93,7 @@ Supprimer `RUN_SEED` et `RUN_CATALOGUE_IMPORT` une fois la première mise en lig
 - `DATABASE_URL` : pooler Supabase en mode transaction (port 6543, `?pgbouncer=true`) ;
 - `DIRECT_URL` : pooler en mode session (port 5432) — la connexion directe `db.<ref>.supabase.co` est en IPv6 seulement et n'est pas joignable depuis les builds Vercel.
 
-**Variables de production** — `DATABASE_URL`, `DIRECT_URL`, `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. Reste à saisir à la main dans Vercel : **`SUPABASE_SERVICE_ROLE_KEY`** (Supabase → Project Settings → API keys). Sans elle le site fonctionne, mais tout envoi de fichier (photos produits, pièces KYC, preuves de livraison) échoue.
+**Variables de production** — `DATABASE_URL`, `DIRECT_URL`, `APP_URL`, `SESSION_SECRET`, `KYC_ENCRYPTION_KEY`, `CRON_SECRET`, `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_PUBLIC_BUCKET`, `SUPABASE_PRIVATE_BUCKET`. `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API keys ; clé secrète `sb_secret_…`) posée le 14/11/2026 ; sans elle le site fonctionne, mais tout envoi de fichier (photos produits, pièces KYC, preuves de livraison) échoue. `BREVO_API_KEY` (reçue le 14/11/2026) ne fonctionne que si le blocage des adresses IP inconnues est désactivé dans Brevo (Vercel n'a pas d'IP fixe).
 
 **Compte administrateur** — aucun compte n'est créé par le build. Créer un compte sur `/ar/register`, puis le promouvoir :
 ```sql
