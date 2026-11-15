@@ -19,6 +19,7 @@
     "learnMore": "اعرف المزيد"
   },
   "loading": "جارٍ التحميل…",
+  "noImage": "الصورة غير متوفرة",
   "price": {
     "unavailable": "السعر قريبًا",
     "was": "بدلًا من {price}",

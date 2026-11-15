@@ -31,7 +31,7 @@
     },
     {
       "file": "Enceinte Sony verte",
-      "reason": "Modèle exact non précisé par le propriétaire : photo gardée de côté jusqu'à confirmation du nom du produit."
+      "reason": "Modèle exact non précisé par le propriétaire : photo gardée de côté (originals/pending/sony-speaker-green.jpg) jusqu'à confirmation du nom du produit."
     },
     {
       "file": "iPhone 14 Plus Lumière stellaire",
@@ -44,6 +44,26 @@
     {
       "file": "Apple Watch Ultra (trois bracelets)",
       "reason": "Même montre que watch-ultra-natural-titanium, déjà dans ce pack."
+    },
+    {
+      "file": "iPhone 13 Pro Argent (iPhone13Pro_de_256GB__Prateado)",
+      "reason": "Photo officielle Apple déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "iPhone 13 Pro Vert alpin (Buy_iPhone_13_Pro_and_iPhone_13_Pro_Max_-_Apple)",
+      "reason": "Photo officielle Apple déjà dans le pack iphone-visuals-2026 (iPhone 13 Pro et 13 Pro Max)."
+    },
+    {
+      "file": "iPhone 16 Outremer (example.com.jpeg)",
+      "reason": "Photo officielle Apple déjà dans le pack iphone-visuals-2026."
+    },
+    {
+      "file": "iPhone 14 Bleu (Unknown.jpeg)",
+      "reason": "Photo officielle Apple déjà dans le pack iphone-visuals-2026 (iPhone 14 et 14 Plus)."
+    },
+    {
+      "file": "iPhone 14 Pro Max Violet intense (Brand_new_unopened_iphone_14_pro_max_256_gb.jpeg)",
+      "reason": "Capture d'écran (fond gris, icône dans le coin) ; la même photo officielle Apple, propre, est déjà dans le pack iphone-visuals-2026."
     }
   ],
   "models": [
@@ -273,12 +293,17 @@
       },
       "category": "headphones",
       "storage_fr": [],
-      "to_verify": "Génération (Lightning ou USB-C) et disponibilité locale à confirmer.",
+      "to_verify": "Les deux photos fournies montrent deux générations : Space Grey n'existe que sur les AirPods Max à connecteur Lightning (2020), Starlight que sur les AirPods Max USB-C (2024). Génération vendue, prix et disponibilité locale à confirmer.",
       "variants": [
         {
           "id": "airpods-max-space-grey",
           "color_en": "Space Grey",
           "webp": "images/webp/airpods-max/airpods-max-space-grey.webp"
+        },
+        {
+          "id": "airpods-max-starlight",
+          "color_en": "Starlight",
+          "webp": "images/webp/airpods-max/airpods-max-starlight.webp"
         }
       ],
       "single_variant": true
@@ -322,6 +347,73 @@
         }
       ],
       "single_variant": true
+    },
+    {
+      "id": "galaxy-s26-ultra",
+      "name": "Galaxy S26 Ultra",
+      "year": 2026,
+      "brand": {
+        "slug": "samsung",
+        "name": "Samsung"
+      },
+      "category": "smartphones-samsung",
+      "storage_fr": [],
+      "to_verify": "Le fichier fourni ne nomme pas la finition : photo rattachée à Cobalt Violet, seule finition violette du catalogue vérifié. Les autres finitions n'ont pas encore de photo.",
+      "variants": [
+        {
+          "id": "galaxy-s26-ultra-cobalt-violet",
+          "color_en": "Cobalt Violet",
+          "webp": "images/webp/galaxy-s26-ultra/galaxy-s26-ultra-cobalt-violet.webp"
+        }
+      ]
+    },
+    {
+      "id": "iphone-17",
+      "name": "iPhone 17",
+      "year": 2025,
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
+      "category": "smartphones-apple",
+      "storage_fr": [],
+      "to_verify": "Vue complémentaire (dos et face) de la finition Sage, à côté de la photo studio du pack iphone-visuals-2026.",
+      "variants": [
+        {
+          "id": "iphone-17-sage-back-and-front",
+          "color_en": "Sage",
+          "view": {
+            "ar": "الخلف والواجهة",
+            "en": "back and front",
+            "fr": "dos et face"
+          },
+          "webp": "images/webp/iphone-17/iphone-17-sage-back-and-front.webp"
+        }
+      ]
+    },
+    {
+      "id": "iphone-air",
+      "name": "iPhone Air",
+      "year": 2025,
+      "brand": {
+        "slug": "apple",
+        "name": "Apple"
+      },
+      "category": "smartphones-apple",
+      "storage_fr": [],
+      "to_verify": "Vue complémentaire (dos et face) de la finition Sky Blue, à côté de la photo studio du pack iphone-visuals-2026.",
+      "variants": [
+        {
+          "id": "iphone-air-sky-blue-back-and-front",
+          "color_en": "Sky Blue",
+          "view": {
+            "ar": "الخلف والواجهة",
+            "en": "back and front",
+            "fr": "dos et face"
+          },
+          "webp": "images/webp/iphone-air/iphone-air-sky-blue-back-and-front.webp"
+        }
+      ]
     }
   ]
 }

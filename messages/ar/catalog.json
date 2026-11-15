@@ -81,9 +81,7 @@
     "favoriteAdd": "أضف إلى المفضلة",
     "favoriteRemove": "أزل من المفضلة",
     "favoriteAdded": "أُضيف إلى المفضلة",
-    "favoriteRemoved": "أُزيل من المفضلة",
-    "illustration": "رسم توضيحي",
-    "illustrationOf": "رسم توضيحي لـ {name}"
+    "favoriteRemoved": "أُزيل من المفضلة"
   },
   "rail": {
     "previous": "تمرير للخلف",

@@ -8,11 +8,11 @@ import { listCompare, specMatrix } from '@/lib/catalog/compare';
 import { productPath } from '@/lib/catalog/paths';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { buttonClasses } from '@/components/ui/Button';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Price } from '@/components/ui/Price';
 import { CompareRemove } from '@/components/shop/CompareRemove';
 import { ShopImage } from '@/components/shop/ShopImage';
+import { NoImage } from '@/components/shop/NoImage';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -70,7 +70,7 @@ export default async function ComparePage({ params }: Props) {
                           {card.image ? (
                             <ShopImage src={card.image.src} width={card.image.width} height={card.image.height} alt={card.image.alt} sizes="144px" className="size-full object-contain p-2" />
                           ) : (
-                            <CategoryIcon name={card.categoryIcon} size={36} />
+                            <NoImage />
                           )}
                         </div>
                         <Link href={productPath(card.slug)} className="line-clamp-2 font-bold underline-offset-4 hover:underline">

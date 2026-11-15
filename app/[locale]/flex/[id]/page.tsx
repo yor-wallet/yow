@@ -13,6 +13,7 @@ import { cn } from '@/lib/cn';
 import { getBalance } from '@/lib/wallet';
 import { listAddresses } from '@/lib/delivery/addresses';
 import { FLEX_TERMS_VERSION, getFlexApplication, quoteFlexAcceptance } from '@/lib/flex';
+import { flexImageKey } from '@/lib/flex/service';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Stepper } from '@/components/ui/Stepper';
 import { Badge } from '@/components/ui/Badge';
@@ -44,7 +45,7 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
 
   const name = localize(app.product?.name, locale, tf('title'));
   const variantName = localize(app.variant?.name, locale);
-  const image = app.product?.images[0]?.key ?? null;
+  const image = app.product ? flexImageKey(app.product.images, app.variant) : null;
   const awaitingTerms = app.status === 'APPROVED' || app.status === 'ACCEPTED';
   const active = app.status === 'ACTIVE' || app.status === 'COMPLETED';
 

@@ -72,7 +72,8 @@ export type VariantView = {
   isDefault: boolean;
 };
 
-export type ImageView = { id: string; src: string; width: number; height: number; alt: string; variantId: string | null };
+/** `color`: colour of the variant the photo is attached to (null = general photo). See lib/catalog/images.ts. */
+export type ImageView = { id: string; src: string; width: number; height: number; alt: string; variantId: string | null; color: string | null };
 export type SpecRow = { key: string; label: string; value: string };
 
 export type ProductDetail = {
@@ -143,7 +144,7 @@ export async function getProductDetail(slug: string, locale: string): Promise<Pr
       updatedAt: true,
       brand: { select: { id: true, slug: true, name: true, nameAr: true } },
       category: { select: { id: true, slug: true, name: true, icon: true, parentId: true, parent: { select: { slug: true, name: true } } } },
-      images: { orderBy: { sort: 'asc' }, select: { id: true, key: true, width: true, height: true, alt: true, variantId: true } },
+      images: { orderBy: { sort: 'asc' }, select: { id: true, key: true, width: true, height: true, alt: true, variantId: true, variant: { select: { color: true } } } },
       variants: {
         where: { isActive: true },
         orderBy: [{ sort: 'asc' }, { createdAt: 'asc' }],
@@ -196,6 +197,7 @@ export async function getProductDetail(slug: string, locale: string): Promise<Pr
       height: img.height,
       alt: localize(img.alt, locale, name),
       variantId: img.variantId,
+      color: img.variant?.color ?? null,
     })),
     variants: p.variants.map((v) => ({
       id: v.id,

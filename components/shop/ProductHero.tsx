@@ -19,6 +19,7 @@ import { DeliverTo, type AreaChoice } from '@/components/layout/DeliverTo';
 import { cartErrorKey, FavoriteButton, ShareButton } from './ProductCardActions';
 import { ProductGallery } from './ProductGallery';
 import { Ltr, ltr } from '@/components/ui/Ltr';
+import { imagesForVariant } from '@/lib/catalog/images';
 
 /** "256 GB" / "1 TB" → comparable number of GB (unknown formats sort last, keeping input order). */
 function capacityRank(value: string): number {
@@ -87,12 +88,9 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
   const maxQty = selected ? Math.max(1, Math.min(selected.available, MAX_QTY_PER_LINE)) : 1;
   const canBuy = !!selected && purchasable(selected) && product.isSellable;
   const flexMonthly = flexMonthlyFrom(selected?.priceBaisa ?? null);
-  // The image of the selected variant; else the image of another variant of the same colour
-  // (one studio image per finish serves all its capacities).
-  const activeImage =
-    product.images.find((i) => i.variantId === selectedId)?.id ??
-    (selected?.color ? product.images.find((i) => i.variantId && product.variants.find((v) => v.id === i.variantId)?.color === selected.color)?.id : undefined) ??
-    null;
+  // The gallery follows the selected colour: photos of that finish (they serve all its capacities), then
+  // general photos. A photo of another colour is never shown for this one (lib/catalog/images.ts).
+  const gallery = imagesForVariant(product.images, selected);
   const hasPrice = !!selected && selected.priceBaisa !== null;
 
   const addToCart = (then?: 'checkout') =>
@@ -115,7 +113,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10" data-testid="product-hero">
-      <ProductGallery images={product.images} activeId={activeImage} name={product.name} colorKey={selected?.color ?? null} colorHex={selected?.colorHex ?? null} />
+      <ProductGallery images={gallery.images} missingForColour={gallery.missingForColour} name={product.name} colorKey={selected?.color ?? null} colorHex={selected?.colorHex ?? null} />
 
       <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
         <div className="min-w-0 lg:order-1">

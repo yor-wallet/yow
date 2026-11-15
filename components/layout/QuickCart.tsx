@@ -10,6 +10,7 @@ import { Drawer, useHistoryModal } from '@/components/ui/Drawer';
 import { Price } from '@/components/ui/Price';
 import { removeCartItemAction, updateCartItemAction } from '@/app/[locale]/(shop)/actions';
 import { cn } from '@/lib/cn';
+import { NoImage } from '@/components/shop/NoImage';
 
 type Line = {
   itemId: string | null;
@@ -122,7 +123,7 @@ export function QuickCart({ count, className }: { count: number; className?: str
                   <li key={l.itemId ?? l.slug} className={cn('flex gap-3 py-3', !ok && 'opacity-70')} data-testid="quick-cart-line">
                     <span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-surface-2">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      {l.image ? <img src={l.image} width={64} height={64} alt="" loading="lazy" decoding="async" className="size-full object-contain" /> : null}
+                      {l.image ? <img src={l.image} width={64} height={64} alt="" loading="lazy" decoding="async" className="size-full object-contain" /> : <NoImage size="sm" />}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">

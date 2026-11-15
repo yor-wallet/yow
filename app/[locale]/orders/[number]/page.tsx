@@ -22,6 +22,7 @@ import { OrderStatusBadge } from '@/components/delivery/StatusBadges';
 import { CancelOrderButton } from '@/components/shop/CancelOrderButton';
 import { PayOrderPanel } from '@/components/shop/PayOrderPanel';
 import { ShopImage } from '@/components/shop/ShopImage';
+import { NoImage } from '@/components/shop/NoImage';
 
 type Props = { params: Promise<{ locale: string; number: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -181,7 +182,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
                 return (
                   <li key={it.id} className="flex gap-3 rounded-card border border-border bg-surface p-3 shadow-card sm:gap-4 sm:p-4">
                     <span className="block size-20 shrink-0 overflow-hidden rounded-xl bg-surface-2">
-                      {src ? <ShopImage src={src} width={240} height={240} alt="" sizes="80px" className="size-full object-contain p-1" /> : null}
+                      {src ? <ShopImage src={src} width={240} height={240} alt="" sizes="80px" className="size-full object-contain p-1" /> : <NoImage size="sm" />}
                     </span>
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                       <span className="line-clamp-2 font-semibold">{localize(it.nameSnapshot, locale, it.sku)}</span>

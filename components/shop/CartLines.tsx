@@ -14,6 +14,7 @@ import { formatBaisa } from '@/lib/money';
 import { removeCartItemAction, updateCartItemAction } from '@/app/[locale]/(shop)/actions';
 import { cartErrorKey } from './ProductCardActions';
 import { ShopImage } from './ShopImage';
+import { NoImage } from './NoImage';
 
 /** Cart lines with quantity steppers and remove buttons (server actions; prices re-read from the server). */
 export function CartLines({ lines }: { lines: CartLineView[] }) {
@@ -65,7 +66,7 @@ function CartLine({ line }: { line: CartLineView }) {
       className={cn('flex gap-3 rounded-card border border-border bg-surface p-3 shadow-card transition-opacity sm:gap-4 sm:p-4', pending && 'opacity-70', !ok && 'border-dashed')}
     >
       <Link href={productPath(line.slug)} className="block size-24 shrink-0 overflow-hidden rounded-xl bg-surface-2 sm:size-28" aria-hidden="true" tabIndex={-1}>
-        {line.image ? <ShopImage src={line.image} width={320} height={320} alt="" sizes="112px" className={cn('size-full object-contain p-1', !ok && 'grayscale')} /> : null}
+        {line.image ? <ShopImage src={line.image} width={320} height={320} alt="" sizes="112px" className={cn('size-full object-contain p-1', !ok && 'grayscale')} /> : <NoImage size="sm" />}
       </Link>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">

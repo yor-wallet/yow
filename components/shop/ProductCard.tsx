@@ -1,7 +1,6 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/Badge';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { Price } from '@/components/ui/Price';
 import { Ltr } from '@/components/ui/Ltr';
 import { flexMonthlyFrom } from '@/lib/catalog/flex-preview';
@@ -11,6 +10,7 @@ import { formatBaisa } from '@/lib/money';
 import { cn } from '@/lib/cn';
 import { FavoriteButton, QuickAddButton } from './ProductCardActions';
 import { ShopImage } from './ShopImage';
+import { NoImage } from './NoImage';
 
 /**
  * Product card used by rails, grids, search results and favourites. Works in server and
@@ -70,9 +70,8 @@ export function ProductCard({
             className="size-full object-contain p-3 transition-transform duration-(--dur-card) ease-premium group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="grid size-full place-items-center bg-blue/8 text-accent" aria-hidden="true">
-            <CategoryIcon name={product.categoryIcon} size={44} />
-          </div>
+          // No photo supplied yet: say so (owner's specification §4). No drawing stands in for the product.
+          <NoImage />
         )}
         <div className="pointer-events-none absolute inset-x-2 top-2 flex items-start justify-between gap-2">
           <div className="flex min-w-0 flex-col items-start gap-1">

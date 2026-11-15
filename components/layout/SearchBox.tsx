@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Link, getPathname, useRouter } from '@/i18n/navigation';
 import { formatBaisa } from '@/lib/money';
 import { cn } from '@/lib/cn';
+import { NoImage } from '@/components/shop/NoImage';
 
 type Suggestion = {
   slug: string;
@@ -187,7 +188,7 @@ export function SearchBox({
                 >
                   <span className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-lg bg-surface-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    {p.image ? <img src={p.image.src} width={44} height={44} alt="" loading="lazy" decoding="async" className="size-full object-contain" /> : null}
+                    {p.image ? <img src={p.image.src} width={44} height={44} alt="" loading="lazy" decoding="async" className="size-full object-contain" /> : <NoImage size="sm" />}
                   </span>
                   <span className="min-w-0 flex-1">
                     <bdi className="line-clamp-1 text-sm font-semibold">{p.name}</bdi>

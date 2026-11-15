@@ -59,6 +59,8 @@ const packSchema = z.object({
             z.object({
               id: slug,
               color_en: z.string().trim().min(1).max(60),
+              /** What the photo shows when a finish has more than one (e.g. "back and front"): keeps each alt text distinct. */
+              view: z.object({ ar: z.string().trim().min(1).max(60), en: z.string().trim().min(1).max(60), fr: z.string().trim().min(1).max(60) }).optional(),
               // Relative to the pack folder; checked again against path traversal when read.
               webp: z.string().regex(/^images\/webp\/[a-z0-9-]+\/[a-z0-9-]+\.webp$/),
             }),
@@ -174,6 +176,33 @@ export async function sampleSwatch(buf: Buffer): Promise<string | null> {
   }
 }
 
+/**
+ * Alt text of a pack image. The English text is also how an image is recognised on a re-run, so it
+ * stays `<model> — <finish>` (plus the view when a finish has several photos). The Arabic text
+ * describes the model and the colour shown; model and finish names keep their official spelling.
+ */
+export function packImageAlt(modelName: string, colorEn: string, view?: { ar: string; en: string; fr: string }): { ar: string; en: string; fr: string } {
+  return {
+    ar: `صورة ${modelName} — اللون: ${colorEn}${view ? ` (${view.ar})` : ''}`,
+    en: `${modelName} — ${colorEn}${view ? `, ${view.en}` : ''}`,
+    fr: `${modelName} — ${colorEn}${view ? `, ${view.fr}` : ''}`,
+  };
+}
+
+/** Colour names compared without case, spaces or punctuation: "Titanium Silverblue" = "Titanium Silver Blue". */
+export const sameColour = (a: string | null | undefined, b: string | null | undefined): boolean => {
+  const k = (s: string | null | undefined) => (s ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  return k(a) !== '' && k(a) === k(b);
+};
+
+/** Size of a photo shipped in public/photos: the pack image, at most 960 px wide (scripts/build-bundled-photos.mjs). */
+async function bundledSize(buf: Buffer): Promise<{ width: number; height: number }> {
+  const { default: sharp } = await import('sharp');
+  const meta = await sharp(buf).metadata();
+  const width = Math.min(960, meta.width ?? 960);
+  return { width, height: Math.round(((meta.height ?? width) * width) / (meta.width ?? width)) };
+}
+
 export type VisualImportStep = { done: number; total: number; model: string; productId: string; variantsCreated: number; imagesCreated: number; productCreated: boolean };
 
 /**
@@ -246,10 +275,7 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     await fs.access(file).catch(() => {
       throw new AdminError('validation', `Bundled photo missing: ${bundledKey} (run scripts/build-bundled-photos.mjs)`);
     });
-    const { default: sharp } = await import('sharp');
-    const meta = await sharp(buf).metadata();
-    const width = Math.min(960, meta.width ?? 960);
-    return { key: bundledKey, width, height: Math.round(((meta.height ?? width) * width) / (meta.width ?? width)) };
+    return { key: bundledKey, ...(await bundledSize(buf)) };
   };
   let variantsCreated = 0;
   let imagesCreated = 0;
@@ -260,18 +286,37 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
     const file = path.resolve(root, finish.webp);
     if (!file.startsWith(root + path.sep)) throw new AdminError('validation', 'Bad image path');
     const buf = await fs.readFile(file);
-    const alt = `${model.name} — ${finish.color_en}`;
+    const alt = packImageAlt(model.name, finish.color_en, finish.view);
+    // Images of this finish already attached (recognised by the English alt text): refresh their Arabic
+    // alt text, written in English by earlier imports.
+    const previous = await prisma.productImage.findMany({ where: { productId: product.id, alt: { path: ['en'], equals: alt.en } }, select: { id: true, alt: true, key: true, width: true, height: true } });
+    for (const img of previous) {
+      const data: Prisma.ProductImageUpdateInput = {};
+      if ((img.alt as { ar?: string } | null)?.ar !== alt.ar) data.alt = alt;
+      // A photo shipped with the application may have been re-cut since it was attached: keep its size right.
+      if (opts.bundled && img.key === bundledPhotoKey(key, model.id, finish.id)) {
+        const dims = await bundledSize(buf);
+        if (dims.width !== img.width || dims.height !== img.height) Object.assign(data, dims);
+      }
+      if (Object.keys(data).length) await prisma.productImage.update({ where: { id: img.id }, data });
+    }
 
     if (capacities.length === 0) {
-      // Photos only: one product image per finish, recognised by its alt text on a re-run.
-      const already = await prisma.productImage.count({ where: { productId: product.id, alt: { path: ['en'], equals: alt } } });
-      if (already === 0) {
+      // Photos only: one product image per finish, recognised by its alt text on a re-run. When the product
+      // already sells this colour (verified catalogue, iPhone pack), the photo belongs to that colour: it is
+      // attached to its first variant and shown for every capacity of it, never for another colour.
+      const variants = await prisma.productVariant.findMany({ where: { productId: product.id }, orderBy: { sort: 'asc' }, select: { id: true, color: true } });
+      const ofColour = variants.find((v) => sameColour(v.color, finish.color_en)) ?? null;
+      if (previous.length === 0) {
         const stored = await putImage(buf, model.id, finish.id);
         const last = await prisma.productImage.aggregate({ where: { productId: product.id }, _max: { sort: true } });
         await prisma.productImage.create({
-          data: { productId: product.id, variantId: null, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
+          data: { productId: product.id, variantId: ofColour?.id ?? null, key: stored.key, width: stored.width, height: stored.height, alt, sort: (last._max.sort ?? -1) + 1 },
         });
         imagesCreated++;
+      } else if (ofColour) {
+        // Imported before the product sold this colour (or under another spelling of it): attach it now.
+        await prisma.productImage.updateMany({ where: { productId: product.id, variantId: null, alt: { path: ['en'], equals: alt.en } }, data: { variantId: ofColour.id } });
       }
       if (model.single_variant) {
         // Sold as shown: the finish is the only choice, so the variant can exist before staff price it.
@@ -297,7 +342,7 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
           hasDefault = true;
           variantsCreated++;
         }
-        await prisma.productImage.updateMany({ where: { productId: product.id, variantId: null, alt: { path: ['en'], equals: alt } }, data: { variantId: variant.id } });
+        await prisma.productImage.updateMany({ where: { productId: product.id, variantId: null, alt: { path: ['en'], equals: alt.en } }, data: { variantId: variant.id } });
       }
       continue;
     }
@@ -337,13 +382,13 @@ export async function importVisualPackModel(actor: Actor | null | undefined, key
       variantsCreated++;
     }
 
-    // One image per finish, attached to its first variant (the storefront shows it for every capacity of the finish).
-    const already = await prisma.productImage.count({ where: { productId: product.id, variantId: { in: variantIds } } });
-    if (already === 0) {
+    // One image per finish, attached to its first variant (the storefront shows it for every capacity of the
+    // finish). Recognised by its alt text, so a second view of the same finish (owner's pack) never takes its place.
+    if (previous.length === 0) {
       const stored = await putImage(buf, model.id, finish.id);
       const last = await prisma.productImage.aggregate({ where: { productId: product.id }, _max: { sort: true } });
       await prisma.productImage.create({
-        data: { productId: product.id, variantId: variantIds[0]!, key: stored.key, width: stored.width, height: stored.height, alt: { ar: alt, en: alt, fr: alt }, sort: (last._max.sort ?? -1) + 1 },
+        data: { productId: product.id, variantId: variantIds[0]!, key: stored.key, width: stored.width, height: stored.height, alt, sort: (last._max.sort ?? -1) + 1 },
       });
       imagesCreated++;
     }

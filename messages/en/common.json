@@ -19,6 +19,7 @@
     "learnMore": "Learn more"
   },
   "loading": "Loading…",
+  "noImage": "Image not available",
   "price": {
     "unavailable": "Price coming soon",
     "was": "Was {price}",

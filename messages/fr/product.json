@@ -8,7 +8,8 @@
     "next": "Image suivante",
     "thumb": "Afficher l'image {index}",
     "counter": "{current} / {total}",
-    "empty": "Photos bientôt disponibles",
+    "unavailable": "Image non disponible",
+    "unavailableColour": "Pas encore de photo pour cette couleur.",
     "illustration": "Illustration — les photos officielles seront ajoutées. La couleur suit votre sélection."
   },
   "sku": "SKU {sku}",

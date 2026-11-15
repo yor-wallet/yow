@@ -1,4 +1,3 @@
-import type { DeviceArtSpec } from '@/lib/devices/art';
 import type { Availability } from './stock';
 
 /** Serializable product summary for cards, rails, grids, search results. */
@@ -8,9 +7,6 @@ export type ProductCardData = {
   /** Already localised. */
   name: string;
   brand: string | null;
-  categoryIcon: string | null;
-  /** Illustration used when `image` is null (smartphones only). */
-  art: DeviceArtSpec | null;
   image: { src: string; width: number; height: number; alt: string } | null;
   /** Lowest active variant price (null ⇒ price unavailable). */
   priceBaisa: number | null;

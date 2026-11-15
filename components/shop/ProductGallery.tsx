@@ -11,18 +11,21 @@ import { ShopImage } from './ShopImage';
 
 /**
  * Product gallery: swipeable scroll-snap viewport (touch), previous/next buttons, thumbnails and a
- * zoom dialog (click/tap the image; Back closes it). `activeId` lets the parent jump to the image
- * of the selected variant. All images keep their intrinsic ratio box, so nothing shifts on load.
+ * zoom dialog (click/tap the image; Back closes it). It receives the photos of the selected colour only
+ * (lib/catalog/images.ts) and goes back to the first one when the colour changes. All images keep their
+ * intrinsic ratio box, so nothing shifts on load. Without a photo it says "image not available": no
+ * drawing and no photo of another colour stands in (owner's specification §4).
  */
 export function ProductGallery({
   images,
-  activeId,
+  missingForColour = false,
   name,
   colorKey,
   colorHex,
 }: {
   images: ImageView[];
-  activeId?: string | null;
+  /** The selected colour has no photo of its own (and the product no general photo). */
+  missingForColour?: boolean;
   name: string;
   /** Selected colour: changing it plays the colour-change animation (halo bloom + photo settling in). */
   colorKey?: string | null;
@@ -52,16 +55,12 @@ export function ProductGallery({
     el.scrollTo({ left: (rtl ? -1 : 1) * i * el.clientWidth, behavior: smooth && !reduce ? 'smooth' : 'auto' });
   };
 
-  // Follow the selected variant's image.
+  // A new colour brings its own photos: start again from the first one.
   useEffect(() => {
-    if (!activeId) return;
-    const i = images.findIndex((img) => img.id === activeId);
-    if (i >= 0) {
-      setIndex(i);
-      scrollTo(i);
-    }
+    setIndex(0);
+    scrollTo(0, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeId]);
+  }, [colorKey]);
 
   const onScroll = () => {
     const el = viewport.current;
@@ -73,9 +72,10 @@ export function ProductGallery({
   if (count === 0) {
     return (
       <div className="grid aspect-square w-full place-items-center rounded-card border border-border bg-surface-2 text-muted" data-testid="gallery-empty">
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2 px-6 text-center">
           <ImageOff size={40} aria-hidden="true" />
-          <p className="text-sm">{t('empty')}</p>
+          <p className="text-base font-semibold text-fg">{t('unavailable')}</p>
+          {missingForColour ? <p className="text-sm">{t('unavailableColour')}</p> : null}
         </div>
       </div>
     );

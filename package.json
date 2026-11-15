@@ -20,6 +20,8 @@
     "catalogue:import": "tsx scripts/import-verified-catalogue.ts",
     "catalogue:photos:build": "node scripts/build-bundled-photos.mjs",
     "catalogue:photos": "tsx -r ./scripts/allow-server-only.cjs scripts/import-visual-packs.ts",
+    "catalogue:photos:prepare": "node scripts/prepare-owner-photos.mjs",
+    "catalogue:photos:missing": "tsx -r ./scripts/allow-server-only.cjs scripts/report-missing-photos.ts",
     "catalogue:prices": "tsx -r ./scripts/allow-server-only.cjs scripts/apply-market-prices.ts",
     "maintenance:cleanup": "tsx scripts/run-cleanup.ts",
     "predeploy": "tsx scripts/predeploy-check.ts"

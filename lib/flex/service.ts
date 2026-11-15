@@ -12,6 +12,7 @@ import { placeOrder, quoteLines, isOrderError } from '@/lib/orders';
 import { priceItems } from '@/lib/cart/pricing';
 import { computeSchedule, dateOnly, isFlexMonths, muscatToday, type FlexMonths } from './schedule';
 import { isFlexPartnerConfigured, submitToPartner } from './partner';
+import { thumbnailForVariant } from '@/lib/catalog/images';
 
 /**
  * DOOM FLEX — 3/6/12 monthly instalments, 0% interest, no fees, total = cash price.
@@ -98,18 +99,19 @@ export async function getFlexProduct(productRef: string, variantId?: string | nu
       name: true,
       status: true,
       isSellable: true,
-      images: { select: { key: true }, orderBy: { sort: 'asc' }, take: 1 },
+      // Every photo with its colour: the plan shows the photo of the colour chosen, never another one.
+      images: { select: { key: true, variantId: true, variant: { select: { color: true } } }, orderBy: { sort: 'asc' } },
       variants: {
         where: { isActive: true, ...(variantId ? { id: variantId } : {}) },
         orderBy: [{ isDefault: 'desc' }, { sort: 'asc' }],
         take: 1,
-        select: { id: true, name: true, priceBaisa: true, stock: true, reserved: true },
+        select: { id: true, name: true, color: true, priceBaisa: true, stock: true, reserved: true },
       },
     },
   });
   const v = product?.variants[0];
   if (!product || !v) return null;
-  const base = { productId: product.id, variantId: v.id, slug: product.slug, name: product.name, variantName: v.name, imageKey: product.images[0]?.key ?? null, priceBaisa: v.priceBaisa };
+  const base = { productId: product.id, variantId: v.id, slug: product.slug, name: product.name, variantName: v.name, imageKey: flexImageKey(product.images, v), priceBaisa: v.priceBaisa };
   if (product.status !== 'ACTIVE' || !product.isSellable) return { ...base, available: false, reason: 'product_unavailable' };
   if (v.priceBaisa === null || v.priceBaisa <= 0) return { ...base, available: false, reason: 'price_unavailable' };
   if (v.stock - v.reserved < 1) return { ...base, available: false, reason: 'out_of_stock' };
@@ -532,12 +534,18 @@ export async function listFlexApplications(userId: string, db: Db = prisma) {
   });
 }
 
+/** Photo of the colour of a variant (else a general photo of the product), for the FLEX screens. */
+export function flexImageKey(images: readonly { key: string; variantId: string | null; variant: { color: string | null } | null }[], variant: { id: string; color: string | null } | null): string | null {
+  const flat = images.map((i) => ({ key: i.key, variantId: i.variantId, color: i.variant?.color ?? null }));
+  return variant ? (thumbnailForVariant(flat, variant)?.key ?? null) : (flat.find((i) => i.variantId === null)?.key ?? null);
+}
+
 export async function getFlexApplication(id: string, viewer: { id: string; role: Role }, db: Db = prisma) {
   const app = await db.flexApplication.findUnique({
     where: { id },
     include: {
-      product: { select: { name: true, slug: true, images: { select: { key: true }, orderBy: { sort: 'asc' }, take: 1 } } },
-      variant: { select: { name: true, priceBaisa: true } },
+      product: { select: { name: true, slug: true, images: { select: { key: true, variantId: true, variant: { select: { color: true } } }, orderBy: { sort: 'asc' } } } },
+      variant: { select: { id: true, name: true, color: true, priceBaisa: true } },
       order: { select: { id: true, number: true, status: true } },
       installments: { orderBy: { sequence: 'asc' }, include: { paymentIntent: { select: { id: true, status: true } } } },
     },

@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { localize } from '@/lib/localized';
 import { mediaUrl } from '@/lib/storage';
-import { resolveDeviceArt } from '@/lib/devices/art';
 import { decodeCursor, encodeCursor, type CatalogFilters, type SortKey } from './filters';
 import { ARABIC_FROM, ARABIC_STRIP, ARABIC_TO, escapeLike, type ParsedQuery } from './search-query';
 import { productAvailability, variantAvailability, availableQty } from './stock';
@@ -221,17 +220,6 @@ export function toCard(p: CardRow, locale: string, promotions: readonly Promotio
     slug: p.slug,
     name,
     brand: brandLabel(p.brand, locale),
-    categoryIcon: p.category.icon,
-    // No uploaded photo yet: smartphones get an honest generic illustration in the default colour.
-    art: img
-      ? null
-      : resolveDeviceArt({
-          brand: p.brand?.name ?? null,
-          name,
-          categorySlug: p.category.slug,
-          rootCategorySlug: p.category.parent?.slug ?? p.category.slug,
-          colorHex: p.variants[0]?.colorHex ?? null,
-        }),
     image: img
       ? { src: mediaUrl(img.key)!, width: img.width, height: img.height, alt: localize(img.alt, locale, name) }
       : null,

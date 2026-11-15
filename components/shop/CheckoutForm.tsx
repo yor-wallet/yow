@@ -18,6 +18,7 @@ import { formatBaisa } from '@/lib/money';
 import type { GovernorateOption } from '@/lib/delivery/geo';
 import { placeOrderAction, type CheckoutErrorKey } from '@/app/[locale]/(shop)/checkout/actions';
 import { ShopImage } from './ShopImage';
+import { NoImage } from './NoImage';
 
 export type CheckoutAddress = {
   id: string;
@@ -348,7 +349,7 @@ export function CheckoutForm({
           {lines.map((l) => (
             <li key={l.id} className="flex gap-3">
               <span className="block size-14 shrink-0 overflow-hidden rounded-lg bg-surface-2">
-                {l.image ? <ShopImage src={l.image} width={160} height={160} alt="" sizes="56px" className="size-full object-contain p-0.5" /> : null}
+                {l.image ? <ShopImage src={l.image} width={160} height={160} alt="" sizes="56px" className="size-full object-contain p-0.5" /> : <NoImage size="sm" />}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="line-clamp-2 text-sm font-medium">{l.name}</span>

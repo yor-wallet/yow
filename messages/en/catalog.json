@@ -81,9 +81,7 @@
     "favoriteAdd": "Add to favourites",
     "favoriteRemove": "Remove from favourites",
     "favoriteAdded": "Added to favourites",
-    "favoriteRemoved": "Removed from favourites",
-    "illustration": "Illustration",
-    "illustrationOf": "Illustration of {name}"
+    "favoriteRemoved": "Removed from favourites"
   },
   "rail": {
     "previous": "Scroll back",

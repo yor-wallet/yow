@@ -4,6 +4,7 @@ import { localize } from '@/lib/localized';
 import { mediaUrl } from '@/lib/storage';
 import { availableQty } from '@/lib/catalog/stock';
 import { brandLabel } from '@/lib/catalog/listing';
+import { thumbnailForVariant } from '@/lib/catalog/images';
 import { bestPromotion, type PricedLine, type PromotionRule } from '@/lib/catalog/promotions';
 import { computeTotals, evaluateLine, type CartTotals, type LineState } from './math';
 
@@ -41,10 +42,10 @@ export const LINE_VARIANT_SELECT = {
       volumeCm3: true,
       brand: { select: { name: true, nameAr: true } },
       category: { select: { parentId: true } },
-      images: { orderBy: { sort: 'asc' }, take: 1, select: { key: true } },
+      // Every photo of the product with the colour it shows: the line's thumbnail must match the colour bought.
+      images: { orderBy: { sort: 'asc' }, select: { key: true, variantId: true, variant: { select: { color: true } } } },
     },
   },
-  images: { orderBy: { sort: 'asc' }, take: 1, select: { key: true } },
 } satisfies Prisma.ProductVariantSelect;
 
 export type LineVariant = Prisma.ProductVariantGetPayload<{ select: typeof LINE_VARIANT_SELECT }>;
@@ -90,7 +91,12 @@ export function priceLine(item: { id: string | null; qty: number }, v: LineVaria
   const sellable = v.isActive && v.product.status === 'ACTIVE' && v.product.isSellable;
   const available = availableQty(v.stock, v.reserved);
   const ev = evaluateLine({ qty: item.qty, priceBaisa: v.priceBaisa, available, sellable });
-  const imageKey = v.images[0]?.key ?? v.product.images[0]?.key ?? null;
+  // Photo of this colour (shared by its capacities), else a general photo of the product; never another colour.
+  const imageKey =
+    thumbnailForVariant(
+      v.product.images.map((img) => ({ key: img.key, variantId: img.variantId, color: img.variant?.color ?? null })),
+      { id: v.id, color: v.color },
+    )?.key ?? null;
   return {
     itemId: item.id,
     variantId: v.id,

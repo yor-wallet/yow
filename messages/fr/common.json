@@ -19,6 +19,7 @@
     "learnMore": "En savoir plus"
   },
   "loading": "Chargement…",
+  "noImage": "Image non disponible",
   "price": {
     "unavailable": "Prix bientôt disponible",
     "was": "Au lieu de {price}",

@@ -81,9 +81,7 @@
     "favoriteAdd": "Ajouter aux favoris",
     "favoriteRemove": "Retirer des favoris",
     "favoriteAdded": "Ajouté aux favoris",
-    "favoriteRemoved": "Retiré des favoris",
-    "illustration": "Illustration",
-    "illustrationOf": "Illustration de {name}"
+    "favoriteRemoved": "Retiré des favoris"
   },
   "rail": {
     "previous": "Défiler en arrière",

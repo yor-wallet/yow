@@ -14,6 +14,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Price } from '@/components/ui/Price';
 import { OrderStatusBadge } from '@/components/delivery/StatusBadges';
 import { ShopImage } from '@/components/shop/ShopImage';
+import { NoImage } from '@/components/shop/NoImage';
 
 type Props = { params: Promise<{ locale: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -125,7 +126,7 @@ export default async function OrdersPage({ params, searchParams }: Props) {
                       const src = mediaUrl(it.imageKey);
                       return (
                         <span key={it.id} className="block size-12 shrink-0 overflow-hidden rounded-lg bg-surface-2" title={localize(it.nameSnapshot, locale)}>
-                          {src ? <ShopImage src={src} width={160} height={160} alt="" sizes="48px" className="size-full object-contain p-0.5" /> : null}
+                          {src ? <ShopImage src={src} width={160} height={160} alt="" sizes="48px" className="size-full object-contain p-0.5" /> : <NoImage size="sm" />}
                         </span>
                       );
                     })}
