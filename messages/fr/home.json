@@ -94,7 +94,11 @@
     "auto": "Appliquée automatiquement",
     "endsOn": "Jusqu'au {date}",
     "minSpend": "Dès {amount}",
-    "view": "Voir la promotion"
+    "view": "Voir la promotion",
+    "withCode": "Avec un code",
+    "endsIn": "Se termine dans",
+    "days": "{count, plural, one {# jour} other {# jours}}",
+    "ended": "Cette offre est terminée"
   },
   "flex": {
     "eyebrow": "DOOM FLEX",

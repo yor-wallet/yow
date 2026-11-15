@@ -313,7 +313,7 @@
       "date_invalid": "Saisissez une date valide.",
       "link_invalid": "Utilisez un chemin interne commençant par / ou une adresse https://.",
       "url_invalid": "Saisissez une adresse web valide.",
-      "percent_invalid": "Saisissez un pourcentage entre 0,01 et 100.",
+      "percent_invalid": "Saisissez un pourcentage entre 0,01 et 90.",
       "end_before_start": "La fin doit être postérieure au début.",
       "too_many": "Trop d’éléments.",
       "code_invalid": "3 à 32 majuscules, chiffres, tirets ou soulignés.",
@@ -345,7 +345,8 @@
       "number_invalid": "Saisissez un nombre valide.",
       "range_inverted": "Le maximum ne doit pas être inférieur au minimum.",
       "kyc_notes_required": "Écrivez un message au client (au moins 3 caractères).",
-      "kyc_docs_required": "Cochez au moins un document à demander."
+      "kyc_docs_required": "Cochez au moins un document à demander.",
+      "promotion_in_use": "Une commande a déjà utilisé cette promotion : éteignez-la au lieu de la supprimer."
     },
     "proposal_not_open": "Cette proposition a déjà été traitée.",
     "proposal_no_action": "Cette proposition ne comporte aucune action à appliquer.",
@@ -921,5 +922,70 @@
     "save": "Enregistrer la décision",
     "ownCard": "Cette carte a été envoyée depuis votre propre compte : un autre membre de l’équipe doit la traiter.",
     "alreadyDecided": "Une décision a déjà été enregistrée."
+  },
+  "promotions": {
+    "title": "Promotions",
+    "subtitle": "De vraies remises appliquées au paiement : automatiques, ou débloquées par un code. Une seule promotion s’applique par commande — la plus avantageuse pour le client.",
+    "new": "Nouvelle promotion",
+    "newHint": "Une nouvelle promotion est enregistrée éteinte, sauf si vous cochez « Active ».",
+    "edit": "Modifier la promotion",
+    "details": "Promotion",
+    "empty": "Aucune promotion pour l’instant.",
+    "emptyText": "Créez-en une : elle s’affiche sur la page Offres et s’applique au paiement dès qu’elle est active.",
+    "automatic": "Automatique",
+    "scoped": "Produits choisis",
+    "wholeCart": "Tout le panier",
+    "noDates": "Sans dates",
+    "used": "{count, plural, =0 {Jamais utilisée} one {Utilisée une fois} other {Utilisée # fois}}",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "save": "Enregistrer",
+    "create": "Créer la promotion",
+    "state": {
+      "live": "En cours",
+      "scheduled": "Programmée",
+      "ended": "Terminée",
+      "used_up": "Épuisée",
+      "off": "Éteinte"
+    },
+    "rules": "Une remise, c’est de l’argent : vérifiez la valeur, les dates et les cibles avant d’activer. Les promotions ne se cumulent pas ; les frais de livraison ne sont pas remisés.",
+    "types": {
+      "PERCENT": "Pourcentage",
+      "FIXED": "Montant fixe"
+    },
+    "fields": {
+      "name": "Nom affiché aux clients",
+      "description": "Description courte",
+      "type": "Type de remise",
+      "percent": "Remise (%)",
+      "amount": "Remise",
+      "code": "Code (facultatif)",
+      "minSubtotal": "Achat minimum",
+      "maxDiscount": "Remise maximale",
+      "categories": "Catégories",
+      "brands": "Marques",
+      "products": "Produits",
+      "startsAt": "Début",
+      "endsAt": "Fin",
+      "usageLimit": "Nombre total d’utilisations",
+      "perUserLimit": "Utilisations par client",
+      "isActive": "Active"
+    },
+    "hints": {
+      "percent": "Par exemple 5 ou 7,5. 90 au plus.",
+      "amount": "Retiré des produits concernés.",
+      "code": "Vide = appliquée automatiquement. Avec un code, le client le saisit au paiement. 3 à 32 majuscules, chiffres, tiret ou tiret bas.",
+      "minSubtotal": "Vide = pas de minimum. Calculé sur les produits concernés.",
+      "maxDiscount": "Vide = pas de plafond. Vous protège sur les produits chers.",
+      "scope": "Cibles : ne cochez rien pour appliquer la promotion à tout le panier. Une catégorie inclut ses sous-catégories.",
+      "dates": "Heure de Mascate. Vide = pas de limite.",
+      "usageLimit": "Vide = illimité.",
+      "perUserLimit": "Vide = illimité. 1 = une fois par client.",
+      "isActive": "Décochée : enregistrée en brouillon, invisible pour les clients."
+    },
+    "deleteTitle": "Supprimer cette promotion",
+    "deleteText": "Possible seulement tant qu’aucune commande ne l’a utilisée. Ensuite, éteignez-la.",
+    "delete": "Supprimer",
+    "deleteConfirm": "Cette promotion sera supprimée définitivement."
   }
 }

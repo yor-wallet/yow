@@ -94,7 +94,11 @@
     "auto": "Applied automatically",
     "endsOn": "Until {date}",
     "minSpend": "From {amount}",
-    "view": "View promotion"
+    "view": "View promotion",
+    "withCode": "With a code",
+    "endsIn": "Ends in",
+    "days": "{count, plural, one {# day} other {# days}}",
+    "ended": "This offer has ended"
   },
   "flex": {
     "eyebrow": "DOOM FLEX",

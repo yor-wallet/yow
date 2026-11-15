@@ -94,7 +94,11 @@
     "auto": "يُطبَّق تلقائيًا",
     "endsOn": "حتى {date}",
     "minSpend": "ابتداءً من {amount}",
-    "view": "عرض العرض"
+    "view": "عرض العرض",
+    "withCode": "برمز",
+    "endsIn": "ينتهي خلال",
+    "days": "{count, plural, zero {# يوم} one {يوم واحد} two {يومان} few {# أيام} many {# يومًا} other {# يوم}}",
+    "ended": "انتهى هذا العرض"
   },
   "flex": {
     "eyebrow": "DOOM FLEX",

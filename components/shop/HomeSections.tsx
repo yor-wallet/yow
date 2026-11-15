@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { HudCorners } from '@/components/ui/HudCorners';
+import { InView } from '@/components/ui/InView';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -19,6 +20,7 @@ import type { NavCategory } from '@/lib/nav';
 import { localize } from '@/lib/localized';
 import { formatBaisa } from '@/lib/money';
 import { cn } from '@/lib/cn';
+import { PromotionTicket } from './PromotionTicket';
 import { Stars } from './Stars';
 
 /** Static hero shown only when no campaign is live (the carousel replaces it otherwise). */
@@ -119,42 +121,23 @@ export function CategoryStrip({ categories, locale }: { categories: readonly Nav
 /** Live promotions only (loaded from the database; nothing is ever invented). */
 export function PromotionStrip({ promotions }: { promotions: readonly PromotionView[] }) {
   const t = useTranslations('home.promoCard');
-  const locale = useLocale();
-  const format = useFormatter();
   if (promotions.length === 0) return null;
   return (
-    <ul className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" data-testid="promotion-strip">
-      {promotions.slice(0, 3).map((p) => (
-        <li key={p.id} className="min-w-0">
-          <Card tone="holo" className="relative flex h-full flex-col gap-2 overflow-hidden">
-            <div aria-hidden="true" className="pointer-events-none absolute -end-10 -top-10 size-32 rounded-full opacity-50 blur-2xl" style={{ background: 'radial-gradient(circle, rgb(255 121 0 / 0.6), transparent 65%)' }} />
-            <div className="relative flex items-center justify-between gap-2">
-              <span className="font-display text-3xl font-extrabold text-gradient-secondary [unicode-bidi:isolate]">
-                {p.type === 'PERCENT' ? t('percent', { value: Number((p.value / 100).toFixed(2)) }) : t('fixed', { amount: formatBaisa(p.value, locale) })}
-              </span>
-              {p.code ? (
-                <Badge variant="neutral" className="font-display tracking-wider">
-                  <Tag size={12} aria-hidden="true" />
-                  {t('code', { code: p.code })}
-                </Badge>
-              ) : (
-                <span className="hud-label text-[0.65rem]">{t('auto')}</span>
-              )}
-            </div>
-            <p className="relative font-semibold">{p.name}</p>
-            {p.description ? <p className="relative line-clamp-2 text-sm text-muted">{p.description}</p> : null}
-            <p className="relative mt-auto flex flex-wrap gap-x-3 text-xs text-muted">
-              {p.endsAt ? <span>{t('endsOn', { date: format.dateTime(new Date(p.endsAt), 'short') })}</span> : null}
-              {p.minSubtotalBaisa ? <span>{t('minSpend', { amount: formatBaisa(p.minSubtotalBaisa, locale) })}</span> : null}
-            </p>
-            <Link href="/promotions" className="relative inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-accent underline-offset-4 hover:underline">
-              {t('view')}
-              <ArrowRight size={14} aria-hidden="true" className="flip-rtl" />
-            </Link>
-          </Card>
-        </li>
-      ))}
-    </ul>
+    <div className="mb-6" data-testid="promotion-strip">
+      <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        {promotions.slice(0, 2).map((p, index) => (
+          <li key={p.id} className="min-w-0">
+            <InView className="promo-enter h-full" delayMs={index * 70}>
+              <PromotionTicket promotion={p} compact />
+            </InView>
+          </li>
+        ))}
+      </ul>
+      <Link href="/promotions" className="mt-2 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-accent underline-offset-4 hover:underline">
+        {t('view')}
+        <ArrowRight size={14} aria-hidden="true" className="flip-rtl" />
+      </Link>
+    </div>
   );
 }
 

@@ -313,7 +313,7 @@
       "date_invalid": "Enter a valid date.",
       "link_invalid": "Use an internal path starting with / or an https:// address.",
       "url_invalid": "Enter a valid web address.",
-      "percent_invalid": "Enter a percentage between 0.01 and 100.",
+      "percent_invalid": "Enter a percentage between 0.01 and 90.",
       "end_before_start": "The end must be after the start.",
       "too_many": "Too many items.",
       "code_invalid": "3 to 32 capital letters, digits, dash or underscore.",
@@ -345,7 +345,8 @@
       "number_invalid": "Enter a valid number.",
       "range_inverted": "The maximum must not be below the minimum.",
       "kyc_notes_required": "Write a message to the customer (at least 3 characters).",
-      "kyc_docs_required": "Tick at least one document to ask for."
+      "kyc_docs_required": "Tick at least one document to ask for.",
+      "promotion_in_use": "An order already used this promotion: switch it off instead of deleting it."
     },
     "proposal_not_open": "This proposal was already decided.",
     "proposal_no_action": "This proposal has no action to apply.",
@@ -921,5 +922,70 @@
     "save": "Save the decision",
     "ownCard": "This card was sent from your own account: another member of the team must handle it.",
     "alreadyDecided": "A decision was already recorded."
+  },
+  "promotions": {
+    "title": "Promotions",
+    "subtitle": "Real discounts applied at checkout: automatic, or unlocked by a code. One promotion applies per order — the most advantageous for the customer.",
+    "new": "New promotion",
+    "newHint": "A new promotion is saved switched off unless you tick “Active”.",
+    "edit": "Edit the promotion",
+    "details": "Promotion",
+    "empty": "No promotion yet.",
+    "emptyText": "Create one: it is shown on the Offers page and applied at checkout as soon as it is active.",
+    "automatic": "Automatic",
+    "scoped": "Selected products",
+    "wholeCart": "Whole cart",
+    "noDates": "No dates",
+    "used": "{count, plural, =0 {Never used} one {Used once} other {Used # times}}",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "save": "Save",
+    "create": "Create the promotion",
+    "state": {
+      "live": "Live",
+      "scheduled": "Scheduled",
+      "ended": "Ended",
+      "used_up": "Used up",
+      "off": "Off"
+    },
+    "rules": "A discount is real money: check the value, the dates and the targets before activating. Promotions do not add up; delivery fees are not discounted.",
+    "types": {
+      "PERCENT": "Percentage",
+      "FIXED": "Fixed amount"
+    },
+    "fields": {
+      "name": "Name shown to customers",
+      "description": "Short description",
+      "type": "Kind of discount",
+      "percent": "Discount (%)",
+      "amount": "Discount",
+      "code": "Code (optional)",
+      "minSubtotal": "Minimum purchase",
+      "maxDiscount": "Maximum discount",
+      "categories": "Categories",
+      "brands": "Brands",
+      "products": "Products",
+      "startsAt": "Starts",
+      "endsAt": "Ends",
+      "usageLimit": "Total number of uses",
+      "perUserLimit": "Uses per customer",
+      "isActive": "Active"
+    },
+    "hints": {
+      "percent": "For example 5 or 7.5. At most 90.",
+      "amount": "Taken off the eligible products.",
+      "code": "Empty = applied automatically. With a code, the customer types it at checkout. 3 to 32 capital letters, digits, dash or underscore.",
+      "minSubtotal": "Empty = no minimum. Counted on the eligible products.",
+      "maxDiscount": "Empty = no cap. Protects you on expensive products.",
+      "scope": "Targets: tick nothing to apply the promotion to the whole cart. A category includes its sub-categories.",
+      "dates": "Muscat time. Empty = no limit.",
+      "usageLimit": "Empty = unlimited.",
+      "perUserLimit": "Empty = unlimited. 1 = once per customer.",
+      "isActive": "Unticked: saved as a draft, invisible to customers."
+    },
+    "deleteTitle": "Delete this promotion",
+    "deleteText": "Possible only while no order has used it. Afterwards, switch it off instead.",
+    "delete": "Delete",
+    "deleteConfirm": "This promotion will be removed for good."
   }
 }

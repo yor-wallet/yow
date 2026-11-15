@@ -149,7 +149,10 @@
     "copied": "Code copied",
     "dealsTitle": "Deals of the day",
     "howTitle": "How it works",
-    "how": "Automatic promotions are deducted in your cart. For a code, enter it at the review step of checkout. Promotions do not stack: the best one applies."
+    "how": "Automatic promotions are deducted in your cart. For a code, enter it at the review step of checkout. Promotions do not stack: the best one applies.",
+    "freeDeliveryTitle": "Free standard delivery from {amount}",
+    "freeDeliveryText": "Applied automatically at checkout, everywhere we deliver.",
+    "offersTitle": "Offers running now"
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",

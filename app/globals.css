@@ -802,6 +802,74 @@ html[lang='ar'] {
   animation: doom-label-swap 0.28s var(--ease-premium) both;
 }
 
+/* ── Offers: coupon cards ─────────────────────────────────────────────────────────────────────────
+   A perforation between the stub and the body, an entrance played once when the coupon enters the
+   viewport (`<InView>` sets data-inview), one light sweep across the stub, and a small lift on hover.
+   Nothing loops. Without JavaScript the coupons are simply visible. */
+.promo-perf {
+  position: relative;
+  flex: none;
+  width: 0;
+  border-inline-start: 2px dashed var(--doom-border-strong);
+}
+.promo-perf::before,
+.promo-perf::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: -9px;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: var(--doom-bg);
+  box-shadow: inset 0 0 0 1px var(--doom-border);
+}
+.promo-perf::before {
+  top: -9px;
+}
+.promo-perf::after {
+  bottom: -9px;
+}
+.promo-ticket {
+  transition:
+    transform var(--dur-card) var(--ease-premium),
+    box-shadow var(--dur-card) var(--ease-premium);
+}
+@media (hover: hover) {
+  .promo-ticket:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgb(10 25 55 / 0.14);
+  }
+}
+.promo-shine {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 55%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.6), transparent);
+  transform: translateX(-140%) skewX(-16deg);
+}
+@keyframes doom-promo-shine {
+  to {
+    transform: translateX(260%) skewX(-16deg);
+  }
+}
+@keyframes doom-promo-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+}
+.promo-enter[data-inview='false'] {
+  opacity: 0;
+}
+.promo-enter[data-inview='true'] {
+  animation: doom-promo-enter 420ms var(--ease-premium) var(--promo-delay, 0ms) both;
+}
+.promo-enter[data-inview='true'] .promo-shine {
+  animation: doom-promo-shine 900ms var(--ease-premium) calc(var(--promo-delay, 0ms) + 260ms) 1 both;
+}
+
 /* Respect reduced motion everywhere. */
 @media (prefers-reduced-motion: reduce) {
   :root {

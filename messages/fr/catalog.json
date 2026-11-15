@@ -149,7 +149,10 @@
     "copied": "Code copié",
     "dealsTitle": "Offres du jour",
     "howTitle": "Comment ça marche",
-    "how": "Les promotions automatiques sont déduites dans votre panier. Pour un code, saisissez-le à l'étape de vérification du paiement. Les promotions ne se cumulent pas : la meilleure s'applique."
+    "how": "Les promotions automatiques sont déduites dans votre panier. Pour un code, saisissez-le à l'étape de vérification du paiement. Les promotions ne se cumulent pas : la meilleure s'applique.",
+    "freeDeliveryTitle": "Livraison standard gratuite dès {amount}",
+    "freeDeliveryText": "Appliquée automatiquement au paiement, partout où nous livrons.",
+    "offersTitle": "Offres en cours"
   },
   "errors": {
     "generic": "Une erreur est survenue. Veuillez réessayer.",

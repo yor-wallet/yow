@@ -47,3 +47,18 @@ export async function listZoneSummaries(): Promise<{ zones: ZoneSummary[]; expre
     }),
   };
 }
+
+/**
+ * The order amount from which standard delivery is free in EVERY area we deliver to, or null when at
+ * least one area has no such rule (the storefront must not promise more than the checkout applies).
+ */
+export async function freeStandardDeliveryFrom(): Promise<number | null> {
+  const zones = await prisma.deliveryZone.findMany({ where: { isActive: true, standardFeeBaisa: { not: null } }, select: { freeStandardFromBaisa: true } });
+  if (zones.length === 0) return null;
+  let max = 0;
+  for (const zone of zones) {
+    if (zone.freeStandardFromBaisa === null) return null;
+    max = Math.max(max, zone.freeStandardFromBaisa);
+  }
+  return max;
+}
