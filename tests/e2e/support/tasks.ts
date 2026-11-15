@@ -13,6 +13,7 @@ import { placeOrder } from '@/lib/orders/place';
 import { expectedMicro, formatUsdt } from '@/lib/payments/onchain/amount';
 import { emailVerificationUrl } from '@/lib/auth/email-verification';
 import { submitGiftCard } from '@/lib/payments/giftcards';
+import { applyForFlex } from '@/lib/flex';
 import { ensureWallet, getBalance, makeReference, postTransaction, systemAccountId, withLedgerTx } from '@/lib/wallet/ledger';
 
 type Task =
@@ -23,6 +24,7 @@ type Task =
   | { task: 'createCryptoIntent'; userId: string }
   | { task: 'createKycSubmission'; userId: string; fullName: string }
   | { task: 'createGiftCard'; userId: string; code: string; value: string }
+  | { task: 'createFlexApplication'; userId: string; variantSku: string; months: number }
   | { task: 'emailVerifyUrl'; userId: string }
   | { task: 'placeUnpaidOrder'; userId: string; variantSku: string; qty: number };
 
@@ -99,6 +101,13 @@ async function run(t: Task): Promise<unknown> {
       // Through the real submission (validation, encryption, duplicate check), like the customer's form.
       const res = await submitGiftCard({ userId: t.userId, data: { brand: 'APPLE', code: t.code, currency: 'OMR', value: t.value } });
       return { id: res.id };
+    }
+    case 'createFlexApplication': {
+      // FLEX needs a verified identity: the test customer is marked verified, then applies like on the site.
+      await prisma.user.update({ where: { id: t.userId }, data: { kycStatus: 'VERIFIED' } });
+      const variant = await prisma.productVariant.findUniqueOrThrow({ where: { sku: t.variantSku }, select: { id: true, productId: true } });
+      const res = await applyForFlex({ userId: t.userId, productId: variant.productId, variantId: variant.id, months: t.months, idempotencyKey: `e2eflex${Date.now().toString(36)}${Math.random().toString(36).slice(2, 12)}` });
+      return { id: res.applicationId };
     }
     case 'emailVerifyUrl': {
       const user = await prisma.user.findUniqueOrThrow({ where: { id: t.userId }, select: { id: true, email: true, locale: true } });

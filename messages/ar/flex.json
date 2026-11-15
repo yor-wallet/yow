@@ -169,6 +169,9 @@
     "paidOn": "دُفع في {date}",
     "due": "يستحق في {date}",
     "paidToast": "تم دفع القسط",
-    "walletBalanceLabel": "رصيد المحفظة"
+    "walletBalanceLabel": "رصيد المحفظة",
+    "payCrypto": "ادفع {amount} بالعملات الرقمية (USDT)",
+    "openingCrypto": "جارٍ فتح الدفع…",
+    "cryptoHint": "تحصل على العنوان والمبلغ الدقيق للتحويل. يُسجَّل القسط مدفوعًا فور تأكيد التحويل على البلوكشين."
   }
 }

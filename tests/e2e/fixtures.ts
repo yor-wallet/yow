@@ -36,6 +36,11 @@ export function createGiftCard(userId: string, code: string, value = '100'): { i
   return task<{ id: string }>({ task: 'createGiftCard', userId, code, value });
 }
 
+/** An instalment (DOOM FLEX) application of a customer with a verified identity, waiting for the finance decision. */
+export function createFlexApplication(userId: string, variantSku = 'E2E-BETA', months = 6): { id: string } {
+  return task<{ id: string }>({ task: 'createFlexApplication', userId, variantSku, months });
+}
+
 /** The locale-less path of a valid e-mail confirmation link for a user. */
 export function emailVerifyPath(userId: string): string {
   return task<{ path: string }>({ task: 'emailVerifyUrl', userId }).path;

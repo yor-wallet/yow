@@ -443,7 +443,8 @@ export async function payInstallment(input: { installmentId: string; userId: str
       const fresh = await tx.flexInstallment.findUniqueOrThrow({ where: { id: inst.id }, select: { status: true, paymentIntentId: true, amountBaisa: true, applicationId: true } });
       if (fresh.status === 'PAID') throw new MoneyError('installment_not_payable', 'Already paid', { reason: 'already_paid' });
       if (fresh.paymentIntentId) {
-        // A previous attempt left an unconfirmed intent: release the link (wallet attempts are atomic, so it never succeeded).
+        // A previous attempt is still open (for example a crypto payment not sent or not confirmed yet): release the link.
+        // If that payment confirms later, the money is credited to the wallet (`confirmPaymentIntent`), never lost.
         await tx.flexInstallment.update({ where: { id: inst.id }, data: { paymentIntentId: null } });
       }
       const intent = await tx.paymentIntent.create({

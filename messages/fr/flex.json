@@ -169,6 +169,9 @@
     "paidOn": "Payée le {date}",
     "due": "Échéance le {date}",
     "paidToast": "Échéance payée",
-    "walletBalanceLabel": "Solde du portefeuille"
+    "walletBalanceLabel": "Solde du portefeuille",
+    "payCrypto": "Payer {amount} en crypto (USDT)",
+    "openingCrypto": "Ouverture du paiement…",
+    "cryptoHint": "Vous recevez l’adresse et le montant exact à envoyer. La mensualité est marquée payée dès que le transfert est confirmé sur la blockchain."
   }
 }

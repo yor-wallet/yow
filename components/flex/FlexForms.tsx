@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { CircleAlert } from 'lucide-react';
+import { CircleAlert, Coins } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/Button';
@@ -134,6 +134,46 @@ export function PayInstallmentButton({ installmentId, label }: { installmentId: 
       >
         {label}
       </Button>
+    </div>
+  );
+}
+
+/** Pays an instalment in crypto: opens the payment and sends the customer to its page (address, exact amount, time left). */
+export function PayInstallmentCryptoButton({ installmentId, label }: { installmentId: string; label: string }) {
+  const t = useTranslations('flex.detail');
+  const router = useRouter();
+  const errorText = useErrorText();
+  const [key, setKey] = useState(newKey);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, start] = useTransition();
+  return (
+    <div className="flex flex-col gap-2">
+      <ErrorNote text={error} />
+      <Button
+        variant="outline"
+        size="lg"
+        fullWidth
+        className="min-h-14"
+        loading={pending}
+        loadingLabel={t('openingCrypto')}
+        leadingIcon={<Coins size={18} aria-hidden="true" />}
+        data-testid="flex-pay-crypto"
+        onClick={() =>
+          start(async () => {
+            setError(null);
+            const res = await payInstallmentAction({ installmentId, idempotencyKey: key, method: 'CRYPTO' });
+            if (res.ok && res.intentId) {
+              router.push(`/pay/${res.intentId}`);
+              return;
+            }
+            setKey(newKey());
+            if (!res.ok) setError(errorText(res));
+          })
+        }
+      >
+        {label}
+      </Button>
+      <p className="text-xs text-muted">{t('cryptoHint')}</p>
     </div>
   );
 }

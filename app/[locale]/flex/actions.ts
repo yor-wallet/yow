@@ -10,8 +10,10 @@ import { idempotencyKeySchema, idSchema } from '@/lib/validation';
 import { asLocale } from '@/i18n/routing';
 import { isMoneyError } from '@/lib/wallet/errors';
 import { acceptFlexTerms, applyForFlex, cancelFlexApplication, payInstallment } from '@/lib/flex';
+import { startInstallmentPayment } from '@/lib/payments/core';
+import { notifyStaffOfFlexApplication } from '@/lib/flex/emails';
 
-export type FlexActionResult = { ok: true; applicationId?: string; intentId?: string } | { ok: false; error: string; reason?: string };
+export type FlexActionResult = { ok: true; applicationId?: string; intentId?: string; pending?: boolean } | { ok: false; error: string; reason?: string };
 
 function fail(err: unknown, scope: string): FlexActionResult {
   unstable_rethrow(err);
@@ -38,6 +40,7 @@ export async function applyFlexAction(raw: z.input<typeof applySchema>): Promise
   try {
     if (!(await rateLimit(`flex-apply:${session.user.id}`, 10, 10 * 60_000)).ok) return { ok: false, error: 'rate_limited' };
     const res = await applyForFlex({ userId: session.user.id, ...parsed.data });
+    if (!res.replayed) await notifyStaffOfFlexApplication(res.applicationId);
     revalidatePath('/[locale]/flex', 'layout');
     return { ok: true, applicationId: res.applicationId };
   } catch (err) {
@@ -68,7 +71,7 @@ export async function acceptFlexAction(raw: z.input<typeof acceptSchema>): Promi
   }
 }
 
-const paySchema = z.object({ installmentId: idSchema, idempotencyKey: idempotencyKeySchema });
+const paySchema = z.object({ installmentId: idSchema, idempotencyKey: idempotencyKeySchema, method: z.enum(['WALLET', 'CRYPTO']).default('WALLET') });
 
 export async function payInstallmentAction(raw: z.input<typeof paySchema>): Promise<FlexActionResult> {
   const session = await getSession();
@@ -77,11 +80,17 @@ export async function payInstallmentAction(raw: z.input<typeof paySchema>): Prom
   if (!parsed.success) return { ok: false, error: 'invalid_input' };
   try {
     if (!(await rateLimit(`flex-pay:${session.user.id}`, 20, 60_000)).ok) return { ok: false, error: 'rate_limited' };
-    const res = await payInstallment({ userId: session.user.id, ...parsed.data });
+    const { installmentId, idempotencyKey, method } = parsed.data;
+    // Wallet: paid at once (atomic). Crypto: a payment is opened; the instalment is marked paid once the
+    // transfer is verified on the blockchain (the customer continues on the payment page).
+    const res =
+      method === 'CRYPTO'
+        ? await startInstallmentPayment(installmentId, 'CRYPTO', session.user.id, idempotencyKey, { locale: asLocale(await getLocale()) })
+        : await payInstallment({ userId: session.user.id, installmentId, idempotencyKey });
     revalidatePath('/[locale]/flex', 'layout');
     revalidatePath('/[locale]/wallet', 'page');
     if (res.status === 'failed') return { ok: false, error: res.reason };
-    return { ok: true, intentId: res.intentId };
+    return { ok: true, intentId: res.intentId, pending: res.status !== 'succeeded' };
   } catch (err) {
     return fail(err, 'pay');
   }

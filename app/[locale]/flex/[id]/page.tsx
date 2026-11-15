@@ -21,7 +21,9 @@ import { Price } from '@/components/ui/Price';
 import { HudCorners } from '@/components/ui/HudCorners';
 import { buttonClasses } from '@/components/ui/Button';
 import { ScheduleTable } from '@/components/flex/ScheduleTable';
-import { AcceptFlexForm, CancelFlexButton, PayInstallmentButton } from '@/components/flex/FlexForms';
+import { AcceptFlexForm, CancelFlexButton, PayInstallmentButton, PayInstallmentCryptoButton } from '@/components/flex/FlexForms';
+import { KycRequiredNotice } from '@/components/payments/KycRequiredNotice';
+import { listPaymentMethods } from '@/lib/payments/registry';
 import { FLEX_STATUS_VARIANT } from '@/components/flex/status';
 
 type Props = { params: Promise<{ locale: string; id: string }>; searchParams: Promise<{ address?: string }> };
@@ -71,6 +73,8 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
   const paidBaisa = app.installments.filter((i) => i.status === 'PAID').reduce((s, i) => s + i.amountBaisa, 0);
   const next = app.status === 'ACTIVE' ? app.installments.find((i) => i.status === 'PENDING' || i.status === 'OVERDUE') : undefined;
   const balance = next ? await getBalance(user.id) : null;
+  // Other ways to pay the next instalment (crypto), with the reason when one is not available.
+  const crypto = next ? (await listPaymentMethods({ purpose: 'INSTALLMENT', amountBaisa: next.amountBaisa, userId: user.id })).find((m) => m.id === 'CRYPTO') : undefined;
 
   return (
     <div className="pb-16">
@@ -299,6 +303,11 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
                       </Link>
                     </div>
                   )}
+                  {crypto?.available ? (
+                    <PayInstallmentCryptoButton installmentId={next.id} label={t('payCrypto', { amount: formatBaisa(next.amountBaisa, locale) })} />
+                  ) : crypto?.reason === 'kyc_required' ? (
+                    <KycRequiredNotice />
+                  ) : null}
                 </div>
               ) : null}
               <div>

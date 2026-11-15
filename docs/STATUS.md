@@ -38,8 +38,12 @@ Design system (jetons, thèmes sombre/clair), i18n ar (RTL) / en / fr avec test 
 - ✅ Dans la vitrine : paiement par portefeuille (écriture comptable atomique), moyens indisponibles affichés avec leur raison.
 - ⛔ Pages `/wallet` (solde, recharge, historique, reçus PDF) et routes `/api/payments`, `/api/webhooks` ; formulaires de cartes cadeaux.
 
-### DOOM FLEX — ⛔
-Modèles de données et prévisions de paiement (3/6/12 mois, dernière échéance absorbant les baisas) existent ; ni logique de demande / décision / échéancier, ni pages `/flex`.
+### DOOM FLEX — ✅ (15 novembre 2026 ; la boutique finance elle-même tant qu'il n'y a pas de partenaire)
+- Parcours complet du cahier des charges : produit → durée **3 / 6 / 12 mois** (0 % d'intérêt, sans frais, total = prix comptant, dernière échéance absorbant les baisas) → identité vérifiée → demande → **décision de l'équipe** (Administration › Finance › FLEX, rôles Finance / Administrateur / Super-administrateur ; ou partenaire de financement s'il est configuré) → le client accepte les conditions → commande + échéancier → mensualités payées **depuis le portefeuille** ou **directement en crypto (USDT)** (`startInstallmentPayment`, interrupteur `crypto.forInstallments`, activé par défaut).
+- E-mail à l'équipe à chaque nouvelle demande, e-mail de décision au client. Une demande envoyée depuis son propre compte ne peut pas être décidée par ce compte.
+- Une mensualité en crypto n'est marquée payée qu'après vérification du transfert sur la blockchain ; si elle est réglée entre-temps par le portefeuille, le transfert crypto arrivé ensuite est crédité au portefeuille (jamais perdu).
+- Tests : `tests/unit/flex-flow.test.ts` (5 : identité, décision, acceptation, somme exacte des mensualités, portefeuille, crypto, interrupteur, e-mails) et `tests/e2e/flex-admin.spec.ts`. Avant cela, le parcours FLEX n'avait aucun test.
+- ⚠️ Sans partenaire, le risque d'impayé est porté par la boutique : le produit est livré après l'acceptation, les mensualités sont dues ensuite. Les retards sont marqués (`OVERDUE`) ; aucun recouvrement automatique n'existe.
 
 ### Compte, livraison, KYC — 🟡
 - ✅ Bibliothèques (adresses, devis de livraison, expéditions, preuve de remise, code à usage unique, KYC chiffré, support, notifications) et composants de suivi.

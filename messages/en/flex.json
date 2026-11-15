@@ -169,6 +169,9 @@
     "paidOn": "Paid on {date}",
     "due": "Due {date}",
     "paidToast": "Instalment paid",
-    "walletBalanceLabel": "Wallet balance"
+    "walletBalanceLabel": "Wallet balance",
+    "payCrypto": "Pay {amount} in crypto (USDT)",
+    "openingCrypto": "Opening the payment…",
+    "cryptoHint": "You get the address and the exact amount to send. The instalment is marked paid once the transfer is confirmed on the blockchain."
   }
 }

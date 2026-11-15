@@ -130,3 +130,52 @@ export function giftCardDecisionMessage(opts: {
   const { html, text } = layout({ locale: l, title: d.title, paragraphs, button: { label: T.button, url: opts.url }, footer: FOOTER[l] });
   return { to: [{ email: opts.email, name: opts.name }], subject: d.subject, html, text, tag: 'giftcard-decision' };
 }
+
+/** To every staff member who can decide FLEX applications: a customer asked to pay in instalments. */
+export function flexSubmittedAdminMessage(opts: { locale: string | null; admin: { email: string; name: string }; customerName: string; productName: string; months: number; total: string; submittedAt: Date; url: string }): EmailMessage {
+  const l = lang(opts.locale);
+  const who = escapeHtml(opts.customerName);
+  const what = escapeHtml(opts.productName);
+  const total = escapeHtml(opts.total);
+  const when = escapeHtml(opts.submittedAt.toISOString().slice(0, 16).replace('T', ' ') + ' UTC');
+  const T = {
+    ar: { subject: `طلب تقسيط جديد: ${opts.customerName}`, title: 'طلب تقسيط جديد (دوم فليكس)', p1: `طلب ${who} شراء ${what} بالتقسيط على ${opts.months} أشهر (${total}) في ${when}.`, p2: 'افتح الطلب في مركز الإدارة ثم وافق عليه أو ارفضه. بعد الموافقة يقبل العميل الشروط فيُنشأ جدول الأقساط.', button: 'مراجعة الطلب' },
+    en: { subject: `New instalment application: ${opts.customerName}`, title: 'New instalment application (DOOM FLEX)', p1: `${who} asked to buy ${what} in ${opts.months} monthly instalments (${total}) on ${when}.`, p2: 'Open the application in the admin centre, then approve or refuse it. Once approved, the customer accepts the terms and the schedule is created.', button: 'Review the application' },
+    fr: { subject: `Nouvelle demande de paiement en plusieurs fois : ${opts.customerName}`, title: 'Nouvelle demande de paiement en plusieurs fois (DOOM FLEX)', p1: `${who} demande à acheter ${what} en ${opts.months} mensualités (${total}) le ${when}.`, p2: 'Ouvrez la demande dans le centre d’administration, puis approuvez-la ou refusez-la. Après approbation, le client accepte les conditions et l’échéancier est créé.', button: 'Examiner la demande' },
+  }[l];
+  const { html, text } = layout({ locale: l, title: T.title, paragraphs: [T.p1, T.p2], button: { label: T.button, url: opts.url }, footer: FOOTER[l] });
+  return { to: [{ email: opts.admin.email, name: opts.admin.name }], subject: T.subject, html, text, tag: 'flex-submitted-admin' };
+}
+
+/** To the customer: the instalment application was approved (next step: accept the terms) or refused. */
+export function flexDecisionMessage(opts: { locale: string | null; email: string; name: string; decision: 'APPROVED' | 'REJECTED'; productName: string; note: string | null; url: string }): EmailMessage {
+  const l = lang(opts.locale);
+  const name = escapeHtml(opts.name);
+  const what = escapeHtml(opts.productName);
+  const note = opts.note ? escapeHtml(opts.note) : null;
+  const T = {
+    ar: {
+      hello: `مرحبًا ${name}،`,
+      APPROVED: { subject: 'تمت الموافقة على طلب التقسيط', title: 'تمت الموافقة على طلب التقسيط', body: `وافق فريقنا على طلبك لشراء ${what} بالتقسيط. افتح طلبك لقبول الشروط وتأكيد الشراء، ثم يظهر جدول أقساطك.`, button: 'قبول الشروط وتأكيد الشراء' },
+      REJECTED: { subject: 'لم تتم الموافقة على طلب التقسيط', title: 'لم تتم الموافقة على طلب التقسيط', body: `راجع فريقنا طلبك لشراء ${what} بالتقسيط ولم يتمكن من الموافقة عليه. يمكنك دائمًا شراء المنتج بالدفع الكامل.`, button: 'عرض الطلب' },
+      reason: 'السبب',
+    },
+    en: {
+      hello: `Hello ${name},`,
+      APPROVED: { subject: 'Your instalment application is approved', title: 'Your instalment application is approved', body: `Our team approved your application to buy ${what} in instalments. Open it to accept the terms and confirm the purchase; your schedule then appears.`, button: 'Accept the terms and confirm' },
+      REJECTED: { subject: 'Your instalment application was not approved', title: 'Your instalment application was not approved', body: `Our team reviewed your application to buy ${what} in instalments and could not approve it. You can still buy the product with a full payment.`, button: 'See the application' },
+      reason: 'Reason',
+    },
+    fr: {
+      hello: `Bonjour ${name},`,
+      APPROVED: { subject: 'Votre demande de paiement en plusieurs fois est approuvée', title: 'Votre demande de paiement en plusieurs fois est approuvée', body: `Notre équipe a approuvé votre demande d’achat de ${what} en plusieurs fois. Ouvrez-la pour accepter les conditions et confirmer l’achat ; votre échéancier s’affiche ensuite.`, button: 'Accepter les conditions et confirmer' },
+      REJECTED: { subject: 'Votre demande de paiement en plusieurs fois n’a pas été approuvée', title: 'Votre demande de paiement en plusieurs fois n’a pas été approuvée', body: `Notre équipe a examiné votre demande d’achat de ${what} en plusieurs fois et n’a pas pu l’approuver. Vous pouvez toujours acheter le produit en payant comptant.`, button: 'Voir la demande' },
+      reason: 'Motif',
+    },
+  }[l];
+  const d = T[opts.decision];
+  const paragraphs = [T.hello, d.body];
+  if (opts.decision === 'REJECTED' && note) paragraphs.push(`${T.reason} : ${note}`);
+  const { html, text } = layout({ locale: l, title: d.title, paragraphs, button: { label: d.button, url: opts.url }, footer: FOOTER[l] });
+  return { to: [{ email: opts.email, name: opts.name }], subject: d.subject, html, text, tag: 'flex-decision' };
+}

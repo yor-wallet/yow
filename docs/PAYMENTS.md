@@ -131,6 +131,8 @@ Sécurités déjà en place : adresses validées, USDT officiel uniquement, mont
 | Cartes cadeaux : écran de l'équipe, e-mails | `app/[locale]/admin/finance/gift-cards/*`, `lib/admin/gift-cards.ts`, `app/api/admin/gift-cards/[id]/image/route.ts`, `lib/payments/giftcard-emails.ts` |
 | Encart « vérifiez votre identité » | `components/payments/KycRequiredNotice.tsx` |
 | Plafonds du portefeuille | `lib/wallet/limits.ts` |
+| Mensualités DOOM FLEX : paiement par portefeuille ou directement en crypto | `lib/flex/service.ts` (`payInstallment`), `lib/payments/core.ts` (`startInstallmentPayment`), réglage `crypto.forInstallments` |
+| DOOM FLEX : décision de l'équipe | `app/[locale]/admin/finance/flex/*`, `lib/admin/flex.ts`, `lib/flex/emails.ts` |
 | Tests | `tests/unit/payments-settings.test.ts`, `tests/unit/onchain-crypto.test.ts`, `tests/unit/giftcard-admin.test.ts`, `tests/e2e/crypto.spec.ts`, `tests/e2e/giftcards-admin.spec.ts`, `tests/e2e/admin.spec.ts` |
 
 ## 9. Décisions du propriétaire (14/11/2026) et reste à faire

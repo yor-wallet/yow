@@ -570,6 +570,92 @@ export async function startOrderPayment(
 
 // ───────────── Status / refresh ─────────────
 
+/**
+ * Start paying one FLEX instalment through an external provider (CRYPTO today; card or carrier billing
+ * once they are configured). The wallet path stays `payInstallment` (lib/flex), which is atomic.
+ *
+ * Nothing is marked paid here: the instalment becomes PAID only in `confirmPaymentIntent`, after the
+ * provider has confirmed the money (crypto: the transfer is verified on the blockchain). A pending,
+ * unexpired payment for the same instalment and method is reused, so a customer who comes back finds
+ * the same amount and address. If the instalment gets paid another way meanwhile (wallet), a late
+ * confirmation of this payment is credited to the wallet — the money is never lost.
+ */
+export async function startInstallmentPayment(
+  installmentId: string,
+  methodId: PaymentMethodId,
+  userId: string,
+  idempotencyKey: string,
+  opts: { locale?: Locale } = {},
+): Promise<StartPaymentResult> {
+  const key = `inst:${userId}:${checkKey(idempotencyKey)}`;
+  if (!isExternalProvider(methodId)) throw new MoneyError('method_unavailable', `${methodId} cannot pay an instalment here`);
+  const inst = await prisma.flexInstallment.findUnique({
+    where: { id: installmentId },
+    include: { application: { select: { id: true, userId: true, status: true } } },
+  });
+  if (!inst || inst.application.userId !== userId) throw new MoneyError('not_found');
+
+  const replay = await replayOrThrow(key, (i) => i.userId === userId && i.provider === methodId && i.purpose === 'INSTALLMENT' && i.amountBaisa === inst.amountBaisa);
+  if (replay) return replay;
+
+  if (inst.status === 'PAID') throw new MoneyError('installment_not_payable', 'Already paid', { reason: 'already_paid' });
+  if (!['PENDING', 'OVERDUE'].includes(inst.status) || inst.application.status !== 'ACTIVE') throw new MoneyError('installment_not_payable');
+
+  const adapter = getAdapter(methodId);
+  if (!adapter.isConfigured()) throw new MoneyError('method_unavailable', `${adapter.displayName} is not available`);
+  if (methodId === 'CRYPTO') await assertMethodAllowed('CRYPTO', { purpose: 'INSTALLMENT', amountBaisa: inst.amountBaisa, userId });
+  if (adapter.minAmountBaisa && inst.amountBaisa < adapter.minAmountBaisa) {
+    throw new MoneyError('amount_below_minimum', undefined, { minBaisa: adapter.minAmountBaisa });
+  }
+  const customer = await customerOf(userId);
+
+  // The payment already waiting for this instalment with this method, if it can still be completed.
+  if (inst.paymentIntentId) {
+    const current = await prisma.paymentIntent.findUnique({ where: { id: inst.paymentIntentId } });
+    if (
+      current &&
+      current.userId === userId &&
+      current.provider === methodId &&
+      current.amountBaisa === inst.amountBaisa &&
+      (current.status === 'PENDING' || current.status === 'REQUIRES_ACTION') &&
+      (!current.expiresAt || current.expiresAt.getTime() > Date.now())
+    ) {
+      return resultFromIntent(current, true);
+    }
+  }
+
+  let intent: PaymentIntent;
+  try {
+    intent = await prisma.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT "id" FROM "FlexInstallment" WHERE "id" = ${inst.id} FOR UPDATE`;
+      const fresh = await tx.flexInstallment.findUniqueOrThrow({ where: { id: inst.id }, select: { status: true, amountBaisa: true, applicationId: true } });
+      if (fresh.status === 'PAID') throw new MoneyError('installment_not_payable', 'Already paid', { reason: 'already_paid' });
+      if (fresh.status !== 'PENDING' && fresh.status !== 'OVERDUE') throw new MoneyError('installment_not_payable');
+      const created = await tx.paymentIntent.create({
+        data: {
+          userId,
+          provider: methodId,
+          purpose: 'INSTALLMENT',
+          amountBaisa: fresh.amountBaisa,
+          idempotencyKey: key,
+          status: 'CREATED',
+          metadata: { flexApplicationId: fresh.applicationId, installmentId: inst.id },
+        },
+      });
+      // The instalment points at its latest payment attempt; an older attempt that confirms later is credited to the wallet.
+      await tx.flexInstallment.update({ where: { id: inst.id }, data: { paymentIntentId: created.id } });
+      return created;
+    });
+  } catch (err) {
+    if (isUniqueViolation(err)) {
+      const again = await replayOrThrow(key, (i) => i.userId === userId && i.provider === methodId && i.purpose === 'INSTALLMENT');
+      if (again) return again;
+    }
+    throw err;
+  }
+  return launchExternal(intent, adapter, customer, opts.locale ?? customer.locale, 'DOOM FLEX instalment');
+}
+
 /** Close a still-pending intent after the provider reported failure / cancellation / expiry. */
 export async function closePendingIntent(intentId: string, status: 'FAILED' | 'CANCELLED' | 'EXPIRED', code: string): Promise<boolean> {
   const res = await prisma.paymentIntent.updateMany({

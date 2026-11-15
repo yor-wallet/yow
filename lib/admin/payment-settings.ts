@@ -21,6 +21,7 @@ export const PAYMENT_SETTING_SECTIONS: readonly PaymentSettingSection[] = [
       { key: 'crypto.enabled', control: 'switch' },
       { key: 'crypto.forOrders', control: 'switch' },
       { key: 'crypto.forTopup', control: 'switch' },
+      { key: 'crypto.forInstallments', control: 'switch' },
       { key: 'crypto.requireKyc', control: 'switch' },
       { key: 'crypto.minPaymentBaisa', control: 'omr' },
       { key: 'crypto.maxPaymentBaisa', control: 'omr' },

@@ -33,6 +33,7 @@ export const SETTINGS = {
   'crypto.enabled': { kind: 'int', group: 'payments', default: 0, min: 0, max: 1 } as Def<'int', number>,
   'crypto.forOrders': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
   'crypto.forTopup': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
+  'crypto.forInstallments': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
   'crypto.requireKyc': { kind: 'int', group: 'payments', default: 1, min: 0, max: 1 } as Def<'int', number>,
   'crypto.minPaymentBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 100_000_000 } as Def<'baisa', number | null>,
   'crypto.maxPaymentBaisa': { kind: 'baisa', group: 'payments', default: null, min: 1, max: 100_000_000 } as Def<'baisa', number | null>,

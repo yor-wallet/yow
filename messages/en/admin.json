@@ -367,6 +367,13 @@
       "invalid_amount": "Enter the value actually encashed (above 0, at most 5,000 OMR).",
       "not_found": "This gift card no longer exists.",
       "forbidden": "You do not have permission to handle gift cards."
+    },
+    "flex": {
+      "self_review": "You cannot decide an application sent from your own account.",
+      "flex_invalid_state": "This application can no longer be decided.",
+      "kyc_required": "The customer’s identity must be verified before approving.",
+      "not_found": "This application no longer exists.",
+      "forbidden": "You do not have permission to decide instalment applications."
     }
   },
   "filters": {
@@ -783,6 +790,10 @@
         "maxPaymentBaisa": {
           "label": "Maximum payment",
           "hint": "Empty = no limit of its own."
+        },
+        "forInstallments": {
+          "label": "Pay instalments in crypto",
+          "hint": "Lets a customer pay a DOOM FLEX instalment directly in crypto, without topping up the wallet first."
         }
       },
       "giftcard": {
@@ -987,5 +998,72 @@
     "deleteText": "Possible only while no order has used it. Afterwards, switch it off instead.",
     "delete": "Delete",
     "deleteConfirm": "This promotion will be removed for good."
+  },
+  "flex": {
+    "title": "Instalments (DOOM FLEX)",
+    "subtitle": "Customers ask to pay a product in 3, 6 or 12 monthly instalments — 0 % interest, no fees, total equal to the cash price. You approve or refuse; the schedule is created when the customer accepts the terms.",
+    "detailTitle": "Instalment application",
+    "emailOff": "E-mails are not configured yet: the team is not alerted by e-mail when an application arrives.",
+    "tabsLabel": "Filter by status",
+    "empty": "Nothing here.",
+    "sentAt": "Sent on {date}",
+    "productGone": "Product removed",
+    "months": "{count, plural, one {# month} other {# months}}",
+    "paidOf": "{paid} of {total} paid",
+    "late": "{count, plural, one {# late} other {# late}}",
+    "status": {
+      "SUBMITTED": "To decide",
+      "UNDER_REVIEW": "Being reviewed",
+      "APPROVED": "Approved — awaiting the customer",
+      "ACCEPTED": "Accepted",
+      "ACTIVE": "In progress",
+      "COMPLETED": "Fully paid",
+      "REJECTED": "Refused",
+      "CANCELLED": "Cancelled",
+      "DEFAULTED": "In default"
+    },
+    "instStatus": {
+      "PENDING": "To pay",
+      "PAID": "Paid",
+      "OVERDUE": "Late",
+      "CANCELLED": "Cancelled"
+    },
+    "application": "Application",
+    "product": "Product",
+    "amount": "Amount to finance",
+    "duration": "Duration",
+    "sentLabel": "Sent",
+    "order": "Order",
+    "termsAccepted": "Terms accepted",
+    "customer": "Customer",
+    "name": "Name",
+    "email": "E-mail",
+    "phone": "Phone",
+    "identity": "Identity",
+    "accountSince": "Account created",
+    "otherPlans": "Other plans",
+    "otherPlansValue": "{open} open · {done} fully paid",
+    "lateInstalments": "Late instalments",
+    "schedule": "Schedule",
+    "schedulePreview": "Schedule once accepted",
+    "schedulePreviewNote": "Delivery fees, if any, are added when the customer confirms; the dates start on that day.",
+    "instalmentN": "Instalment {n}",
+    "decision": "Decision",
+    "terms": "0 % interest, no fees. The product is delivered once the customer has accepted the terms; you are then owed the instalments.",
+    "decisionLabel": "Decision",
+    "decide": {
+      "APPROVED": "Approve the application",
+      "REJECTED": "Refuse",
+      "UNDER_REVIEW": "Mark as being reviewed"
+    },
+    "identityMissing": "This customer’s identity is not verified: the application cannot be approved.",
+    "notes": "Note",
+    "notesHint": "Required to refuse (the customer sees it).",
+    "save": "Save the decision",
+    "ownApplication": "This application comes from your own account: another member of the team must decide.",
+    "noDecideRight": "Only finance or an administrator can decide.",
+    "decided": "Decision",
+    "byPartner": "financing partner",
+    "alreadyDecided": "A decision was already recorded."
   }
 }

@@ -41,7 +41,7 @@ export function getAdapterBySlug(slug: string): ProviderAdapter | null {
 export const METHODS_BY_PURPOSE: Record<PaymentPurposeKey, readonly PaymentMethodId[]> = {
   TOPUP: ['CARD', 'OOREDOO', 'OMANTEL', 'CRYPTO', 'GIFT_CARD'],
   ORDER: ['WALLET', 'CARD', 'OOREDOO', 'OMANTEL', 'CRYPTO', 'FLEX', 'GIFT_CARD'],
-  INSTALLMENT: ['WALLET'],
+  INSTALLMENT: ['WALLET', 'CRYPTO'],
 };
 
 function option(id: PaymentMethodId, available: boolean, reason?: UnavailableReason, minAmountBaisa?: number): PaymentMethodOption {

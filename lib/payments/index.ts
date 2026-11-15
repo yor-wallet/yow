@@ -4,6 +4,7 @@
  *   listPaymentMethods({ purpose, amountBaisa, userId })      registry: availability per method
  *   startOrderPayment(orderId, methodId, userId, idempotencyKey)
  *   startTopUp(userId, methodId, amountBaisa, idempotencyKey)
+ *   startInstallmentPayment(installmentId, methodId, userId, idempotencyKey)   — external providers (crypto)
  *   confirmPaymentIntent(intentId, { confirmedAmountBaisa, providerRef, source })   the ONLY "succeeded" path
  *   refreshPaymentIntent(intentId)                             server-side provider status check
  *   handleProviderWebhook(slug, headers, rawBody)              /api/webhooks/<slug>
@@ -12,6 +13,7 @@
  */
 export { listPaymentMethods, getAdapter, getAdapterBySlug, ADAPTERS, METHODS_BY_PURPOSE } from './registry';
 export {
+  startInstallmentPayment,
   startOrderPayment,
   startTopUp,
   confirmPaymentIntent,

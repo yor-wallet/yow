@@ -34,6 +34,7 @@ export async function methodPolicyReason(
   if (!s['crypto.enabled']) return 'disabled_by_admin';
   if (input.purpose === 'ORDER' && !s['crypto.forOrders']) return 'disabled_by_admin';
   if (input.purpose === 'TOPUP' && !s['crypto.forTopup']) return 'disabled_by_admin';
+  if (input.purpose === 'INSTALLMENT' && !s['crypto.forInstallments']) return 'disabled_by_admin';
   if (s['crypto.requireKyc']) {
     if (!input.userId) return 'login_required';
     if (!(await kycVerified(input.userId, db))) return 'kyc_required';

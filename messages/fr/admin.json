@@ -367,6 +367,13 @@
       "invalid_amount": "Saisissez la valeur réellement encaissée (supérieure à 0, 5 000 OMR au plus).",
       "not_found": "Cette carte cadeau n’existe plus.",
       "forbidden": "Vous n’avez pas le droit de traiter les cartes cadeaux."
+    },
+    "flex": {
+      "self_review": "Vous ne pouvez pas décider une demande envoyée depuis votre propre compte.",
+      "flex_invalid_state": "Cette demande ne peut plus être décidée.",
+      "kyc_required": "L’identité du client doit être vérifiée avant d’approuver.",
+      "not_found": "Cette demande n’existe plus.",
+      "forbidden": "Vous n’avez pas le droit de décider les demandes de paiement en plusieurs fois."
     }
   },
   "filters": {
@@ -783,6 +790,10 @@
         "maxPaymentBaisa": {
           "label": "Paiement maximum",
           "hint": "Vide = pas de plafond propre."
+        },
+        "forInstallments": {
+          "label": "Payer les mensualités en crypto",
+          "hint": "Le client peut payer une mensualité DOOM FLEX directement en crypto, sans recharger son portefeuille avant."
         }
       },
       "giftcard": {
@@ -987,5 +998,72 @@
     "deleteText": "Possible seulement tant qu’aucune commande ne l’a utilisée. Ensuite, éteignez-la.",
     "delete": "Supprimer",
     "deleteConfirm": "Cette promotion sera supprimée définitivement."
+  },
+  "flex": {
+    "title": "Paiement en plusieurs fois (DOOM FLEX)",
+    "subtitle": "Les clients demandent à payer un produit en 3, 6 ou 12 mensualités — 0 % d’intérêt, sans frais, total égal au prix comptant. Vous approuvez ou refusez ; l’échéancier est créé quand le client accepte les conditions.",
+    "detailTitle": "Demande de paiement en plusieurs fois",
+    "emailOff": "Les e-mails ne sont pas encore configurés : l’équipe n’est pas alertée par e-mail à l’arrivée d’une demande.",
+    "tabsLabel": "Filtrer par statut",
+    "empty": "Rien ici.",
+    "sentAt": "Envoyée le {date}",
+    "productGone": "Produit supprimé",
+    "months": "{count, plural, one {# mois} other {# mois}}",
+    "paidOf": "{paid} sur {total} payées",
+    "late": "{count, plural, one {# en retard} other {# en retard}}",
+    "status": {
+      "SUBMITTED": "À décider",
+      "UNDER_REVIEW": "En cours d’examen",
+      "APPROVED": "Approuvée — en attente du client",
+      "ACCEPTED": "Acceptée",
+      "ACTIVE": "En cours",
+      "COMPLETED": "Entièrement payée",
+      "REJECTED": "Refusée",
+      "CANCELLED": "Annulée",
+      "DEFAULTED": "En défaut"
+    },
+    "instStatus": {
+      "PENDING": "À payer",
+      "PAID": "Payée",
+      "OVERDUE": "En retard",
+      "CANCELLED": "Annulée"
+    },
+    "application": "Demande",
+    "product": "Produit",
+    "amount": "Montant à financer",
+    "duration": "Durée",
+    "sentLabel": "Envoyée",
+    "order": "Commande",
+    "termsAccepted": "Conditions acceptées",
+    "customer": "Client",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "identity": "Identité",
+    "accountSince": "Compte créé",
+    "otherPlans": "Autres plans",
+    "otherPlansValue": "{open} en cours · {done} entièrement payés",
+    "lateInstalments": "Mensualités en retard",
+    "schedule": "Échéancier",
+    "schedulePreview": "Échéancier après acceptation",
+    "schedulePreviewNote": "Les frais de livraison éventuels s’ajoutent quand le client confirme ; les dates partent de ce jour-là.",
+    "instalmentN": "Mensualité {n}",
+    "decision": "Décision",
+    "terms": "0 % d’intérêt, sans frais. Le produit est livré dès que le client a accepté les conditions ; les mensualités vous sont ensuite dues.",
+    "decisionLabel": "Décision",
+    "decide": {
+      "APPROVED": "Approuver la demande",
+      "REJECTED": "Refuser",
+      "UNDER_REVIEW": "Marquer « en cours d’examen »"
+    },
+    "identityMissing": "L’identité de ce client n’est pas vérifiée : la demande ne peut pas être approuvée.",
+    "notes": "Note",
+    "notesHint": "Obligatoire pour refuser (le client la voit).",
+    "save": "Enregistrer la décision",
+    "ownApplication": "Cette demande vient de votre propre compte : un autre membre de l’équipe doit décider.",
+    "noDecideRight": "Seuls la finance ou un administrateur peuvent décider.",
+    "decided": "Décision",
+    "byPartner": "partenaire de financement",
+    "alreadyDecided": "Une décision a déjà été enregistrée."
   }
 }
