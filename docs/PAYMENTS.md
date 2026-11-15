@@ -95,6 +95,13 @@ Carte de **100,000 OMR** vérifiée par la finance (valeur réellement encaissé
 - La notification au client indique le montant **réellement crédité**. La page « Carte cadeau » affiche la commission avant l'envoi.
 - Relancer la même vérification ne crédite rien de plus (clé d'idempotence).
 
+**Où l'équipe traite les cartes** : Administration › Finance › **Cartes cadeaux** (`/admin/finance/gift-cards`, rôles Finance, Administrateur, Super-administrateur). Chaque nouvelle carte déclenche un e-mail à l'équipe. Sur la fiche : la marque, la valeur déclarée, la fin du code ; le **code complet** et la **photo** ne s'affichent qu'à la demande et chaque affichage est inscrit au journal d'audit. On encaisse la carte chez l'émetteur, puis :
+- **Valider** : saisir la valeur réellement encaissée en OMR → le portefeuille est crédité (moins la commission), le client reçoit une notification et un e-mail ;
+- **Refuser** : note obligatoire → rien n'est crédité, le client est prévenu avec le motif ;
+- **En cours de vérification** : simple repère pour l'équipe.
+
+Une carte envoyée depuis son propre compte ne peut pas être traitée par ce même compte (il faut un autre membre de l'équipe).
+
 ## 6. Ordre d'activation conseillé
 
 1. **Cadre juridique** : confirmer avec votre conseil les règles applicables à votre licence (réception de cryptomonnaie, monnaie électronique, cartes cadeaux). Ce point n'a pas été vérifié par l'équipe technique.
@@ -121,8 +128,10 @@ Sécurités déjà en place : adresses validées, USDT officiel uniquement, mont
 | Paiement USDT : adresses, montants, lecture de la blockchain | `lib/payments/onchain/{address,networks,amount,verify}.ts` |
 | Page de paiement USDT | `components/payments/CryptoPayPanel.tsx`, `app/[locale]/pay/[intentId]/` |
 | Cartes cadeaux et commission | `lib/payments/giftcards.ts`, écriture au grand livre dans `lib/payments/core.ts` |
+| Cartes cadeaux : écran de l'équipe, e-mails | `app/[locale]/admin/finance/gift-cards/*`, `lib/admin/gift-cards.ts`, `app/api/admin/gift-cards/[id]/image/route.ts`, `lib/payments/giftcard-emails.ts` |
+| Encart « vérifiez votre identité » | `components/payments/KycRequiredNotice.tsx` |
 | Plafonds du portefeuille | `lib/wallet/limits.ts` |
-| Tests | `tests/unit/payments-settings.test.ts`, `tests/unit/onchain-crypto.test.ts`, `tests/e2e/crypto.spec.ts`, `tests/e2e/admin.spec.ts` |
+| Tests | `tests/unit/payments-settings.test.ts`, `tests/unit/onchain-crypto.test.ts`, `tests/unit/giftcard-admin.test.ts`, `tests/e2e/crypto.spec.ts`, `tests/e2e/giftcards-admin.spec.ts`, `tests/e2e/admin.spec.ts` |
 
 ## 9. Décisions du propriétaire (14/11/2026) et reste à faire
 

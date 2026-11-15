@@ -89,6 +89,15 @@ Détail et liste des modèles : [docs/CATALOGUE_2026.md](CATALOGUE_2026.md).
 - ✅ Tests : 36 unitaires dédiés (adresses, montants, formes de réponses des trois réseaux, quorum, parcours complet jusqu'au crédit du portefeuille) + e2e de la page (3 appareils, arabe RTL).
 - ⛔ Pas encore en ligne ; pas encore testé avec un vrai paiement. USDT uniquement ; détection automatique sans identifiant et vente de cartes cadeaux non faites (voir `docs/PAYMENTS.md` §9).
 
+### Cartes cadeaux traitées par l'équipe, raisons claires au paiement, livraison chiffrée (15 novembre 2026)
+- ✅ **Administration › Finance › Cartes cadeaux** (`/admin/finance/gift-cards`, rôles FINANCE / ADMIN / SUPERADMIN) : file par statut, fiche (carte, client, photo et code affichés à la demande, chaque affichage audité), **Valider** (valeur réellement encaissée → portefeuille crédité moins la commission), **Refuser** (note obligatoire), « en cours de vérification ». E-mail à l'équipe à chaque nouvelle carte, e-mail de décision au client. Une carte envoyée depuis son propre compte ne peut pas être traitée par ce compte.
+- ✅ Paiement et « payer cette commande » : la vraie raison d'un moyen indisponible (avant : « Pas encore disponible » pour la crypto bloquée par l'identité) + encart « Vérifiez votre identité » avec bouton, aussi sur la recharge.
+- ✅ Photo de carte cadeau réduite sur l'appareil avant l'envoi (l'hébergeur refuse les requêtes de plus de 4,5 Mo).
+- ✅ Tests : 5 unitaires (`tests/unit/giftcard-admin.test.ts`) + navigateur (`tests/e2e/giftcards-admin.spec.ts` : valider, refuser, droits, encart identité).
+- ✅ En ligne (15/11/2026) : frais de livraison standard saisis (1 OMR Mascate, 2 OMR ailleurs, gratuit dès 50 OMR) → les commandes sont possibles. Valeurs par défaut à confirmer par le propriétaire.
+- ⛔ Carte bancaire : compte marchand Thawani à ouvrir (clés à fournir). Ooredoo / Omantel : contrats opérateurs.
+- ⛔ Écrans d'administration encore absents : paiements, portefeuilles, grand livre, remboursements, promotions, clients, support, journal d'audit.
+
 ### Confirmation du compte par e-mail et vérification d'identité par l'administrateur (14 novembre 2026)
 - ✅ E-mail de confirmation à l'inscription (lien signé 48 h lié à l'adresse), page `/verify-email`, renvoi depuis le compte ; la vérification d'identité attend un e-mail confirmé (règle active dès que l'envoi d'e-mails est configuré).
 - ✅ Chaque nouvelle demande d'identité → e-mail à tous les administrateurs (ADMIN, SUPERADMIN) avec un lien ; écran **Administration › Vérifications d'identité** (`/admin/kyc`) : file par statut, fiche, pièces via le visualiseur audité, Valider / Refuser / Demander des documents ; e-mail de décision au client.
