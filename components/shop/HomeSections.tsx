@@ -184,7 +184,7 @@ export function FlexSection() {
               <ul className="grid grid-cols-3 items-end gap-2.5 sm:gap-4" aria-label={t('example')}>
                 {FLEX_MONTHS.map((m) => {
                   const s = computeSchedule(ILLUSTRATION_BAISA, m);
-                  // Bar height proportional to the monthly amount (the 3-month instalment is the tallest).
+                  // Bar height proportional to the monthly amount after the first instalment (the 3-month one is the tallest).
                   const height = `${Math.max(12, Math.round((s.monthlyBaisa / computeSchedule(ILLUSTRATION_BAISA, 3).monthlyBaisa) * 100))}%`;
                   return (
                     <li key={m} className="flex min-w-0 flex-col items-stretch">
@@ -199,6 +199,7 @@ export function FlexSection() {
                         <p className="mt-0.5 font-display text-sm font-bold tabular-nums [unicode-bidi:isolate] sm:text-base">
                           {t('perMonth', { amount: formatBaisa(s.monthlyBaisa, locale) })}
                         </p>
+                        <p className="mt-0.5 text-[11px] text-mist tabular-nums [unicode-bidi:isolate]">{t('first', { amount: formatBaisa(s.firstBaisa, locale) })}</p>
                       </div>
                     </li>
                   );

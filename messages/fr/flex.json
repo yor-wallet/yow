@@ -3,28 +3,30 @@
   "title": "DOOM FLEX",
   "eyebrow": "Payer dans le temps",
   "heroTitle": "Payez en 3, 6 ou 12 mois. 0 % d'intérêt. Aucuns frais.",
-  "heroText": "Divisez le prix comptant en mensualités égales, payées depuis votre portefeuille DOOM. Vous ne payez jamais plus que le prix.",
+  "heroText": "À la confirmation de votre commande, vous ne payez que la première échéance ; le reste est réparti en mensualités égales. Vous ne payez jamais plus que le prix.",
   "browse": "Parcourir les produits",
   "example": {
     "title": "Exemple",
     "text": "Pour un prix comptant de {amount} :",
     "months": "{months} mois",
     "perMonth": "{amount} / mois",
-    "note": "Illustration uniquement. Votre échéancier est calculé à partir du prix actuel du produit."
+    "note": "Illustration uniquement. Votre échéancier est calculé à partir du prix actuel du produit.",
+    "first": "Première échéance {amount}",
+    "then": "puis {amount} / mois"
   },
   "facts": {
     "interest": "0 % d'intérêt",
     "fees": "Aucuns frais",
     "total": "Total = prix comptant",
-    "rounding": "La dernière échéance absorbe l'arrondi en baïsas"
+    "rounding": "La première échéance est un peu plus élevée et réglée à la confirmation ; les suivantes sont égales"
   },
   "how": {
     "title": "Comment ça marche",
     "s1": "Choisissez un produit et une durée sur sa fiche.",
     "s2": "Vérifiez votre identité une seule fois (carte d'identité et selfie).",
     "s3": "Envoyez votre demande — rien n'est prélevé.",
-    "s4": "Après accord, vérifiez l'échéancier et acceptez les conditions : votre commande est confirmée.",
-    "s5": "Payez chaque échéance depuis votre portefeuille DOOM."
+    "s4": "Une fois accepté, consultez l’échéancier et acceptez les conditions, puis réglez seulement la première échéance : votre commande est préparée.",
+    "s5": "Réglez les échéances suivantes chaque mois depuis votre portefeuille DOOM ou en crypto."
   },
   "financing": {
     "self": "DOOM finance lui-même votre plan, après accord de son équipe finance.",
@@ -62,7 +64,7 @@
     "UNDER_REVIEW": "En cours d'examen",
     "APPROVED": "Acceptée — en attente de votre accord",
     "REJECTED": "Refusée",
-    "ACCEPTED": "Acceptée",
+    "ACCEPTED": "En attente de la première échéance",
     "ACTIVE": "Active",
     "COMPLETED": "Terminée",
     "DEFAULTED": "En défaut",
@@ -72,12 +74,12 @@
     "title": "Questions",
     "q1": "N'y a-t-il vraiment aucuns frais ?",
     "a1": "Oui. La somme des échéances est égale au prix comptant, au baïsa près. Ni intérêt, ni frais.",
-    "q2": "Pourquoi la dernière échéance est-elle parfois légèrement différente ?",
-    "a2": "Les montants sont en baïsas : quand le prix ne se divise pas exactement, la dernière échéance absorbe le reste.",
+    "q2": "Pourquoi la première échéance est-elle plus élevée que les autres ?",
+    "a2": "La première échéance est réglée à la confirmation de la commande et elle est un peu plus élevée (environ 20 %) ; les mensualités suivantes sont toutes égales. Le total est égal au prix comptant, au baisa près.",
     "q3": "Pourquoi dois-je vérifier mon identité ?",
     "a3": "DOOM FLEX est un crédit : la vérification d'identité vous protège et nous protège. Vos documents sont chiffrés.",
     "q4": "Comment payer les échéances ?",
-    "a4": "Depuis le solde de votre portefeuille DOOM, sur la page de votre plan. Rechargez votre portefeuille avant chaque échéance."
+    "a4": "Depuis le solde de votre portefeuille DOOM ou en crypto (USDT), sur la page de votre plan. Rechargez votre portefeuille avant chaque échéance."
   },
   "apply": {
     "metaTitle": "Demander DOOM FLEX",
@@ -95,7 +97,7 @@
     "fees": "Frais",
     "submit": "Envoyer ma demande",
     "submitting": "Envoi…",
-    "notice": "L'envoi ne crée aucune commande et ne prélève rien. Notre équipe finance examine votre demande, puis vous acceptez les conditions pour confirmer.",
+    "notice": "La demande ne crée aucune commande et ne débite rien. Notre équipe financière l’examine ; vous acceptez ensuite les conditions et ne réglez que la première échéance.",
     "deliveryNote": "Si la livraison est payante, elle est ajoutée au montant financé à l'étape de confirmation, avant votre accord.",
     "productMissing": "Produit introuvable",
     "productMissingText": "Ouvrez DOOM FLEX depuis une fiche produit pour choisir ce que vous voulez financer.",
@@ -103,7 +105,9 @@
     "kycText": "DOOM FLEX nécessite une identité vérifiée (carte d'identité et selfie). Cela prend quelques minutes.",
     "notEligible": "Vous ne pouvez pas faire de demande pour le moment",
     "backToFlex": "À propos de DOOM FLEX",
-    "perMonthLabel": "par mois"
+    "perMonthLabel": "par mois",
+    "firstLabel": "Première échéance à la confirmation",
+    "thenLabel": "puis chaque mois"
   },
   "detail": {
     "metaTitle": "Mon plan DOOM FLEX",
@@ -125,7 +129,7 @@
     "cancelledTitle": "Demande annulée",
     "cancel": "Annuler ma demande",
     "approvedTitle": "Acceptée — vérifiez et confirmez",
-    "approvedText": "Choisissez l'adresse de livraison, vérifiez l'échéancier final et acceptez les conditions pour confirmer votre commande.",
+    "approvedText": "Choisissez l’adresse de livraison, vérifiez l’échéancier définitif et acceptez les conditions. Vous ne réglez maintenant que la première échéance.",
     "address": "Adresse de livraison",
     "noAddress": "Ajoutez une adresse de livraison pour continuer.",
     "addAddress": "Ajouter une adresse",
@@ -136,18 +140,21 @@
       "address_required": "Choisissez une adresse de livraison.",
       "delivery_unavailable": "La livraison n'est pas encore disponible pour cette adresse.",
       "price_changed": "Le prix du produit a changé depuis votre demande. Merci d'en faire une nouvelle.",
-      "out_of_stock": "Ce produit n'est plus en stock."
+      "out_of_stock": "Ce produit n'est plus en stock.",
+      "order_expired": "Le délai pour régler la première échéance est passé. Confirmez à nouveau votre plan.",
+      "first_installment_first": "Réglez d’abord la première échéance pour démarrer votre plan.",
+      "approval_expired": "L’accord a expiré. Merci de refaire une demande."
     },
     "terms": {
       "title": "Conditions DOOM FLEX",
       "t1": "0 % d'intérêt et aucuns frais : vous remboursez exactement le montant financé.",
-      "t2": "{months} mensualités, payées depuis votre portefeuille DOOM ; la dernière absorbe l'arrondi en baïsas.",
+      "t2": "{months} échéances : la première, un peu plus élevée, à la confirmation de la commande, puis une chaque mois depuis votre portefeuille DOOM ou en crypto.",
       "t3": "Une échéance en retard est signalée comme telle, et vous ne pouvez pas ouvrir d'autre plan tant qu'elle n'est pas réglée.",
-      "t4": "Votre commande est confirmée et livrée dès votre accord. Retours et remboursements suivent notre politique de retour.",
+      "t4": "Votre commande est préparée et livrée dès que la première échéance est réglée. Les retours et remboursements suivent notre politique de retour.",
       "version": "Version des conditions {version}"
     },
     "acceptLabel": "J'ai lu et j'accepte les conditions DOOM FLEX et l'échéancier ci-dessus.",
-    "confirm": "Confirmer et passer ma commande",
+    "confirm": "Confirmer et régler la première échéance",
     "confirming": "Confirmation…",
     "activeTitle": "Plan actif",
     "completedTitle": "Plan terminé — merci !",
@@ -172,6 +179,12 @@
     "walletBalanceLabel": "Solde du portefeuille",
     "payCrypto": "Payer {amount} en crypto (USDT)",
     "openingCrypto": "Ouverture du paiement…",
-    "cryptoHint": "Vous recevez l’adresse et le montant exact à envoyer. La mensualité est marquée payée dès que le transfert est confirmé sur la blockchain."
+    "cryptoHint": "Vous recevez l’adresse et le montant exact à envoyer. La mensualité est marquée payée dès que le transfert est confirmé sur la blockchain.",
+    "firstTitle": "Réglez la première échéance pour confirmer votre commande",
+    "firstText": "Votre commande {number} vous est réservée ; elle est préparée dès que la première échéance est réglée. Les échéances suivantes se règlent chaque mois.",
+    "firstAmount": "Première échéance",
+    "firstDeadline": "Réglez-la avant {time} ; sinon la réservation est annulée et vous pourrez confirmer votre plan à nouveau.",
+    "lowBalanceFirst": "Votre solde ne suffit pas pour la première échéance.",
+    "atConfirmation": "À la confirmation de la commande"
   }
 }

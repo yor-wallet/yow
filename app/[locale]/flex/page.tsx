@@ -83,8 +83,9 @@ export default async function FlexPage({ params }: Props) {
                 return (
                   <li key={m} className="relative rounded-2xl border border-border bg-surface p-4 text-center shadow-card">
                     <p className="text-sm font-semibold text-muted">{t('example.months', { months: m })}</p>
-                    <p className="mt-1 font-display" data-testid={`flex-example-${m}`} data-baisa={s.monthlyBaisa}>
-                      <Price baisa={s.monthlyBaisa} size="lg" />
+                    <p className="mt-1 text-sm font-semibold [unicode-bidi:isolate]">{t('example.first', { amount: formatBaisa(s.firstBaisa, locale) })}</p>
+                    <p className="mt-0.5 font-display text-lg font-bold text-price [unicode-bidi:isolate]" data-testid={`flex-example-${m}`} data-baisa={s.monthlyBaisa} data-first={s.firstBaisa}>
+                      {t('example.then', { amount: formatBaisa(s.monthlyBaisa, locale) })}
                     </p>
                   </li>
                 );

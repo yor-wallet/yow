@@ -31,6 +31,10 @@
     "refundIssued": {
       "title": "Refund issued",
       "body": "A refund of {amount} was issued for order {number}."
+    },
+    "flexStarted": {
+      "title": "DOOM FLEX plan confirmed",
+      "body": "Your first instalment of {amount} was paid. Order {number} is now being prepared."
     }
   },
   "methods": {

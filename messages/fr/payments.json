@@ -31,6 +31,10 @@
     "refundIssued": {
       "title": "Remboursement effectué",
       "body": "Un remboursement de {amount} a été effectué pour la commande {number}."
+    },
+    "flexStarted": {
+      "title": "Plan DOOM FLEX confirmé",
+      "body": "Votre première échéance de {amount} est réglée. La commande {number} est en préparation."
     }
   },
   "methods": {

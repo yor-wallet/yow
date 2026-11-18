@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Price } from '@/components/ui/Price';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/cn';
-import { flexMonthlyFrom } from '@/lib/catalog/flex-preview';
+import { flexPlanFrom } from '@/lib/catalog/flex-preview';
 import { FlexPlanner } from './FlexPlanner';
 import type { ProductDetail, VariantView } from '@/lib/catalog/queries';
 import { MAX_QTY_PER_LINE } from '@/lib/catalog/stock';
@@ -87,7 +87,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
 
   const maxQty = selected ? Math.max(1, Math.min(selected.available, MAX_QTY_PER_LINE)) : 1;
   const canBuy = !!selected && purchasable(selected) && product.isSellable;
-  const flexMonthly = flexMonthlyFrom(selected?.priceBaisa ?? null);
+  const flexPlan = flexPlanFrom(selected?.priceBaisa ?? null);
   // The gallery follows the selected colour: photos of that finish (they serve all its capacities), then
   // general photos. A photo of another colour is never shown for this one (lib/catalog/images.ts).
   const gallery = imagesForVariant(product.images, selected);
@@ -291,7 +291,9 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
                 )}
               </p>
             ) : null}
-            {flexMonthly !== null ? <p className="text-sm text-muted max-lg:hidden">{t('flex.from', { amount: formatBaisa(flexMonthly, locale) })}</p> : null}
+            {flexPlan ? (
+              <p className="text-sm text-muted max-lg:hidden">{t('flex.from', { first: formatBaisa(flexPlan.firstBaisa, locale), amount: formatBaisa(flexPlan.monthlyBaisa, locale) })}</p>
+            ) : null}
           </div>
         </div>
 

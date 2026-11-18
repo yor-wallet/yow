@@ -1,6 +1,6 @@
 # DOOM | دوم — paiements, portefeuille, cartes cadeaux et cryptomonnaie
 
-> À lire avec `docs/SPEC.md` (règles du propriétaire). Mis à jour le 14 novembre 2026.
+> À lire avec `docs/SPEC.md` (règles du propriétaire). Mis à jour le 18 novembre 2026.
 > Aucune clé, aucun secret dans ce fichier : les identifiants du prestataire crypto ne vivent que dans les variables d'environnement.
 
 ## 1. Principe
@@ -17,6 +17,8 @@
 | **Payer un téléphone (ou toute commande) en crypto** | Moyen `CRYPTO` : le client reçoit le **montant exact en USDT**, l'adresse du réseau choisi et une heure pour envoyer ; il colle l'identifiant de transaction ; le serveur le vérifie sur la blockchain ; la commande est payée quand le transfert est définitif. | Code prêt et testé. **Indisponible** tant qu'aucune adresse valide n'est configurée (variables d'environnement) **et** que `crypto.enabled` = 1. |
 | **Recharger le portefeuille** (par crypto ou par carte cadeau, **commission 8 %** sur la carte cadeau) | Crypto : même parcours, le portefeuille est crédité du montant demandé en OMR. Carte cadeau : le client envoie le code (chiffré, doublons détectés) → la finance vérifie la **valeur réellement encaissée** → crédit de cette valeur **moins la commission**. | Carte cadeau : **en service**, 8 % par défaut (`giftcard.feeBps`). Crypto : comme ci-dessus. |
 | **Acheter des cartes cadeaux avec de la crypto** | — | **Pas encore possible** : il faut un fournisseur de codes de cartes cadeaux, des produits numériques et une règle « moyens de paiement par catégorie ». Commission prévue : **5 %**. |
+
+| **DOOM FLEX : ne payer que le premier versement à la commande, et un premier versement un peu plus élevé** (18/11/2026) | À la confirmation du plan, la commande est créée **non payée** (stock réservé 60 min, prolongé à 90 min dès qu'un paiement crypto est ouvert) et l'échéancier est créé : **1er versement dû le jour même, environ 20 % plus élevé** que les suivants, qui sont égaux (arrondis au 0,100 OMR, le 1er porte l'arrondi ; total = prix au baisa). Le client ne règle **que ce 1er versement** (portefeuille, ou crypto vérifiée sur la blockchain). Sa confirmation, dans la même transaction, fait payer la commande par FLEX (grand livre `FLEX_RECEIVABLE` → recettes), la met en préparation et active le plan. Versement non réglé à temps : la commande est annulée, le stock libéré, le plan revient à « approuvé par la finance » et peut être reconfirmé tant que l'accord est valable (14 jours) ; un virement crypto arrivé trop tard est crédité au portefeuille. | **Code prêt et testé** (`tests/unit/flex-flow.test.ts`, `tests/unit/flex-schedule.test.ts`). Taux : `FLEX_FIRST_EXTRA_PCT` (20) dans `lib/flex/schedule.ts`. |
 
 Le portefeuille reste en OMR : « échanger une carte cadeau contre de la crypto » devient « la carte est créditée en OMR, moins 8 % ». Remettre de la crypto à un client (retrait, conversion) est une autre activité, **non construite**.
 
@@ -132,6 +134,7 @@ Sécurités déjà en place : adresses validées, USDT officiel uniquement, mont
 | Encart « vérifiez votre identité » | `components/payments/KycRequiredNotice.tsx` |
 | Plafonds du portefeuille | `lib/wallet/limits.ts` |
 | Mensualités DOOM FLEX : paiement par portefeuille ou directement en crypto | `lib/flex/service.ts` (`payInstallment`), `lib/payments/core.ts` (`startInstallmentPayment`), réglage `crypto.forInstallments` |
+| DOOM FLEX : échéancier (1er versement plus élevé), confirmation sans paiement total, démarrage au 1er versement, libération d'une commande non réglée | `lib/flex/schedule.ts`, `lib/flex/service.ts` (`acceptFlexTerms`), `lib/payments/core.ts` (`startFlexPlanInTx`), `lib/flex/release.ts` |
 | DOOM FLEX : décision de l'équipe | `app/[locale]/admin/finance/flex/*`, `lib/admin/flex.ts`, `lib/flex/emails.ts` |
 | Tests | `tests/unit/payments-settings.test.ts`, `tests/unit/onchain-crypto.test.ts`, `tests/unit/giftcard-admin.test.ts`, `tests/e2e/crypto.spec.ts`, `tests/e2e/giftcards-admin.spec.ts`, `tests/e2e/admin.spec.ts` |
 

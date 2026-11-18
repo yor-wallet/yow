@@ -9,6 +9,7 @@ import { prisma } from '@/lib/db';
 import { osmLink } from '@/lib/delivery/addresses';
 import { getCustomerOrder, TIMELINE_STEPS } from '@/lib/delivery/tracking';
 import { localize } from '@/lib/localized';
+import { formatBaisa } from '@/lib/money';
 import { ORDER_NUMBER_RE } from '@/lib/orders/number';
 import { getPaymentPort } from '@/lib/orders/payments';
 import { mediaUrl } from '@/lib/storage';
@@ -52,7 +53,17 @@ export default async function OrderPage({ params, searchParams }: Props) {
   const reservation = awaiting
     ? await prisma.stockReservation.findFirst({ where: { orderId: order.id, status: 'ACTIVE', expiresAt: { gt: new Date() } }, orderBy: { expiresAt: 'desc' }, select: { expiresAt: true } })
     : null;
-  const methods = awaiting && reservation ? (await getPaymentPort().listPaymentMethods({ userId: session.user.id, amountBaisa: order.totalBaisa })).map((m) => ({ id: m.id, available: m.available, reason: m.reason ?? null })) : [];
+  // DOOM FLEX order: only the plan's first instalment is paid (on the plan page), never the full total here.
+  const flexPlan = awaiting
+    ? await prisma.flexApplication.findFirst({
+        where: { orderId: order.id, status: 'ACCEPTED' },
+        select: { id: true, installments: { where: { sequence: 1 }, select: { amountBaisa: true } } },
+      })
+    : null;
+  const methods =
+    awaiting && reservation && !flexPlan
+      ? (await getPaymentPort().listPaymentMethods({ userId: session.user.id, amountBaisa: order.totalBaisa })).map((m) => ({ id: m.id, available: m.available, reason: m.reason ?? null }))
+      : [];
 
   const paid = one(sp.paid) === '1';
   const payNote = one(sp.pay);
@@ -109,7 +120,14 @@ export default async function OrderPage({ params, searchParams }: Props) {
         {awaiting ? (
           <>
             <p className="text-sm text-muted">{t('awaitingPayment')}</p>
-            {reservation ? (
+            {flexPlan ? (
+              <div className="flex flex-col gap-3 rounded-card border-2 border-yellow/70 bg-surface p-4 shadow-card sm:p-5" data-testid="flex-order-awaiting">
+                <p className="font-medium">{t('flexAwaiting', { amount: formatBaisa(flexPlan.installments[0]?.amountBaisa ?? 0, locale) })}</p>
+                <Link href={`/flex/${flexPlan.id}`} className={buttonClasses({ variant: 'accent', size: 'lg', className: 'self-start' })}>
+                  {t('flexPay')}
+                </Link>
+              </div>
+            ) : reservation ? (
               <>
                 <PayOrderPanel number={order.number} totalBaisa={order.totalBaisa} methods={methods} expiresAt={reservation.expiresAt.toISOString()} />
                 <div>

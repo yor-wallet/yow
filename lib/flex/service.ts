@@ -8,7 +8,7 @@ import { ensureWallet, withLedgerTx } from '@/lib/wallet/ledger';
 import { confirmPaymentIntent, resultFromIntent } from '@/lib/payments/core';
 import { notifyMoney } from '@/lib/payments/notify';
 import type { StartPaymentResult } from '@/lib/payments/types';
-import { placeOrder, quoteLines, isOrderError } from '@/lib/orders';
+import { cancelOrderTx, placeOrder, quoteLines, isOrderError } from '@/lib/orders';
 import { priceItems } from '@/lib/cart/pricing';
 import { computeSchedule, dateOnly, isFlexMonths, muscatToday, type FlexMonths } from './schedule';
 import { isFlexPartnerConfigured, submitToPartner } from './partner';
@@ -19,14 +19,20 @@ import { thumbnailForVariant } from '@/lib/catalog/images';
  *
  * Flow: product → duration → KYC VERIFIED → `applyForFlex` (SUBMITTED) → finance decision
  * `decideFlexApplication` (APPROVED / REJECTED; or the partner webhook) → customer accepts the
- * terms (checkbox + explicit confirm) `acceptFlexTerms` → ACCEPTED → a 1-item order is placed
- * (lib/orders `placeOrder`, paymentMethod FLEX), the FLEX PaymentIntent is confirmed
- * (ledger FLEX_RECEIVABLE → PLATFORM_REVENUE, order PAID) and the FlexInstallment rows are
- * created → ACTIVE → `payInstallment` from the wallet → COMPLETED when all are paid.
+ * terms (checkbox + explicit confirm) `acceptFlexTerms` → ACCEPTED: a 1-item order is placed
+ * (lib/orders `placeOrder`, paymentMethod FLEX, stock reserved FLEX_FIRST_PAYMENT_MINUTES) and the
+ * schedule is created — the customer pays ONLY the first instalment now, never the full price
+ * (owner's rule, 18 Nov 2026) → the first instalment is paid (wallet `payInstallment`, or crypto…
+ * `startInstallmentPayment`, confirmed by `confirmPaymentIntent`) → in the same transaction the order
+ * is paid by DOOM FLEX (ledger FLEX_RECEIVABLE → revenue, order PAID and prepared) → ACTIVE →
+ * the next instalments monthly → COMPLETED when all are paid. An order whose first instalment is
+ * not paid in time is cancelled and the plan goes back to APPROVED (lib/flex/release).
  * Without a finance partner DOOM self-finances after admin approval.
  */
 
-export const FLEX_TERMS_VERSION = 'flex-terms-2026-11';
+export const FLEX_TERMS_VERSION = 'flex-terms-2026-11-18';
+/** Time given to pay the first instalment once the plan is confirmed (the stock stays reserved meanwhile). */
+export const FLEX_FIRST_PAYMENT_MINUTES = 60;
 /** Open (not finished) applications/plans per customer. */
 export const MAX_OPEN_FLEX = 2;
 /** An approval must be accepted within this many days. */
@@ -66,7 +72,7 @@ export async function getFlexEligibility(userId: string | null, db: Db = prisma)
     db.user.findUnique({ where: { id: userId }, select: { status: true, kycStatus: true } }),
     db.flexApplication.count({ where: { userId, status: { in: OPEN_STATUSES } } }),
     db.flexInstallment.count({
-      where: { application: { userId }, OR: [{ status: 'OVERDUE' }, { status: 'PENDING', dueDate: { lt: muscatToday() } }] },
+      where: { application: { userId, status: 'ACTIVE' }, OR: [{ status: 'OVERDUE' }, { status: 'PENDING', dueDate: { lt: muscatToday() } }] },
     }),
   ]);
   const reasons: FlexIneligibleReason[] = [];
@@ -289,13 +295,29 @@ export async function quoteFlexAcceptance(
   };
 }
 
-export type AcceptResult = { applicationId: string; status: FlexStatus; orderId: string; orderNumber: string; replayed: boolean };
+export type AcceptResult = {
+  applicationId: string;
+  status: FlexStatus;
+  orderId: string;
+  orderNumber: string;
+  /** The first instalment, to pay now (null once the plan is active). */
+  firstInstallmentId: string | null;
+  firstBaisa: number | null;
+  replayed: boolean;
+};
+
+async function firstInstallmentOf(applicationId: string, db: Db = prisma) {
+  return db.flexInstallment.findFirst({ where: { applicationId, sequence: 1 }, select: { id: true, amountBaisa: true, status: true } });
+}
 
 /**
  * The customer accepts the terms (explicit checkbox + confirm) of an APPROVED application:
- * ACCEPTED → order placed (1 item, STANDARD delivery, paymentMethod FLEX) → FLEX payment
- * confirmed (ledger FLEX_RECEIVABLE → revenue, order PAID) → instalments created → ACTIVE.
- * The financed amount is the order total shown on the confirmation step (`expectedTotalBaisa`).
+ * ACCEPTED → order placed (1 item, STANDARD delivery, paymentMethod FLEX, stock reserved for
+ * FLEX_FIRST_PAYMENT_MINUTES) → schedule created from today (the first instalment is due now).
+ * NOTHING is charged here and the order is NOT paid yet: the customer pays only the first
+ * instalment (`payInstallment` / `startInstallmentPayment`); its confirmation pays the order by DOOM
+ * FLEX and activates the plan (lib/payments/core). The financed amount is the order total shown on
+ * the confirmation step (`expectedTotalBaisa`). Idempotent: confirming again returns the same order.
  */
 export async function acceptFlexTerms(input: {
   applicationId: string;
@@ -309,15 +331,22 @@ export async function acceptFlexTerms(input: {
   if (input.acceptTerms !== true || input.termsVersion !== FLEX_TERMS_VERSION) throw new MoneyError('terms_required');
   const app = await prisma.flexApplication.findUnique({
     where: { id: input.applicationId },
-    include: { user: { select: { kycStatus: true, status: true } }, order: { select: { id: true, number: true } } },
+    include: { user: { select: { kycStatus: true, status: true } }, order: { select: { id: true, number: true, status: true } } },
   });
   if (!app || app.userId !== input.userId) throw new MoneyError('not_found');
   if ((app.status === 'ACTIVE' || app.status === 'COMPLETED') && app.order) {
-    return { applicationId: app.id, status: app.status, orderId: app.order.id, orderNumber: app.order.number, replayed: true };
+    return { applicationId: app.id, status: app.status, orderId: app.order.id, orderNumber: app.order.number, firstInstallmentId: null, firstBaisa: null, replayed: true };
+  }
+  // Already confirmed, first instalment awaited: the same order and the same schedule.
+  if (app.status === 'ACCEPTED' && app.order?.status === 'PENDING_PAYMENT') {
+    const first = await firstInstallmentOf(app.id);
+    if (first) {
+      return { applicationId: app.id, status: 'ACCEPTED', orderId: app.order.id, orderNumber: app.order.number, firstInstallmentId: first.id, firstBaisa: first.amountBaisa, replayed: true };
+    }
   }
   if (app.status !== 'APPROVED' && app.status !== 'ACCEPTED') throw new MoneyError('flex_invalid_state', `Application is ${app.status}`);
   if (app.user.kycStatus !== 'VERIFIED' || app.user.status !== 'ACTIVE') throw new MoneyError('kyc_required');
-  if (app.status === 'APPROVED' && app.decidedAt && app.decidedAt.getTime() < Date.now() - FLEX_APPROVAL_VALID_DAYS * 86_400_000) {
+  if (app.decidedAt && app.decidedAt.getTime() < Date.now() - FLEX_APPROVAL_VALID_DAYS * 86_400_000) {
     throw new MoneyError('flex_invalid_state', 'Approval expired', { reason: 'approval_expired' });
   }
   if (!app.variantId || !isFlexMonths(app.months)) throw new MoneyError('flex_invalid_state');
@@ -342,78 +371,104 @@ export async function acceptFlexTerms(input: {
     });
   }
 
+  // The plan's order. A plan whose earlier order was cancelled (first instalment not paid in time) gets a new one;
+  // an earlier order still waiting with another amount (another address) is replaced.
+  const previous = await prisma.order.findMany({
+    where: { userId: input.userId, idempotencyKey: { startsWith: `flex-${app.id}` } },
+    select: { id: true, status: true, totalBaisa: true, idempotencyKey: true },
+  });
+  let open = previous.find((o) => o.status === 'PENDING_PAYMENT');
+  if (open && open.totalBaisa !== quote.totalBaisa) {
+    await serializableCancel(open.id, input.userId);
+    open = undefined;
+  }
+  const orderKey = open?.idempotencyKey ?? (previous.length === 0 ? `flex-${app.id}` : `flex-${app.id}-${previous.length + 1}`);
+
   let placed;
   try {
     placed = await placeOrder({
       userId: input.userId,
-      idempotencyKey: `flex-${app.id}`,
+      idempotencyKey: orderKey,
       addressId: input.addressId,
       deliveryType: 'STANDARD',
       paymentMethod: 'FLEX',
       locale: input.locale,
       expectedTotalBaisa: quote.totalBaisa,
       items: [{ variantId: app.variantId, qty: 1 }],
+      reservationMinutes: FLEX_FIRST_PAYMENT_MINUTES,
     });
   } catch (err) {
     if (isOrderError(err)) throw new MoneyError('flex_not_eligible', err.message, { reason: err.code });
     throw err;
   }
+  const order = await prisma.order.findUniqueOrThrow({ where: { id: placed.orderId }, select: { status: true, totalBaisa: true } });
+  if (order.status !== 'PENDING_PAYMENT') throw new MoneyError('flex_invalid_state', 'The order is no longer awaiting its first instalment', { reason: 'order_expired' });
 
-  await ensureWallet(input.userId);
-  const total = placed.totalBaisa;
-  const schedule = computeSchedule(total, months);
-  await withLedgerTx(async (tx) => {
+  const schedule = computeSchedule(order.totalBaisa, months);
+  const first = await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT "id" FROM "FlexApplication" WHERE "id" = ${app.id} FOR UPDATE`;
-    const fresh = await tx.flexApplication.findUniqueOrThrow({ where: { id: app.id }, select: { status: true } });
-    if (fresh.status === 'ACTIVE') return;
-    if (fresh.status !== 'ACCEPTED') throw new MoneyError('flex_invalid_state');
-    const key = `flex:${app.id}`;
-    const intent =
-      (await tx.paymentIntent.findUnique({ where: { idempotencyKey: key } })) ??
-      (await tx.paymentIntent.create({
-        data: {
-          userId: input.userId,
-          provider: 'FLEX',
-          purpose: 'ORDER',
-          orderId: placed.orderId,
-          amountBaisa: total,
-          idempotencyKey: key,
-          status: 'PENDING',
-          metadata: { flexApplicationId: app.id, months },
+    const fresh = await tx.flexApplication.findUniqueOrThrow({ where: { id: app.id }, select: { status: true, orderId: true } });
+    // APPROVED again only if an earlier order of this plan was cancelled meanwhile (lib/flex/release).
+    if (fresh.status !== 'ACCEPTED' && fresh.status !== 'APPROVED') throw new MoneyError('flex_invalid_state', `Application is ${fresh.status}`);
+    if (fresh.status === 'APPROVED' || fresh.orderId !== placed.orderId) {
+      // This order's own schedule, from today: the first instalment is due now, the others monthly.
+      await tx.flexInstallment.deleteMany({ where: { applicationId: app.id, status: { not: 'PAID' } } });
+      await tx.flexInstallment.createMany({
+        data: schedule.installments.map((i) => ({ applicationId: app.id, sequence: i.sequence, dueDate: dateOnly(i.dueDate), amountBaisa: i.amountBaisa })),
+      });
+      await tx.flexApplication.update({ where: { id: app.id }, data: { status: 'ACCEPTED', orderId: placed.orderId, principalBaisa: order.totalBaisa } });
+      await logAudit(
+        {
+          actorId: input.userId,
+          actorRole: 'CUSTOMER',
+          action: 'flex.order_placed',
+          entity: 'FlexApplication',
+          entityId: app.id,
+          before: { orderId: fresh.orderId, principalBaisa: app.principalBaisa },
+          after: { orderId: placed.orderId, principalBaisa: order.totalBaisa, firstBaisa: schedule.firstBaisa, monthlyBaisa: schedule.monthlyBaisa, installments: schedule.installments.length },
         },
-      }));
-    const confirmed = await confirmPaymentIntent(intent.id, { confirmedAmountBaisa: total, source: 'flex.accept', actorId: input.userId }, tx);
-    if (confirmed.outcome === 'failed') throw new MoneyError('flex_invalid_state', 'FLEX payment could not be confirmed');
-    await tx.flexInstallment.createMany({
-      data: schedule.installments.map((i) => ({ applicationId: app.id, sequence: i.sequence, dueDate: dateOnly(i.dueDate), amountBaisa: i.amountBaisa })),
-      skipDuplicates: true,
-    });
-    await tx.flexApplication.update({ where: { id: app.id }, data: { status: 'ACTIVE', orderId: placed.orderId, principalBaisa: total } });
-    await logAudit(
-      {
-        actorId: input.userId,
-        actorRole: 'CUSTOMER',
-        action: 'flex.activate',
-        entity: 'FlexApplication',
-        entityId: app.id,
-        before: { status: 'ACCEPTED', principalBaisa: app.principalBaisa },
-        after: { status: 'ACTIVE', orderId: placed.orderId, principalBaisa: total, installments: schedule.installments.length },
-      },
-      tx,
-    );
+        tx,
+      );
+    }
+    return firstInstallmentOf(app.id, tx);
   });
-  return { applicationId: app.id, status: 'ACTIVE', orderId: placed.orderId, orderNumber: placed.number, replayed: placed.replayed };
+  return {
+    applicationId: app.id,
+    status: 'ACCEPTED',
+    orderId: placed.orderId,
+    orderNumber: placed.number,
+    firstInstallmentId: first?.id ?? null,
+    firstBaisa: first?.amountBaisa ?? null,
+    replayed: placed.replayed,
+  };
 }
 
-/** Customer cancels an application that is not active yet. */
+async function serializableCancel(orderId: string, userId: string) {
+  await prisma.$transaction((tx) => cancelOrderTx(tx, orderId, { reason: 'flex_reconfirmed', userId, actorId: userId, actorRole: 'CUSTOMER' }));
+}
+
+/**
+ * Customer cancels an application that is not active yet — including a confirmed plan whose first instalment is
+ * not paid: its order is cancelled too (stock released) and its schedule removed.
+ */
 export async function cancelFlexApplication(input: { applicationId: string; userId: string }): Promise<{ status: FlexStatus }> {
   return prisma.$transaction(async (tx) => {
-    const app = await tx.flexApplication.findUnique({ where: { id: input.applicationId }, select: { id: true, userId: true, status: true } });
+    await tx.$queryRaw`SELECT "id" FROM "FlexApplication" WHERE "id" = ${input.applicationId} FOR UPDATE`;
+    const app = await tx.flexApplication.findUnique({ where: { id: input.applicationId }, select: { id: true, userId: true, status: true, orderId: true } });
     if (!app || app.userId !== input.userId) throw new MoneyError('not_found');
     if (app.status === 'CANCELLED') return { status: app.status };
-    if (!['SUBMITTED', 'UNDER_REVIEW', 'APPROVED'].includes(app.status)) throw new MoneyError('flex_invalid_state');
+    if (!['SUBMITTED', 'UNDER_REVIEW', 'APPROVED', 'ACCEPTED'].includes(app.status)) throw new MoneyError('flex_invalid_state');
+    if (app.status === 'ACCEPTED' && (await tx.flexInstallment.count({ where: { applicationId: app.id, status: 'PAID' } })) > 0) {
+      throw new MoneyError('flex_invalid_state');
+    }
     await tx.flexApplication.update({ where: { id: app.id }, data: { status: 'CANCELLED' } });
-    await logAudit({ actorId: input.userId, actorRole: 'CUSTOMER', action: 'flex.cancel', entity: 'FlexApplication', entityId: app.id, before: { status: app.status } }, tx);
+    await tx.flexInstallment.deleteMany({ where: { applicationId: app.id, status: { not: 'PAID' } } });
+    if (app.status === 'ACCEPTED' && app.orderId) {
+      const cancelled = await cancelOrderTx(tx, app.orderId, { reason: 'flex_cancelled', userId: input.userId, actorId: input.userId, actorRole: 'CUSTOMER' });
+      // A paid order cannot be cancelled here: then the plan is not cancelled either.
+      if (!cancelled.ok) throw new MoneyError('flex_invalid_state', 'The order of this plan can no longer be cancelled');
+    }
+    await logAudit({ actorId: input.userId, actorRole: 'CUSTOMER', action: 'flex.cancel', entity: 'FlexApplication', entityId: app.id, before: { status: app.status, orderId: app.orderId } }, tx);
     return { status: 'CANCELLED' as const };
   });
 }
@@ -431,7 +486,11 @@ export async function payInstallment(input: { installmentId: string; userId: str
   const inst = await prisma.flexInstallment.findUnique({ where: { id: input.installmentId }, include: { application: { select: { userId: true, status: true } } } });
   if (!inst || inst.application.userId !== input.userId) throw new MoneyError('not_found');
   if (inst.status === 'PAID') throw new MoneyError('installment_not_payable', 'Already paid', { reason: 'already_paid' });
-  if (!['PENDING', 'OVERDUE'].includes(inst.status) || inst.application.status !== 'ACTIVE') throw new MoneyError('installment_not_payable');
+  // Active plan: any open instalment. Confirmed plan: only the first one (it pays the order and starts the plan).
+  const firstAtConfirmation = inst.application.status === 'ACCEPTED' && inst.sequence === 1;
+  if (!['PENDING', 'OVERDUE'].includes(inst.status) || (inst.application.status !== 'ACTIVE' && !firstAtConfirmation)) {
+    throw new MoneyError('installment_not_payable', undefined, inst.application.status === 'ACCEPTED' ? { reason: 'first_installment_first' } : undefined);
+  }
   const wallet = await ensureWallet(input.userId);
   if (wallet.status !== 'ACTIVE') throw new MoneyError('wallet_frozen');
 

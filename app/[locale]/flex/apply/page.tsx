@@ -140,16 +140,27 @@ export default async function FlexApplyPage({ params, searchParams }: Props) {
             })}
           </nav>
           {schedule ? (
-            <p className="mt-3 flex flex-wrap items-baseline gap-x-2 text-sm text-muted" data-testid="flex-monthly">
-              <Price baisa={schedule.monthlyBaisa} size="lg" />
-              <span>{t('perMonthLabel')}</span>
-            </p>
+            <dl className="mt-3 grid grid-cols-2 gap-3 text-sm" data-testid="flex-monthly" data-first={schedule.firstBaisa} data-monthly={schedule.monthlyBaisa}>
+              <div className="rounded-xl border border-yellow/60 bg-yellow/10 p-3">
+                <dt className="text-muted">{t('firstLabel')}</dt>
+                <dd className="font-display">
+                  <Price baisa={schedule.firstBaisa} size="lg" />
+                </dd>
+              </div>
+              <div className="rounded-xl border border-border p-3">
+                <dt className="text-muted">{t('thenLabel')}</dt>
+                <dd className="flex flex-wrap items-baseline gap-x-1.5 font-display">
+                  <Price baisa={schedule.monthlyBaisa} size="lg" />
+                  <span className="text-xs text-muted">× {schedule.installments.length - 1}</span>
+                </dd>
+              </div>
+            </dl>
           ) : null}
 
           {schedule ? (
             <div className="mt-6">
               <h2 className="mb-3 text-lg font-bold">{t('schedule')}</h2>
-              <ScheduleTable rows={schedule.installments} totalBaisa={schedule.totalBaisa} />
+              <ScheduleTable rows={schedule.installments} totalBaisa={schedule.totalBaisa} firstAtConfirmation />
             </div>
           ) : null}
 

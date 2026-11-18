@@ -24,6 +24,7 @@ import { ScheduleTable } from '@/components/flex/ScheduleTable';
 import { AcceptFlexForm, CancelFlexButton, PayInstallmentButton, PayInstallmentCryptoButton } from '@/components/flex/FlexForms';
 import { KycRequiredNotice } from '@/components/payments/KycRequiredNotice';
 import { listPaymentMethods } from '@/lib/payments/registry';
+import { prisma } from '@/lib/db';
 import { FLEX_STATUS_VARIANT } from '@/components/flex/status';
 
 type Props = { params: Promise<{ locale: string; id: string }>; searchParams: Promise<{ address?: string }> };
@@ -48,7 +49,10 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
   const name = localize(app.product?.name, locale, tf('title'));
   const variantName = localize(app.variant?.name, locale);
   const image = app.product ? flexImageKey(app.product.images, app.variant) : null;
-  const awaitingTerms = app.status === 'APPROVED' || app.status === 'ACCEPTED';
+  // Confirmed plan whose order waits for the first instalment (the only amount paid at confirmation).
+  const firstInstallment = app.installments.find((i) => i.sequence === 1);
+  const awaitingFirst = app.status === 'ACCEPTED' && app.order?.status === 'PENDING_PAYMENT' && !!firstInstallment && firstInstallment.status !== 'PAID';
+  const awaitingTerms = app.status === 'APPROVED' || (app.status === 'ACCEPTED' && !awaitingFirst);
   const active = app.status === 'ACTIVE' || app.status === 'COMPLETED';
 
   // Terms step: address + exact quote (same engine as checkout).
@@ -71,10 +75,16 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
     paidAt: i.paidAt,
   }));
   const paidBaisa = app.installments.filter((i) => i.status === 'PAID').reduce((s, i) => s + i.amountBaisa, 0);
-  const next = app.status === 'ACTIVE' ? app.installments.find((i) => i.status === 'PENDING' || i.status === 'OVERDUE') : undefined;
+  const next =
+    app.status === 'ACTIVE' ? app.installments.find((i) => i.status === 'PENDING' || i.status === 'OVERDUE') : awaitingFirst ? firstInstallment : undefined;
   const balance = next ? await getBalance(user.id) : null;
   // Other ways to pay the next instalment (crypto), with the reason when one is not available.
   const crypto = next ? (await listPaymentMethods({ purpose: 'INSTALLMENT', amountBaisa: next.amountBaisa, userId: user.id })).find((m) => m.id === 'CRYPTO') : undefined;
+  // Until when the order keeps its stock for the first instalment.
+  const reservedUntil =
+    awaitingFirst && app.order
+      ? (await prisma.stockReservation.findFirst({ where: { orderId: app.order.id, status: 'ACTIVE' }, orderBy: { expiresAt: 'desc' }, select: { expiresAt: true } }))?.expiresAt ?? null
+      : null;
 
   return (
     <div className="pb-16">
@@ -235,7 +245,7 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
                       </dd>
                     </div>
                   </dl>
-                  <ScheduleTable rows={quote.schedule.installments} totalBaisa={quote.schedule.totalBaisa} />
+                  <ScheduleTable rows={quote.schedule.installments} totalBaisa={quote.schedule.totalBaisa} firstAtConfirmation />
                   <section className="rounded-2xl border border-border bg-surface p-4 shadow-card" aria-labelledby="flex-terms">
                     <h2 id="flex-terms" className="font-bold">
                       {t('terms.title')}
@@ -256,6 +266,51 @@ export default async function FlexApplicationPage({ params, searchParams }: Prop
                 </p>
               ) : null}
               {app.status === 'APPROVED' ? <CancelFlexButton applicationId={app.id} /> : null}
+            </div>
+          ) : null}
+
+          {awaitingFirst && next && balance && app.order ? (
+            <div className="flex flex-col gap-5" data-testid="flex-first-payment">
+              <div>
+                <p className="flex items-center gap-2 text-lg font-bold">
+                  <ShieldCheck size={20} aria-hidden="true" className="text-success" />
+                  {t('firstTitle')}
+                </p>
+                <p className="mt-1 text-sm text-muted">{t('firstText', { number: app.order.number })}</p>
+              </div>
+              <div className="flex flex-col gap-3 rounded-2xl border-2 border-yellow/70 bg-surface p-4 shadow-card">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <span className="font-semibold">{t('firstAmount')}</span>
+                  <span className="font-display" data-testid="flex-first-amount" data-baisa={next.amountBaisa}>
+                    <Price baisa={next.amountBaisa} size="xl" />
+                  </span>
+                </div>
+                {reservedUntil ? <p className="text-xs text-muted">{t('firstDeadline', { time: format.dateTime(reservedUntil, { hour: '2-digit', minute: '2-digit' }) })}</p> : null}
+                <p className="flex flex-wrap items-center gap-2 text-sm">
+                  {t('walletBalanceLabel')}
+                  <Price baisa={balance.balanceBaisa} size="sm" />
+                </p>
+                {balance.balanceBaisa >= next.amountBaisa ? (
+                  <PayInstallmentButton installmentId={next.id} label={t('pay', { amount: formatBaisa(next.amountBaisa, locale) })} />
+                ) : (
+                  <div className="flex flex-col gap-2" data-testid="flex-low-balance">
+                    <p className="text-sm font-medium text-fg">{t('lowBalanceFirst')}</p>
+                    <Link href="/wallet/top-up" className={buttonClasses({ variant: 'accent', size: 'lg', fullWidth: true })}>
+                      {t('topUp')}
+                    </Link>
+                  </div>
+                )}
+                {crypto?.available ? (
+                  <PayInstallmentCryptoButton installmentId={next.id} label={t('payCrypto', { amount: formatBaisa(next.amountBaisa, locale) })} />
+                ) : crypto?.reason === 'kyc_required' ? (
+                  <KycRequiredNotice />
+                ) : null}
+              </div>
+              <div>
+                <h2 className="mb-3 font-bold">{t('instalments')}</h2>
+                <ScheduleTable rows={rows} totalBaisa={app.principalBaisa} firstAtConfirmation />
+              </div>
+              <CancelFlexButton applicationId={app.id} />
             </div>
           ) : null}
 

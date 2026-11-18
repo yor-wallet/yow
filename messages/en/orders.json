@@ -125,6 +125,8 @@
     "cancelled": "Order cancelled",
     "cancelFailed": "This order can no longer be cancelled.",
     "history": "Status history",
-    "notFound": "Order not found"
+    "notFound": "Order not found",
+    "flexAwaiting": "This order is paid with DOOM FLEX: you pay only the first instalment ({amount}) now and your order is prepared.",
+    "flexPay": "Pay the first instalment"
   }
 }

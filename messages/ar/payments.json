@@ -31,6 +31,10 @@
     "refundIssued": {
       "title": "تم إصدار استرداد",
       "body": "تم إصدار استرداد بقيمة {amount} للطلب {number}."
+    },
+    "flexStarted": {
+      "title": "تم تأكيد خطة دوم فليكس",
+      "body": "تم دفع قسطك الأول البالغ {amount}. طلبك {number} قيد التجهيز الآن."
     }
   },
   "methods": {

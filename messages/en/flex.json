@@ -3,28 +3,30 @@
   "title": "DOOM FLEX",
   "eyebrow": "Pay over time",
   "heroTitle": "Pay in 3, 6 or 12 months. 0% interest. No fees.",
-  "heroText": "Split the cash price into equal monthly instalments, paid from your DOOM Wallet. You never pay more than the price.",
+  "heroText": "When you confirm your order you pay only the first instalment; the rest is split into equal monthly instalments. You never pay more than the price.",
   "browse": "Browse products",
   "example": {
     "title": "Example",
     "text": "For a cash price of {amount}:",
     "months": "{months} months",
     "perMonth": "{amount} / month",
-    "note": "Illustration only. Your schedule is computed from the product's live price."
+    "note": "Illustration only. Your schedule is computed from the product's live price.",
+    "first": "First instalment {amount}",
+    "then": "then {amount} / month"
   },
   "facts": {
     "interest": "0% interest",
     "fees": "No fees",
     "total": "Total = cash price",
-    "rounding": "The last instalment absorbs baisa rounding"
+    "rounding": "The first instalment is a little higher and paid at confirmation; the others are equal"
   },
   "how": {
     "title": "How it works",
     "s1": "Choose a product and a duration on its page.",
     "s2": "Verify your identity once (ID card and selfie).",
     "s3": "Submit your application — nothing is charged.",
-    "s4": "After approval, review the schedule and accept the terms: your order is confirmed.",
-    "s5": "Pay each instalment from your DOOM Wallet."
+    "s4": "Once approved, review the schedule and accept the terms, then pay only the first instalment and your order is prepared.",
+    "s5": "Pay the other instalments monthly from your DOOM Wallet or in crypto."
   },
   "financing": {
     "self": "DOOM finances your plan itself, after approval by our finance team.",
@@ -62,7 +64,7 @@
     "UNDER_REVIEW": "Under review",
     "APPROVED": "Approved — awaiting your acceptance",
     "REJECTED": "Declined",
-    "ACCEPTED": "Accepted",
+    "ACCEPTED": "Awaiting first instalment",
     "ACTIVE": "Active",
     "COMPLETED": "Completed",
     "DEFAULTED": "In default",
@@ -72,12 +74,12 @@
     "title": "Questions",
     "q1": "Are there really no fees?",
     "a1": "Yes. The sum of the instalments equals the cash price, to the baisa. No interest, no fees.",
-    "q2": "Why is the last instalment sometimes slightly different?",
-    "a2": "Amounts are in baisa: when the price does not divide exactly, the last instalment absorbs the remainder.",
+    "q2": "Why is the first instalment higher than the others?",
+    "a2": "The first instalment is paid when you confirm the order and is a little higher (about 20%); the monthly instalments after it are all equal. The total equals the cash price, to the baisa.",
     "q3": "Why do I need to verify my identity?",
     "a3": "DOOM FLEX is a credit: identity verification protects you and us. Your documents are encrypted.",
     "q4": "How do I pay the instalments?",
-    "a4": "From your DOOM Wallet balance, from your plan page. Top up your wallet before each due date."
+    "a4": "From your DOOM Wallet balance or in crypto (USDT), on your plan page. Top up your wallet before each due date."
   },
   "apply": {
     "metaTitle": "Apply for DOOM FLEX",
@@ -95,7 +97,7 @@
     "fees": "Fees",
     "submit": "Submit my application",
     "submitting": "Submitting…",
-    "notice": "Submitting creates no order and charges nothing. Our finance team reviews your application, then you accept the terms to confirm.",
+    "notice": "Applying creates no order and charges nothing. Our finance team reviews your application; then you accept the terms and pay only the first instalment.",
     "deliveryNote": "If delivery has a fee, it is added to the amount financed on the confirmation step, before you accept.",
     "productMissing": "Product not found",
     "productMissingText": "Open DOOM FLEX from a product page to choose what you want to finance.",
@@ -103,7 +105,9 @@
     "kycText": "DOOM FLEX requires a verified identity (ID card and selfie). It takes a few minutes.",
     "notEligible": "You cannot apply right now",
     "backToFlex": "About DOOM FLEX",
-    "perMonthLabel": "per month"
+    "perMonthLabel": "per month",
+    "firstLabel": "First instalment at confirmation",
+    "thenLabel": "then monthly"
   },
   "detail": {
     "metaTitle": "My DOOM FLEX plan",
@@ -125,7 +129,7 @@
     "cancelledTitle": "Application cancelled",
     "cancel": "Cancel my application",
     "approvedTitle": "Approved — review and accept",
-    "approvedText": "Choose the delivery address, check the final schedule and accept the terms to confirm your order.",
+    "approvedText": "Choose the delivery address, review the final schedule and accept the terms. You pay only the first instalment now.",
     "address": "Delivery address",
     "noAddress": "Add a delivery address to continue.",
     "addAddress": "Add an address",
@@ -136,18 +140,21 @@
       "address_required": "Choose a delivery address.",
       "delivery_unavailable": "Delivery is not available yet for this address.",
       "price_changed": "The product price changed since your application. Please apply again.",
-      "out_of_stock": "This product is no longer in stock."
+      "out_of_stock": "This product is no longer in stock.",
+      "order_expired": "The time to pay the first instalment has passed. Confirm your plan again.",
+      "first_installment_first": "Pay the first instalment first to start your plan.",
+      "approval_expired": "The approval has expired. Please apply again."
     },
     "terms": {
       "title": "DOOM FLEX terms",
       "t1": "0% interest and no fees: you repay exactly the amount financed.",
-      "t2": "{months} monthly instalments, paid from your DOOM Wallet; the last one absorbs baisa rounding.",
+      "t2": "{months} instalments: the first, a little higher, when you confirm the order, then one each month from your DOOM Wallet or in crypto.",
       "t3": "A late instalment is marked overdue, and you cannot open another plan until it is paid.",
-      "t4": "Your order is confirmed and delivered once you accept. Returns and refunds follow our returns policy.",
+      "t4": "Your order is prepared and delivered once the first instalment is paid. Returns and refunds follow our return policy.",
       "version": "Terms version {version}"
     },
     "acceptLabel": "I have read and accept the DOOM FLEX terms and the schedule above.",
-    "confirm": "Confirm and place my order",
+    "confirm": "Confirm and pay the first instalment",
     "confirming": "Confirming…",
     "activeTitle": "Plan active",
     "completedTitle": "Plan completed — thank you!",
@@ -172,6 +179,12 @@
     "walletBalanceLabel": "Wallet balance",
     "payCrypto": "Pay {amount} in crypto (USDT)",
     "openingCrypto": "Opening the payment…",
-    "cryptoHint": "You get the address and the exact amount to send. The instalment is marked paid once the transfer is confirmed on the blockchain."
+    "cryptoHint": "You get the address and the exact amount to send. The instalment is marked paid once the transfer is confirmed on the blockchain.",
+    "firstTitle": "Pay the first instalment to confirm your order",
+    "firstText": "Your order {number} is reserved for you and is prepared as soon as the first instalment is paid. The other instalments are paid monthly.",
+    "firstAmount": "First instalment",
+    "firstDeadline": "Pay it before {time}; otherwise the reservation is cancelled and you can confirm your plan again.",
+    "lowBalanceFirst": "Your balance is not enough for the first instalment.",
+    "atConfirmation": "When you confirm the order"
   }
 }

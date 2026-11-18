@@ -76,7 +76,7 @@
   },
   "flex": {
     "title": "DOOM FLEX",
-    "from": "From {amount} / month over 12 months",
+    "from": "First payment {first}, then {amount} / month over 12 months",
     "text": "0% interest, no fees. The total equals the cash price.",
     "cta": "Learn more about FLEX",
     "optionsTitle": "Instalment options",
@@ -91,7 +91,6 @@
     "interest": "Interest",
     "fees": "Fees",
     "none": "None",
-    "firstDue": "First instalment on {date}",
     "scheduleLabel": "Instalments",
     "showSchedule": "See the schedule",
     "hideSchedule": "Hide the schedule",
@@ -99,7 +98,12 @@
     "colDate": "Date",
     "colAmount": "Amount",
     "installmentN": "Instalment {n}",
-    "remainder": "The last instalment includes the rounding of {amount}."
+    "firstPay": "First payment",
+    "atConfirmation": "at confirmation",
+    "now": "Now",
+    "thenMonthly": "Then monthly",
+    "nextDue": "The first is paid when you confirm the order; the next one is due on {date}",
+    "summary": "First payment {first} at confirmation, then {count} × {amount} monthly"
   },
   "payments": {
     "title": "Secure payment",

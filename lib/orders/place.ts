@@ -38,6 +38,11 @@ export type PlaceOrderInput = {
    * priced and reserved and the cart is left untouched. Otherwise the user's cart is ordered.
    */
   items?: { variantId: string; qty: number }[] | null;
+  /**
+   * How long the stock stays reserved for this unpaid order (default RESERVATION_MINUTES, at most a day).
+   * DOOM FLEX keeps it for the time given to pay the first instalment (crypto included).
+   */
+  reservationMinutes?: number | null;
 };
 
 export type PlacedOrder = {
@@ -140,7 +145,8 @@ async function placeInTx(tx: Prisma.TransactionClient, input: PlaceOrderInput): 
   }
 
   const number = generateOrderNumber(now);
-  const expiresAt = new Date(now.getTime() + RESERVATION_MINUTES * 60_000);
+  const minutes = Math.min(Math.max(Math.trunc(input.reservationMinutes ?? RESERVATION_MINUTES), RESERVATION_MINUTES), 24 * 60);
+  const expiresAt = new Date(now.getTime() + minutes * 60_000);
   const order = await tx.order.create({
     data: {
       number,

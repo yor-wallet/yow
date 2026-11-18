@@ -7,8 +7,21 @@ export type ScheduleRow = { sequence: number; dueDate: string; amountBaisa: numb
 
 const STATUS_VARIANT: Record<NonNullable<ScheduleRow['status']>, BadgeVariant> = { PENDING: 'info', PAID: 'success', OVERDUE: 'error', CANCELLED: 'neutral' };
 
-/** Transparent instalment schedule (dates in Muscat calendar, amounts to the baisa). */
-export function ScheduleTable({ rows, totalBaisa, showStatus = false }: { rows: ScheduleRow[]; totalBaisa: number; showStatus?: boolean }) {
+/**
+ * Transparent instalment schedule (dates in Muscat calendar, amounts to the baisa). `firstAtConfirmation`: a plan
+ * not confirmed yet — the first instalment is shown as paid "when you confirm the order" instead of a date.
+ */
+export function ScheduleTable({
+  rows,
+  totalBaisa,
+  showStatus = false,
+  firstAtConfirmation = false,
+}: {
+  rows: ScheduleRow[];
+  totalBaisa: number;
+  showStatus?: boolean;
+  firstAtConfirmation?: boolean;
+}) {
   const t = useTranslations('flex');
   const format = useFormatter();
   const date = (ymd: string) => format.dateTime(new Date(`${ymd}T00:00:00+04:00`), 'short');
@@ -18,7 +31,12 @@ export function ScheduleTable({ rows, totalBaisa, showStatus = false }: { rows: 
         {rows.map((r) => (
           <li
             key={r.sequence}
-            className={cn('flex min-h-14 items-center gap-3 px-3 py-2.5 sm:px-4', r.status === 'OVERDUE' && 'bg-error/5', r.status === 'PAID' && 'bg-success/5')}
+            className={cn(
+              'flex min-h-14 items-center gap-3 px-3 py-2.5 sm:px-4',
+              r.status === 'OVERDUE' && 'bg-error/5',
+              r.status === 'PAID' && 'bg-success/5',
+              r.sequence === 1 && r.status !== 'PAID' && r.status !== 'OVERDUE' && 'bg-yellow/10',
+            )}
             data-testid="flex-schedule-row"
             data-amount={r.amountBaisa}
             data-status={r.status}
@@ -26,7 +44,11 @@ export function ScheduleTable({ rows, totalBaisa, showStatus = false }: { rows: 
             <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-border-strong font-display text-sm font-bold text-accent">{r.sequence}</span>
             <span className="min-w-0 flex-1">
               <span className="block text-sm font-medium">
-                {r.status === 'PAID' && r.paidAt ? t('detail.paidOn', { date: format.dateTime(r.paidAt, 'short') }) : t('detail.due', { date: date(r.dueDate) })}
+                {r.status === 'PAID' && r.paidAt
+                  ? t('detail.paidOn', { date: format.dateTime(r.paidAt, 'short') })
+                  : firstAtConfirmation && r.sequence === 1
+                    ? t('detail.atConfirmation')
+                    : t('detail.due', { date: date(r.dueDate) })}
               </span>
               {showStatus && r.status ? (
                 <Badge variant={STATUS_VARIANT[r.status]} className="mt-1">

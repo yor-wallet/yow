@@ -76,7 +76,7 @@
   },
   "flex": {
     "title": "DOOM FLEX",
-    "from": "ابتداءً من {amount} شهريًا على 12 شهرًا",
+    "from": "دفعة أولى {first} ثم {amount} شهريًا على 12 شهرًا",
     "text": "فائدة 0% وبلا رسوم. المجموع يساوي السعر النقدي.",
     "cta": "اعرف المزيد عن FLEX",
     "optionsTitle": "خيارات التقسيط",
@@ -91,7 +91,6 @@
     "interest": "الفائدة",
     "fees": "الرسوم",
     "none": "لا توجد",
-    "firstDue": "أول قسط في {date}",
     "scheduleLabel": "الأقساط",
     "showSchedule": "عرض جدول الأقساط",
     "hideSchedule": "إخفاء جدول الأقساط",
@@ -99,7 +98,12 @@
     "colDate": "التاريخ",
     "colAmount": "المبلغ",
     "installmentN": "القسط {n}",
-    "remainder": "يشمل القسط الأخير فرق التقريب البالغ {amount}"
+    "firstPay": "الدفعة الأولى",
+    "atConfirmation": "عند التأكيد",
+    "now": "الآن",
+    "thenMonthly": "ثم شهريًا",
+    "nextDue": "تُدفع الأولى عند تأكيد الطلب، والقسط التالي في {date}",
+    "summary": "الدفعة الأولى {first} عند التأكيد، ثم {count} × {amount} شهريًا"
   },
   "payments": {
     "title": "دفع آمن",

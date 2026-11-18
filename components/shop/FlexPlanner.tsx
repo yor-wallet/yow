@@ -37,12 +37,13 @@ function useTweened(target: number, reduce: boolean): number {
 
 /**
  * DOOM FLEX planner on the product page: choose 3, 6 or 12 months and see the plan come together —
- * a ring of instalments drawn one by one, the monthly amount counting to its value, the dates and
- * the amount of every instalment. Everything is computed from the real price of the selected variant
- * with the same rules as the FLEX application (lib/flex/schedule): 0 % interest, no fees, the
- * instalments add up exactly to the price, the last one carries the baisa remainder, one due date per
- * month in Muscat time. Dates appear after hydration (they depend on "today"), so the server HTML and
- * the first client render always match. Reduced motion: values and ring are shown immediately.
+ * a ring of instalments drawn one by one (each arc sized by its amount), the first payment counting to
+ * its value, the monthly amount after it, the dates and the amount of every instalment. Everything is
+ * computed from the real price of the selected variant with the same rules as the FLEX plan itself
+ * (lib/flex/schedule): 0 % interest, no fees, the instalments add up exactly to the price, the first one
+ * — paid when the customer confirms the order — a little higher, the others equal, one per month in
+ * Muscat time. Dates appear after hydration (they depend on "today"), so the server HTML and the first
+ * client render always match. Reduced motion: values and ring are shown immediately.
  */
 export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; className?: string }) {
   const t = useTranslations('product.flex');
@@ -55,10 +56,11 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
   useEffect(() => setToday(new Date()), []);
 
   const plan = computeSchedule(priceBaisa, months, today ?? new Date(0));
-  const monthly = useTweened(plan.monthlyBaisa, reduce);
+  const first = useTweened(plan.firstBaisa, reduce);
   const n = plan.installments.length;
   const index = FLEX_MONTHS.indexOf(months);
-  const remainder = plan.lastBaisa - plan.monthlyBaisa;
+  // Arcs sized by amount: where each one starts on the ring (fraction of the total).
+  const starts = plan.installments.map((_, i) => plan.installments.slice(0, i).reduce((sum, x) => sum + x.amountBaisa, 0) / plan.totalBaisa);
   const dateFmt = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-OM-u-nu-latn' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
   const shortMonth = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-OM-u-nu-latn' : 'en-GB', { month: 'short', timeZone: 'UTC' });
   const due = (ymd: string) => new Date(`${ymd}T00:00:00Z`);
@@ -111,7 +113,7 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
             <svg viewBox="0 0 100 100" className="size-full">
               <circle cx="50" cy="50" r="42" fill="none" strokeWidth="9" className="stroke-surface-2" />
               {plan.installments.map((inst, i) => (
-                <g key={`${n}-${inst.sequence}`} transform={`rotate(${-90 + (i * 360) / n} 50 50)`}>
+                <g key={`${n}-${inst.sequence}`} transform={`rotate(${-90 + starts[i]! * 360} 50 50)`}>
                   <m.circle
                     cx="50"
                     cy="50"
@@ -120,29 +122,35 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
                     strokeWidth="9"
                     className={i === 0 ? 'stroke-yellow' : 'stroke-fg'}
                     initial={reduce ? false : { pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1 / n - gap, opacity: 1 }}
+                    animate={{ pathLength: Math.max(inst.amountBaisa / plan.totalBaisa - gap, 0.004), opacity: 1 }}
                     transition={{ delay: reduce ? 0 : 0.05 + i * (0.55 / n), duration: reduce ? 0 : 0.32, ease: EASE }}
                   />
                 </g>
               ))}
             </svg>
             <div className="absolute inset-0 grid place-content-center text-center">
-              <span className="text-xs font-medium text-muted">{t('monthly')}</span>
+              <span className="text-xs font-medium text-muted">{t('firstPay')}</span>
               <span className="text-xl font-bold leading-tight tabular-nums text-price">
-                <bdi>{formatBaisa(monthly, locale)}</bdi>
+                <bdi>{formatBaisa(first, locale)}</bdi>
               </span>
-              <span className="text-xs font-semibold text-muted">× {n}</span>
+              <span className="text-xs font-semibold text-muted">{t('atConfirmation')}</span>
             </div>
           </div>
 
           <div className="flex w-full min-w-0 flex-col gap-2.5">
-            <p className="sr-only" aria-live="polite" data-testid="flex-monthly">
-              <span className="font-bold tabular-nums">
-                <bdi>{t('perMonth', { amount: formatBaisa(plan.monthlyBaisa, locale) })}</bdi>
-              </span>
-              <span className="text-muted"> × {n}</span>
+            <p className="sr-only" aria-live="polite" data-testid="flex-monthly" data-first={plan.firstBaisa} data-monthly={plan.monthlyBaisa}>
+              {t('summary', { first: formatBaisa(plan.firstBaisa, locale), count: n - 1, amount: formatBaisa(plan.monthlyBaisa, locale) })}
             </p>
             <dl className="grid grid-cols-1 gap-1.5 text-sm">
+              <div className="flex items-center justify-between gap-3 rounded-xl border border-yellow/60 bg-yellow/15 px-3 py-2">
+                <dt className="flex items-center gap-2 font-semibold">
+                  <CalendarDays size={16} aria-hidden="true" />
+                  {t('thenMonthly')}
+                </dt>
+                <dd className="font-bold tabular-nums">
+                  <bdi>{formatBaisa(plan.monthlyBaisa, locale)}</bdi> <span className="text-muted">× {n - 1}</span>
+                </dd>
+              </div>
               <div className="flex items-center justify-between gap-3 rounded-xl bg-surface-2 px-3 py-2">
                 <dt className="flex items-center gap-2 text-muted">
                   <ReceiptText size={16} aria-hidden="true" />
@@ -168,7 +176,7 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
               </div>
             </dl>
             <p className="min-h-5 text-xs text-muted" data-testid="flex-first-due">
-              {today ? t('firstDue', { date: dateFmt.format(due(plan.installments[0]!.dueDate)) }) : null}
+              {today ? t('nextDue', { date: dateFmt.format(due(plan.installments[1]!.dueDate)) }) : null}
             </p>
           </div>
         </div>
@@ -185,7 +193,7 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
                 transition={{ delay: reduce ? 0 : 0.12 + i * 0.035, duration: reduce ? 0 : 0.25, ease: EASE }}
                 className={cn('rounded-xl border px-1.5 py-1.5 text-center', i === 0 ? 'border-yellow bg-yellow/25' : 'border-border bg-surface')}
               >
-                <span className="block text-[11px] font-semibold text-muted">{today ? shortMonth.format(due(inst.dueDate)) : `#${inst.sequence}`}</span>
+                <span className="block text-[11px] font-semibold text-muted">{i === 0 ? t('now') : today ? shortMonth.format(due(inst.dueDate)) : `#${inst.sequence}`}</span>
                 <span className="block text-xs font-bold tabular-nums">
                   <bdi>{formatBaisa(inst.amountBaisa, locale, { currency: false })}</bdi>
                 </span>
@@ -229,7 +237,7 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
                   {plan.installments.map((inst) => (
                     <tr key={inst.sequence} className="border-b border-border last:border-0">
                       <td className="py-2 font-medium">{t('installmentN', { n: inst.sequence })}</td>
-                      <td className="py-2 text-muted">{today ? dateFmt.format(due(inst.dueDate)) : '—'}</td>
+                      <td className="py-2 text-muted">{inst.sequence === 1 ? t('atConfirmation') : today ? dateFmt.format(due(inst.dueDate)) : '—'}</td>
                       <td className="py-2 text-end font-bold tabular-nums">
                         <bdi>{formatBaisa(inst.amountBaisa, locale)}</bdi>
                       </td>
@@ -237,7 +245,6 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
                   ))}
                 </tbody>
               </table>
-              {remainder > 0 ? <p className="mt-1 text-xs text-muted">{t('remainder', { amount: formatBaisa(remainder, locale) })}</p> : null}
             </m.div>
           ) : null}
         </AnimatePresence>

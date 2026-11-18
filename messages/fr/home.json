@@ -103,7 +103,7 @@
   "flex": {
     "eyebrow": "DOOM FLEX",
     "title": "Payez en 3, 6 ou 12 mois.",
-    "lead": "0 % d'intérêt. Aucun frais. Le total est toujours égal au prix comptant.",
+    "lead": "0 % d'intérêt. Aucun frais. À la commande, vous ne payez que la première échéance, et le total est toujours égal au prix comptant.",
     "points": {
       "transparent": "Un échéancier transparent avant de vous engager",
       "noFees": "Aucun intérêt, aucun frais caché",
@@ -114,7 +114,8 @@
     "months": "{count} mois",
     "perMonth": "{amount} / mois",
     "conditions": "Sous réserve de la vérification d'identité (KYC) et de l'approbation de chaque demande.",
-    "cta": "Découvrir DOOM FLEX"
+    "cta": "Découvrir DOOM FLEX",
+    "first": "Première {amount}"
   },
   "express": {
     "eyebrow": "DOOM EXPRESS",

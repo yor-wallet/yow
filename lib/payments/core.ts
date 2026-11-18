@@ -35,6 +35,8 @@ import { payReturnUrl, webhookUrl } from './util';
 type Locale = 'ar' | 'en' | 'fr';
 const PENDING_STATUSES = ['CREATED', 'PENDING', 'REQUIRES_ACTION'] as const;
 const DEFAULT_EXPIRY_MS = 60 * 60_000;
+/** DOOM FLEX: how long the order's stock stays reserved once the payment of its first instalment is opened. */
+const FIRST_INSTALLMENT_HOLD_MS = 90 * 60_000;
 
 export type ConfirmArgs = {
   /** Amount the provider / reviewer CONFIRMED (baisa). */
@@ -192,6 +194,8 @@ async function confirmInTx(tx: Prisma.TransactionClient, intentId: string, args:
   let creditedToWallet = false;
   let ledgerTransactionId: string;
   let link = '/wallet';
+  /** Set when this payment was the first instalment of a DOOM FLEX plan: the plan started and its order is paid. */
+  let flexStarted: { orderNumber: string } | null = null;
 
   const creditWalletInstead = async (why: string) => {
     const { transaction } = await postTransaction(tx, {
@@ -279,15 +283,23 @@ async function confirmInTx(tx: Prisma.TransactionClient, intentId: string, args:
     const inst = intent.installment;
     if (inst) await tx.$queryRaw`SELECT "id" FROM "FlexInstallment" WHERE "id" = ${inst.id} FOR UPDATE`;
     const fresh = inst ? await tx.flexInstallment.findUnique({ where: { id: inst.id }, include: { application: true } }) : null;
+    // The first instalment of a confirmed plan (ACCEPTED) is paid before the plan starts: it starts it.
+    const firstAtConfirmation = !!fresh && fresh.application.status === 'ACCEPTED' && fresh.sequence === 1;
     const payable =
       !!fresh &&
       (fresh.status === 'PENDING' || fresh.status === 'OVERDUE') &&
       fresh.amountBaisa === amount &&
       fresh.application.userId === intent.userId &&
-      (fresh.application.status === 'ACTIVE' || fresh.application.status === 'ACCEPTED');
-    if (!payable) {
-      if (!external) throw new MoneyError('installment_not_payable', 'Instalment is not payable');
-      ledgerTransactionId = await creditWalletInstead('installment_not_payable');
+      (fresh.application.status === 'ACTIVE' || firstAtConfirmation);
+    const started = payable && firstAtConfirmation && fresh ? await startFlexPlanInTx(tx, fresh.application, args) : null;
+    if (started) flexStarted = started;
+    if (!fresh || !payable || started === false) {
+      if (!external) {
+        throw started === false
+          ? new MoneyError('flex_invalid_state', 'The order of this plan is no longer awaiting its first instalment', { reason: 'order_expired' })
+          : new MoneyError('installment_not_payable', 'Instalment is not payable');
+      }
+      ledgerTransactionId = await creditWalletInstead(started === false ? 'flex_order_not_payable' : 'installment_not_payable');
     } else {
       const { transaction } = await postTransaction(tx, {
         ...base,
@@ -349,11 +361,67 @@ async function confirmInTx(tx: Prisma.TransactionClient, intentId: string, args:
   if (intent.purpose === 'TOPUP' || creditedToWallet) {
     if (intent.provider !== 'GIFT_CARD') await notifyMoney(intent.userId, 'topupConfirmed', { amountBaisa: amount }, '/wallet', tx);
   } else if (intent.purpose === 'INSTALLMENT') {
-    await notifyMoney(intent.userId, 'installmentPaid', { amountBaisa: amount }, link, tx);
+    if (flexStarted) await notifyMoney(intent.userId, 'flexStarted', { amountBaisa: amount, number: flexStarted.orderNumber }, link, tx);
+    else await notifyMoney(intent.userId, 'installmentPaid', { amountBaisa: amount }, link, tx);
   } else if (intent.provider !== 'FLEX') {
     await notifyMoney(intent.userId, 'orderPaid', { amountBaisa: amount }, link, tx);
   }
   return { outcome: 'succeeded', intentId: intent.id, creditedToWallet, ledgerTransactionId };
+}
+
+/**
+ * DOOM FLEX — the first instalment of a confirmed plan has just been paid (wallet debit, or an external payment
+ * verified with its provider): the plan starts. In the SAME transaction, the order placed at confirmation is paid
+ * by DOOM FLEX (its FLEX payment: ledger FLEX_RECEIVABLE → revenue, order PAID and prepared) and the plan becomes
+ * ACTIVE. Returns false, with nothing changed, when that order can no longer be paid (cancelled because the first
+ * instalment came too late, already paid, or without its stock reservation): the caller then refuses the wallet
+ * payment, or credits the external payment to the wallet. Never invents a payment: it runs only from
+ * `confirmInTx`, i.e. after the instalment's money is confirmed.
+ */
+async function startFlexPlanInTx(
+  tx: Prisma.TransactionClient,
+  app: { id: string; userId: string; orderId: string | null; months: number },
+  args: ConfirmArgs,
+): Promise<{ orderNumber: string } | false> {
+  if (!app.orderId) return false;
+  await tx.$queryRaw`SELECT "id" FROM "FlexApplication" WHERE "id" = ${app.id} FOR UPDATE`;
+  await tx.$queryRaw`SELECT "id" FROM "Order" WHERE "id" = ${app.orderId} FOR UPDATE`;
+  const order = await tx.order.findUnique({ where: { id: app.orderId }, select: { id: true, userId: true, status: true, totalBaisa: true, number: true } });
+  if (!order || order.userId !== app.userId || order.status !== 'PENDING_PAYMENT') return false;
+  if ((await tx.paymentIntent.count({ where: { orderId: order.id, status: 'SUCCEEDED' } })) > 0) return false;
+  // The order must still hold its stock (it is released only when the order is cancelled).
+  if ((await tx.stockReservation.count({ where: { orderId: order.id, status: 'ACTIVE' } })) === 0) return false;
+
+  const key = `flex:${app.id}:${order.id}`;
+  const flexIntent =
+    (await tx.paymentIntent.findUnique({ where: { idempotencyKey: key } })) ??
+    (await tx.paymentIntent.create({
+      data: {
+        userId: app.userId,
+        provider: 'FLEX',
+        purpose: 'ORDER',
+        orderId: order.id,
+        amountBaisa: order.totalBaisa,
+        idempotencyKey: key,
+        status: 'PENDING',
+        metadata: { flexApplicationId: app.id, months: app.months },
+      },
+    }));
+  const paid = await confirmInTx(tx, flexIntent.id, { confirmedAmountBaisa: order.totalBaisa, source: `flex.first_installment:${args.source}`, actorId: args.actorId ?? null });
+  if (paid.outcome === 'failed') return false;
+  await tx.flexApplication.update({ where: { id: app.id }, data: { status: 'ACTIVE' } });
+  await logAudit(
+    {
+      actorId: args.actorId ?? null,
+      action: 'flex.activate',
+      entity: 'FlexApplication',
+      entityId: app.id,
+      before: { status: 'ACCEPTED' },
+      after: { status: 'ACTIVE', orderId: order.id, principalBaisa: order.totalBaisa, firstInstallmentPaidBy: args.source },
+    },
+    tx,
+  );
+  return { orderNumber: order.number };
 }
 
 // ───────────── Starting payments ─────────────
@@ -591,7 +659,7 @@ export async function startInstallmentPayment(
   if (!isExternalProvider(methodId)) throw new MoneyError('method_unavailable', `${methodId} cannot pay an instalment here`);
   const inst = await prisma.flexInstallment.findUnique({
     where: { id: installmentId },
-    include: { application: { select: { id: true, userId: true, status: true } } },
+    include: { application: { select: { id: true, userId: true, status: true, orderId: true } } },
   });
   if (!inst || inst.application.userId !== userId) throw new MoneyError('not_found');
 
@@ -599,7 +667,18 @@ export async function startInstallmentPayment(
   if (replay) return replay;
 
   if (inst.status === 'PAID') throw new MoneyError('installment_not_payable', 'Already paid', { reason: 'already_paid' });
-  if (!['PENDING', 'OVERDUE'].includes(inst.status) || inst.application.status !== 'ACTIVE') throw new MoneyError('installment_not_payable');
+  // Active plan: any open instalment. Confirmed plan: only the first one, while its order still waits for it.
+  const firstAtConfirmation = inst.application.status === 'ACCEPTED' && inst.sequence === 1;
+  if (!['PENDING', 'OVERDUE'].includes(inst.status) || (inst.application.status !== 'ACTIVE' && !firstAtConfirmation)) {
+    throw new MoneyError('installment_not_payable', undefined, inst.application.status === 'ACCEPTED' ? { reason: 'first_installment_first' } : undefined);
+  }
+  if (firstAtConfirmation) {
+    const orderId = inst.application.orderId;
+    const waiting = orderId
+      ? await prisma.order.count({ where: { id: orderId, status: 'PENDING_PAYMENT', reservations: { some: { status: 'ACTIVE' } } } })
+      : 0;
+    if (waiting === 0) throw new MoneyError('flex_invalid_state', 'The order of this plan is no longer awaiting its first instalment', { reason: 'order_expired' });
+  }
 
   const adapter = getAdapter(methodId);
   if (!adapter.isConfigured()) throw new MoneyError('method_unavailable', `${adapter.displayName} is not available`);
@@ -644,6 +723,11 @@ export async function startInstallmentPayment(
       });
       // The instalment points at its latest payment attempt; an older attempt that confirms later is credited to the wallet.
       await tx.flexInstallment.update({ where: { id: inst.id }, data: { paymentIntentId: created.id } });
+      if (firstAtConfirmation && inst.application.orderId) {
+        // First instalment: the order keeps its stock while the customer sends the payment.
+        const until = new Date(Date.now() + FIRST_INSTALLMENT_HOLD_MS);
+        await tx.stockReservation.updateMany({ where: { orderId: inst.application.orderId, status: 'ACTIVE', expiresAt: { lt: until } }, data: { expiresAt: until } });
+      }
       return created;
     });
   } catch (err) {

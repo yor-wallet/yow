@@ -12,7 +12,7 @@ import {
 } from '@/lib/catalog/filters';
 import { escapeLike, isEmptyQuery, normalizeSearchText, parseSearchQuery } from '@/lib/catalog/search-query';
 import { availableQty, maxPurchasable, productAvailability, variantAvailability } from '@/lib/catalog/stock';
-import { computeSchedule, flexMonthlyFrom } from '@/lib/catalog/flex-preview';
+import { computeSchedule, flexMonthlyFrom, flexPlanFrom } from '@/lib/catalog/flex-preview';
 import { bestPromotion, discountFor, isPromotionLive, type PromotionRule } from '@/lib/catalog/promotions';
 import { resolveCampaignHref } from '@/lib/catalog/campaigns';
 import { categoryPath, productPath } from '@/lib/catalog/paths';
@@ -121,18 +121,31 @@ describe('stock & availability', () => {
 });
 
 describe('DOOM FLEX preview', () => {
-  it('splits exactly (0% interest) with the last instalment absorbing the remainder', () => {
-    expect(computeSchedule(360_000, 3).installments).toEqual([120_000, 120_000, 120_000]);
-    expect(computeSchedule(360_000, 12).monthlyBaisa).toBe(30_000);
-    const s = computeSchedule(100_001, 3);
-    expect(s.installments).toEqual([33_333, 33_333, 33_335]);
-    expect(s.installments.reduce((a, b) => a + b, 0)).toBe(100_001);
+  it('splits exactly (0% interest): the first instalment a little higher, the others equal', () => {
+    // Owner's rule: only the first instalment is paid at confirmation, and it is a little higher than the others.
+    expect(computeSchedule(360_000, 3).installments).toEqual([135_000, 112_500, 112_500]);
+    expect(computeSchedule(360_000, 6).installments).toEqual([70_000, ...Array(5).fill(58_000)]);
+    const year = computeSchedule(360_000, 12);
+    expect(year).toMatchObject({ firstBaisa: 35_500, monthlyBaisa: 29_500, lastBaisa: 29_500 });
+    for (const price of [100_001, 459_900, 1_299_000, 12_000, 5_000]) {
+      for (const m of [3, 6, 12] as const) {
+        const s = computeSchedule(price, m);
+        expect(s.installments.reduce((a, b) => a + b, 0)).toBe(price);
+        expect(new Set(s.installments.slice(1)).size).toBe(1);
+        expect(s.firstBaisa).toBeGreaterThan(s.monthlyBaisa);
+        // "A little higher": about 20 % more (more only when rounding small amounts).
+        expect(s.firstBaisa / s.monthlyBaisa).toBeGreaterThanOrEqual(1.19);
+        expect(s.firstBaisa / s.monthlyBaisa).toBeLessThan(1.4);
+      }
+    }
   });
 
-  it('shows nothing for a missing or non-positive price and rejects other durations', () => {
+  it('shows nothing for a missing or unusable price and rejects other durations', () => {
     expect(flexMonthlyFrom(null)).toBeNull();
     expect(flexMonthlyFrom(0)).toBeNull();
-    expect(flexMonthlyFrom(120_000)).toBe(10_000);
+    expect(flexMonthlyFrom(11)).toBeNull();
+    expect(flexMonthlyFrom(120_000)).toBe(9_800);
+    expect(flexPlanFrom(120_000)).toEqual({ firstBaisa: 12_200, monthlyBaisa: 9_800 });
     // @ts-expect-error only 3, 6 and 12 months exist
     expect(() => computeSchedule(1000, 4)).toThrow(RangeError);
   });

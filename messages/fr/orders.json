@@ -125,6 +125,8 @@
     "cancelled": "Commande annulée",
     "cancelFailed": "Cette commande ne peut plus être annulée.",
     "history": "Historique des statuts",
-    "notFound": "Commande introuvable"
+    "notFound": "Commande introuvable",
+    "flexAwaiting": "Cette commande est réglée avec DOOM FLEX : vous ne payez maintenant que la première échéance ({amount}) et votre commande est préparée.",
+    "flexPay": "Régler la première échéance"
   }
 }

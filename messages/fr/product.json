@@ -76,7 +76,7 @@
   },
   "flex": {
     "title": "DOOM FLEX",
-    "from": "À partir de {amount} / mois sur 12 mois",
+    "from": "Premier paiement {first}, puis {amount} / mois sur 12 mois",
     "text": "0 % d'intérêt, sans frais. Le total est égal au prix comptant.",
     "cta": "En savoir plus sur FLEX",
     "optionsTitle": "Paiement en plusieurs fois",
@@ -91,7 +91,6 @@
     "interest": "Intérêts",
     "fees": "Frais",
     "none": "Aucun",
-    "firstDue": "Première échéance le {date}",
     "scheduleLabel": "Échéances",
     "showSchedule": "Voir l'échéancier",
     "hideSchedule": "Masquer l'échéancier",
@@ -99,7 +98,12 @@
     "colDate": "Date",
     "colAmount": "Montant",
     "installmentN": "Échéance {n}",
-    "remainder": "La dernière échéance inclut l'arrondi de {amount}."
+    "firstPay": "Premier paiement",
+    "atConfirmation": "à la confirmation",
+    "now": "Maintenant",
+    "thenMonthly": "Puis par mois",
+    "nextDue": "La première se règle à la confirmation de la commande ; la suivante le {date}",
+    "summary": "Premier paiement {first} à la confirmation, puis {count} × {amount} par mois"
   },
   "payments": {
     "title": "Paiement sécurisé",

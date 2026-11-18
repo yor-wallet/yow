@@ -103,7 +103,7 @@
   "flex": {
     "eyebrow": "DOOM FLEX",
     "title": "Pay in 3, 6 or 12 months.",
-    "lead": "0% interest. No fees. The total always equals the cash price.",
+    "lead": "0% interest. No fees. You pay only the first instalment when you order, and the total always equals the cash price.",
     "points": {
       "transparent": "A transparent schedule before you commit",
       "noFees": "No interest, no hidden fees",
@@ -114,7 +114,8 @@
     "months": "{count} months",
     "perMonth": "{amount} / month",
     "conditions": "Subject to identity verification (KYC) and approval of each application.",
-    "cta": "Discover DOOM FLEX"
+    "cta": "Discover DOOM FLEX",
+    "first": "First {amount}"
   },
   "express": {
     "eyebrow": "DOOM EXPRESS",

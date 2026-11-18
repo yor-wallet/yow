@@ -2,6 +2,7 @@ import type { Prisma, OrderStatus, Role } from '@prisma/client';
 import { prisma, serializable, type Db } from '@/lib/db';
 import { logAudit } from '@/lib/audit';
 import { createShipmentForOrder } from '@/lib/delivery/shipments';
+import { releaseFlexPlanForOrder } from '@/lib/flex/release';
 
 /**
  * Order lifecycle owned by the storefront:
@@ -152,6 +153,8 @@ export async function cancelOrderTx(tx: Prisma.TransactionClient, orderId: strin
   await tx.orderStatusEvent.create({
     data: { orderId, fromStatus: 'PENDING_PAYMENT', toStatus: 'CANCELLED', note: opts.reason.slice(0, 200), actorId: opts.actorId ?? null },
   });
+  // DOOM FLEX: an order whose first instalment was never paid frees its plan (back to "approved", confirmable again).
+  await releaseFlexPlanForOrder(tx, orderId, opts.reason);
   await logAudit(
     {
       actorId: opts.actorId ?? null,
