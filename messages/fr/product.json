@@ -103,7 +103,8 @@
     "now": "Maintenant",
     "thenMonthly": "Puis par mois",
     "nextDue": "La première se règle à la confirmation de la commande ; la suivante le {date}",
-    "summary": "Premier paiement {first} à la confirmation, puis {count} × {amount} par mois"
+    "summary": "Premier paiement {first} à la confirmation, puis {count} × {amount} par mois",
+    "applyCta": "{count, plural, one {Acheter en # fois} other {Acheter en # fois}}"
   },
   "payments": {
     "title": "Paiement sécurisé",

@@ -48,9 +48,12 @@ test.describe('home', () => {
     await expect(page.getByTestId('home-express')).toBeAttached();
     await expect(page.getByTestId('home-reviews')).toBeAttached();
     await expect(page.getByTestId('home-support')).toBeAttached();
-    // The FLEX illustration is computed (360 OMR → 120 / 60 / 30), 0% interest.
-    await expect(page.getByTestId('home-flex')).toContainText('120.000');
-    await expect(page.getByTestId('home-flex')).toContainText('30.000');
+    // The FLEX illustration is computed from 360 OMR, 0% interest.
+    // Owner's rule (18/11/2026): the first instalment, paid at the order, is a little higher; the others are equal.
+    // 360 OMR → 3 months: 135.000 then 2 × 112.500; 12 months: 35.500 then 11 × 29.500.
+    await expect(page.getByTestId('home-flex')).toContainText('135.000');
+    await expect(page.getByTestId('home-flex')).toContainText('112.500');
+    await expect(page.getByTestId('home-flex')).toContainText('29.500');
     await expectNoHorizontalOverflow(page);
   });
 

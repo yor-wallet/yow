@@ -298,7 +298,7 @@ export function ProductHero({ product, favorite, delivery }: { product: ProductD
         </div>
 
         {/* DOOM FLEX: animated instalment planner for the selected price (0 % interest, no fees). */}
-        {selected && selected.priceBaisa !== null && selected.priceBaisa >= 12 ? <FlexPlanner priceBaisa={selected.priceBaisa} className="lg:order-5" /> : null}
+        {selected && selected.priceBaisa !== null && selected.priceBaisa >= 12 ? <FlexPlanner priceBaisa={selected.priceBaisa} productRef={product.slug} variantId={selected.id} className="lg:order-5" /> : null}
 
         {/* Delivery to the shopper's area: only what the configured zone promises. */}
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 rounded-2xl bg-surface-2 px-3 py-1 lg:order-6" data-testid="product-deliver">

@@ -5,6 +5,7 @@ import { AnimatePresence, LazyMotion, animate, domAnimation, m } from 'motion/re
 import { CalendarDays, ChevronDown, Percent, ReceiptText, ShieldCheck } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { buttonClasses } from '@/components/ui/Button';
 import { usePrefersReducedMotion } from '@/components/ui/Reveal';
 import { cn } from '@/lib/cn';
 import { computeSchedule, FLEX_MONTHS, type FlexMonths } from '@/lib/flex/schedule';
@@ -45,7 +46,7 @@ function useTweened(target: number, reduce: boolean): number {
  * Muscat time. Dates appear after hydration (they depend on "today"), so the server HTML and the first
  * client render always match. Reduced motion: values and ring are shown immediately.
  */
-export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; className?: string }) {
+export function FlexPlanner({ priceBaisa, productRef, variantId, className }: { priceBaisa: number; productRef?: string; variantId?: string; className?: string }) {
   const t = useTranslations('product.flex');
   const locale = useLocale();
   const rtl = locale === 'ar';
@@ -249,6 +250,16 @@ export function FlexPlanner({ priceBaisa, className }: { priceBaisa: number; cla
           ) : null}
         </AnimatePresence>
 
+        {productRef && variantId ? (
+          // The chosen duration goes straight to the application: same product, same colour / capacity, same months.
+          <Link
+            href={`/flex/apply?${new URLSearchParams({ product: productRef, v: variantId, months: String(months) }).toString()}`}
+            className={cn(buttonClasses({ variant: 'accent', size: 'lg', fullWidth: true }), 'mt-4 min-h-14')}
+            data-testid="flex-apply-cta"
+          >
+            {t('applyCta', { count: months })}
+          </Link>
+        ) : null}
         <p className="mt-2 text-xs text-muted">
           {t('note')}{' '}
           <Link href="/flex" className="font-semibold text-accent underline-offset-4 hover:underline">

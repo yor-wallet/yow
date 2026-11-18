@@ -53,3 +53,26 @@ test.describe('instalment (DOOM FLEX) applications decided by the finance team',
     expect((await page.goto('/en/admin/finance/flex'))?.status()).toBe(404);
   });
 });
+
+test.describe('instalments chosen on the product page', () => {
+  test('the chosen duration goes straight to the application, already split into instalments', async ({ page }, testInfo) => {
+    // A visitor is asked to sign in first and is brought back with the same product and duration.
+    await gotoReady(page, '/en/product/e2e-sf-beta');
+    await page.getByTestId('flex-months-3').click();
+    const cta = page.getByTestId('flex-apply-cta');
+    await expect(cta).toHaveText('Buy in 3 instalments');
+    await cta.click();
+    await expect(page).toHaveURL(/\/login\?next=%2Fflex%2Fapply%3F.*months%3D3/);
+
+    // Signed in: the application opens on that duration with the schedule already split.
+    const customer = await createCustomer(uniqueUser(testInfo));
+    await signIn(page, customer.email, customer.password, '/product/e2e-sf-beta');
+    await page.getByTestId('flex-months-12').click();
+    await page.getByTestId('flex-apply-cta').click();
+    await expect(page).toHaveURL(/\/flex\/apply\?.*months=12/);
+    await expect(page.getByTestId('flex-months-12')).toHaveAttribute('aria-current', /page|true/);
+    await expect(page.getByTestId('flex-schedule-row')).toHaveCount(12);
+    await expect(page.getByTestId('flex-schedule-total')).toHaveAttribute('data-baisa', '200000');
+    await expectNoHorizontalOverflow(page);
+  });
+});

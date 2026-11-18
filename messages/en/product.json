@@ -103,7 +103,8 @@
     "now": "Now",
     "thenMonthly": "Then monthly",
     "nextDue": "The first is paid when you confirm the order; the next one is due on {date}",
-    "summary": "First payment {first} at confirmation, then {count} × {amount} monthly"
+    "summary": "First payment {first} at confirmation, then {count} × {amount} monthly",
+    "applyCta": "{count, plural, one {Buy in # instalment} other {Buy in # instalments}}"
   },
   "payments": {
     "title": "Secure payment",
