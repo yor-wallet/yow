@@ -330,6 +330,20 @@ html[lang='ar'] {
     letter-spacing: 0;
   }
 
+  /* Arabic reads heavier and clearer than Latin (owner's request: bold, legible). Only plain text
+     shifts up a weight — components that set their own Tailwind weight (font-bold…) keep it, since a
+     utility class outranks these element selectors. Headings without an explicit weight become 700. */
+  html[lang='ar'] body {
+    font-weight: 500;
+    line-height: 1.65;
+  }
+  html[lang='ar'] h1,
+  html[lang='ar'] h2,
+  html[lang='ar'] h3 {
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
   p {
     text-wrap: pretty;
   }
